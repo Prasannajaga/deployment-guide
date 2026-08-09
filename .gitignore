@@ -1,0 +1,83 @@
+# SSH private keys and common private-key containers.
+# Public keys (*.pub) are intentionally not ignored.
+lambda_ssh_key
+id_rsa
+id_dsa
+id_ecdsa
+id_ed25519
+*.pem
+*.key
+*.ppk
+
+# Environment variables & secrets
+.env
+.env.*
+*.env
+
+# Python & Virtual Environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environments
+.venv/
+.venv-*/
+venv/
+env/
+ENV/
+
+# Testing & Type Checking Caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.nox/
+.tox/
+
+# IDE & Editor Settings / Artifacts
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# OS Generated Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs & Temporary Files
+*.log
+logs/
+*.tmp
+*.temp
+tmp/
+
+# Benchmark & AIPerf Generated Artifacts
+profile_export*
+server_metrics_export*

@@ -1,0 +1,7 @@
+AIPerf Plot Export Summary
+==================================================
+
+Generated 0 plots:
+
+
+Output directory: /ephemeral/shared/dynamo/dynamo-benchmarks/fixed-i2000-o256/c1/plots

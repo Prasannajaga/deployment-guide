@@ -1,0 +1,20 @@
+Your two-node reservation is ready through August 16, 2026.
+
+Nodes:
+gpu05 — 170.9.238.157
+gpu06 — 147.224.131.177
+
+Connect with:
+
+GPU5
+ssh -i lambda_ssh_key prasanna@170.9.238.157 
+GPU6
+ssh -i lambda_ssh_key prasanna@147.224.131.177
+
+You have all 8 H100 GPUs on each node and passwordless sudo.
+
+The nodes share private storage at `/ephemeral/shared`. gpu05 hosts the share and gpu06 mounts it. This is only accessible between the two nodes and is backed by gpu05’s local NVMe, so copy important data elsewhere before the reservation ends.
+
+`/ephemeral` is node-local scratch. `/shared` is cluster-wide storage visible to other users.
+
+The reservation releases on August 16 at 11:59:59 PM UTC.
