@@ -1,0 +1,8 @@
+AIPerf Plot Export Summary
+==================================================
+
+Generated 1 plots:
+
+  - ttft_vs_throughput.png
+
+Output directory: models/llama-8B/benchmarks/c4/plots
