@@ -28,8 +28,6 @@ Running a single model copy across all 16 GPUs works because the ~744 GB model w
 **Disaggregated Prefill + Decode (8 H100 Prefill + 8 H100 Decode) — Not Feasible**  
 Disaggregated P/D requires two complete model copies (one for prefill and one for decode), totaling ~1,488 GB in weights alone—which exceeds our cluster's 1,280 GB total VRAM. Additionally, an 8× H100 node only has 640 GB VRAM, but one copy requires ~744 GB (~93 GB/GPU), so an 8-GPU group cannot hold the model. This is why NVIDIA's reference P/D recipes target H200 nodes (141GB VRAM per GPU).
 
-
-
 ## Qwen3-32B-FP8: RDMA/NIXL backend incident
 
 The Qwen disaggregated vLLM deployment encountered two separate RDMA
@@ -216,3 +214,258 @@ The successful initialization preflight proves device selection and backend
 creation. Full acceptance still requires a real prefill-to-decode inference
 request, no worker restarts, no TCP fallback, and successful NIXL KV-transfer
 evidence in the production logs.
+
+## Port collisions after enabling host networking
+
+The RDMA fix introduced a separate networking consequence. Before
+`hostNetwork: true`, every Pod had its own network namespace and therefore
+its own private TCP port space. Two Pods on the same node could both listen on
+`*:20380` or `*:5600` because those sockets existed in different namespaces.
+
+With `hostNetwork: true`, the worker processes bind directly to the node's IP
+and share the node's single TCP port space. A listening address is identified
+by the combination of protocol, local IP, and port. Only one process can own a
+particular combination at a time. For example, on node
+`10.18.96.143`:
+
+```text
+Prefill binds tcp://*:20380       -> succeeds
+Decode tries tcp://*:20380       -> EADDRINUSE / Address already in use
+
+Prefill binds tcp://10.18.96.143:5600 -> succeeds
+Decode tries the same address          -> EADDRINUSE / Address already in use
+```
+
+This is similar to two apartments becoming one shared house. With isolated
+Pod networking, each apartment can have its own room number 5600. With host
+networking, there is only one room 5600 in the house, so the second occupant
+must use another number.
+
+### Collision 1: forward-pass metrics ZMQ port `20380`
+
+The first observed failure was:
+
+```text
+zmq.error.ZMQError: Address already in use (addr='tcp://*:20380')
+```
+
+`20380` is used by Dynamo's instrumented scheduler for its forward-pass
+metrics ZMQ PUB socket. Both roles inherited the same default. When a prefill
+worker and the decode worker were placed on the same host-networked node, the
+first worker claimed `20380` and the second worker could not start its engine
+core.
+
+The supported environment variable was used to separate the roles:
+
+```text
+Prefill: DYN_FORWARDPASS_METRIC_PORT=20380
+Decode:  DYN_FORWARDPASS_METRIC_PORT=20381
+```
+
+An attempted `--metrics-endpoint-port` workaround was removed because it is
+not a valid command-line argument in the pinned
+`nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.3.0` image. The runtime terminated
+with an unknown-argument error before startup. `DYN_FORWARDPASS_METRIC_PORT`
+is the setting that controls the port involved in this collision.
+
+### Collision 2: NIXL handshake side-channel port `5600`
+
+After resolving `20380`, the decode worker reached NIXL initialization but
+its handshake-listener thread failed with:
+
+```text
+zmq.error.ZMQError: Address already in use
+(addr='tcp://10.18.96.143:5600')
+```
+
+Port `5600` is the default vLLM NIXL side channel. It carries NIXL connection
+metadata and handshake messages; it is separate from the high-volume RDMA KV
+data path. The prefill worker on `10.18.96.143` already owned port `5600`, so
+the decode listener could not bind it.
+
+The roles now use different supported side-channel ports:
+
+```text
+Prefill: VLLM_NIXL_SIDE_CHANNEL_PORT=5600
+Decode:  VLLM_NIXL_SIDE_CHANNEL_PORT=5601
+```
+
+The decode process remained in Kubernetes `Running` state after this error
+because only the background `nixl_handshake_listener` thread had exited.
+However, the Pod stayed `0/1` and could not perform a valid NIXL handshake.
+Changing the environment variable alone could not revive that dead thread;
+the corrected manifest had to be applied and the decode Pod recreated.
+
+### Complete role-specific port allocation
+
+The deployment gives every potentially co-located role a distinct port for
+each listener:
+
+| Listener | Prefill | Decode | Reason |
+| --- | ---: | ---: | --- |
+| Dynamo system | `9090` | `9091` | Avoid a possible host-level system listener conflict |
+| NIXL Prometheus telemetry | `19090` | `19091` | Avoid a possible metrics listener conflict |
+| Forward-pass metrics ZMQ | `20380` | `20381` | Fix the observed `20380` collision |
+| NIXL handshake side channel | `5600` | `5601` | Fix the observed `5600` collision |
+
+The `20380` and `5600` failures were directly observed. The system and NIXL
+telemetry pairs were separated proactively because those listeners also share
+the host port namespace. These port errors were not RDMA hardware, GID, UCX,
+or NIXL backend failures; they appeared only after the RDMA fix allowed worker
+initialization to progress further under host networking.
+
+Matching `containerPort` and `hostPort` entries document and reserve these
+ports for Kubernetes scheduling. Because both prefill replicas request the
+same prefill `hostPort` values, Kubernetes cannot schedule them on the same
+node. A prefill and decode worker can share a node because all four of their
+host ports differ.
+
+Useful checks are:
+
+```bash
+# Show the listening processes and ports on a node.
+sudo ss -lntp | grep -E ':(9090|9091|5600|5601|19090|19091|20380|20381)\b'
+
+# Confirm the values injected into a worker Pod.
+kubectl exec -n "$NAMESPACE" "$WORKER_POD" -- env \
+  | grep -E 'DYN_SYSTEM_PORT|NIXL_TELEMETRY_PROMETHEUS_PORT|DYN_FORWARDPASS_METRIC_PORT|VLLM_NIXL_SIDE_CHANNEL_PORT'
+```
+
+The general rule for this deployment is: every process that may run on the
+same physical node with `hostNetwork: true` must have a unique port for every
+socket it binds. A port may be reused only when scheduling guarantees that
+the processes will be on different nodes.
+
+## Why 2P+1D works but 6P+2D does not
+
+The 2-prefill + 1-decode disaggregated deployment works on our 2-node cluster
+because the port math fits. The 6-prefill + 2-decode KV-aware routing
+experiment does not, and the reason is entirely in how `hostPort` interacts
+with replica counts under `hostNetwork: true`.
+
+### The scheduling rule
+
+When a Pod declares `hostPort: 9090`, the Kubernetes scheduler treats that
+port as an exclusive resource on the physical node. Only one Pod can own
+`hostPort: 9090` on a given node at a time. If a second Pod requests the same
+`hostPort` on the same node, the scheduler leaves it `Pending` with the event:
+
+```text
+no nodes with enough resources were found:
+2 node(s) didn't have free ports for the requested pod ports.
+```
+
+This is not a bug. It is the scheduler enforcing that two processes on the
+same host network cannot bind the same port.
+
+### Why 2P+1D fits
+
+The working deployment explicitly assigns different port sets to prefill and
+decode:
+
+```text
+Prefill:  system=9090  nixl-metrics=19090  fpm=20380  nixl-side=5600
+Decode:   system=9091  nixl-metrics=19091  fpm=20381  nixl-side=5601
+```
+
+Both prefill replicas declare `hostPort: 9090`. The scheduler therefore
+forces them onto separate nodes — one prefill per node. With 2 nodes, that
+is exactly 2 prefill replicas. The single decode replica declares
+`hostPort: 9091`, which does not collide with `9090`, so it can share either
+node with a prefill worker.
+
+The layout ends up being:
+
+```text
+gpu05:  1 prefill (ports 9090/19090/20380/5600)
+        1 decode  (ports 9091/19091/20381/5601)
+gpu06:  1 prefill (ports 9090/19090/20380/5600)
+```
+
+Three pods, two nodes, no port conflict, 8 GPUs fully used. The `hostPort`
+constraint actually helps here — it acts as an implicit anti-affinity that
+guarantees the two identical prefill replicas land on different nodes.
+
+### Why 6P+2D does not fit
+
+The 6P+2D experiment uses the same Dynamo Operator with `hostNetwork: true`.
+The operator injects two `hostPort` declarations into every worker Pod
+regardless of what we put in the manifest:
+
+```text
+Every prefill pod:  system=9090  nixl=19090
+Every decode pod:   system=9090  nixl=19090
+```
+
+I tried `ports: []` in `mainContainer` to suppress these, but the operator
+ignores that override — it always writes `hostPort: 9090` and
+`hostPort: 19090` into the generated Pod spec. I confirmed this by inspecting
+the actual Pod JSON:
+
+```bash
+kubectl get pod "$POD" -n "$NAMESPACE" -o json | jq '.spec.containers[].ports'
+```
+
+Every single worker pod had `hostPort: 9090` and `hostPort: 19090` regardless
+of my `ports: []` override.
+
+With those fixed ports, the scheduler can only place **one prefill per node**
+and **one decode per node**:
+
+```text
+gpu05:  1 prefill (ports 9090/19090)  +  1 decode (ports 9090/19090) ← COLLISION
+gpu06:  1 prefill (ports 9090/19090)  +  1 decode (ports 9090/19090) ← COLLISION
+```
+
+Wait, it is even worse. Prefill and decode use the **same** ports (9090 and
+19090), so a prefill and a decode cannot even share a node. The scheduler can
+place at most one worker of any type per node. With 2 nodes, that means
+maximum 2 workers total — but we need 8 (6 prefill + 2 decode). The remaining
+6 pods sit in `Pending` forever.
+
+In the 2P+1D deployment, I could manually assign different ports to prefill
+and decode because there are only two roles. For 6P+2D, I would need 8
+unique port sets (one per replica), but the Dynamo Operator uses a single
+component definition with `replicas: N` — every replica gets identical ports.
+
+### The `VLLM_NIXL_SIDE_CHANNEL_HOST` confusion
+
+I also added `VLLM_NIXL_SIDE_CHANNEL_HOST` set to `status.podIP` via the
+Kubernetes downward API. This fixes a different problem entirely: without it,
+vLLM defaults the NIXL side-channel address to `localhost`, so a decode worker
+on `gpu06` cannot reach a prefill worker on `gpu05` for the initial NIXL
+handshake. Setting it to the pod IP fixes cross-node reachability.
+
+But `VLLM_NIXL_SIDE_CHANNEL_HOST` only controls the **IP address** the
+side-channel socket advertises. It does not control the **port number**, and
+it does not prevent the Dynamo Operator from injecting `hostPort: 19090` into
+the Pod spec. The scheduling collision is a port problem, not an address
+problem. These are two independent issues at two different layers:
+
+- `VLLM_NIXL_SIDE_CHANNEL_HOST` → application layer, IP advertisement
+- `hostPort` collision → Kubernetes scheduler layer, port reservation
+
+### Without `hostNetwork` it also fails — differently
+
+I tried removing `hostNetwork: true` to eliminate the port collision. The
+pods scheduled fine — every pod got its own Calico overlay IP and its own
+port namespace, so there was no port conflict at all. But then RDMA failed:
+
+```text
+ibv_create_ah(dgid=::ffff:10.224.7.143 sgid_index=3)
+for UD mlx5 connect on mlx5_8 failed: No such device
+NIXL_ERR_BACKEND
+```
+
+The Calico pod network namespace does not contain the host's `rdma7`
+netdevice. The `dgid` in the error was a pod overlay IP that does not exist
+in any GID table of `mlx5_8:1`. UCX could open the HCA but could not
+construct the RoCE address path. This is the exact same failure we fixed
+earlier by adding `hostNetwork: true` in the first place.
+
+So we are stuck between two constraints:
+
+- **With `hostNetwork: true`:** RDMA works, but `hostPort` limits us to 1
+  worker per node.
+- **Without `hostNetwork: true`:** No port collisions, but RDMA fails because
+  the pod namespace lacks the physical RoCE netdevice.

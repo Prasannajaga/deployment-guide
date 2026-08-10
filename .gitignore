@@ -81,3 +81,4 @@ tmp/
 # Benchmark & AIPerf Generated Artifacts
 profile_export*
 server_metrics_export*
+chat.html
