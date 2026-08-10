@@ -1,0 +1,91 @@
+# Static cache volumes for the gpu05/gpu06 lab only.
+# /ephemeral/shared must already be the same shared filesystem on both nodes.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: qwen32-model-cache-pv
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: qwen-shared-manual
+  volumeMode: Filesystem
+  hostPath:
+    path: /ephemeral/shared/huggingface
+    type: Directory
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: model-cache
+  namespace: qwen32-bench
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: qwen-shared-manual
+  volumeName: qwen32-model-cache-pv
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: qwen32-vllm-compilation-cache-pv
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: qwen-shared-manual
+  volumeMode: Filesystem
+  hostPath:
+    path: /ephemeral/shared/qwen3-32b/vllm-compilation-cache
+    type: Directory
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: compilation-cache
+  namespace: qwen32-bench
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: qwen-shared-manual
+  volumeName: qwen32-vllm-compilation-cache-pv
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: qwen32-vllm-perf-cache-pv
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: qwen-shared-manual
+  volumeMode: Filesystem
+  hostPath:
+    path: /ephemeral/shared/qwen3-32b/perf-cache
+    type: Directory
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: perf-cache
+  namespace: qwen32-bench
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: qwen-shared-manual
+  volumeName: qwen32-vllm-perf-cache-pv
