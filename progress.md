@@ -469,3 +469,37 @@ So we are stuck between two constraints:
   worker per node.
 - **Without `hostNetwork: true`:** No port collisions, but RDMA fails because
   the pod namespace lacks the physical RoCE netdevice.
+
+## Qwen3-32B-FP8: benchmark completion and DCGM export
+
+The disaggregated AIPerf benchmark matrix completed successfully and retained
+its artifacts in:
+
+```text
+/ephemeral/shared/qwen3-32b/perf-cache/aiperf/disagg/1786442681_qwen3-32b-fp8-vllm-disagg-perf/
+```
+
+The cluster's client-facing Prometheus Service was confirmed as:
+
+```text
+namespace: monitoring
+service:   monitoring-kube-prometheus-prometheus
+port:      9090
+```
+
+Prometheus can therefore be opened locally with
+`9095:9090` port-forwarding. The DCGM export is restricted to Kubernetes
+workload label `exported_namespace="qwen32-bench"`, `exported_pod` names
+matching the disaggregated prefill/decode workers, metric
+`DCGM_FI_DEV_GPU_UTIL`, and the eight hours immediately before the query. The
+plain `namespace` and `pod` labels identify the exporter in `gpu-operator`,
+not the inference worker. Raw samples, a sample-level CSV, the exact query
+window, and a per-worker/per-GPU utilization summary are saved under
+`/ephemeral/shared/dynamo/aiperf-results/dcgm-last-8h/`.
+
+The complete executable procedure is documented in
+[`fetch-metrics.md`](models/qwen3-32B/experiments/vllm/disagg-routing/fetch-metrics.md).
+
+NIXL transfer telemetry was not enabled for this completed run. NIXL latency
+collection is deferred to the next benchmark round, when the NIXL exporter
+will be enabled before traffic starts and scraped for the entire run.
