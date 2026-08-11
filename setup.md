@@ -78,7 +78,7 @@ kubectl delete pods -l "$GRAPH_LABEL" -n "$NAMESPACE" --force --grace-period=0
 
 ---
 
-## 3. Disaggregated KV-Aware Deployment — 6 Prefill (TP=2) + 2 Decode (TP=2) (16 GPUs) (`qwen3-32b-fp8-vllm-disagg-kv-aware`) - NOT WORKING
+## 3. Disaggregated KV-Aware Deployment — 4 Prefill (TP=2) + 4 Decode (TP=2) (16 GPUs) (`qwen3-32b-fp8-vllm-disagg-kv-aware`) - NOT WORKING
 
 ### Export Variables
 
