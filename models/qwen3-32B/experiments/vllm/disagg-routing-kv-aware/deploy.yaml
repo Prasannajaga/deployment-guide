@@ -37,7 +37,7 @@ spec:
           mountPoint: /opt/models
       sharedMemory:
         size: 40Gi
-      extraPodSpec: 
+      extraPodSpec:
         mainContainer:
           ports: []
           env:
@@ -47,6 +47,8 @@ spec:
               value: "/opt/models/hub/models--Qwen--Qwen3-32B-FP8/snapshots/aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df"
             - name: HF_HOME
               value: /opt/models
+            - name: PYTHONHASHSEED
+              value: "0"
             - name: VLLM_NIXL_SIDE_CHANNEL_HOST
               valueFrom:
                 fieldRef:
@@ -86,8 +88,8 @@ spec:
               --kv-transfer-config '{"kv_connector":"NixlConnector","kv_role":"kv_producer"}' \
               --kv-events-config '{"publisher":"zmq","topic":"kv-events","endpoint":"tcp://*:0","enable_kv_cache_events":true}' \
               --gpu-memory-utilization 0.90 \
-              --max-model-len 32768 \
-              --no-enable-prefix-caching \
+              --max-model-len 40960 \
+              --enable-prefix-caching \
               --block-size 128
           command:
           - /bin/sh
@@ -119,7 +121,7 @@ spec:
           mountPoint: /opt/models
       sharedMemory:
         size: 40Gi
-      extraPodSpec: 
+      extraPodSpec:
         mainContainer:
           ports: []
           env:
@@ -129,6 +131,8 @@ spec:
               value: "/opt/models/hub/models--Qwen--Qwen3-32B-FP8/snapshots/aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df"
             - name: HF_HOME
               value: /opt/models
+            - name: PYTHONHASHSEED
+              value: "0"
             - name: VLLM_NIXL_SIDE_CHANNEL_HOST
               valueFrom:
                 fieldRef:
@@ -167,8 +171,8 @@ spec:
               --disaggregation-mode decode \
               --kv-transfer-config '{"kv_connector":"NixlConnector","kv_role":"kv_consumer"}' \
               --gpu-memory-utilization 0.90 \
-              --max-model-len 32768 \
-              --no-enable-prefix-caching \
+              --max-model-len 40960 \
+              --enable-prefix-caching \
               --block-size 128
           command:
           - /bin/sh

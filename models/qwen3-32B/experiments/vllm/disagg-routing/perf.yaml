@@ -1,0 +1,227 @@
+# SPDX-FileCopyrightText: Copyright (c) 2025-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: qwen3-32b-fp8-vllm-disagg-perf
+spec:
+  backoffLimit: 0
+  completions: 1
+  parallelism: 1
+  template:
+    metadata:
+      labels:
+        app: qwen3-32b-fp8-vllm-disagg-perf
+    spec:
+      restartPolicy: Never
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+        - key: nvidia.com/gpu
+          operator: Equal
+          value: "true"
+          effect: NoSchedule
+      containers:
+        - name: perf
+          image: python:3.12-slim
+          imagePullPolicy: IfNotPresent
+          workingDir: /workspace
+          command:
+            - /bin/bash
+            - -lc
+          args:
+            - |
+              set -euo pipefail
+
+              apt-get update
+              apt-get install -y --no-install-recommends \
+                build-essential curl jq procps
+              rm -rf /var/lib/apt/lists/*
+              python -m pip install --no-cache-dir "aiperf==0.10.0"
+
+              mkdir -p "$ROOT_ARTIFACT_DIR" "$HF_HOME" /perf-cache/tmp
+              export TMPDIR=/perf-cache/tmp
+              export COLUMNS=200
+
+              wait_for_model_ready() {
+                local attempt=1
+                local max_attempts=540
+
+                echo "Waiting for $TARGET_MODEL at http://$ENDPOINT/v1/models"
+                while ! curl --fail --silent --show-error --max-time 10 \
+                  "http://$ENDPOINT/v1/models" |
+                  jq -e --arg model "$TARGET_MODEL" \
+                    '.data[]? | select(.id == $model)' >/dev/null; do
+                  if [ "$attempt" -ge "$max_attempts" ]; then
+                    echo "Model readiness timed out after 45 minutes" >&2
+                    return 1
+                  fi
+                  attempt=$((attempt + 1))
+                  sleep 5
+                done
+
+                echo "Model endpoint is ready"
+              }
+
+              endpoint_is_ready() {
+                curl --fail --silent --show-error --max-time 10 \
+                  "http://$ENDPOINT/v1/models" |
+                  jq -e --arg model "$TARGET_MODEL" \
+                    '.data[]? | select(.id == $model)' >/dev/null
+              }
+
+              wait_for_model_ready || exit 1
+
+              python -c '
+              import os
+              from transformers import AutoTokenizer
+              tokenizer = AutoTokenizer.from_pretrained(
+                  os.environ["TARGET_MODEL"]
+              )
+              print(f"TOKENIZER_OK vocab={len(tokenizer)}")
+              ' || exit 1
+
+              epoch=$(date -u +%s)
+              run_root="${ROOT_ARTIFACT_DIR}/${epoch}_${JOB_NAME}"
+              status_file="${run_root}/matrix-status.tsv"
+              mkdir -p "$run_root"
+
+              finalize_artifacts() {
+                chown -R "$ARTIFACT_UID:$ARTIFACT_GID" "$run_root" 2>/dev/null || true
+              }
+              trap finalize_artifacts EXIT
+
+              cat > "${run_root}/input-config.json" <<EOF_INPUT
+              {
+                "mode": "vllm-disagg",
+                "deployment_gpu_count": 8,
+                "input_lengths": [1024, 4096, 8192, 16384, 32768],
+                "output_tokens": 256,
+                "concurrencies": [1, 8, 16, 32, 64, 128, 256],
+                "benchmark_duration_seconds": $BENCHMARK_DURATION,
+                "warmup_duration_seconds": $WARMUP_DURATION,
+                "grace_period_seconds": $GRACE_PERIOD,
+                "model": "$TARGET_MODEL",
+                "endpoint": "$ENDPOINT"
+              }
+              EOF_INPUT
+
+              printf 'input_tokens\toutput_tokens\tconcurrency\tstatus\tfinished_utc\n' \
+                > "$status_file"
+
+              for input_tokens in $INPUT_LENGTHS; do
+                for concurrency in $CONCURRENCIES; do
+                  if ! endpoint_is_ready; then
+                    printf '%s\t%s\t%s\tENDPOINT_DOWN\t%s\n' \
+                      "$input_tokens" "$OUTPUT_TOKENS" "$concurrency" \
+                      "$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$status_file"
+                    echo "Frontend Service became unavailable; aborting matrix" >&2
+                    exit 1
+                  fi
+
+                  artifact_dir="${run_root}/isl${input_tokens}-osl${OUTPUT_TOKENS}/c${concurrency}"
+                  mkdir -p "$artifact_dir"
+
+                  workers="$concurrency"
+                  if [ "$workers" -gt "$WORKERS_MAX_CAP" ]; then
+                    workers="$WORKERS_MAX_CAP"
+                  fi
+
+                  echo
+                  echo "Starting ISL=$input_tokens OSL=$OUTPUT_TOKENS concurrency=$concurrency workers=$workers"
+
+                  if aiperf profile \
+                    --model "$TARGET_MODEL" \
+                    --tokenizer "$TARGET_MODEL" \
+                    --url "http://$ENDPOINT" \
+                    --endpoint /v1/chat/completions \
+                    --endpoint-type chat \
+                    --streaming \
+                    --concurrency "$concurrency" \
+                    --benchmark-duration "$BENCHMARK_DURATION" \
+                    --benchmark-grace-period "$GRACE_PERIOD" \
+                    --warmup-duration "$WARMUP_DURATION" \
+                    --synthetic-input-tokens-mean "$input_tokens" \
+                    --synthetic-input-tokens-stddev 0 \
+                    --output-tokens-mean "$OUTPUT_TOKENS" \
+                    --output-tokens-stddev 0 \
+                    --extra-inputs "max_tokens:$OUTPUT_TOKENS" \
+                    --extra-inputs "min_tokens:$OUTPUT_TOKENS" \
+                    --extra-inputs ignore_eos:true \
+                    --extra-inputs repetition_penalty:1.0 \
+                    --extra-inputs temperature:0.0 \
+                    --num-dataset-entries 256 \
+                    --random-seed 42 \
+                    --workers-max "$workers" \
+                    --record-processors "$RECORD_PROCESSORS" \
+                    --goodput 'time_to_first_token:2000 inter_token_latency:50' \
+                    --ui simple \
+                    --artifact-dir "$artifact_dir"; then
+                    status=PASS
+                  else
+                    status=FAIL
+                  fi
+
+                  printf '%s\t%s\t%s\t%s\t%s\n' \
+                    "$input_tokens" "$OUTPUT_TOKENS" "$concurrency" "$status" \
+                    "$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$status_file"
+                done
+              done
+
+              echo "Benchmark matrix completed: $run_root"
+              column -t -s $'\t' "$status_file" 2>/dev/null || cat "$status_file"
+          env:
+            - name: TARGET_MODEL
+              value: Qwen/Qwen3-32B-FP8
+            - name: ENDPOINT
+              value: qwen3-32b-fp8-vllm-disagg-frontend:8000
+            - name: INPUT_LENGTHS
+              value: "1024 4096 8192 16384 32768"
+            - name: CONCURRENCIES
+              value: "1 8 16 32 64 128 256"
+            - name: OUTPUT_TOKENS
+              value: "256"
+            - name: BENCHMARK_DURATION
+              value: "180"
+            - name: WARMUP_DURATION
+              value: "30"
+            - name: GRACE_PERIOD
+              value: "180"
+            - name: WORKERS_MAX_CAP
+              value: "32"
+            - name: RECORD_PROCESSORS
+              value: "16"
+            - name: AIPERF_HTTP_CONNECTION_LIMIT
+              value: "512"
+            - name: ROOT_ARTIFACT_DIR
+              value: /perf-cache/aiperf/disagg
+            - name: HF_HOME
+              value: /perf-cache/hf-aiperf-cache
+            - name: PYTHONUNBUFFERED
+              value: "1"
+            - name: ARTIFACT_UID
+              value: "1000"
+            - name: ARTIFACT_GID
+              value: "1000"
+            - name: JOB_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.labels['job-name']
+          resources:
+            requests:
+              cpu: "4"
+              memory: 8Gi
+              ephemeral-storage: 4Gi
+            limits:
+              cpu: "16"
+              memory: 32Gi
+              ephemeral-storage: 16Gi
+          volumeMounts:
+            - name: perf-cache
+              mountPath: /perf-cache
+      volumes:
+        - name: perf-cache
+          persistentVolumeClaim:
+            claimName: perf-cache

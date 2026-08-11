@@ -1,32 +1,34 @@
-# Qwen3-32B-FP8 vLLM disaggregated deployment (6 Prefill + 2 Decode, TP=2)
+# vLLM disaggregated routing with KV awareness
 
-This guide adapts the disaggregated inference setup for the 16 x H100 cluster with 6 prefill workers and 2 decode workers, all using Tensor Parallelism (TP=2).
+This experiment uses six TP=2 prefill workers and two TP=2 decode workers. The
+frontend consumes worker KV events and routes repeated prefixes toward cached
+prefill workers. Total allocation is 16 H100 GPUs.
 
-Key parameters:
+## Variables
 
-- `MODEL_PATH` uses the immutable snapshot on the existing `model-cache` PVC;
-- Prefill topology: 6 replicas x TP=2 (12 H100 GPUs total);
-- Decode topology: 2 replicas x TP=2 (4 H100 GPUs total);
-- Total cluster GPU allocation: 16 H100 GPUs across 2 nodes (8 GPUs on `gpu05`, 8 GPUs on `gpu06`);
-- `UCX_NET_DEVICES=mlx5_8:1` selects the active non-bonded RoCE HCA found on both nodes;
-- `UCX_IB_ADDR_TYPE=eth` and `UCX_IB_GID_INDEX=3` select the validated RoCE address (`10.224.7.x`);
-- `hostNetwork: true` makes the host's `rdma7` RoCE netdevice visible in each worker network namespace, and `ClusterFirstWithHostNet` retains cluster DNS;
-- RDMA resource requests: 2 per TP=2 worker;
-- `IPC_LOCK`, `SYS_RESOURCE`, and 40 GiB shared memory are retained.
-
-## 1. Create the deployment file
-
-**Run only on the Kubernetes control-plane node (`gpu05`).**
+Set these once before running any command in this recipe:
 
 ```bash
 export NAMESPACE=qwen32-bench
 export EXP_DIR=/ephemeral/shared/qwen3-32b/experiments/vllm/disagg-routing-kv-aware
+export DEPLOYMENT=qwen3-32b-fp8-vllm-disagg-kv-aware
+export GRAPH_LABEL="nvidia.com/dynamo-graph-deployment-name=${DEPLOYMENT}"
+export FRONTEND_SERVICE="${DEPLOYMENT}-frontend"
+export LOCAL_PORT=8000
+```
 
+## Files
+
+- `deploy.yaml` — deployment and NIXL/UCX settings
+
+## Create deploy.yaml
+
+The quoted `EOF` delimiter preserves shell variables inside the manifest.
+Running this block writes only the local configuration file.
+
+```bash
 mkdir -p "$EXP_DIR"
-
-tee "$EXP_DIR/deploy.yaml" >/dev/null <<'EOF_DEPLOY_YAML'
-# SPDX-FileCopyrightText: Copyright (c) 2025-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
-# SPDX-License-Identifier: Apache-2.0
+tee "$EXP_DIR/deploy.yaml" >/dev/null <<'EOF'
 apiVersion: nvidia.com/v1alpha1
 kind: DynamoGraphDeployment
 metadata:
@@ -66,7 +68,7 @@ spec:
           mountPoint: /opt/models
       sharedMemory:
         size: 40Gi
-      extraPodSpec: 
+      extraPodSpec:
         mainContainer:
           ports: []
           env:
@@ -76,6 +78,8 @@ spec:
               value: "/opt/models/hub/models--Qwen--Qwen3-32B-FP8/snapshots/aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df"
             - name: HF_HOME
               value: /opt/models
+            - name: PYTHONHASHSEED
+              value: "0"
             - name: VLLM_NIXL_SIDE_CHANNEL_HOST
               valueFrom:
                 fieldRef:
@@ -115,8 +119,8 @@ spec:
               --kv-transfer-config '{"kv_connector":"NixlConnector","kv_role":"kv_producer"}' \
               --kv-events-config '{"publisher":"zmq","topic":"kv-events","endpoint":"tcp://*:0","enable_kv_cache_events":true}' \
               --gpu-memory-utilization 0.90 \
-              --max-model-len 32768 \
-              --no-enable-prefix-caching \
+              --max-model-len 40960 \
+              --enable-prefix-caching \
               --block-size 128
           command:
           - /bin/sh
@@ -148,7 +152,7 @@ spec:
           mountPoint: /opt/models
       sharedMemory:
         size: 40Gi
-      extraPodSpec: 
+      extraPodSpec:
         mainContainer:
           ports: []
           env:
@@ -158,6 +162,8 @@ spec:
               value: "/opt/models/hub/models--Qwen--Qwen3-32B-FP8/snapshots/aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df"
             - name: HF_HOME
               value: /opt/models
+            - name: PYTHONHASHSEED
+              value: "0"
             - name: VLLM_NIXL_SIDE_CHANNEL_HOST
               valueFrom:
                 fieldRef:
@@ -196,8 +202,8 @@ spec:
               --disaggregation-mode decode \
               --kv-transfer-config '{"kv_connector":"NixlConnector","kv_role":"kv_consumer"}' \
               --gpu-memory-utilization 0.90 \
-              --max-model-len 32768 \
-              --no-enable-prefix-caching \
+              --max-model-len 40960 \
+              --enable-prefix-caching \
               --block-size 128
           command:
           - /bin/sh
@@ -220,125 +226,62 @@ spec:
           gpu: "2"
           custom:
             rdma/ib: "2"
-EOF_DEPLOY_YAML
+EOF
 ```
 
-## 2. Stop old workers before preflight
-
-**Run only on `gpu05`.**
-
-```bash
-export NAMESPACE=qwen32-bench
-export EXP_DIR=/ephemeral/shared/qwen3-32b/experiments/vllm/disagg-routing-kv-aware
-export DGD=qwen3-32b-fp8-vllm-disagg-kv-aware
-export GRAPH_LABEL="nvidia.com/dynamo-graph-deployment-name=$DGD"
-
-kubectl delete dynamographdeployment qwen3-32b-fp8-vllm-disagg \
-  -n "$NAMESPACE" --ignore-not-found
-kubectl delete dynamographdeployment "$DGD" \
-  -n "$NAMESPACE" --ignore-not-found
-
-kubectl wait --for=delete pod \
-  -l nvidia.com/dynamo-graph-deployment-name=qwen3-32b-fp8-vllm-disagg \
-  -n "$NAMESPACE" --timeout=5m || true
-kubectl wait --for=delete pod -l "$GRAPH_LABEL" \
-  -n "$NAMESPACE" --timeout=5m || true
-
-kubectl get pods -n "$NAMESPACE" -o wide
-```
-
-### 3.2 Kubernetes gate
-
-**Run only on `gpu05`.**
-
-```bash
-kubectl get nodes -L qwen.nvidia.com/role -o wide
-kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}{"\tGPU="}{.status.allocatable.nvidia\.com/gpu}{"\tRDMA="}{.status.allocatable.rdma/ib}{"\n"}{end}'
-```
-
-## 4. Deploy
-
-**Run only on `gpu05`.**
+## Deploy
 
 ```bash
 kubectl apply -n "$NAMESPACE" -f "$EXP_DIR/deploy.yaml"
-
 kubectl get pods -n "$NAMESPACE" \
   -l "$GRAPH_LABEL" \
-  -L nvidia.com/dynamo-component-type \
   -o wide -w
 ```
 
-Expected topology: 1 frontend, 6 prefill workers (TP=2), 2 decode workers (TP=2). Total GPUs = 16 H100.
+## Check logs
 
-## 5. Observe startup and diagnose failures
+Tail or stream logs for all containers in the deployment:
 
 ```bash
-kubectl logs -n "$NAMESPACE" \
-  -l "$GRAPH_LABEL" \
-  --all-containers=true \
-  --prefix \
-  --timestamps \
-  --tail=200 \
-  --max-log-requests=10 \
-  --ignore-errors=true \
-  --follow
+# Tail recent 500 lines across all containers
+kubectl logs -n "$NAMESPACE" -l "$GRAPH_LABEL" --all-containers --prefix --tail=500
+
+# Stream live logs in real time
+kubectl logs -n "$NAMESPACE" -l "$GRAPH_LABEL" --all-containers --prefix -f
+
+# Filter for NIXL, UCX, KV events, and errors
+kubectl logs -n "$NAMESPACE" -l "$GRAPH_LABEL" --all-containers --prefix --tail=500 | grep -Ei 'nixl|ucx|kv.event|error|traceback'
+
+# Check prefill worker logs specifically
+kubectl logs -n "$NAMESPACE" -l "$GRAPH_LABEL,nvidia.com/dynamo-sub-component-type=prefill" --all-containers --prefix --tail=500
+
+# Check decode worker logs specifically
+kubectl logs -n "$NAMESPACE" -l "$GRAPH_LABEL,nvidia.com/dynamo-sub-component-type=decode" --all-containers --prefix --tail=500
+
+# Inspect logs from a previous crashed container instance
+kubectl logs -n "$NAMESPACE" -l "$GRAPH_LABEL" --all-containers --prefix --previous --tail=500
 ```
 
-## 6. Readiness and inference smoke test
+## Acceptance checks
 
 ```bash
-kubectl wait --for=condition=Ready pod \
-  -l "$GRAPH_LABEL" \
-  -n "$NAMESPACE" --timeout=45m
-
 kubectl port-forward -n "$NAMESPACE" \
-  service/qwen3-32b-fp8-vllm-disagg-kv-aware-frontend 8000:8000
+  service/"$FRONTEND_SERVICE" "$LOCAL_PORT":8000
 ```
 
-In another terminal:
+Send the same long-prefix request twice. Accept the run only if requests
+succeed, NIXL initializes, and KV-event counters increase without worker
+restarts.
+
+## Clean up
 
 ```bash
-curl -fsS http://127.0.0.1:8000/v1/models | jq
-
-curl -fsS http://127.0.0.1:8000/v1/chat/completions \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "model": "Qwen/Qwen3-32B-FP8",
-    "messages": [{"role": "user", "content": "Reply with only: VLLM_KV_AWARE_OK"}],
-    "temperature": 0,
-    "max_tokens": 32
-  }' | jq
+kubectl delete dynamographdeployment.nvidia.com "$DEPLOYMENT" \
+  -n "$NAMESPACE" --wait=false --ignore-not-found
+kubectl delete pods -l "$GRAPH_LABEL" -n "$NAMESPACE" \
+  --force --grace-period=0 --ignore-not-found
 ```
 
-## 7. Shutdown & Complete GPU VRAM Cleanup
-
-### 7.1 Delete Kubernetes Resources (`gpu05`)
-
-```bash
-export NAMESPACE=qwen32-bench
-
-# Delete all Dynamo Graph Deployments in the namespace
-kubectl delete dynamographdeployments --all -n "$NAMESPACE" --ignore-not-found
-
-# Force-delete all lingering pods to immediately release GPU claims
-kubectl delete pods --all -n "$NAMESPACE" --force --grace-period=0
-
-# Confirm all pods are deleted
-kubectl wait --for=delete pod --all -n "$NAMESPACE" --timeout=1m || true
-```
-
-### 7.2 Host GPU VRAM Cleanup (`gpu05` & `gpu06`)
-
-Because `hostNetwork: true` and IPC locks are used, orphaned PyTorch / CUDA worker processes can occasionally persist on the host OS after Pod deletion. Run this on **both `gpu05` and `gpu06`**:
-
-```bash
-# 1. Kill any lingering vLLM / Dynamo Python processes on the host
-pkill -9 -f "dynamo\.vllm|dynamo\.frontend|vllm" || true
-
-# 2. Kill any processes holding /dev/nvidia* device handles
-sudo fuser -v /dev/nvidia* 2>/dev/null | awk '{print $2}' | xargs -r sudo kill -9
-
-# 3. Verify all GPU VRAM is completely freed (0 MiB used)
-nvidia-smi --query-gpu=index,name,memory.used,memory.free --format=csv
-```
+The first command prevents the controller from keeping the experiment alive;
+the second immediately force-deletes its pods. The local `deploy.yaml` remains
+unchanged.
