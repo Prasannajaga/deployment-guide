@@ -649,39 +649,6 @@ done
 
 PASS requires both `eth0` and a unique `net1` address on every worker.
 
-### Current NIXL status after fixing scheduling
-
-Removing host networking fixed the port collision and allowed the Pods to be
-scheduled. It did **not** by itself prove that the RoCE data path works. The
-current worker failure is later in startup:
-
-```text
-ibv_create_ah(... dgid=::ffff:10.224.7.143 ... sgid_index=3 ...)
-for UD mlx5 connect on mlx5_8 failed: No such device
-UCX error: Address not valid
-NIXL_ERR_BACKEND
-```
-
-This shows that UCX can open `mlx5_8:1`, but selected GID index `3`, which is
-associated with the host `rdma7` address `10.224.7.143`. The next debugging
-gate is to inspect
-`/sys/class/infiniband/mlx5_8/ports/1/gid_attrs/ndevs/*` inside a worker and
-confirm that a RoCE v2 GID exists for its `net1` adapter. If a `net1` GID
-exists, startup must select that Pod-specific index. If none exists, the
-MacVLAN/RDMA namespace integration must be repaired before changing more UCX
-variables.
-
-The status is therefore:
-
-```text
-Host-port scheduling collision: FIXED
-Pod-native network attachment:  CONFIGURED
-End-to-end NIXL over RoCE:       NOT YET VALIDATED
-```
-
-The complete cluster setup and RDMA/NIXL validation gates are documented in
-[`pod-native-roce.md`](models/qwen3-32B/experiments/vllm/disagg-routing-kv-aware/pod-native-roce.md).
-
 ## Qwen3-32B-FP8: benchmark completion and DCGM export
 
 The disaggregated AIPerf benchmark matrix completed successfully and retained
