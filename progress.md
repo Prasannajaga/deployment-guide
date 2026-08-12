@@ -152,12 +152,12 @@ The working Pod configuration is:
 ```yaml
 spec:
   hostNetwork: true
-  dnsPolicy: ClusterFirstWithHostNet
+  dnsPolicy: ClusterFirst
 ```
 
 `hostNetwork: true` gives the worker the host's network namespace, including
 `rdma7`, its `10.224.7.x` address, its GID-to-netdevice association, route, and
-neighbor-resolution context. `ClusterFirstWithHostNet` preserves Kubernetes
+neighbor-resolution context. `ClusterFirst` preserves Kubernetes
 Service DNS while using that host network.
 
 After adding these settings independently to the prefill and decode
@@ -182,7 +182,7 @@ The worker configuration must retain both:
 
 ```yaml
 hostNetwork: true
-dnsPolicy: ClusterFirstWithHostNet
+dnsPolicy: ClusterFirst
 ```
 
 Host networking removes the normal per-Pod TCP port namespace. Workers that
@@ -469,3 +469,249 @@ So we are stuck between two constraints:
   worker per node.
 - **Without `hostNetwork: true`:** No port collisions, but RDMA fails because
   the pod namespace lacks the physical RoCE netdevice.
+
+## Final port-collision fix: isolated Pods with a secondary RoCE adapter
+
+The Kubernetes scheduling problem was fixed without allocating a unique set
+of host ports to every worker. Each prefill and decode Pod now keeps its
+ordinary isolated network namespace and receives a second Kubernetes network
+adapter dedicated to the RoCE fabric.
+
+The resulting Pod network layout is:
+
+```text
+eth0  Calico Pod network   Kubernetes Services, control traffic, and the
+                           vLLM NIXL handshake address
+net1  Multus MacVLAN      rdma7-backed RoCE path for UCX/NIXL KV transfers
+```
+
+This design uses four cluster-level components:
+
+1. **Multus** attaches more than one network interface to a Pod.
+2. **MacVLAN CNI** creates the Pod's `net1` interface on the physical
+   `rdma7` parent interface.
+3. **NV-IPAM** gives each `net1` adapter a unique address from the reserved
+   `qwen-roce-pool` subnet.
+4. **RDMA Shared Device Plugin** exposes the `mlx5_8` verbs device through
+   the `rdma/ib` extended resource.
+
+The persistent cluster objects are:
+
+```text
+NV-IPAM IPPool:                 qwen-roce-pool
+MacvlanNetwork:                 qwen-roce
+NetworkAttachmentDefinition:   qwen32-bench/qwen-roce
+Physical parent interface:     rdma7
+RDMA HCA/port:                  mlx5_8:1
+```
+
+These objects are installed once per cluster and are not recreated for each
+model deployment. New deployments reference the existing Network Attachment
+Definition and request the existing RDMA resource.
+
+### Worker manifest changes
+
+Both prefill and decode components attach the secondary network:
+
+```yaml
+extraPodMetadata:
+  annotations:
+    k8s.v1.cni.cncf.io/networks: qwen32-bench/qwen-roce
+```
+
+They explicitly remain outside the host network:
+
+```yaml
+extraPodSpec:
+  hostNetwork: false
+  dnsPolicy: ClusterFirst
+  mainContainer:
+    ports: []
+```
+
+The workers retain access to the shared HCA by requesting `rdma/ib`:
+
+```yaml
+resources:
+  requests:
+    gpu: "2"
+    custom:
+      rdma/ib: "2"
+  limits:
+    gpu: "2"
+    custom:
+      rdma/ib: "2"
+```
+
+The NIXL handshake uses the primary Calico Pod IP from the Kubernetes
+downward API. Because every Pod has a unique `eth0` address, replicas can all
+listen on the same side-channel port without colliding:
+
+```yaml
+- name: VLLM_NIXL_SIDE_CHANNEL_HOST
+  valueFrom:
+    fieldRef:
+      fieldPath: status.podIP
+```
+
+UCX remains restricted to the known RoCE HCA:
+
+```yaml
+- name: UCX_TLS
+  value: "rc_x,rc,cuda_copy,cuda_ipc"
+- name: UCX_NET_DEVICES
+  value: "mlx5_8:1"
+- name: UCX_IB_ADDR_TYPE
+  value: "eth"
+```
+
+`UCX_IB_GID_INDEX` is deliberately not hardcoded in the pod-native manifests.
+A GID index representing the host's `rdma7` address is not necessarily the
+index associated with a Pod's MacVLAN `net1` address.
+
+All `hostPort` declarations were removed. `ports: []` suppresses the default
+worker port declarations produced by the DGD template in this configuration.
+
+### Why this fixes Kubernetes scheduling
+
+With `hostNetwork: true`, all workers placed on a node compete for the same
+node-wide socket namespace. Kubernetes reserves each requested `hostPort` as
+an exclusive per-node resource, which caused Kai Scheduler to report:
+
+```text
+2 node(s) didn't have free ports for the requested pod ports
+```
+
+With `hostNetwork: false`, each Pod owns a separate network namespace and
+separate IP addresses. These socket tuples are distinct even when the port is
+the same:
+
+```text
+192.168.12.145:5600  decode Pod A
+192.168.12.186:5600  decode Pod B
+192.168.63.147:5600  prefill Pod A
+192.168.63.190:5600  prefill Pod B
+```
+
+Consequently, all replicas may use the same application ports. Kubernetes no
+longer reserves `9090`, `19090`, `20380`, or `5600` on the physical nodes,
+and Kai Scheduler can place multiple TP=2 workers on each eight-GPU node.
+
+The separation of responsibilities is:
+
+```text
+Kubernetes scheduling fix: hostNetwork=false and no hostPort
+RoCE device access:        rdma/ib resource exposes mlx5_8
+RoCE network path:         Multus/MacVLAN adds net1 over rdma7
+NIXL handshake:            unique Calico status.podIP on eth0
+NIXL KV data:              UCX uses mlx5_8:1 through the RoCE path
+```
+
+### Verifying the port-collision fix
+
+The live generated Pods, rather than only the DGD YAML, must be checked:
+
+```bash
+kubectl get pods -n "$NAMESPACE" -l "$GRAPH_LABEL" -o json |
+jq -r '
+  .items[] |
+  [
+    .metadata.name,
+    (.spec.nodeName // "PENDING"),
+    (.spec.hostNetwork // false),
+    ([.spec.containers[].ports[]?.hostPort |
+      select(. != null)] | join(","))
+  ] | @tsv
+'
+```
+
+PASS for the scheduling fix requires:
+
+- every worker shows `hostNetwork=false`;
+- the host-port column is empty;
+- multiple workers can be placed on the same node;
+- no Pod event contains `didn't have free ports`;
+- Pods are no longer `Pending` because of port availability.
+
+Verify that each worker also received the two network adapters:
+
+```bash
+kubectl get pods -n "$NAMESPACE" -l "$GRAPH_LABEL" -o name |
+grep -E 'vllm(prefill|decode)worker' |
+while read -r pod; do
+  echo "===== $pod ====="
+  kubectl get -n "$NAMESPACE" "$pod" -o json |
+    jq -r '.metadata.annotations[
+      "k8s.v1.cni.cncf.io/network-status"
+    ] | fromjson'
+done
+```
+
+PASS requires both `eth0` and a unique `net1` address on every worker.
+
+### Current NIXL status after fixing scheduling
+
+Removing host networking fixed the port collision and allowed the Pods to be
+scheduled. It did **not** by itself prove that the RoCE data path works. The
+current worker failure is later in startup:
+
+```text
+ibv_create_ah(... dgid=::ffff:10.224.7.143 ... sgid_index=3 ...)
+for UD mlx5 connect on mlx5_8 failed: No such device
+UCX error: Address not valid
+NIXL_ERR_BACKEND
+```
+
+This shows that UCX can open `mlx5_8:1`, but selected GID index `3`, which is
+associated with the host `rdma7` address `10.224.7.143`. The next debugging
+gate is to inspect
+`/sys/class/infiniband/mlx5_8/ports/1/gid_attrs/ndevs/*` inside a worker and
+confirm that a RoCE v2 GID exists for its `net1` adapter. If a `net1` GID
+exists, startup must select that Pod-specific index. If none exists, the
+MacVLAN/RDMA namespace integration must be repaired before changing more UCX
+variables.
+
+The status is therefore:
+
+```text
+Host-port scheduling collision: FIXED
+Pod-native network attachment:  CONFIGURED
+End-to-end NIXL over RoCE:       NOT YET VALIDATED
+```
+
+The complete cluster setup and RDMA/NIXL validation gates are documented in
+[`pod-native-roce.md`](models/qwen3-32B/experiments/vllm/disagg-routing-kv-aware/pod-native-roce.md).
+
+## Qwen3-32B-FP8: benchmark completion and DCGM export
+
+The disaggregated AIPerf benchmark matrix completed successfully and retained
+its artifacts in:
+
+```text
+/ephemeral/shared/qwen3-32b/perf-cache/aiperf/disagg/1786442681_qwen3-32b-fp8-vllm-disagg-perf/
+```
+
+The cluster's client-facing Prometheus Service was confirmed as:
+
+```text
+namespace: monitoring
+service:   monitoring-kube-prometheus-prometheus
+port:      9090
+```
+
+Prometheus can therefore be opened locally with
+`9095:9090` port-forwarding. The DCGM export is restricted to Kubernetes
+workload label `exported_namespace="qwen32-bench"`, `exported_pod` names
+matching the disaggregated prefill/decode workers, metric
+`DCGM_FI_DEV_GPU_UTIL`, and the eight hours immediately before the query. The
+plain `namespace` and `pod` labels identify the exporter in `gpu-operator`,
+not the inference worker. Raw samples, a sample-level CSV, the exact query
+window, and a per-worker/per-GPU utilization summary are saved under
+`/ephemeral/shared/dynamo/aiperf-results/dcgm-last-8h/`.
+
+The complete executable procedure is documented in
+[`fetch-metrics.md`](models/qwen3-32B/experiments/vllm/disagg-routing/fetch-metrics.md).
+
+NIXL transfer telemetry was not enabled for this completed run. NIXL latency
+collection is deferred to the next benchmark round, when the NIXL exporter
+will be enabled before traffic starts and scraped for the entire run.

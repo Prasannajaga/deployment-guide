@@ -1,32 +1,36 @@
-# Qwen3-32B-FP8 vLLM disaggregated deployment (6 Prefill + 2 Decode, TP=2)
+# vLLM disaggregated routing with KV awareness
 
-This guide adapts the disaggregated inference setup for the 16 x H100 cluster with 6 prefill workers and 2 decode workers, all using Tensor Parallelism (TP=2).
+This experiment uses six TP=2 prefill workers and two TP=2 decode workers. The
+frontend consumes worker KV events and routes repeated prefixes toward cached
+prefill workers. Total allocation is 16 H100 GPUs.
 
-Key parameters:
+## Variables
 
-- `MODEL_PATH` uses the immutable snapshot on the existing `model-cache` PVC;
-- Prefill topology: 6 replicas x TP=2 (12 H100 GPUs total);
-- Decode topology: 2 replicas x TP=2 (4 H100 GPUs total);
-- Total cluster GPU allocation: 16 H100 GPUs across 2 nodes (8 GPUs on `gpu05`, 8 GPUs on `gpu06`);
-- `UCX_NET_DEVICES=mlx5_8:1` selects the active non-bonded RoCE HCA found on both nodes;
-- `UCX_IB_ADDR_TYPE=eth` and `UCX_IB_GID_INDEX=3` select the validated RoCE address (`10.224.7.x`);
-- `hostNetwork: true` makes the host's `rdma7` RoCE netdevice visible in each worker network namespace, and `ClusterFirstWithHostNet` retains cluster DNS;
-- RDMA resource requests: 2 per TP=2 worker;
-- `IPC_LOCK`, `SYS_RESOURCE`, and 40 GiB shared memory are retained.
-
-## 1. Create the deployment file
-
-**Run only on the Kubernetes control-plane node (`gpu05`).**
+Set these once before running any command in this recipe:
 
 ```bash
 export NAMESPACE=qwen32-bench
 export EXP_DIR=/ephemeral/shared/qwen3-32b/experiments/vllm/disagg-routing-kv-aware
+export DEPLOYMENT=qwen3-32b-fp8-vllm-disagg-kv-aware
+export GRAPH_LABEL="nvidia.com/dynamo-graph-deployment-name=${DEPLOYMENT}"
+export FRONTEND_SERVICE="${DEPLOYMENT}-frontend"
+export LOCAL_PORT=8000
+```
 
+## Files
+
+- `deploy.yaml` — deployment and NIXL/UCX settings
+- `prefill-nixl-preflight.yaml` — temporary prefill NIXL/UCX initialization check
+- `pod-native-roce.md` — Multus/MacVLAN runbook for RoCE without host networking
+
+## Create deploy.yaml
+
+The quoted `EOF` delimiter preserves shell variables inside the manifest.
+Running this block writes only the local configuration file.
+
+```bash
 mkdir -p "$EXP_DIR"
-
-tee "$EXP_DIR/deploy.yaml" >/dev/null <<'EOF_DEPLOY_YAML'
-# SPDX-FileCopyrightText: Copyright (c) 2025-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
-# SPDX-License-Identifier: Apache-2.0
+tee "$EXP_DIR/deploy-pod-roce.yaml" >/dev/null <<'EOF'
 apiVersion: nvidia.com/v1alpha1
 kind: DynamoGraphDeployment
 metadata:
@@ -57,6 +61,12 @@ spec:
         - name: HF_HOME
           value: /opt/models
       replicas: 1
+      resources:
+        requests:
+          cpu: "32"
+          memory: "64Gi"
+        limits:
+          memory: "128Gi"
     VllmPrefillWorker:
       componentType: worker
       subComponentType: prefill
@@ -66,7 +76,12 @@ spec:
           mountPoint: /opt/models
       sharedMemory:
         size: 40Gi
-      extraPodSpec: 
+      extraPodMetadata:
+        annotations:
+          k8s.v1.cni.cncf.io/networks: qwen32-bench/qwen-roce
+      extraPodSpec:
+        hostNetwork: false
+        dnsPolicy: ClusterFirst
         mainContainer:
           ports: []
           env:
@@ -76,6 +91,8 @@ spec:
               value: "/opt/models/hub/models--Qwen--Qwen3-32B-FP8/snapshots/aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df"
             - name: HF_HOME
               value: /opt/models
+            - name: PYTHONHASHSEED
+              value: "0"
             - name: VLLM_NIXL_SIDE_CHANNEL_HOST
               valueFrom:
                 fieldRef:
@@ -86,8 +103,6 @@ spec:
               value: "mlx5_8:1"
             - name: UCX_IB_ADDR_TYPE
               value: "eth"
-            - name: UCX_IB_GID_INDEX
-              value: "3"
             - name: UCX_RNDV_SCHEME
               value: "get_zcopy"
             - name: UCX_RNDV_THRESH
@@ -105,22 +120,22 @@ spec:
             - name: NIXL_LOG_LEVEL
               value: "INFO"
           args:
-          - |
-            ulimit -l unlimited && python3 -m dynamo.vllm \
-              --model $MODEL_PATH \
-              --served-model-name $SERVED_MODEL_NAME \
-              --tensor-parallel-size 2 \
-              --data-parallel-size 1 \
-              --disaggregation-mode prefill \
-              --kv-transfer-config '{"kv_connector":"NixlConnector","kv_role":"kv_producer"}' \
-              --kv-events-config '{"publisher":"zmq","topic":"kv-events","endpoint":"tcp://*:0","enable_kv_cache_events":true}' \
-              --gpu-memory-utilization 0.90 \
-              --max-model-len 32768 \
-              --no-enable-prefix-caching \
-              --block-size 128
+            - |
+              ulimit -l unlimited && python3 -m dynamo.vllm \
+                --model $MODEL_PATH \
+                --served-model-name $SERVED_MODEL_NAME \
+                --tensor-parallel-size 2 \
+                --data-parallel-size 1 \
+                --disaggregation-mode prefill \
+                --kv-transfer-config '{"kv_connector":"NixlConnector","kv_role":"kv_producer","kv_load_failure_policy":"fail"}' \
+                --kv-events-config '{"publisher":"zmq","topic":"kv-events","endpoint":"tcp://*:0","enable_kv_cache_events":true}' \
+                --gpu-memory-utilization 0.90 \
+                --max-model-len 40960 \
+                --enable-prefix-caching \
+                --block-size 128
           command:
-          - /bin/sh
-          - -c
+            - /bin/sh
+            - -c
           image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.3.0
           workingDir: /workspace/examples/backends/vllm
           securityContext:
@@ -148,7 +163,12 @@ spec:
           mountPoint: /opt/models
       sharedMemory:
         size: 40Gi
-      extraPodSpec: 
+      extraPodMetadata:
+        annotations:
+          k8s.v1.cni.cncf.io/networks: qwen32-bench/qwen-roce
+      extraPodSpec:
+        hostNetwork: false
+        dnsPolicy: ClusterFirst
         mainContainer:
           ports: []
           env:
@@ -158,6 +178,8 @@ spec:
               value: "/opt/models/hub/models--Qwen--Qwen3-32B-FP8/snapshots/aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df"
             - name: HF_HOME
               value: /opt/models
+            - name: PYTHONHASHSEED
+              value: "0"
             - name: VLLM_NIXL_SIDE_CHANNEL_HOST
               valueFrom:
                 fieldRef:
@@ -168,8 +190,6 @@ spec:
               value: "mlx5_8:1"
             - name: UCX_IB_ADDR_TYPE
               value: "eth"
-            - name: UCX_IB_GID_INDEX
-              value: "3"
             - name: UCX_RNDV_SCHEME
               value: "get_zcopy"
             - name: UCX_RNDV_THRESH
@@ -187,21 +207,21 @@ spec:
             - name: NIXL_LOG_LEVEL
               value: "INFO"
           args:
-          - |
-            ulimit -l unlimited && python3 -m dynamo.vllm \
-              --model $MODEL_PATH \
-              --served-model-name $SERVED_MODEL_NAME \
-              --tensor-parallel-size 2 \
-              --data-parallel-size 1 \
-              --disaggregation-mode decode \
-              --kv-transfer-config '{"kv_connector":"NixlConnector","kv_role":"kv_consumer"}' \
-              --gpu-memory-utilization 0.90 \
-              --max-model-len 32768 \
-              --no-enable-prefix-caching \
-              --block-size 128
+            - |
+              ulimit -l unlimited && python3 -m dynamo.vllm \
+                --model $MODEL_PATH \
+                --served-model-name $SERVED_MODEL_NAME \
+                --tensor-parallel-size 2 \
+                --data-parallel-size 1 \
+                --disaggregation-mode decode \
+                --kv-transfer-config '{"kv_connector":"NixlConnector","kv_role":"kv_consumer","kv_load_failure_policy":"fail"}' \
+                --gpu-memory-utilization 0.90 \
+                --max-model-len 40960 \
+                --enable-prefix-caching \
+                --block-size 128
           command:
-          - /bin/sh
-          - -c
+            - /bin/sh
+            - -c
           image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.3.0
           workingDir: /workspace/examples/backends/vllm
           securityContext:
@@ -220,125 +240,320 @@ spec:
           gpu: "2"
           custom:
             rdma/ib: "2"
-EOF_DEPLOY_YAML
+EOFtee "$EXP_DIR/prefill-nixl-preflight.yaml" >/dev/null <<'EOF'
+apiVersion: v1
+kind: Pod
+metadata:
+  name: qwen3-32b-prefill-nixl-preflight
+  labels:
+    app: qwen3-32b-prefill-nixl-preflight
+spec:
+  restartPolicy: Never
+  activeDeadlineSeconds: 600
+  nodeName: inst-1onle-devrel-rdma-pool
+  hostNetwork: false
+  dnsPolicy: ClusterFirst
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
+    - key: nvidia.com/gpu
+      operator: Equal
+      value: "true"
+      effect: NoSchedule
+  containers:
+    - name: prefill-nixl-check
+      image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.3.0
+      imagePullPolicy: IfNotPresent
+      workingDir: /workspace/examples/backends/vllm
+      command:
+        - /bin/bash
+        - -lc
+      args:
+        - |
+          set -euo pipefail
+          echo "POD=$POD_NAME NODE=$NODE_NAME POD_IP=$POD_IP"
+          exec sleep infinity
+      env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: SERVED_MODEL_NAME
+          value: "Qwen/Qwen3-32B-FP8"
+        - name: MODEL_PATH
+          value: "/opt/models/hub/models--Qwen--Qwen3-32B-FP8/snapshots/aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df"
+        - name: HF_HOME
+          value: /opt/models
+        - name: PYTHONHASHSEED
+          value: "0"
+        - name: VLLM_NIXL_SIDE_CHANNEL_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: UCX_TLS
+          value: "rc_x,rc,cuda_copy,cuda_ipc"
+        - name: UCX_NET_DEVICES
+          value: "mlx5_8:1"
+        - name: UCX_IB_ADDR_TYPE
+          value: "eth"
+        - name: UCX_IB_GID_INDEX
+          value: "3"
+        - name: UCX_RNDV_SCHEME
+          value: "get_zcopy"
+        - name: UCX_RNDV_THRESH
+          value: "0"
+        - name: UCX_IB_REG_METHODS
+          value: "odp,rcache"
+        - name: UCX_RCACHE_MAX_UNRELEASED
+          value: "1024"
+        - name: UCX_RC_TIMEOUT
+          value: "600s"
+        - name: UCX_KEEPALIVE_INTERVAL
+          value: "300s"
+        - name: UCX_LOG_LEVEL
+          value: "info"
+        - name: NIXL_LOG_LEVEL
+          value: "INFO"
+      securityContext:
+        runAsUser: 0
+        capabilities:
+          add:
+            - IPC_LOCK
+            - SYS_RESOURCE
+      resources:
+        requests:
+          nvidia.com/gpu: "2"
+          rdma/ib: "2"
+        limits:
+          nvidia.com/gpu: "2"
+          rdma/ib: "2"
+      volumeMounts:
+        - name: model-cache
+          mountPath: /opt/models
+        - name: shared-memory
+          mountPath: /dev/shm
+  volumes:
+    - name: model-cache
+      persistentVolumeClaim:
+        claimName: model-cache
+    - name: shared-memory
+      emptyDir:
+        medium: Memory
+        sizeLimit: 40Gi
+EOF
+
+kubectl delete pod qwen3-32b-prefill-nixl-preflight \
+  -n "$NAMESPACE" --ignore-not-found --wait=true
+kubectl apply -n "$NAMESPACE" \
+  -f "$EXP_DIR/prefill-nixl-preflight.yaml"
+
+kubectl wait \
+  --for=condition=Ready \
+  pod/qwen3-32b-prefill-nixl-preflight \
+  -n "$NAMESPACE" --timeout=5m
+
+kubectl get pod qwen3-32b-prefill-nixl-preflight \
+  -n "$NAMESPACE" -o wide
 ```
 
-## 2. Stop old workers before preflight
-
-**Run only on `gpu05`.**
+First inspect what the isolated prefill Pod actually sees. This is the direct
+check for whether `mlx5_8`, port `1`, and GID index `3` are valid inside the
+Pod rather than only on the host:
 
 ```bash
-export NAMESPACE=qwen32-bench
-export EXP_DIR=/ephemeral/shared/qwen3-32b/experiments/vllm/disagg-routing-kv-aware
-export DGD=qwen3-32b-fp8-vllm-disagg-kv-aware
-export GRAPH_LABEL="nvidia.com/dynamo-graph-deployment-name=$DGD"
+kubectl exec -n "$NAMESPACE" \
+  pod/qwen3-32b-prefill-nixl-preflight -- bash -lc '
+    set -euo pipefail
 
-kubectl delete dynamographdeployment qwen3-32b-fp8-vllm-disagg \
-  -n "$NAMESPACE" --ignore-not-found
-kubectl delete dynamographdeployment "$DGD" \
-  -n "$NAMESPACE" --ignore-not-found
+    echo "Configured UCX values:"
+    env | grep -E "^UCX_(NET_DEVICES|IB_ADDR_TYPE|IB_GID_INDEX)="
 
-kubectl wait --for=delete pod \
-  -l nvidia.com/dynamo-graph-deployment-name=qwen3-32b-fp8-vllm-disagg \
-  -n "$NAMESPACE" --timeout=5m || true
-kubectl wait --for=delete pod -l "$GRAPH_LABEL" \
-  -n "$NAMESPACE" --timeout=5m || true
+    echo "Verbs character devices:"
+    ls -la /dev/infiniband
 
-kubectl get pods -n "$NAMESPACE" -o wide
+    echo "RDMA devices visible in this Pod:"
+    find /sys/class/infiniband -mindepth 1 -maxdepth 1 \
+      -printf "%f\n" | sort
+
+    echo "Pod network interfaces:"
+    ip -brief address || true
+
+    echo "RDMA-to-netdev mapping:"
+    ibdev2netdev || true
+    rdma link || true
+
+    test -d /sys/class/infiniband/mlx5_8/ports/1
+    echo "mlx5_8 port 1 exists"
+
+    printf "state="
+    cat /sys/class/infiniband/mlx5_8/ports/1/state
+    printf "link_layer="
+    cat /sys/class/infiniband/mlx5_8/ports/1/link_layer
+    printf "gid[3]="
+    cat /sys/class/infiniband/mlx5_8/ports/1/gids/3
+
+    echo "Netdevices associated with mlx5_8:"
+    find /sys/class/infiniband/mlx5_8/device/net \
+      -mindepth 1 -maxdepth 1 -printf "%f\n" 2>/dev/null || true
+
+    echo "Nonzero GIDs visible across all RDMA devices:"
+    for gid_file in /sys/class/infiniband/*/ports/*/gids/*; do
+      gid=$(cat "$gid_file")
+      case "$gid" in
+        0000:0000:0000:0000:0000:0000:0000:0000) continue ;;
+      esac
+      printf "%s=%s\n" "$gid_file" "$gid"
+    done
+  '
 ```
 
-### 3.2 Kubernetes gate
+Stop here if `mlx5_8` does not exist. If it exists, require port `1` to be
+`ACTIVE`, the link layer to be `Ethernet`, and GID index `3` to be nonzero.
+Also check whether the associated RoCE netdevice is visible in the Pod's
+network namespace.
 
-**Run only on `gpu05`.**
+Next initialize NIXL with the three values currently pinned in the production
+prefill manifest:
 
 ```bash
-kubectl get nodes -L qwen.nvidia.com/role -o wide
-kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}{"\tGPU="}{.status.allocatable.nvidia\.com/gpu}{"\tRDMA="}{.status.allocatable.rdma/ib}{"\n"}{end}'
+kubectl exec -n "$NAMESPACE" \
+  pod/qwen3-32b-prefill-nixl-preflight -- \
+  python3 -c "import os, nixl; agent = nixl.nixl_agent(os.environ['POD_NAME']); print('NIXL_PINNED_UCX_BACKEND_OK')"
 ```
 
-## 4. Deploy
+The pinned test passes only when it exits successfully and shows UCX backend
+creation on `mlx5_8:1`, without TCP fallback. Expected success evidence is:
 
-**Run only on `gpu05`.**
+```text
+Created backend: UCX
+Backend UCX was instantiated
+Initialized NIXL agent
+NIXL_PINNED_UCX_BACKEND_OK
+```
+
+If the pinned test fails, compare it with the vLLM guide's literal
+`UCX_NET_DEVICES=all` setting. Remove the pinned address type and GID index so
+UCX can choose values appropriate to whichever device it selects:
+
+```bash
+kubectl exec -n "$NAMESPACE" \
+  pod/qwen3-32b-prefill-nixl-preflight -- \
+  env -u UCX_IB_ADDR_TYPE -u UCX_IB_GID_INDEX UCX_NET_DEVICES=all \
+  python3 -c "import os, nixl; agent = nixl.nixl_agent(os.environ['POD_NAME'] + '-all'); print('NIXL_ALL_DEVICES_UCX_BACKEND_OK')"
+```
+
+This intentionally retains the production RDMA-only `UCX_TLS` value instead
+of changing it to `all`. The test must not pass by silently selecting TCP.
+Inspect the UCX worker configuration in the output and require at least one
+`rc_mlx5/<device>:<port>` transport.
+
+Interpret the comparison as follows:
+
+- `mlx5_8` absent: `UCX_NET_DEVICES=mlx5_8:1` is invalid inside the Pod.
+- Pinned initialization fails but the all-devices test succeeds over
+  `rc_mlx5`: at least one of the three pinned UCX values is wrong for the Pod.
+- The all-devices test succeeds without `rc_mlx5`: this is not an RDMA pass.
+- Both initialization attempts fail: investigate RDMA device injection and
+  the Pod network namespace before changing the DGD.
+
+Only if the all-devices test prints `NIXL_ALL_DEVICES_UCX_BACKEND_OK` and
+selects `rc_mlx5` should the production prefill and decode environments be
+changed to:
+
+```yaml
+- name: UCX_NET_DEVICES
+  value: "all"
+```
+
+In that case, remove `UCX_IB_ADDR_TYPE` and `UCX_IB_GID_INDEX` from both roles
+rather than combining auto device selection with the currently invalid pinned
+GID. Re-run this preflight on both GPU nodes before applying the DGD.
+
+Do not deploy if either output contains `NIXL_ERR_BACKEND`, `Address not
+valid`, `No such device`, or an unexpected TCP transport. The Pod remains
+running after either test, so it can be inspected further with:
+
+```bash
+kubectl describe pod qwen3-32b-prefill-nixl-preflight -n "$NAMESPACE"
+kubectl exec -it -n "$NAMESPACE" \
+  pod/qwen3-32b-prefill-nixl-preflight -- bash
+```
+
+After a successful check, release its GPU and RDMA allocations before the
+main deployment:
+
+```bash
+kubectl delete pod qwen3-32b-prefill-nixl-preflight \
+  -n "$NAMESPACE" --wait=true
+```
+
+This comparison tests the suggested hypothesis without enabling host
+networking. It verifies device visibility and UCX backend creation, but a real
+prefill-to-decode request after deployment is still required to prove an
+end-to-end RDMA KV transfer.
+
+## Deploy
 
 ```bash
 kubectl apply -n "$NAMESPACE" -f "$EXP_DIR/deploy.yaml"
-
 kubectl get pods -n "$NAMESPACE" \
   -l "$GRAPH_LABEL" \
-  -L nvidia.com/dynamo-component-type \
   -o wide -w
 ```
 
-Expected topology: 1 frontend, 6 prefill workers (TP=2), 2 decode workers (TP=2). Total GPUs = 16 H100.
+## Check logs
 
-## 5. Observe startup and diagnose failures
+Tail or stream logs for all containers in the deployment:
 
 ```bash
-kubectl logs -n "$NAMESPACE" \
-  -l "$GRAPH_LABEL" \
-  --all-containers=true \
-  --prefix \
-  --timestamps \
-  --tail=200 \
-  --max-log-requests=10 \
-  --ignore-errors=true \
-  --follow
+# Tail recent 500 lines across all containers
+kubectl logs -n "$NAMESPACE" -l "$GRAPH_LABEL" --all-containers --prefix --tail=500
+
+# Stream live logs in real time
+kubectl logs -n "$NAMESPACE" -l "$GRAPH_LABEL" --all-containers --prefix -f
+
+# Filter for NIXL, UCX, KV events, and errors
+kubectl logs -n "$NAMESPACE" -l "$GRAPH_LABEL" --all-containers --prefix --tail=500 | grep -Ei 'nixl|ucx|kv.event|error|traceback'
+
+# Check prefill worker logs specifically
+kubectl logs -n "$NAMESPACE" -l "$GRAPH_LABEL,nvidia.com/dynamo-sub-component-type=prefill" --all-containers --prefix --tail=500
+
+# Check decode worker logs specifically
+kubectl logs -n "$NAMESPACE" -l "$GRAPH_LABEL,nvidia.com/dynamo-sub-component-type=decode" --all-containers --prefix --tail=500
+
+# Inspect logs from a previous crashed container instance
+kubectl logs -n "$NAMESPACE" -l "$GRAPH_LABEL" --all-containers --prefix --previous --tail=500
 ```
 
-## 6. Readiness and inference smoke test
+## Acceptance checks
 
 ```bash
-kubectl wait --for=condition=Ready pod \
-  -l "$GRAPH_LABEL" \
-  -n "$NAMESPACE" --timeout=45m
-
 kubectl port-forward -n "$NAMESPACE" \
-  service/qwen3-32b-fp8-vllm-disagg-kv-aware-frontend 8000:8000
+  service/"$FRONTEND_SERVICE" "$LOCAL_PORT":8000
 ```
 
-In another terminal:
+Send the same long-prefix request twice. Accept the run only if requests
+succeed, NIXL initializes, and KV-event counters increase without worker
+restarts.
+
+## Clean up
 
 ```bash
-curl -fsS http://127.0.0.1:8000/v1/models | jq
-
-curl -fsS http://127.0.0.1:8000/v1/chat/completions \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "model": "Qwen/Qwen3-32B-FP8",
-    "messages": [{"role": "user", "content": "Reply with only: VLLM_KV_AWARE_OK"}],
-    "temperature": 0,
-    "max_tokens": 32
-  }' | jq
+kubectl delete dynamographdeployment.nvidia.com "$DEPLOYMENT" \
+  -n "$NAMESPACE" --wait=false --ignore-not-found
+kubectl delete pods -l "$GRAPH_LABEL" -n "$NAMESPACE" \
+  --force --grace-period=0 --ignore-not-found
 ```
 
-## 7. Shutdown & Complete GPU VRAM Cleanup
-
-### 7.1 Delete Kubernetes Resources (`gpu05`)
-
-```bash
-export NAMESPACE=qwen32-bench
-
-# Delete all Dynamo Graph Deployments in the namespace
-kubectl delete dynamographdeployments --all -n "$NAMESPACE" --ignore-not-found
-
-# Force-delete all lingering pods to immediately release GPU claims
-kubectl delete pods --all -n "$NAMESPACE" --force --grace-period=0
-
-# Confirm all pods are deleted
-kubectl wait --for=delete pod --all -n "$NAMESPACE" --timeout=1m || true
-```
-
-### 7.2 Host GPU VRAM Cleanup (`gpu05` & `gpu06`)
-
-Because `hostNetwork: true` and IPC locks are used, orphaned PyTorch / CUDA worker processes can occasionally persist on the host OS after Pod deletion. Run this on **both `gpu05` and `gpu06`**:
-
-```bash
-# 1. Kill any lingering vLLM / Dynamo Python processes on the host
-pkill -9 -f "dynamo\.vllm|dynamo\.frontend|vllm" || true
-
-# 2. Kill any processes holding /dev/nvidia* device handles
-sudo fuser -v /dev/nvidia* 2>/dev/null | awk '{print $2}' | xargs -r sudo kill -9
-
-# 3. Verify all GPU VRAM is completely freed (0 MiB used)
-nvidia-smi --query-gpu=index,name,memory.used,memory.free --format=csv
-```
+The first command prevents the controller from keeping the experiment alive;
+the second immediately force-deletes its pods. The local `deploy.yaml` remains
+unchanged.

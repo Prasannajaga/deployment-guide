@@ -1,15 +1,11 @@
 # Qwen3-32B FP8: two-node cluster setup
 
-This runbook prepares `gpu05` and `gpu06` for three NVIDIA Dynamo + SGLang
-deployments of `Qwen/Qwen3-32B-FP8`. It stops at deployment readiness;
-benchmark generation and AIPerf tuning are intentionally deferred.
+This runbook prepares `gpu05` and `gpu06` for the Qwen3-32B-FP8 Dynamo
+experiments. It stops at cluster readiness; deployment and benchmark commands
+live in the [experiment matrix](experiments/README.md).
 
-The three deployments are separate experiments. Run only one at a time because
-each one reserves all 16 GPUs:
-
-1. [P/D disaggregation](experiments/01-pd-disaggregation.md)
-2. [P/D disaggregation with KV-aware routing](experiments/02-pd-kv-aware-routing.md)
-3. [P/D disaggregation with KV-aware routing and KV offloading](experiments/03-pd-kv-aware-routing-kv-offloading.md)
+Run only one 16-GPU experiment at a time. The eight maintained variants cover
+the same four topologies in vLLM and SGLang.
 
 ## Command location legend
 
@@ -31,8 +27,7 @@ a cluster-wide section. Follow the label directly above the block.
 |---|---|
 | Prefill node | logical `gpu05`; Kubernetes `inst-1onle-devrel-rdma-pool`; `10.18.96.143`; 8 x H100 80 GB |
 | Decode node | logical `gpu06`; Kubernetes `inst-g9dwj-devrel-rdma-pool`; `10.18.96.236`; 8 x H100 80 GB |
-| Experiment per-node layout | 4 independent components x TP=2 |
-| Experiment total workers | 4 prefill + 4 decode |
+| Experiment topology | Defined by the selected experiment manifest |
 | Known-good recovery layout | 1 prefill TP=8 + 1 decode TP=8 |
 | Model | `Qwen/Qwen3-32B-FP8` |
 | Model revision | `aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df` |
@@ -46,11 +41,12 @@ a cluster-wide section. Follow the label directly above the block.
 | Maximum model length | 40,960 tokens; no YaRN |
 | Readiness-request mode | Non-thinking via `/no_think` |
 
-TP=2 is symmetric on prefill and decode. Four workers per node use all eight
-local GPUs, every P-to-D KV transfer crosses the physical node boundary, and
-the router has four prefill candidates. The validated RoCE settings remain
-`hostNetwork: true`, `UCX_NET_DEVICES=mlx5_8:1`, and
-`UCX_IB_GID_INDEX=3`.
+The experiment manifests use TP=2 workers except for the TP=4 decode worker in
+the eight-GPU disaggregation baseline. When roles are pinned to separate nodes,
+every P-to-D KV transfer crosses the physical node boundary. The eight-GPU
+baseline uses the validated `hostNetwork: true`, `UCX_NET_DEVICES=mlx5_8:1`,
+and `UCX_IB_GID_INDEX=3` path. Scaled manifests use pod network isolation to
+avoid host-port collisions while retaining RDMA device access.
 
 Dynamo Operator v1.3.0 defaults worker ports to `9090` and `19090`. Replicas of
 one component share one pod template, so `replicas: 4` caused host-port
@@ -537,14 +533,17 @@ worker-to-router ZMQ KV events. NATS and etcd are therefore disabled and are
 not required. Do not start separate Docker NATS or etcd instances for these
 experiments.
 
-Verify the platform and the v1beta1 API:
+Verify the platform and the API version used by the maintained manifests:
 
 **Run on `gpu05` — Kubernetes admin terminal:**
 
 ```bash
 kubectl get pods -n dynamo-system -o wide
 kubectl get crd | grep -E 'dynamographdeployments|dynamocomponentdeployments'
-kubectl explain dynamographdeployment.spec.components
+kubectl get crd dynamographdeployments.nvidia.com \
+  -o jsonpath='{.spec.versions[*].name}{"\n"}'
+kubectl explain dynamographdeployment.spec.services \
+  --api-version=nvidia.com/v1alpha1
 ```
 
 Every platform pod must be `Running` or successfully `Completed`, and
@@ -803,24 +802,13 @@ Do not start an experiment until all of the following are true:
 - no other workload is using any of the 16 GPUs;
 - no previous Qwen experiment DGD remains in `qwen32-bench`.
 
-## 12. Run the experiments in order
+## 12. Run the experiments
 
-Each deployment guide contains its complete, unique DGD manifest, launch
-commands, feature-specific acceptance checks, and clean shutdown procedure:
-
-| Order | Deployment | Router | KV offload |
-|---:|---|---|---|
-| 1 | [P/D disaggregation](experiments/01-pd-disaggregation.md) | Round-robin | Disabled |
-| 2 | [P/D + KV-aware routing](experiments/02-pd-kv-aware-routing.md) | Event-driven KV-aware | Disabled |
-| 3 | [P/D + KV-aware + KV offload](experiments/03-pd-kv-aware-routing-kv-offloading.md) | Event-driven, tier-aware | SGLang HiCache GPU to pinned host RAM |
-
-Always delete the active DGD and wait for all its pods to terminate before
-applying the next one. Experiment 1 contains the TP=2 component-per-worker
-deployment and an explicit generated-port verification gate. Do not launch
-Experiments 2 or 3 with their old `replicas: 4` templates; first apply the same
-component-per-worker port pattern and add unique KV-event ports. Once the TP=2
-topology is validated, keep model revision, page size, memory fraction, UCX
-settings, and placement fixed for comparisons.
+Use the [experiment matrix](experiments/README.md) to select a backend and
+topology. Each folder contains one `deploy.yaml` and a short operator runbook.
+Always delete the active DGD and wait for its pods to terminate before applying
+the next 16-GPU experiment. Keep model revision, input/output lengths, warmup,
+duration, and concurrency identical for framework comparisons.
 
 ## References
 
