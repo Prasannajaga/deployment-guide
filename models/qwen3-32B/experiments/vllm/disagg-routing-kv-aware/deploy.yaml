@@ -37,7 +37,12 @@ spec:
           mountPoint: /opt/models
       sharedMemory:
         size: 40Gi
+      extraPodMetadata:
+        annotations:
+          k8s.v1.cni.cncf.io/networks: qwen32-bench/qwen-roce
       extraPodSpec:
+        hostNetwork: false
+        dnsPolicy: ClusterFirst
         mainContainer:
           ports: []
           env:
@@ -59,8 +64,6 @@ spec:
               value: "mlx5_8:1"
             - name: UCX_IB_ADDR_TYPE
               value: "eth"
-            - name: UCX_IB_GID_INDEX
-              value: "3"
             - name: UCX_RNDV_SCHEME
               value: "get_zcopy"
             - name: UCX_RNDV_THRESH
@@ -85,7 +88,7 @@ spec:
               --tensor-parallel-size 2 \
               --data-parallel-size 1 \
               --disaggregation-mode prefill \
-              --kv-transfer-config '{"kv_connector":"NixlConnector","kv_role":"kv_producer"}' \
+              --kv-transfer-config '{"kv_connector":"NixlConnector","kv_role":"kv_producer","kv_load_failure_policy":"fail"}' \
               --kv-events-config '{"publisher":"zmq","topic":"kv-events","endpoint":"tcp://*:0","enable_kv_cache_events":true}' \
               --gpu-memory-utilization 0.90 \
               --max-model-len 40960 \
@@ -121,7 +124,12 @@ spec:
           mountPoint: /opt/models
       sharedMemory:
         size: 40Gi
+      extraPodMetadata:
+        annotations:
+          k8s.v1.cni.cncf.io/networks: qwen32-bench/qwen-roce
       extraPodSpec:
+        hostNetwork: false
+        dnsPolicy: ClusterFirst
         mainContainer:
           ports: []
           env:
@@ -143,8 +151,6 @@ spec:
               value: "mlx5_8:1"
             - name: UCX_IB_ADDR_TYPE
               value: "eth"
-            - name: UCX_IB_GID_INDEX
-              value: "3"
             - name: UCX_RNDV_SCHEME
               value: "get_zcopy"
             - name: UCX_RNDV_THRESH
@@ -169,7 +175,7 @@ spec:
               --tensor-parallel-size 2 \
               --data-parallel-size 1 \
               --disaggregation-mode decode \
-              --kv-transfer-config '{"kv_connector":"NixlConnector","kv_role":"kv_consumer"}' \
+              --kv-transfer-config '{"kv_connector":"NixlConnector","kv_role":"kv_consumer","kv_load_failure_policy":"fail"}' \
               --gpu-memory-utilization 0.90 \
               --max-model-len 40960 \
               --enable-prefix-caching \

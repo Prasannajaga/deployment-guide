@@ -63,15 +63,20 @@ spec:
           mountPoint: /opt/models
       sharedMemory:
         size: 40Gi
+      extraPodMetadata:
+        annotations:
+          k8s.v1.cni.cncf.io/networks: qwen32-bench/qwen-roce
       extraPodSpec:
         affinity:
           podAntiAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-              - labelSelector:
-                  matchLabels:
-                    nvidia.com/dynamo-graph-deployment-name: qwen3-32b-fp8-vllm-agg-tp2
-                    nvidia.com/dynamo-component-type: worker
-                topologyKey: kubernetes.io/hostname
+            preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 100
+                podAffinityTerm:
+                  labelSelector:
+                    matchLabels:
+                      nvidia.com/dynamo-graph-deployment-name: qwen3-32b-fp8-vllm-agg-tp2
+                      nvidia.com/dynamo-component-type: worker
+                  topologyKey: kubernetes.io/hostname
         mainContainer:
           env:
             - name: SERVED_MODEL_NAME
@@ -105,7 +110,7 @@ spec:
               containerPort: 9090
             - name: fpm
               containerPort: 20380
-      replicas: 4
+      replicas: 8
       resources:
         limits:
           gpu: "2"

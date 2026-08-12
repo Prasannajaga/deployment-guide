@@ -77,6 +77,9 @@ spec:
           mountPoint: /opt/models
       sharedMemory:
         size: 40Gi
+      extraPodMetadata:
+        annotations:
+          k8s.v1.cni.cncf.io/networks: qwen32-bench/qwen-roce
       extraPodSpec:
         affinity:
           podAntiAffinity:

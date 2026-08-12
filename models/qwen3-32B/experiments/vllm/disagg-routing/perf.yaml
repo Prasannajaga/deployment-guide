@@ -95,7 +95,7 @@ spec:
               cat > "${run_root}/input-config.json" <<EOF_INPUT
               {
                 "mode": "vllm-disagg",
-                "deployment_gpu_count": 8,
+                "deployment_gpu_count": 16,
                 "input_lengths": [1024, 4096, 8192, 16384, 32768],
                 "output_tokens": 256,
                 "concurrencies": [1, 8, 16, 32, 64, 128, 256],

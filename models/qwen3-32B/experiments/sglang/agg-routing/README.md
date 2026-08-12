@@ -46,18 +46,23 @@ spec:
           workingDir: /workspace/examples/backends/sglang
     SglangWorker:
       componentType: worker
-      replicas: 4
+      replicas: 8
       envFromSecret: hf-token-secret
       volumeMounts:
         - name: model-cache
           mountPoint: /opt/models
       sharedMemory:
         size: 40Gi
+      extraPodMetadata:
+        annotations:
+          k8s.v1.cni.cncf.io/networks: qwen32-bench/qwen-roce
       extraPodSpec:
         affinity:
           podAntiAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-              - labelSelector:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm
+               labelSelector:
                   matchLabels:
                     nvidia.com/dynamo-graph-deployment-name: qwen3-32b-fp8-sglang-agg-tp2
                     nvidia.com/dynamo-component-type: worker

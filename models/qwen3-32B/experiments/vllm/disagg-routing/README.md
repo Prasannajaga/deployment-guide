@@ -1,8 +1,9 @@
 # vLLM prefill/decode disaggregation
 
-This is the validated vLLM P/D baseline: two TP=2 prefill workers, one TP=4
-decode worker, NIXL over UCX/RDMA, and one frontend. It allocates eight H100
-GPUs. The manifest keeps the cluster-specific RoCE device and unique host ports.
+This non-KV-aware vLLM P/D baseline uses six TP=2 prefill workers, two TP=2
+decode workers, NIXL over UCX/RDMA, and one frontend. It allocates 16 H100 GPUs.
+Worker Pods use a dedicated Multus/MacVLAN RoCE interface without host
+networking or host ports.
 
 ## Variables
 
@@ -10,11 +11,14 @@ Set these once before running any command in this recipe:
 
 ```bash
 export NAMESPACE=qwen32-bench
+export NETOP_NAMESPACE=nvidia-network-operator
 export EXP_DIR=/ephemeral/shared/qwen3-32b/experiments/vllm/disagg-routing
 export DEPLOYMENT=qwen3-32b-fp8-vllm-disagg
 export GRAPH_LABEL="nvidia.com/dynamo-graph-deployment-name=${DEPLOYMENT}"
 export FRONTEND_SERVICE="${DEPLOYMENT}-frontend"
 export PERF_JOB=qwen3-32b-fp8-vllm-disagg-perf
+export ROCE_NETWORK=qwen-roce
+export ROCE_POOL=qwen-roce-pool
 export LOCAL_PORT=8000
 export BENCH_URL="http://127.0.0.1:${LOCAL_PORT}"
 export MODEL=Qwen/Qwen3-32B-FP8
@@ -29,7 +33,11 @@ export MODEL=Qwen/Qwen3-32B-FP8
 | `plot-config.yaml` | TTFT/TPOT plotting defaults |
 | `fetch-metrics.md` | Prometheus/DCGM export commands |
 | `model-download.yaml` | Optional model-cache population Job |
-| `cache.yaml` | Optional cache PVC helper |
+
+The `qwen32-bench/qwen-roce` secondary network must already exist. Follow the
+[pod-native RoCE runbook](../disagg-routing-kv-aware/pod-native-roce.md) before
+deploying if Multus, NV-IPAM, the IP pool, and the MacVLAN network have not been
+configured and validated on every eligible GPU node.
 
 ## Create deploy.yaml
 
@@ -62,6 +70,12 @@ spec:
         - name: HF_HOME
           value: /opt/models
       replicas: 1
+      resources:
+        requests:
+          cpu: "32"
+          memory: "64Gi"
+        limits:
+          memory: "128Gi"
     VllmPrefillWorker:
       componentType: worker
       subComponentType: prefill
@@ -71,22 +85,14 @@ spec:
           mountPoint: /opt/models
       sharedMemory:
         size: 40Gi
+      extraPodMetadata:
+        annotations:
+          k8s.v1.cni.cncf.io/networks: qwen32-bench/qwen-roce
       extraPodSpec:
-        hostNetwork: true
-        dnsPolicy: ClusterFirstWithHostNet
-        affinity:
-          podAffinity:
-            preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              podAffinityTerm:
-                labelSelector:
-                  matchExpressions:
-                  - key: nvidia.com/dynamo-component-type
-                    operator: In
-                    values:
-                    - worker
-                topologyKey: kubernetes.io/hostname
+        hostNetwork: false
+        dnsPolicy: ClusterFirst
         mainContainer:
+          ports: []
           env:
             - name: SERVED_MODEL_NAME
               value: "Qwen/Qwen3-32B-FP8"
@@ -94,28 +100,18 @@ spec:
               value: "/opt/models/hub/models--Qwen--Qwen3-32B-FP8/snapshots/aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df"
             - name: HF_HOME
               value: /opt/models
-            - name: DYN_SYSTEM_PORT
-              value: "9090"
-            - name: NIXL_TELEMETRY_ENABLE
-              value: "y"
-            - name: NIXL_TELEMETRY_EXPORTER
-              value: "prometheus"
-            - name: NIXL_TELEMETRY_MULTIPROC_DIR
-              value: /dev/shm/nixl-telemetry
-            - name: NIXL_TELEMETRY_PROMETHEUS_PORT
-              value: "19090"
-            - name: DYN_FORWARDPASS_METRIC_PORT
-              value: "20380"
-            - name: VLLM_NIXL_SIDE_CHANNEL_PORT
-              value: "5600"
+            - name: PYTHONHASHSEED
+              value: "0"
+            - name: VLLM_NIXL_SIDE_CHANNEL_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
             - name: UCX_TLS
               value: "rc_x,rc,cuda_copy,cuda_ipc"
             - name: UCX_NET_DEVICES
               value: "mlx5_8:1"
             - name: UCX_IB_ADDR_TYPE
               value: "eth"
-            - name: UCX_IB_GID_INDEX
-              value: "3"
             - name: UCX_RNDV_SCHEME
               value: "get_zcopy"
             - name: UCX_RNDV_THRESH
@@ -133,43 +129,30 @@ spec:
             - name: NIXL_LOG_LEVEL
               value: "INFO"
           args:
-          - |
-            ulimit -l unlimited && python3 -m dynamo.vllm \
-              --model $MODEL_PATH \
-              --served-model-name $SERVED_MODEL_NAME \
-              --tensor-parallel-size 2 \
-              --data-parallel-size 1 \
-              --disaggregation-mode prefill \
-              --kv-transfer-config '{"kv_connector":"NixlConnector","kv_role":"kv_producer"}' \
-              --gpu-memory-utilization 0.90 \
-              --max-model-len 40960 \
-              --no-enable-prefix-caching \
-              --block-size 128
+            - |
+              ulimit -l unlimited && python3 -m dynamo.vllm \
+                --model $MODEL_PATH \
+                --served-model-name $SERVED_MODEL_NAME \
+                --tensor-parallel-size 2 \
+                --data-parallel-size 1 \
+                --disaggregation-mode prefill \
+                --kv-transfer-config '{"kv_connector":"NixlConnector","kv_role":"kv_producer","kv_load_failure_policy":"fail"}' \
+                --gpu-memory-utilization 0.90 \
+                --max-model-len 40960 \
+                --no-enable-prefix-caching \
+                --block-size 128
           command:
-          - /bin/sh
-          - -c
+            - /bin/sh
+            - -c
           image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.3.0
           workingDir: /workspace/examples/backends/vllm
-          ports:
-            - name: system
-              containerPort: 9090
-              hostPort: 9090
-            - name: nixl-metrics
-              containerPort: 19090
-              hostPort: 19090
-            - name: fpm
-              containerPort: 20380
-              hostPort: 20380
-            - name: nixl-side
-              containerPort: 5600
-              hostPort: 5600
           securityContext:
             runAsUser: 0
             capabilities:
               add:
                 - IPC_LOCK
                 - SYS_RESOURCE
-      replicas: 2
+      replicas: 6
       resources:
         limits:
           gpu: "2"
@@ -188,22 +171,14 @@ spec:
           mountPoint: /opt/models
       sharedMemory:
         size: 40Gi
+      extraPodMetadata:
+        annotations:
+          k8s.v1.cni.cncf.io/networks: qwen32-bench/qwen-roce
       extraPodSpec:
-        hostNetwork: true
-        dnsPolicy: ClusterFirstWithHostNet
-        affinity:
-          podAffinity:
-            preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              podAffinityTerm:
-                labelSelector:
-                  matchExpressions:
-                  - key: nvidia.com/dynamo-component-type
-                    operator: In
-                    values:
-                    - worker
-                topologyKey: kubernetes.io/hostname
+        hostNetwork: false
+        dnsPolicy: ClusterFirst
         mainContainer:
+          ports: []
           env:
             - name: SERVED_MODEL_NAME
               value: "Qwen/Qwen3-32B-FP8"
@@ -211,28 +186,18 @@ spec:
               value: "/opt/models/hub/models--Qwen--Qwen3-32B-FP8/snapshots/aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df"
             - name: HF_HOME
               value: /opt/models
-            - name: DYN_SYSTEM_PORT
-              value: "9091"
-            - name: NIXL_TELEMETRY_ENABLE
-              value: "y"
-            - name: NIXL_TELEMETRY_EXPORTER
-              value: "prometheus"
-            - name: NIXL_TELEMETRY_MULTIPROC_DIR
-              value: /dev/shm/nixl-telemetry
-            - name: NIXL_TELEMETRY_PROMETHEUS_PORT
-              value: "19091"
-            - name: DYN_FORWARDPASS_METRIC_PORT
-              value: "20381"
-            - name: VLLM_NIXL_SIDE_CHANNEL_PORT
-              value: "5601"
+            - name: PYTHONHASHSEED
+              value: "0"
+            - name: VLLM_NIXL_SIDE_CHANNEL_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
             - name: UCX_TLS
               value: "rc_x,rc,cuda_copy,cuda_ipc"
             - name: UCX_NET_DEVICES
               value: "mlx5_8:1"
             - name: UCX_IB_ADDR_TYPE
               value: "eth"
-            - name: UCX_IB_GID_INDEX
-              value: "3"
             - name: UCX_RNDV_SCHEME
               value: "get_zcopy"
             - name: UCX_RNDV_THRESH
@@ -250,36 +215,23 @@ spec:
             - name: NIXL_LOG_LEVEL
               value: "INFO"
           args:
-          - |
-            ulimit -l unlimited && python3 -m dynamo.vllm \
-              --model $MODEL_PATH \
-              --served-model-name $SERVED_MODEL_NAME \
-              --tensor-parallel-size 2 \
-              --data-parallel-size 1 \
-              --disaggregation-mode decode \
-              --kv-transfer-config '{"kv_connector":"NixlConnector","kv_role":"kv_consumer"}' \
-              --gpu-memory-utilization 0.90 \
-              --max-model-len 40960 \
-              --no-enable-prefix-caching \
-              --block-size 128
+            - |
+              ulimit -l unlimited && python3 -m dynamo.vllm \
+                --model $MODEL_PATH \
+                --served-model-name $SERVED_MODEL_NAME \
+                --tensor-parallel-size 2 \
+                --data-parallel-size 1 \
+                --disaggregation-mode decode \
+                --kv-transfer-config '{"kv_connector":"NixlConnector","kv_role":"kv_consumer","kv_load_failure_policy":"fail"}' \
+                --gpu-memory-utilization 0.90 \
+                --max-model-len 40960 \
+                --no-enable-prefix-caching \
+                --block-size 128
           command:
-          - /bin/sh
-          - -c
+            - /bin/sh
+            - -c
           image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.3.0
           workingDir: /workspace/examples/backends/vllm
-          ports:
-            - name: system
-              containerPort: 9091
-              hostPort: 9091
-            - name: nixl-metrics
-              containerPort: 19091
-              hostPort: 19091
-            - name: fpm
-              containerPort: 20381
-              hostPort: 20381
-            - name: nixl-side
-              containerPort: 5601
-              hostPort: 5601
           securityContext:
             runAsUser: 0
             capabilities:
@@ -306,11 +258,19 @@ Run on the Kubernetes control-plane host:
 ```bash
 kubectl get pvc -n "$NAMESPACE" model-cache
 kubectl get nodes -o custom-columns='NODE:.metadata.name,GPU:.status.allocatable.nvidia\.com/gpu,RDMA:.status.allocatable.rdma/ib'
+kubectl get network-attachment-definition "$ROCE_NETWORK" \
+  -n "$NAMESPACE" -o yaml
+kubectl get macvlannetwork "$ROCE_NETWORK" -o yaml
+kubectl get ippool "$ROCE_POOL" -n "$NETOP_NAMESPACE" -o yaml
 kubectl apply --dry-run=server -n "$NAMESPACE" -f "$EXP_DIR/deploy.yaml"
 ```
 
-The two GPU nodes must expose `mlx5_8:1`, RoCE GID index `3`, the `rdma/ib`
-resource, and the cached model snapshot referenced by `MODEL_PATH`.
+PASS only if every eligible GPU node exposes `mlx5_8:1` and the `rdma/ib`
+resource, the model snapshot referenced by `MODEL_PATH` is cached, and the
+`qwen-roce` NetworkAttachmentDefinition uses the ready `qwen-roce` MacVLAN
+network and `qwen-roce-pool` IP pool. The physical host may expose its RoCE GID
+at index 3, but `UCX_IB_GID_INDEX` must remain unset in the manifest so UCX can
+select the Pod-specific GID created for `net1`.
 
 ## 2. Deploy
 
@@ -321,8 +281,8 @@ kubectl get pods -n "$NAMESPACE" \
   -o wide -w
 ```
 
-Expected: one frontend, two prefill workers using two GPUs each, and one decode
-worker using four GPUs.
+Expected: one frontend, six prefill workers using two GPUs each, and two decode
+workers using two GPUs each.
 
 ## 3. Verify NIXL, readiness, and logs
 
@@ -353,8 +313,25 @@ kubectl get pods -n "$NAMESPACE" \
   -l "$GRAPH_LABEL"
 ```
 
+Verify that all eight worker Pods received a unique secondary-network address:
+
+```bash
+kubectl get pods -n "$NAMESPACE" \
+  -l "$GRAPH_LABEL,nvidia.com/dynamo-component-type=worker" \
+  -o name |
+while read -r pod; do
+  echo "===== $pod ====="
+  kubectl get -n "$NAMESPACE" "$pod" -o json |
+    jq -r '.metadata.annotations["k8s.v1.cni.cncf.io/network-status"] | fromjson | .[] | select(.interface == "net1") | [.interface, (.ips | join(","))] | @tsv'
+  kubectl exec -n "$NAMESPACE" "$pod" -- env |
+    grep -E '^UCX_(TLS|NET_DEVICES|IB_ADDR_TYPE|IB_GID_INDEX)='
+done
+```
+
 Do not benchmark until every pod is `Running`, containers are ready, and logs
-show NIXL/UCX initialization without transport errors.
+show NIXL/UCX initialization without transport errors. Each worker must show a
+unique `net1` address, `UCX_NET_DEVICES=mlx5_8:1`, and no
+`UCX_IB_GID_INDEX` entry.
 
 ## 4. Smoke test
 
@@ -363,7 +340,7 @@ kubectl port-forward -n "$NAMESPACE" \
   service/"$FRONTEND_SERVICE" "$LOCAL_PORT":8000
 ```
 
-In another terminal:
+In another terminal, send a smoke-test request:
 
 ```bash
 curl -fsS "$BENCH_URL/v1/chat/completions" \
@@ -377,6 +354,25 @@ curl -fsS "$BENCH_URL/v1/chat/completions" \
   }
 EOF
 ```
+
+Immediately check for successful KV transfers and transport failures:
+
+```bash
+kubectl get pods -n "$NAMESPACE" \
+  -l "$GRAPH_LABEL,nvidia.com/dynamo-component-type=worker" \
+  -o name |
+while read -r pod; do
+  kubectl logs -n "$NAMESPACE" "$pod" \
+    --all-containers --prefix --since=10m
+done |
+grep -Ei \
+  'KV Transfer metrics|successful transfers|nixl|rc_mlx5|failed transfers|NIXL_ERR|Address not valid|No such device' |
+tail -n 500
+```
+
+The request must succeed, successful-transfer evidence must appear, and no
+failed-transfer increase, TCP fallback, `NIXL_ERR`, `Address not valid`, or
+`No such device` error may appear.
 
 ## 5. Benchmark
 
