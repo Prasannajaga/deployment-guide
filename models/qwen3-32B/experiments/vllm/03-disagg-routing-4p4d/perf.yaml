@@ -27,103 +27,186 @@ spec:
         - name: perf
           image: python:3.11-slim
           imagePullPolicy: IfNotPresent
+          workingDir: /workspace
           command:
             - /bin/bash
             - -lc
           args:
             - |
-              set -Eeuo pipefail
+              set -euo pipefail
+
+              echo "Open-file limit: $(ulimit -n)"
+              echo "Process limit: $(ulimit -u)"
 
               apt-get update
               apt-get install -y --no-install-recommends \
                 build-essential ca-certificates curl jq
               rm -rf /var/lib/apt/lists/*
-              python -m pip install --no-cache-dir "aiperf==$AIPERF_VERSION"
+              python -m pip install --no-cache-dir "aiperf==${AIPERF_VERSION}"
 
-              echo "Waiting for $MODEL_NAME at http://$ENDPOINT/v1/models"
-              ready_deadline=$(( $(date +%s) + MODEL_READY_TIMEOUT_SECONDS ))
-              until curl -fsS --max-time 10 "http://$ENDPOINT/v1/models" |
-                jq -e --arg model "$MODEL_NAME" \
-                  '.data[]? | select(.id == $model)' >/dev/null; do
-                if [ "$(date +%s)" -ge "$ready_deadline" ]; then
-                  echo "Model readiness timed out" >&2
-                  exit 1
-                fi
-                sleep 5
-              done
+              mkdir -p "$TRACE_DIR" "$ARTIFACT_ROOT" /perf-cache/tmp
+              export TMPDIR=/perf-cache/tmp
+              export COLUMNS=200
 
-              mkdir -p "$TRACE_DIR" "$ARTIFACT_ROOT"
-              trace_file="$TRACE_DIR/conversation_trace.jsonl"
-              if [ ! -s "$trace_file" ]; then
-                curl -fL --retry 5 --retry-delay 5 \
-                  "$TRACE_URL" -o "${trace_file}.tmp"
-                test -s "${trace_file}.tmp"
-                mv "${trace_file}.tmp" "$trace_file"
+              wait_for_model_ready() {
+                local attempt=1
+                local max_attempts=540
+
+                echo "Waiting for $MODEL_NAME at http://$ENDPOINT/v1/models"
+                while ! curl --fail --silent --show-error --max-time 10 \
+                  "http://$ENDPOINT/v1/models" |
+                  jq -e --arg model "$MODEL_NAME" \
+                    '.data[]? | select(.id == $model)' >/dev/null; do
+                  if [ "$attempt" -ge "$max_attempts" ]; then
+                    echo "Model readiness timed out after 45 minutes" >&2
+                    return 1
+                  fi
+                  attempt=$((attempt + 1))
+                  sleep 5
+                done
+              }
+
+              wait_for_model_ready
+              curl --fail --silent --show-error \
+                "http://$ENDPOINT/v1/models" > /tmp/models.json
+
+              python - <<'PY'
+              import os
+              from aiperf.common.tokenizer import Tokenizer
+
+              tokenizer = Tokenizer.from_pretrained(
+                  os.environ["MODEL_NAME"],
+                  revision=os.environ["MODEL_REVISION"],
+                  trust_remote_code=True,
+                  resolve_alias=False,
+              )
+              token_ids = tokenizer.encode("AIPerf tokenizer preflight")
+              assert tokenizer.decode(token_ids)
+              print(f"AIPERF_TOKENIZER_OK tokens={len(token_ids)}")
+              PY
+
+              ORIGINAL_TRACE="$TRACE_DIR/conversation_trace.jsonl"
+              if [ ! -s "$ORIGINAL_TRACE" ]; then
+                echo "Downloading Mooncake FAST25 conversation trace"
+                curl --fail --location --retry 5 --retry-delay 5 \
+                  --output "${ORIGINAL_TRACE}.tmp" "$TRACE_URL"
+                test -s "${ORIGINAL_TRACE}.tmp"
+                mv "${ORIGINAL_TRACE}.tmp" "$ORIGINAL_TRACE"
               fi
 
-              original_trace="$TRACE_DIR/conversation_trace.jsonl"
-              over_context_count=$(jq -s --argjson max "$MAX_CONTEXT_TOKENS" \
-                '[.[] | select((.input_length + .output_length) > $max)] | length' \
-                "$original_trace")
+              original_trace_sha256=$(sha256sum "$ORIGINAL_TRACE" | awk '{print $1}')
+              original_request_count=$(wc -l < "$ORIGINAL_TRACE" | tr -d ' ')
+              trace_stats=$(jq -s \
+                --argjson max_context "$MAX_CONTEXT_TOKENS" \
+                '{
+                  request_count: length,
+                  max_input_tokens: (map(.input_length) | max),
+                  max_output_tokens: (map(.output_length) | max),
+                  max_total_tokens: (map(.input_length + .output_length) | max),
+                  over_context_count: (
+                    map(select((.input_length + .output_length) > $max_context)) |
+                    length
+                  )
+                }' "$ORIGINAL_TRACE")
+              over_context_count=$(jq -r '.over_context_count' <<<"$trace_stats")
+
+              INPUT_FILE="$ORIGINAL_TRACE"
               if [ "$over_context_count" -gt 0 ]; then
-                if [ "$TRACE_OVERFLOW_POLICY" != filter ]; then
-                  echo "$over_context_count requests exceed the $MAX_CONTEXT_TOKENS-token context" >&2
-                  exit 2
-                fi
-                trace_file="$TRACE_DIR/conversation_trace.maxctx${MAX_CONTEXT_TOKENS}.jsonl"
-                jq -c --argjson max "$MAX_CONTEXT_TOKENS" \
-                  'select((.input_length + .output_length) <= $max)' \
-                  "$original_trace" > "${trace_file}.tmp"
-                test -s "${trace_file}.tmp"
-                mv "${trace_file}.tmp" "$trace_file"
-                echo "Filtered $over_context_count requests above $MAX_CONTEXT_TOKENS tokens"
+                case "$TRACE_OVERFLOW_POLICY" in
+                  filter)
+                    INPUT_FILE="$TRACE_DIR/conversation_trace.maxctx${MAX_CONTEXT_TOKENS}.jsonl"
+                    jq -c --argjson max_context "$MAX_CONTEXT_TOKENS" \
+                      'select((.input_length + .output_length) <= $max_context)' \
+                      "$ORIGINAL_TRACE" > "${INPUT_FILE}.tmp"
+                    test -s "${INPUT_FILE}.tmp"
+                    mv "${INPUT_FILE}.tmp" "$INPUT_FILE"
+                    echo "WARNING: filtered $over_context_count requests that exceed max context $MAX_CONTEXT_TOKENS"
+                    ;;
+                  fail)
+                    echo "Trace contains $over_context_count requests exceeding max context $MAX_CONTEXT_TOKENS" >&2
+                    echo "Increase the deployment context or set TRACE_OVERFLOW_POLICY=filter explicitly" >&2
+                    exit 2
+                    ;;
+                  *)
+                    echo "Unsupported TRACE_OVERFLOW_POLICY=$TRACE_OVERFLOW_POLICY" >&2
+                    exit 2
+                    ;;
+                esac
               fi
 
-              original_trace_sha256=$(sha256sum "$original_trace" | awk '{print $1}')
-              trace_sha256=$(sha256sum "$trace_file" | awk '{print $1}')
-              original_request_count=$(wc -l < "$original_trace" | tr -d ' ')
-              request_count=$(wc -l < "$trace_file" | tr -d ' ')
-              run_id=$(date -u +%Y%m%dT%H%M%SZ)
-              run_dir="$ARTIFACT_ROOT/$EXPERIMENT_ID/$run_id"
-              artifact_dir="$run_dir/aiperf"
-              manifest="$run_dir/manifest.json"
-              mkdir -p "$artifact_dir"
-              chmod -R a+rwX "$run_dir"
+              effective_trace_sha256=$(sha256sum "$INPUT_FILE" | awk '{print $1}')
+              effective_request_count=$(wc -l < "$INPUT_FILE" | tr -d ' ')
+              run_id="$(date -u +%Y%m%dT%H%M%SZ)_${JOB_NAME}"
+              run_root="$ARTIFACT_ROOT/$EXPERIMENT_ID/$run_id"
+              aiperf_dir="$run_root/aiperf"
+              manifest="$run_root/manifest.json"
+              mkdir -p \
+                "$aiperf_dir" \
+                "$run_root/deployment" \
+                "$run_root/metrics" \
+                "$run_root/processed" \
+                "$run_root/plots"
+              chmod -R a+rwX "$run_root"
+              cp /tmp/models.json "$run_root/models.json"
 
-              start_epoch=$(date -u +%s)
-              start_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+              benchmark_start_epoch=$(date -u +%s)
+              benchmark_start_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)
               jq -n \
-                --arg run_id "$run_id" \
                 --arg experiment_id "$EXPERIMENT_ID" \
+                --arg run_id "$run_id" \
                 --arg deployment "$DEPLOYMENT_NAME" \
+                --arg endpoint "$ENDPOINT" \
                 --arg model "$MODEL_NAME" \
+                --arg model_path "$MODEL_PATH" \
                 --arg model_revision "$MODEL_REVISION" \
                 --arg aiperf_version "$AIPERF_VERSION" \
+                --arg workload "mooncake_trace_fixed_schedule" \
+                --arg original_trace "$ORIGINAL_TRACE" \
+                --arg effective_trace "$INPUT_FILE" \
                 --arg original_trace_sha256 "$original_trace_sha256" \
-                --arg trace_sha256 "$trace_sha256" \
-                --arg start_utc "$start_utc" \
-                --argjson start_epoch "$start_epoch" \
+                --arg effective_trace_sha256 "$effective_trace_sha256" \
+                --arg overflow_policy "$TRACE_OVERFLOW_POLICY" \
+                --arg topology "$TOPOLOGY" \
+                --arg router_mode "$ROUTER_MODE" \
+                --arg start_utc "$benchmark_start_utc" \
                 --argjson original_request_count "$original_request_count" \
-                --argjson request_count "$request_count" \
-                --argjson filtered_request_count "$over_context_count" \
+                --argjson effective_request_count "$effective_request_count" \
                 --argjson max_context_tokens "$MAX_CONTEXT_TOKENS" \
+                --argjson over_context_count "$over_context_count" \
+                --argjson gpu_count "$GPU_COUNT" \
                 --argjson slo_ttft_ms "$SLO_TTFT_MS" \
                 --argjson slo_itl_ms "$SLO_ITL_MS" \
+                --argjson ignore_eos true \
+                --argjson use_server_token_count true \
+                --argjson start_epoch "$benchmark_start_epoch" \
+                --argjson kv_offload "$KV_OFFLOAD" \
+                --argjson trace_stats "$trace_stats" \
                 '{
-                  run_id: $run_id,
                   experiment_id: $experiment_id,
+                  run_id: $run_id,
                   deployment: $deployment,
+                  endpoint: $endpoint,
                   model: $model,
+                  model_path: $model_path,
                   model_revision: $model_revision,
                   aiperf_version: $aiperf_version,
-                  workload: "mooncake_trace_fixed_schedule",
-                  trace_overflow_policy: "filter",
+                  workload: $workload,
+                  original_trace: $original_trace,
+                  effective_trace: $effective_trace,
                   original_trace_sha256: $original_trace_sha256,
-                  trace_sha256: $trace_sha256,
+                  effective_trace_sha256: $effective_trace_sha256,
                   original_request_count: $original_request_count,
-                  request_count: $request_count,
-                  filtered_request_count: $filtered_request_count,
+                  effective_request_count: $effective_request_count,
+                  trace_stats: $trace_stats,
                   max_context_tokens: $max_context_tokens,
+                  over_context_count: $over_context_count,
+                  trace_overflow_policy: $overflow_policy,
+                  gpu_count: $gpu_count,
+                  topology: $topology,
+                  router_mode: $router_mode,
+                  kv_offload: $kv_offload,
+                  ignore_eos: $ignore_eos,
+                  use_server_token_count: $use_server_token_count,
                   slo_ms: {ttft: $slo_ttft_ms, itl: $slo_itl_ms},
                   benchmark_start_utc: $start_utc,
                   benchmark_start_epoch: $start_epoch,
@@ -132,41 +215,41 @@ spec:
                   aiperf_exit_code: null
                 }' > "$manifest"
 
-              aiperf_exit=255
-              cleanup_aiperf_artifacts() {
-                rm -f -- \
-                  "$artifact_dir/inputs.json" \
-                  "$artifact_dir/profile_export_aiperf.csv" \
-                  "$artifact_dir/server_metrics_export.csv" \
-                  "$artifact_dir/logs/aiperf.log"
-                rmdir "$artifact_dir/logs" 2>/dev/null || true
-              }
-
-              finalize() {
-                shell_exit=$?
-                if [ "$aiperf_exit" -eq 255 ]; then
-                  aiperf_exit=$shell_exit
+              AIPERF_EXIT=255
+              finalize_run() {
+                local shell_exit=$?
+                local final_exit=$AIPERF_EXIT
+                local end_epoch end_utc tmp_manifest
+                if [ "$final_exit" -eq 255 ]; then
+                  final_exit=$shell_exit
                 fi
+                end_epoch=$(date -u +%s)
+                end_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+                tmp_manifest="${manifest}.tmp"
                 jq \
-                  --arg end_utc "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-                  --argjson end_epoch "$(date -u +%s)" \
-                  --argjson exit_code "$aiperf_exit" \
+                  --arg end_utc "$end_utc" \
+                  --argjson end_epoch "$end_epoch" \
+                  --argjson exit_code "$final_exit" \
                   '.benchmark_end_utc = $end_utc |
                    .benchmark_end_epoch = $end_epoch |
                    .aiperf_exit_code = $exit_code' \
-                  "$manifest" > "${manifest}.tmp" && mv "${manifest}.tmp" "$manifest"
-                cleanup_aiperf_artifacts
-                chmod -R a+rwX "$run_dir" 2>/dev/null || true
-                echo "Run artifacts: $run_dir"
+                  "$manifest" > "$tmp_manifest" && mv "$tmp_manifest" "$manifest"
+                chown -R "$ARTIFACT_UID:$ARTIFACT_GID" "$run_root" 2>/dev/null || true
+                chmod -R a+rwX "$run_root" 2>/dev/null || true
+                echo "Run artifacts: $run_root"
               }
-              trap finalize EXIT
+              trap finalize_run EXIT
 
+              echo "Starting Mooncake fixed-schedule replay"
+              echo "Original requests: $original_request_count"
+              echo "Effective requests: $effective_request_count"
+              echo "Trace SHA256: $effective_trace_sha256"
               set +e
               aiperf profile \
                 --model "$MODEL_NAME" \
                 --tokenizer "$MODEL_NAME" \
                 --tokenizer-revision "$MODEL_REVISION" \
-                --input-file "$trace_file" \
+                --input-file "$INPUT_FILE" \
                 --custom-dataset-type mooncake_trace \
                 --fixed-schedule \
                 --url "http://$ENDPOINT" \
@@ -174,28 +257,31 @@ spec:
                 --extra-inputs ignore_eos:true \
                 --use-server-token-count \
                 --no-gpu-telemetry \
-                --artifact-dir "$artifact_dir" \
+                --artifact-dir "$aiperf_dir" \
                 --goodput "time_to_first_token:${SLO_TTFT_MS} inter_token_latency:${SLO_ITL_MS}" \
                 --ui simple \
-                2>&1 | tr '\r' '\n' | tee "$artifact_dir/aiperf.log"
-              aiperf_exit=${PIPESTATUS[0]}
+                2>&1 | tee "$aiperf_dir/aiperf.log"
+              AIPERF_EXIT=${PIPESTATUS[0]}
               set -e
-              exit "$aiperf_exit"
+
+              exit "$AIPERF_EXIT"
           env:
             - name: EXPERIMENT_ID
-              value: 03-disagg-routing-4p4d
+              value: exp5-disagg-routing-4p4d
             - name: DEPLOYMENT_NAME
               value: qwen3-32b-fp8-vllm-disagg-routing-4p4d
+            - name: JOB_NAME
+              value: qwen3-32b-fp8-vllm-disagg-routing-4p4d-perf
             - name: MODEL_NAME
               value: Qwen/Qwen3-32B-FP8
+            - name: MODEL_PATH
+              value: /opt/models/hub/models--Qwen--Qwen3-32B-FP8/snapshots/aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df
             - name: MODEL_REVISION
               value: aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df
             - name: ENDPOINT
               value: qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend:8000
             - name: AIPERF_VERSION
               value: "0.10.0"
-            - name: MODEL_READY_TIMEOUT_SECONDS
-              value: "2700"
             - name: TRACE_URL
               value: https://raw.githubusercontent.com/kvcache-ai/Mooncake/main/FAST25-release/traces/conversation_trace.jsonl
             - name: TRACE_DIR
@@ -206,6 +292,14 @@ spec:
               value: "40960"
             - name: ARTIFACT_ROOT
               value: /perf-cache/artifacts
+            - name: GPU_COUNT
+              value: "16"
+            - name: TOPOLOGY
+              value: 4P(TP2)+4D(TP2)
+            - name: ROUTER_MODE
+              value: round-robin
+            - name: KV_OFFLOAD
+              value: "false"
             - name: SLO_TTFT_MS
               value: "2000"
             - name: SLO_ITL_MS
@@ -220,13 +314,19 @@ spec:
               value: "512"
             - name: PYTHONUNBUFFERED
               value: "1"
+            - name: ARTIFACT_UID
+              value: "1002"
+            - name: ARTIFACT_GID
+              value: "1002"
           resources:
             requests:
               cpu: "8"
               memory: 16Gi
+              ephemeral-storage: 4Gi
             limits:
               cpu: "16"
               memory: 32Gi
+              ephemeral-storage: 16Gi
           volumeMounts:
             - name: model-cache
               mountPath: /opt/models

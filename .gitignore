@@ -71,15 +71,12 @@ htmlcov/
 ehthumbs.db
 Thumbs.db
 
-# Logs & Temporary Files
-*.log
-logs/
+# Temporary Files
 *.tmp
 *.temp
 tmp/
 
-# Benchmark & AIPerf Generated Artifacts
-profile_export*
-server_metrics_export*
+# Local Benchmark Outputs
 chat.html
 models/qwen3-32B/benchmarks
+/models/qwen3-32B/artifacts/plots/

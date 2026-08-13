@@ -1,1347 +1,0 @@
-04:54:58.298 INFO     Starting AIPerf System (_single_run.py:64)
-04:54:58.630 INFO     GPU telemetry disabled via --no-gpu-telemetry (system_controller.py:253)
-04:54:58.639 INFO     Registered Dataset Manager (id: 'dataset_manager') (system_controller.py:387)
-04:54:58.640 INFO     Registered Worker Manager (id: 'worker_manager') (system_controller.py:387)
-04:54:58.666 INFO     Server Metrics: Discovered 1 endpoints: ['http://qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend:8000/metrics'] (manager.py:74)
-04:54:58.668 INFO     Telemetry streaming is disabled (set --otel-url and/or --mlflow-tracking-uri to enable) (otel_metrics_results_processor.py:128)
-04:54:58.668 INFO     OTel metrics streamer is disabled and will not be used: Telemetry streaming is disabled (set --otel-url and/or --mlflow-tracking-uri to enable) (records_manager.py:206)
-04:54:58.669 INFO     Record metrics export enabled: /perf-cache/artifacts/qwen3-32b-fp8-vllm-disagg-routing-4p4d/20260813T045457Z/aiperf/profile_export.jsonl (record_export_results_processor.py:58)
-04:54:58.899 INFO     Registered Records Manager (id: 'records_manager') (system_controller.py:387)
-04:54:58.899 INFO     Registered Timing Manager (id: 'timing_manager') (system_controller.py:387)
-04:54:58.899 INFO     Registered Server Metrics Manager (id: 'server_metrics_manager') (system_controller.py:387)
-04:54:58.918 INFO     Registered Worker (id: 'worker_e9f05188') (system_controller.py:387)
-04:54:58.919 INFO     Registered Worker (id: 'worker_81ea6786') (system_controller.py:387)
-04:54:58.919 INFO     Registered Worker (id: 'worker_8a4bca29') (system_controller.py:387)
-04:54:58.920 INFO     Registered Worker (id: 'worker_1d071c0d') (system_controller.py:387)
-04:54:58.922 INFO     Registered Record Processor (id: 'record_processor_7da1c52f') (system_controller.py:387)
-04:54:58.924 INFO     Registered Record Processor (id: 'record_processor_78ea1ab4') (system_controller.py:387)
-04:54:58.987 INFO     Registered Record Processor (id: 'record_processor_cb2873e5') (system_controller.py:387)
-04:54:58.987 INFO     Registered Record Processor (id: 'record_processor_2d1090e4') (system_controller.py:387)
-04:54:58.988 INFO     Registered Worker (id: 'worker_245ba085') (system_controller.py:387)
-04:54:58.992 INFO     Registered Worker (id: 'worker_dbaeb712') (system_controller.py:387)
-04:54:58.992 INFO     Registered Record Processor (id: 'record_processor_bb0fd905') (system_controller.py:387)
-04:54:58.993 INFO     Registered Worker (id: 'worker_5f7e994a') (system_controller.py:387)
-04:54:59.001 INFO     Registered Worker (id: 'worker_f245aaec') (system_controller.py:387)
-04:54:59.005 INFO     Registered Worker (id: 'worker_0c60f5bc') (system_controller.py:387)
-04:54:59.011 INFO     Registered Worker (id: 'worker_0e035ad5') (system_controller.py:387)
-04:54:59.012 INFO     Registered Worker (id: 'worker_905acbb4') (system_controller.py:387)
-04:54:59.013 INFO     Registered Worker (id: 'worker_11e8d27b') (system_controller.py:387)
-04:54:59.023 INFO     Registered Worker (id: 'worker_47eb3882') (system_controller.py:387)
-04:54:59.027 INFO     Registered Record Processor (id: 'record_processor_548990ec') (system_controller.py:387)
-04:54:59.027 INFO     Registered Record Processor (id: 'record_processor_38be0033') (system_controller.py:387)
-04:54:59.133 INFO     AIPerf System is CONFIGURING (system_controller.py:276)
-04:54:59.133 INFO     Configuring all services to start profiling (system_controller.py:289)
-04:54:59.160 INFO     Connection probe for record_processor_70257e6d succeeded after 3 attempts (0.2s) (message_bus_mixin.py:99)
-04:54:59.161 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
-04:54:59.161 INFO     Waiting for dataset to be configured before configuring timing (manager.py:122)
-04:54:59.161 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
-04:54:59.161 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
-04:54:59.161 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
-04:54:59.161 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
-04:54:59.161 INFO     Configuring tokenizer(s) for dataset manager (dataset_manager.py:139)
-04:54:59.161 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
-04:54:59.161 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
-04:54:59.161 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
-04:54:59.161 INFO     Registered Worker (id: 'worker_4f9b4a73') (system_controller.py:387)
-04:54:59.162 INFO     Registered Worker (id: 'worker_9bd88b19') (system_controller.py:387)
-04:54:59.162 INFO     Registered Worker (id: 'worker_f612e00a') (system_controller.py:387)
-04:54:59.162 INFO     Registered Worker (id: 'worker_068cc11f') (system_controller.py:387)
-04:54:59.162 INFO     Registered Worker (id: 'worker_01c2dc85') (system_controller.py:387)
-04:54:59.162 INFO     Registered Record Processor (id: 'record_processor_70257e6d') (system_controller.py:387)
-04:54:59.162 INFO     Registered Worker (id: 'worker_00067af7') (system_controller.py:387)
-04:54:59.162 INFO     Registered Worker (id: 'worker_a9fca620') (system_controller.py:387)
-04:54:59.162 INFO     Registered Worker (id: 'worker_63ce9412') (system_controller.py:387)
-04:54:59.163 INFO     Registered Worker (id: 'worker_71c20867') (system_controller.py:387)
-04:54:59.163 WARNING  Received command response for service we were not expecting: record_processor_70257e6d. Ignoring. (command_handler_mixin.py:356)
-04:54:59.165 INFO     Registered Worker (id: 'worker_a54c0384') (system_controller.py:387)
-04:54:59.166 INFO     Server Metrics: Capturing baseline metrics... (manager.py:156)
-04:54:59.179 INFO     Server metrics enabled - 1/1 endpoint(s) reachable. (system_controller.py:527)
-04:54:59.232 INFO     Connection probe for worker_b3cdbd90 succeeded after 3 attempts (0.2s) (message_bus_mixin.py:99)
-04:54:59.232 INFO     Registered Worker (id: 'worker_b3cdbd90') (system_controller.py:387)
-04:54:59.259 INFO     Registered Worker (id: 'worker_65b3fc2a') (system_controller.py:387)
-04:54:59.259 INFO     Registered Worker (id: 'worker_23dba107') (system_controller.py:387)
-04:54:59.261 INFO     Connection probe for worker_cb0bfb0a succeeded after 3 attempts (0.2s) (message_bus_mixin.py:99)
-04:54:59.261 INFO     Registered Worker (id: 'worker_25e177b0') (system_controller.py:387)
-04:54:59.262 INFO     Registered Worker (id: 'worker_4bddaa55') (system_controller.py:387)
-04:54:59.262 INFO     Registered Worker (id: 'worker_cb0bfb0a') (system_controller.py:387)
-04:54:59.262 INFO     Registered Worker (id: 'worker_68663f93') (system_controller.py:387)
-04:54:59.262 INFO     Registered Worker (id: 'worker_b9b9ff91') (system_controller.py:387)
-04:54:59.262 INFO     Registered Worker (id: 'worker_16b336e0') (system_controller.py:387)
-04:55:00.441 INFO     Tokenizer(s) configured in 1.28 seconds (dataset_manager.py:143)
-04:55:00.442 INFO     Configuring dataset for dataset_manager (dataset_manager.py:149)
-04:55:00.838 INFO     Using explicit dataset format: mooncake_trace (custom.py:60)
-04:55:12.969 INFO     Memory-mapped backing store initialized (streaming to /tmp/aiperf_mmap_a1dd720d8fec/dataset.dat) (memory_map_utils.py:141)
-04:55:14.324 INFO     Data file finalized: 11457 conversations, 448.57 MB (memory_map_utils.py:245)
-04:55:14.325 INFO     Index file created: /tmp/aiperf_mmap_a1dd720d8fec/index.dat (memory_map_utils.py:252)
-04:55:14.325 INFO     Backing store finalized: client_type=DatasetClientStoreType.MEMORY_MAP data_file_path=PosixPath('/tmp/aiperf_mmap_a1dd720d8fec/dataset.dat') index_file_path=PosixPath('/tmp/aiperf_mmap_a1dd720d8fec/index.dat') conversation_count=11457 total_size_bytes=470363878 compressed_data_file_path=None compressed_index_file_path=None compressed_size_bytes=0 (dataset_manager.py:479)
-04:55:14.503 INFO     sampling strategy: sequential, unique conversations: 11457, unique turn count: 11457 (dataset_manager.py:497)
-04:55:14.532 INFO     Generating inputs.json file at /perf-cache/artifacts/qwen3-32b-fp8-vllm-disagg-routing-4p4d/20260813T045457Z/aiperf/inputs.json (dataset_manager.py:337)
-04:55:14.608 INFO     Initialized 1 phase(s): ['Profiling'] (phase_orchestrator.py:165)
-04:55:14.624 WARNING  Received command response for service we were not expecting: worker_00067af7. Ignoring. (command_handler_mixin.py:356)
-04:55:14.624 WARNING  Received command response for service we were not expecting: worker_4f9b4a73. Ignoring. (command_handler_mixin.py:356)
-04:55:14.685 WARNING  Received command response for service we were not expecting: worker_b3cdbd90. Ignoring. (command_handler_mixin.py:356)
-04:55:14.685 WARNING  Received command response for service we were not expecting: worker_9bd88b19. Ignoring. (command_handler_mixin.py:356)
-04:55:14.685 WARNING  Received command response for service we were not expecting: worker_71c20867. Ignoring. (command_handler_mixin.py:356)
-04:55:14.686 WARNING  Received command response for service we were not expecting: worker_f612e00a. Ignoring. (command_handler_mixin.py:356)
-04:55:14.686 WARNING  Received command response for service we were not expecting: worker_068cc11f. Ignoring. (command_handler_mixin.py:356)
-04:55:14.688 WARNING  Received command response for service we were not expecting: worker_63ce9412. Ignoring. (command_handler_mixin.py:356)
-04:55:14.690 WARNING  Received command response for service we were not expecting: worker_65b3fc2a. Ignoring. (command_handler_mixin.py:356)
-04:55:14.702 WARNING  Received command response for service we were not expecting: worker_a9fca620. Ignoring. (command_handler_mixin.py:356)
-04:55:14.727 WARNING  Received command response for service we were not expecting: worker_01c2dc85. Ignoring. (command_handler_mixin.py:356)
-04:55:15.738 INFO     inputs.json file generated in 1.21 seconds (dataset_manager.py:356)
-04:55:15.937 INFO     Dataset client initialized and freed 11457 conversations from memory (dataset_manager.py:185)
-04:55:15.937 INFO     Dataset configured in 15.50 seconds (dataset_manager.py:156)
-04:55:15.937 INFO     All services configured in 16.80 seconds (system_controller.py:300)
-04:55:15.938 INFO     AIPerf System is CONFIGURED (system_controller.py:278)
-04:55:15.938 INFO     Server Metrics: Started 1 collector(s) successfully (manager.py:220)
-04:55:15.940 INFO     All services started profiling successfully (system_controller.py:322)
-04:55:15.941 INFO     AIPerf System is PROFILING (system_controller.py:280)
-04:55:15.978 INFO     Built schedule with 11457 timestamps, zero_ms=0, auto_offset=True (fixed_schedule.py:119)
-04:55:15.978 NOTICE   Phase profiling started | target: 11,457 requests, 11,457 sessions (runner.py:369)
-04:55:15.978 INFO     Credit phase start: profiling (records_manager.py:518)
-Profiling: 0/11,457 |[32m          [0m|   0% [00:00<?]Profiling: 0/11,457 |[32m          [0m|   0% [00:00<?]                                               Profiling: 118/11,457 |[32m          [0m|   1% [00:52<1:23:17]Profiling: 118/11,457 |[32m          [0m|   1% [00:52<1:23:17]Profiling: 235/11,457 |[32m▏         [0m|   2% [01:42<1:20:58]Profiling: 235/11,457 |[32m▏         [0m|   2% [01:42<1:20:58]Profiling: 354/11,457 |[32m▎         [0m|   3% [02:32<1:19:01]Profiling: 354/11,457 |[32m▎         [0m|   3% [02:32<1:19:01]Profiling: 469/11,457 |[32m▍         [0m|   4% [03:10<1:11:20]Profiling: 469/11,457 |[32m▍         [0m|   4% [03:10<1:11:20]Profiling: 590/11,457 |[32m▌         [0m|   5% [04:02<1:13:14]Profiling: 590/11,457 |[32m▌         [0m|   5% [04:02<1:13:14]Profiling: 705/11,457 |[32m▌         [0m|   6% [04:48<1:12:12]Profiling: 705/11,457 |[32m▌         [0m|   6% [04:48<1:12:12]Profiling: 821/11,457 |[32m▋         [0m|   7% [05:38<1:13:03]Profiling: 821/11,457 |[32m▋         [0m|   7% [05:38<1:13:03]Profiling: 941/11,457 |[32m▊         [0m|   8% [06:30<1:13:26]Profiling: 941/11,457 |[32m▊         [0m|   8% [06:30<1:13:26]Profiling: 1,061/11,457 |[32m▉         [0m|   9% [07:26<1:15:12]Profiling: 1,061/11,457 |[32m▉         [0m|   9% [07:26<1:15:12]Profiling: 1,184/11,457 |[32m█         [0m|  10% [08:14<1:11:56]Profiling: 1,184/11,457 |[32m█         [0m|  10% [08:14<1:11:56]Profiling: 1,304/11,457 |[32m█▏        [0m|  11% [09:10<1:13:31]Profiling: 1,304/11,457 |[32m█▏        [0m|  11% [09:10<1:13:31]Profiling: 1,423/11,457 |[32m█▏        [0m|  12% [09:58<1:11:05]Profiling: 1,423/11,457 |[32m█▏        [0m|  12% [09:58<1:11:05]Profiling: 1,539/11,457 |[32m█▎        [0m|  13% [10:40<1:07:10]Profiling: 1,539/11,457 |[32m█▎        [0m|  13% [10:40<1:07:10]Profiling: 1,656/11,457 |[32m█▍        [0m|  14% [11:22<1:04:04]Profiling: 1,656/11,457 |[32m█▍        [0m|  14% [11:22<1:04:04]Profiling: 1,771/11,457 |[32m█▌        [0m|  15% [12:04<1:02:01]Profiling: 1,771/11,457 |[32m█▌        [0m|  15% [12:04<1:02:01]Profiling: 1,890/11,457 |[32m█▋        [0m|  16% [12:50<1:01:22]Profiling: 1,890/11,457 |[32m█▋        [0m|  16% [12:50<1:01:22]Profiling: 2,008/11,457 |[32m█▊        [0m|  18% [13:32<59:14]  Profiling: 2,008/11,457 |[32m█▊        [0m|  18% [13:32<59:14]Profiling: 2,124/11,457 |[32m█▊        [0m|  19% [14:18<59:27]Profiling: 2,124/11,457 |[32m█▊        [0m|  19% [14:18<59:27]Profiling: 2,240/11,457 |[32m█▉        [0m|  20% [15:04<59:22]Profiling: 2,240/11,457 |[32m█▉        [0m|  20% [15:04<59:22]Profiling: 2,358/11,457 |[32m██        [0m|  21% [15:50<58:46]Profiling: 2,358/11,457 |[32m██        [0m|  21% [15:50<58:46]Profiling: 2,473/11,457 |[32m██▏       [0m|  22% [16:30<56:16]Profiling: 2,473/11,457 |[32m██▏       [0m|  22% [16:30<56:16]Profiling: 2,595/11,457 |[32m██▎       [0m|  23% [17:22<57:48]Profiling: 2,595/11,457 |[32m██▎       [0m|  23% [17:22<57:48]Profiling: 2,713/11,457 |[32m██▎       [0m|  24% [18:12<58:27]Profiling: 2,713/11,457 |[32m██▎       [0m|  24% [18:12<58:27]Profiling: 2,829/11,457 |[32m██▍       [0m|  25% [18:56<56:45]Profiling: 2,829/11,457 |[32m██▍       [0m|  25% [18:56<56:45]Profiling: 2,944/11,457 |[32m██▌       [0m|  26% [19:32<52:34]Profiling: 2,944/11,457 |[32m██▌       [0m|  26% [19:32<52:34]Profiling: 3,063/11,457 |[32m██▋       [0m|  27% [20:18<52:31]Profiling: 3,063/11,457 |[32m██▋       [0m|  27% [20:18<52:31]Profiling: 3,180/11,457 |[32m██▊       [0m|  28% [20:56<49:42]Profiling: 3,180/11,457 |[32m██▊       [0m|  28% [20:56<49:42]Profiling: 3,299/11,457 |[32m██▉       [0m|  29% [21:38<48:41]Profiling: 3,299/11,457 |[32m██▉       [0m|  29% [21:38<48:41]Profiling: 3,414/11,457 |[32m██▉       [0m|  30% [22:18<47:35]Profiling: 3,414/11,457 |[32m██▉       [0m|  30% [22:18<47:35]Profiling: 3,533/11,457 |[32m███       [0m|  31% [22:56<45:27]Profiling: 3,533/11,457 |[32m███       [0m|  31% [22:56<45:27]Profiling: 3,653/11,457 |[32m███▏      [0m|  32% [23:38<45:00]Profiling: 3,653/11,457 |[32m███▏      [0m|  32% [23:38<45:00]Profiling: 3,770/11,457 |[32m███▎      [0m|  33% [24:22<45:28]Profiling: 3,770/11,457 |[32m███▎      [0m|  33% [24:22<45:28]Profiling: 3,890/11,457 |[32m███▍      [0m|  34% [25:12<47:07]Profiling: 3,890/11,457 |[32m███▍      [0m|  34% [25:12<47:07]Profiling: 4,006/11,457 |[32m███▍      [0m|  35% [25:46<43:27]Profiling: 4,006/11,457 |[32m███▍      [0m|  35% [25:46<43:27]Profiling: 4,122/11,457 |[32m███▌      [0m|  36% [26:30<43:50]Profiling: 4,122/11,457 |[32m███▌      [0m|  36% [26:30<43:50]Profiling: 4,237/11,457 |[32m███▋      [0m|  37% [27:10<42:46]Profiling: 4,237/11,457 |[32m███▋      [0m|  37% [27:10<42:46]Profiling: 4,353/11,457 |[32m███▊      [0m|  38% [27:52<42:19]Profiling: 4,353/11,457 |[32m███▊      [0m|  38% [27:52<42:19]Profiling: 4,472/11,457 |[32m███▉      [0m|  39% [28:34<41:27]Profiling: 4,472/11,457 |[32m███▉      [0m|  39% [28:34<41:27]Profiling: 4,590/11,457 |[32m████      [0m|  40% [29:14<40:10]Profiling: 4,590/11,457 |[32m████      [0m|  40% [29:14<40:10]Profiling: 4,705/11,457 |[32m████      [0m|  41% [29:56<39:58]Profiling: 4,705/11,457 |[32m████      [0m|  41% [29:56<39:58]Profiling: 4,821/11,457 |[32m████▏     [0m|  42% [30:34<38:22]Profiling: 4,821/11,457 |[32m████▏     [0m|  42% [30:34<38:22]Profiling: 4,939/11,457 |[32m████▎     [0m|  43% [31:10<36:18]Profiling: 4,939/11,457 |[32m████▎     [0m|  43% [31:10<36:18]Profiling: 5,058/11,457 |[32m████▍     [0m|  44% [31:58<37:53]Profiling: 5,058/11,457 |[32m████▍     [0m|  44% [31:58<37:53]Profiling: 5,173/11,457 |[32m████▌     [0m|  45% [32:48<39:40]Profiling: 5,173/11,457 |[32m████▌     [0m|  45% [32:48<39:40]Profiling: 5,295/11,457 |[32m████▌     [0m|  46% [33:32<38:19]Profiling: 5,295/11,457 |[32m████▌     [0m|  46% [33:32<38:19]Profiling: 5,413/11,457 |[32m████▋     [0m|  47% [34:16<37:35]Profiling: 5,413/11,457 |[32m████▋     [0m|  47% [34:16<37:35]Profiling: 5,533/11,457 |[32m████▊     [0m|  48% [34:52<34:39]Profiling: 5,533/11,457 |[32m████▊     [0m|  48% [34:52<34:39]Profiling: 5,654/11,457 |[32m████▉     [0m|  49% [35:30<32:51]Profiling: 5,654/11,457 |[32m████▉     [0m|  49% [35:30<32:51]Profiling: 5,770/11,457 |[32m█████     [0m|  50% [36:14<33:18]Profiling: 5,770/11,457 |[32m█████     [0m|  50% [36:14<33:18]Profiling: 5,892/11,457 |[32m█████▏    [0m|  51% [36:52<31:27]Profiling: 5,892/11,457 |[32m█████▏    [0m|  51% [36:52<31:27]Profiling: 6,007/11,457 |[32m█████▏    [0m|  52% [37:34<31:30]Profiling: 6,007/11,457 |[32m█████▏    [0m|  52% [37:34<31:30]05:33:33.835 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:33.835 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:33.835 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:33.835 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:33.835 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:33.835 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:33.835 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:33.835 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:33.835 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:33.835 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:33.835 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:33.835 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:33.835 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:33.835 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:33.835 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:33.835 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:33.835 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:33.835 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:33.835 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:33.835 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:33.835 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:33.835 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:33.835 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:33.835 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:33.836 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:33.836 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:33.836 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:33.837 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-Profiling: 6,151/11,457 |[32m█████▎    [0m|  54% [38:18<29:25]Profiling: 6,151/11,457 |[32m█████▎    [0m|  54% [38:18<29:25]05:33:51.120 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.120 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.120 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.120 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.120 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.120 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.120 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.120 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.120 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.120 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.120 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.120 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.120 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.120 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.120 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.120 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.120 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.120 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.120 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.120 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.120 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.120 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.120 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.120 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.120 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.121 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.121 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.121 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.122 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.122 ERROR    Error in aiohttp request: ClientOSError(104, 'Connection reset by peer') (aiohttp_client.py:300)
-05:33:51.978 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), ConnectionRefusedError(111, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:33:51.978 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), ConnectionRefusedError(111, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:33:51.978 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), ConnectionRefusedError(111, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:33:59.120 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), ConnectionRefusedError(111, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:11.119 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), ConnectionRefusedError(111, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:21.999 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:21.999 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:22.000 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:22.000 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:23.119 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), ConnectionRefusedError(111, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:25.071 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:25.071 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:25.072 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:25.072 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:25.072 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:25.073 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:25.073 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:28.143 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:28.144 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:28.144 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:28.144 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:28.144 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:28.144 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:28.145 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:28.145 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:28.145 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:28.145 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:28.145 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:28.145 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-Profiling: 6,269/11,457 |[32m█████▍    [0m|  55% [39:12<31:51]Profiling: 6,269/11,457 |[32m█████▍    [0m|  55% [39:12<31:51]05:34:28.877 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.877 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.877 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.877 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.877 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.877 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.877 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.877 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.877 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.877 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.877 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.877 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.877 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.877 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.877 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.877 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.877 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.877 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.878 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.878 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.878 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.878 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.878 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.878 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.878 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.878 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.878 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.878 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.878 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.878 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.878 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.878 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.878 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.878 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.878 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.878 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.878 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.878 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.878 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.878 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.878 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.878 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.878 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.878 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.878 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.879 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.879 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.879 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.879 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.879 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.879 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.879 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.879 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.879 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.879 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.879 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.879 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.879 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.879 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.879 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.879 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.879 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.879 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.879 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.879 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.879 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.879 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.879 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.879 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.879 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.879 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.880 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.880 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.880 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.880 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.880 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.880 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.880 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.880 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.880 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.880 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.880 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.880 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.880 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.880 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.880 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.880 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.880 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.880 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.880 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.880 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.880 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.880 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.880 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.880 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.880 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.881 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.882 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.882 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.882 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.882 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.882 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.882 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.882 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.882 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.882 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.882 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.882 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.882 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.882 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.882 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.882 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.882 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.882 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.882 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.882 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.882 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.882 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.882 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.882 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.882 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.882 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.882 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.883 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.884 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.884 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.884 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.884 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.884 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.884 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.884 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.884 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.884 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.884 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.884 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.884 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.884 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.884 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.884 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.884 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.884 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.884 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.884 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.884 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.884 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.884 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.884 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.884 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.884 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.884 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.884 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.884 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.885 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.886 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.887 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.888 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.889 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.890 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.890 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.890 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.890 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.890 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.890 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.890 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.890 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.890 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.890 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.890 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.890 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.890 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.890 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.890 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.890 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.890 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:28.890 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-Profiling: 6,727/11,457 |[32m█████▊    [0m|  59% [39:14<11:25]Profiling: 6,727/11,457 |[32m█████▊    [0m|  59% [39:14<11:25]05:34:31.215 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:31.215 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:31.215 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:31.216 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:31.217 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:31.217 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:34.031 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:34.032 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:34.032 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:34.032 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:34.032 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:34.032 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:34.032 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:34.033 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:34.033 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:34.033 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:34.033 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:34.033 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:34.033 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:34.033 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:34.033 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:35.119 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), ConnectionRefusedError(111, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:37.103 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:37.104 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:37.104 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:37.104 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:37.104 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:37.105 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:37.105 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:37.105 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:37.105 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:37.105 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:37.105 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:37.105 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:40.175 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:40.175 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:40.175 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:40.176 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:40.176 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:40.176 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:40.177 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:40.177 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:40.177 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:42.991 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:42.992 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:42.992 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:42.992 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:42.992 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:42.992 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:42.993 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:42.993 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:42.993 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-Profiling: 6,727/11,457 |[32m█████▊    [0m|  59% [39:30<11:25]05:34:46.063 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:46.064 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:46.064 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:46.064 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:46.064 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:46.065 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:46.065 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:46.065 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:46.065 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:46.065 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:46.175 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.175 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.175 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.175 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.175 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.175 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.175 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.175 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.175 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.175 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.175 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.176 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.175 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.176 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.176 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.176 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.176 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.176 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.176 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.176 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.176 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.176 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.176 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.176 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.176 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.176 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.176 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.176 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.176 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.176 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.176 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.176 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.176 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.177 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.177 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.177 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.177 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.177 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.177 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.177 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.177 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.177 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.177 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.177 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.177 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.177 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.177 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.177 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.177 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.177 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.177 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.177 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.177 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.177 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.177 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.177 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.177 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.178 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.178 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.178 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.178 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.178 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.178 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.178 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.178 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.178 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.178 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.178 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.178 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.178 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.178 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.178 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.178 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.178 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.178 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.178 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.178 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.178 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.178 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.178 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.178 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.178 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.178 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.178 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.178 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.179 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.179 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.179 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.179 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.179 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.179 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.179 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.179 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.179 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.179 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.179 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.179 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.179 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.179 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.179 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.179 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.179 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.179 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.179 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.179 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.179 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.179 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.179 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.179 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.179 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.179 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.179 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.180 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.180 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.180 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.180 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.180 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.180 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.180 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.180 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.180 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.180 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.180 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.180 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.180 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.180 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.180 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.180 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.180 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.181 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.181 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.181 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.181 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.181 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.181 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.181 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.181 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.181 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.181 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.181 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.181 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.181 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.181 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.181 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.181 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.181 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.181 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.181 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.181 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.182 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.183 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.184 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.185 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.186 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.187 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.188 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.189 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.189 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.189 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.189 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.189 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.189 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.189 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.189 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.189 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.190 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.190 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.190 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-05:34:46.190 ERROR    Error in aiohttp request: ServerDisconnectedError('Server disconnected') (aiohttp_client.py:300)
-Profiling: 7,267/11,457 |[32m██████▎   [0m|  63% [39:30<06:01]Profiling: 7,267/11,457 |[32m██████▎   [0m|  63% [39:30<06:01]05:34:49.135 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:49.136 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:49.136 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:49.136 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:49.136 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:49.137 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:49.137 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:49.137 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-05:34:49.137 ERROR    Error in aiohttp request: ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend', port=8000, is_ssl=False, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None), TimeoutError(110, "Connect call failed ('10.101.209.141', 8000)")) (aiohttp_client.py:300)
-Profiling: 7,267/11,457 |[32m██████▎   [0m|  63% [39:50<06:01]Profiling: 7,387/11,457 |[32m██████▍   [0m|  64% [39:54<06:55]Profiling: 7,387/11,457 |[32m██████▍   [0m|  64% [39:54<06:55]Profiling: 7,506/11,457 |[32m██████▌   [0m|  66% [40:32<09:04]Profiling: 7,506/11,457 |[32m██████▌   [0m|  66% [40:32<09:04]Profiling: 7,624/11,457 |[32m██████▋   [0m|  67% [41:18<11:51]Profiling: 7,624/11,457 |[32m██████▋   [0m|  67% [41:18<11:51]Profiling: 7,740/11,457 |[32m██████▊   [0m|  68% [41:52<12:53]Profiling: 7,740/11,457 |[32m██████▊   [0m|  68% [41:52<12:53]Profiling: 7,856/11,457 |[32m██████▊   [0m|  69% [42:26<13:39]Profiling: 7,856/11,457 |[32m██████▊   [0m|  69% [42:26<13:39]Profiling: 7,975/11,457 |[32m██████▉   [0m|  70% [43:14<15:47]Profiling: 7,975/11,457 |[32m██████▉   [0m|  70% [43:14<15:47]Profiling: 8,096/11,457 |[32m███████   [0m|  71% [43:54<16:07]Profiling: 8,096/11,457 |[32m███████   [0m|  71% [43:54<16:07]Profiling: 8,216/11,457 |[32m███████▏  [0m|  72% [44:30<15:43]Profiling: 8,216/11,457 |[32m███████▏  [0m|  72% [44:30<15:43]Profiling: 8,331/11,457 |[32m███████▎  [0m|  73% [45:10<15:58]Profiling: 8,331/11,457 |[32m███████▎  [0m|  73% [45:10<15:58]Profiling: 8,447/11,457 |[32m███████▎  [0m|  74% [45:50<15:55]Profiling: 8,447/11,457 |[32m███████▎  [0m|  74% [45:50<15:55]Profiling: 8,564/11,457 |[32m███████▍  [0m|  75% [46:28<15:24]Profiling: 8,564/11,457 |[32m███████▍  [0m|  75% [46:28<15:24]Profiling: 8,681/11,457 |[32m███████▌  [0m|  76% [47:12<15:33]Profiling: 8,681/11,457 |[32m███████▌  [0m|  76% [47:12<15:33]Profiling: 8,802/11,457 |[32m███████▋  [0m|  77% [47:50<14:34]Profiling: 8,802/11,457 |[32m███████▋  [0m|  77% [47:50<14:34]Profiling: 8,918/11,457 |[32m███████▊  [0m|  78% [48:30<14:07]Profiling: 8,918/11,457 |[32m███████▊  [0m|  78% [48:30<14:07]Profiling: 9,033/11,457 |[32m███████▉  [0m|  79% [49:06<13:14]Profiling: 9,033/11,457 |[32m███████▉  [0m|  79% [49:06<13:14]Profiling: 9,152/11,457 |[32m███████▉  [0m|  80% [49:42<12:18]Profiling: 9,152/11,457 |[32m███████▉  [0m|  80% [49:42<12:18]Profiling: 9,268/11,457 |[32m████████  [0m|  81% [50:20<11:45]Profiling: 9,268/11,457 |[32m████████  [0m|  81% [50:20<11:45]Profiling: 9,383/11,457 |[32m████████▏ [0m|  82% [50:58<11:13]Profiling: 9,383/11,457 |[32m████████▏ [0m|  82% [50:58<11:13]Profiling: 9,501/11,457 |[32m████████▎ [0m|  83% [51:32<10:13]Profiling: 9,501/11,457 |[32m████████▎ [0m|  83% [51:32<10:13]Profiling: 9,618/11,457 |[32m████████▍ [0m|  84% [52:06<09:24]Profiling: 9,618/11,457 |[32m████████▍ [0m|  84% [52:06<09:24]Profiling: 9,733/11,457 |[32m████████▍ [0m|  85% [52:48<09:18]Profiling: 9,733/11,457 |[32m████████▍ [0m|  85% [52:48<09:18]Profiling: 9,852/11,457 |[32m████████▌ [0m|  86% [53:24<08:29]Profiling: 9,852/11,457 |[32m████████▌ [0m|  86% [53:24<08:29]Profiling: 9,967/11,457 |[32m████████▋ [0m|  87% [54:02<07:58]Profiling: 9,967/11,457 |[32m████████▋ [0m|  87% [54:02<07:58]Profiling: 10,085/11,457 |[32m████████▊ [0m|  88% [54:48<07:49]Profiling: 10,085/11,457 |[32m████████▊ [0m|  88% [54:48<07:49]Profiling: 10,202/11,457 |[32m████████▉ [0m|  89% [55:24<06:56]Profiling: 10,202/11,457 |[32m████████▉ [0m|  89% [55:24<06:56]Profiling: 10,317/11,457 |[32m█████████ [0m|  90% [56:02<06:17]Profiling: 10,317/11,457 |[32m█████████ [0m|  90% [56:02<06:17]Profiling: 10,434/11,457 |[32m█████████ [0m|  91% [56:38<05:31]Profiling: 10,434/11,457 |[32m█████████ [0m|  91% [56:38<05:31]Profiling: 10,552/11,457 |[32m█████████▏[0m|  92% [57:20<05:02]Profiling: 10,552/11,457 |[32m█████████▏[0m|  92% [57:20<05:02]Profiling: 10,670/11,457 |[32m█████████▎[0m|  93% [57:52<04:07]Profiling: 10,670/11,457 |[32m█████████▎[0m|  93% [57:52<04:07]Profiling: 10,786/11,457 |[32m█████████▍[0m|  94% [58:36<03:44]Profiling: 10,786/11,457 |[32m█████████▍[0m|  94% [58:36<03:44]05:54:12.979 NOTICE   Phase profiling sending complete | sent=11,457, completed=10,841, in_flight=616 | sessions: sent=11,457, completed=10,841 (runner.py:608)
-05:54:12.979 INFO     Sent 11,457 requests. Waiting for all to complete... (records_manager.py:534)
-Profiling: 10,901/11,457 |[32m█████████▌[0m|  95% [1:00:48<05:19]Profiling: 10,901/11,457 |[32m█████████▌[0m|  95% [1:00:48<05:19]Profiling: 11,016/11,457 |[32m█████████▌[0m|  96% [1:05:54<08:47]Profiling: 11,016/11,457 |[32m█████████▌[0m|  96% [1:05:54<08:47]Profiling: 11,132/11,457 |[32m█████████▋[0m|  97% [1:09:46<07:47]Profiling: 11,132/11,457 |[32m█████████▋[0m|  97% [1:09:46<07:47]Profiling: 11,247/11,457 |[32m█████████▊[0m|  98% [1:14:56<06:20]Profiling: 11,247/11,457 |[32m█████████▊[0m|  98% [1:14:56<06:20]Profiling: 11,363/11,457 |[32m█████████▉[0m|  99% [1:19:04<02:59]Profiling: 11,363/11,457 |[32m█████████▉[0m|  99% [1:19:04<02:59]06:18:17.893 NOTICE   Phase profiling complete | completed=11,457, cancelled=0, errors=1,114 | sessions: completed=11,457, cancelled=0 | elapsed=4981.92s (runner.py:686)
-06:18:17.894 NOTICE   All credits completed (phase_orchestrator.py:180)
-06:18:17.894 INFO     Received CREDIT_PHASE_COMPLETE message, Phase complete: PhaseRecordsStats(phase=CreditPhase.PROFILING, start_ns=1786596915978307972, sent_end_ns=1786600452978843695, requests_end_ns=1786601897893589035, total_expected_requests=11457, expected_duration_sec=None, expected_num_sessions=None, expected_grace_period_sec=None, final_requests_sent=None, final_requests_completed=11457, final_requests_cancelled=0, final_request_errors=1114, final_sent_sessions=None, final_completed_sessions=None, final_cancelled_sessions=None, timeout_triggered=False, grace_period_timeout_triggered=False, was_cancelled=False, records_end_ns=None, success_records=10342, error_records=1114) (records_manager.py:560)
-06:18:17.894 INFO     Received credits complete from 'timing_manager' (system_controller.py:422)
-06:18:17.894 NOTICE   All requests have completed, please wait for the results to be processed (currently 11,456 of 11,457 records processed)... (records_manager.py:565)
-06:18:17.894 INFO     All credits complete, please wait for the results to be processed... (records_manager.py:589)
-Processing Records: 0/11,457 |[34m          [0m|   0% [00:00<?]06:18:17.903 INFO     Processed 10343 valid requests and 1114 errors (11457 total). (records_manager.py:296)
-06:18:17.904 INFO     Received all records, processing now... (records_manager.py:302)
-06:18:17.904 INFO     Server Metrics: Profiling complete, capturing final metrics... (manager.py:250)
-06:18:17.905 INFO     Waiting 2.0s for server metrics flush period... (records_manager.py:352)
-Processing Records: 11,457/11,457 |[34m██████████[0m| 100% [00:01<00:00]Processing Records: 11,457/11,457 |[34m██████████[0m| 100% [00:01<00:00]06:18:19.894 INFO     Processing records results... (records_manager.py:777)
-06:18:19.914 WARNING  Detected 1 counter reset(s) in counter metric. This typically indicates server restart(s) during profiling. Statistics may be inaccurate. Raw delta: 224302911.00 (export_stats.py:348)
-06:18:19.914 WARNING  Detected 1 counter reset(s) in counter metric. This typically indicates server restart(s) during profiling. Statistics may be inaccurate. Raw delta: 387234754.00 (export_stats.py:348)
-06:18:19.914 INFO     Waiting for server metrics results... (system_controller.py:779)
-06:18:19.942 WARNING  Detected 1 counter reset(s) in counter metric. This typically indicates server restart(s) during profiling. Statistics may be inaccurate. Raw delta: 21.00 (export_stats.py:348)
-06:18:19.992 WARNING  Detected 1 counter reset(s) in counter metric. This typically indicates server restart(s) during profiling. Statistics may be inaccurate. Raw delta: 0.00 (export_stats.py:348)
-06:18:19.999 WARNING  Detected 1 counter reset(s) in counter metric with labels {'worker': '0'}. This typically indicates server restart(s) during profiling. Statistics may be inaccurate. Raw delta: 162836.00 (export_stats.py:348)
-06:18:20.000 WARNING  Detected 1 counter reset(s) in counter metric with labels {'worker': '1'}. This typically indicates server restart(s) during profiling. Statistics may be inaccurate. Raw delta: 236373.00 (export_stats.py:348)
-06:18:20.000 WARNING  Detected 1 counter reset(s) in counter metric with labels {'worker': '2'}. This typically indicates server restart(s) during profiling. Statistics may be inaccurate. Raw delta: 249166.00 (export_stats.py:348)
-06:18:20.000 WARNING  Detected 1 counter reset(s) in counter metric with labels {'worker': '3'}. This typically indicates server restart(s) during profiling. Statistics may be inaccurate. Raw delta: 154044.00 (export_stats.py:348)
-06:18:20.000 WARNING  Detected 1 counter reset(s) in counter metric with labels {'worker': '4'}. This typically indicates server restart(s) during profiling. Statistics may be inaccurate. Raw delta: 230990.00 (export_stats.py:348)
-06:18:20.000 WARNING  Detected 1 counter reset(s) in counter metric with labels {'worker': '5'}. This typically indicates server restart(s) during profiling. Statistics may be inaccurate. Raw delta: 247975.00 (export_stats.py:348)
-06:18:20.000 WARNING  Detected 1 counter reset(s) in counter metric with labels {'worker': '6'}. This typically indicates server restart(s) during profiling. Statistics may be inaccurate. Raw delta: 229170.00 (export_stats.py:348)
-06:18:20.000 WARNING  Detected 1 counter reset(s) in counter metric with labels {'worker': '7'}. This typically indicates server restart(s) during profiling. Statistics may be inaccurate. Raw delta: 200499.00 (export_stats.py:348)
-06:18:20.000 WARNING  Detected 1 counter reset(s) in counter metric with labels {'worker': '0'}. This typically indicates server restart(s) during profiling. Statistics may be inaccurate. Raw delta: 14312.00 (export_stats.py:348)
-06:18:20.001 WARNING  Detected 1 counter reset(s) in counter metric with labels {'worker': '1'}. This typically indicates server restart(s) during profiling. Statistics may be inaccurate. Raw delta: 16532.00 (export_stats.py:348)
-06:18:20.001 WARNING  Detected 1 counter reset(s) in counter metric with labels {'worker': '2'}. This typically indicates server restart(s) during profiling. Statistics may be inaccurate. Raw delta: 18628.00 (export_stats.py:348)
-06:18:20.001 WARNING  Detected 1 counter reset(s) in counter metric with labels {'worker': '3'}. This typically indicates server restart(s) during profiling. Statistics may be inaccurate. Raw delta: 15210.00 (export_stats.py:348)
-06:18:20.001 WARNING  Detected 1 counter reset(s) in counter metric with labels {'worker': '4'}. This typically indicates server restart(s) during profiling. Statistics may be inaccurate. Raw delta: 17007.00 (export_stats.py:348)
-06:18:20.001 WARNING  Detected 1 counter reset(s) in counter metric with labels {'worker': '5'}. This typically indicates server restart(s) during profiling. Statistics may be inaccurate. Raw delta: 17306.00 (export_stats.py:348)
-06:18:20.001 WARNING  Detected 1 counter reset(s) in counter metric with labels {'worker': '6'}. This typically indicates server restart(s) during profiling. Statistics may be inaccurate. Raw delta: 17537.00 (export_stats.py:348)
-06:18:20.001 WARNING  Detected 1 counter reset(s) in counter metric with labels {'worker': '7'}. This typically indicates server restart(s) during profiling. Statistics may be inaccurate. Raw delta: 15516.00 (export_stats.py:348)
-06:18:20.001 WARNING  Detected 1 counter reset(s) in counter metric. This typically indicates server restart(s) during profiling. Statistics may be inaccurate. Raw delta: 247639527.00 (export_stats.py:348)
-06:18:20.055 WARNING  Detected 1 counter reset(s) in counter metric with labels {'model': 'Qwen/Qwen3-32B-FP8'}. This typically indicates server restart(s) during profiling. Statistics may be inaccurate. Raw delta: 906706.00 (export_stats.py:348)
-06:18:20.055 WARNING  Detected 1 counter reset(s) in counter metric with labels {'endpoint': 'chat_completions', 'model': 'Qwen/Qwen3-32B-FP8', 'request_type': 'stream'}. This typically indicates server restart(s) during profiling. Statistics may be inaccurate. Raw delta: 2736.00 (export_stats.py:348)
-06:18:20.135 WARNING  Detected 1 counter reset(s) in counter metric with labels {'endpoint': 'chat_completions', 'error_type': '', 'model': 'Qwen/Qwen3-32B-FP8', 'request_type': 'stream', 'status': 'success'}. This typically indicates server restart(s) during profiling. Statistics may be inaccurate. Raw delta: 2739.00 (export_stats.py:348)
-06:18:20.154 INFO     _finalize_and_process_results completed (records_manager.py:359)
-06:18:20.157 INFO     All results received, initiating shutdown (system_controller.py:774)
-06:18:20.771 INFO     Exporting all records (exporter_manager.py:62)
-06:18:20.835 INFO     Exporting console data (exporter_manager.py:134)
-
-
-                                   NVIDIA AIPerf | Error Summary                                    
-┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
-┃ Code ┃                    Type ┃ Message                                                 ┃ Count ┃
-┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
-│  500 │   Internal Server Error │ {"message":"Failed to generate                          │    31 │
-│      │                         │ completions","type":"Internal Server Error","code":500} │       │
-│  N/A │           ClientOSError │ ClientOSError(104, 'Connection reset by peer')          │    58 │
-│  503 │     Service Unavailable │ {"message":"Service is not ready","type":"Service       │    16 │
-│      │                         │ Unavailable","code":503}                                │       │
-│  N/A │    ClientConnectorError │ ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8… │     7 │
-│      │                         │ port=8000, is_ssl=False, ssl=True, proxy=None,          │       │
-│      │                         │ proxy_auth=None, proxy_headers_hash=None),              │       │
-│      │                         │ ConnectionRefusedError(111, "Connect call failed        │       │
-│      │                         │ ('10.101.209.141', 8000)"))                             │       │
-│  N/A │    ClientConnectorError │ ClientConnectorError(ConnectionKey(host='qwen3-32b-fp8… │    93 │
-│      │                         │ port=8000, is_ssl=False, ssl=True, proxy=None,          │       │
-│      │                         │ proxy_auth=None, proxy_headers_hash=None),              │       │
-│      │                         │ TimeoutError(110, "Connect call failed                  │       │
-│      │                         │ ('10.101.209.141', 8000)"))                             │       │
-│  N/A │ ServerDisconnectedError │ ServerDisconnectedError('Server disconnected')          │   909 │
-└──────┴─────────────────────────┴─────────────────────────────────────────────────────────┴───────┘
-
-
-                                    NVIDIA AIPerf | LLM Metrics                                     
-┏━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━┓
-┃     Metric ┃        avg ┃    min ┃        max ┃         p99 ┃        p90 ┃      p50 ┃        std ┃
-┡━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━┩
-│    Time to │ 122,189.15 │  55.84 │ 1,443,742… │ 1,286,424.… │ 570,773.51 │   825.50 │ 303,738.08 │
-│      First │            │        │            │             │            │          │            │
-│ Token (ms) │            │        │            │             │            │          │            │
-│    Time to │      10.47 │   0.00 │      58.81 │       13.54 │      11.86 │    10.37 │       1.38 │
-│     Second │            │        │            │             │            │          │            │
-│ Token (ms) │            │        │            │             │            │          │            │
-│    Time to │ 122,189.15 │  55.84 │ 1,443,742… │ 1,286,424.… │ 570,773.51 │   825.50 │ 303,738.08 │
-│      First │            │        │            │             │            │          │            │
-│     Output │            │        │            │             │            │          │            │
-│ Token (ms) │            │        │            │             │            │          │            │
-│    Request │ 125,761.06 │  80.47 │ 1,450,038… │ 1,290,175.… │ 574,346.30 │ 5,105.49 │ 303,658.71 │
-│    Latency │            │        │            │             │            │          │            │
-│       (ms) │            │        │            │             │            │          │            │
-│      Inter │      10.54 │   0.00 │      15.12 │       13.11 │      11.75 │    10.44 │       1.01 │
-│      Token │            │        │            │             │            │          │            │
-│    Latency │            │        │            │             │            │          │            │
-│       (ms) │            │        │            │             │            │          │            │
-│     Output │     314.12 │  66.13 │ 285,671.58 │      109.70 │     105.15 │    95.78 │   6,152.92 │
-│      Token │            │        │            │             │            │          │            │
-│ Throughput │            │        │            │             │            │          │            │
-│   Per User │            │        │            │             │            │          │            │
-│ (tokens/s… │            │        │            │             │            │          │            │
-│ E2E Output │      58.32 │   0.00 │     160.56 │      104.00 │      95.60 │    70.80 │      35.37 │
-│      Token │            │        │            │             │            │          │            │
-│ Throughput │            │        │            │             │            │          │            │
-│ (tokens/s… │            │        │            │             │            │          │            │
-│     Output │     339.18 │   1.00 │   2,000.00 │    1,050.32 │     592.00 │   348.00 │     240.26 │
-│   Sequence │            │        │            │             │            │          │            │
-│     Length │            │        │            │             │            │          │            │
-│   (tokens) │            │        │            │             │            │          │            │
-│      Input │   9,294.10 │ 899.00 │  40,914.00 │   36,431.16 │  22,478.80 │ 6,374.00 │   8,716.76 │
-│   Sequence │            │        │            │             │            │          │            │
-│     Length │            │        │            │             │            │          │            │
-│   (tokens) │            │        │            │             │            │          │            │
-│     Output │     704.17 │    N/A │        N/A │         N/A │        N/A │      N/A │        N/A │
-│      Token │            │        │            │             │            │          │            │
-│ Throughput │            │        │            │             │            │          │            │
-│ (tokens/s… │            │        │            │             │            │          │            │
-│    Request │       2.08 │    N/A │        N/A │         N/A │        N/A │      N/A │        N/A │
-│ Throughput │            │        │            │             │            │          │            │
-│ (requests… │            │        │            │             │            │          │            │
-│    Goodput │       1.47 │    N/A │        N/A │         N/A │        N/A │      N/A │        N/A │
-│ (requests… │            │        │            │             │            │          │            │
-│    Request │  10,343.00 │    N/A │        N/A │         N/A │        N/A │      N/A │        N/A │
-│      Count │            │        │            │             │            │          │            │
-│ (requests) │            │        │            │             │            │          │            │
-└────────────┴────────────┴────────┴────────────┴─────────────┴────────────┴──────────┴────────────┘
-                                 NVIDIA AIPerf | LLM Metrics: Usage                                 
-┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┓
-┃        Metric ┃           avg ┃    min ┃       max ┃       p99 ┃       p90 ┃      p50 ┃      std ┃
-┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━┩
-│  Usage Prompt │      9,294.10 │ 899.00 │ 40,914.00 │ 36,431.16 │ 22,478.80 │ 6,374.00 │ 8,716.76 │
-│        Tokens │               │        │           │           │           │          │          │
-│      (tokens) │               │        │           │           │           │          │          │
-│  Usage Prompt │        682.08 │ 512.00 │ 34,304.00 │  6,656.00 │    512.00 │   512.00 │ 1,597.08 │
-│    Cache Read │               │        │           │           │           │          │          │
-│        Tokens │               │        │           │           │           │          │          │
-│      (tokens) │               │        │           │           │           │          │          │
-│         Usage │        339.18 │   1.00 │  2,000.00 │  1,050.32 │    592.00 │   348.00 │   240.26 │
-│    Completion │               │        │           │           │           │          │          │
-│        Tokens │               │        │           │           │           │          │          │
-│      (tokens) │               │        │           │           │           │          │          │
-│   Usage Total │      9,633.28 │ 903.00 │ 40,946.00 │ 36,721.56 │ 22,812.60 │ 6,738.00 │ 8,733.95 │
-│        Tokens │               │        │           │           │           │          │          │
-│      (tokens) │               │        │           │           │           │          │          │
-│   Total Usage │ 96,128,892.00 │    N/A │       N/A │       N/A │       N/A │      N/A │      N/A │
-│ Prompt Tokens │               │        │           │           │           │          │          │
-│      (tokens) │               │        │           │           │           │          │          │
-│   Total Usage │  7,052,032.00 │    N/A │       N/A │       N/A │       N/A │      N/A │      N/A │
-│  Prompt Cache │               │        │           │           │           │          │          │
-│   Read Tokens │               │        │           │           │           │          │          │
-│      (tokens) │               │        │           │           │           │          │          │
-│ Overall Usage │          7.34 │    N/A │       N/A │       N/A │       N/A │      N/A │      N/A │
-│  Prompt Cache │               │        │           │           │           │          │          │
-│        Read % │               │        │           │           │           │          │          │
-│           (%) │               │        │           │           │           │          │          │
-│   Total Usage │  3,508,112.00 │    N/A │       N/A │       N/A │       N/A │      N/A │      N/A │
-│    Completion │               │        │           │           │           │          │          │
-│        Tokens │               │        │           │           │           │          │          │
-│      (tokens) │               │        │           │           │           │          │          │
-│   Total Usage │ 99,637,004.00 │    N/A │       N/A │       N/A │       N/A │      N/A │      N/A │
-│  Total Tokens │               │        │           │           │           │          │          │
-│      (tokens) │               │        │           │           │           │          │          │
-└───────────────┴───────────────┴────────┴───────────┴───────────┴───────────┴──────────┴──────────┘
-
-CLI Command: aiperf profile --model 'Qwen/Qwen3-32B-FP8' --tokenizer 'Qwen/Qwen3-32B-FP8' 
---tokenizer-revision 'aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df' --input-file 
-'/perf-cache/traces/conversation_trace.maxctx40960.jsonl' --custom-dataset-type 'mooncake_trace' 
---fixed-schedule --url 'http://qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend:8000' --streaming 
---extra-inputs 'ignore_eos:true' --use-server-token-count --no-gpu-telemetry --artifact-dir 
-'/perf-cache/artifacts/qwen3-32b-fp8-vllm-disagg-routing-4p4d/20260813T045457Z/aiperf' --goodput 
-'time_to_first_token:2000 inter_token_latency:25' --ui 'simple'
-Benchmark Duration: 4981.89 sec
-CSV Export: 
-/perf-cache/artifacts/qwen3-32b-fp8-vllm-disagg-routing-4p4d/20260813T045457Z/aiperf/profile_export_
-aiperf.csv
-JSON Export: 
-/perf-cache/artifacts/qwen3-32b-fp8-vllm-disagg-routing-4p4d/20260813T045457Z/aiperf/profile_export_
-aiperf.json
-Server Metrics CSV Export: 
-/perf-cache/artifacts/qwen3-32b-fp8-vllm-disagg-routing-4p4d/20260813T045457Z/aiperf/server_metrics_
-export.csv
-Server Metrics JSON Export: 
-/perf-cache/artifacts/qwen3-32b-fp8-vllm-disagg-routing-4p4d/20260813T045457Z/aiperf/server_metrics_
-export.json
-Log File: 
-/perf-cache/artifacts/qwen3-32b-fp8-vllm-disagg-routing-4p4d/20260813T045457Z/aiperf/logs/aiperf.log
-

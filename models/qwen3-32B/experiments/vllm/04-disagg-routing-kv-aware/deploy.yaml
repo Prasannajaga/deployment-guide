@@ -31,7 +31,7 @@ spec:
       extraPodSpec:
         mainContainer:
           image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.3.0
-          workingDir: /workspace/
+          workingDir: /workspace
           command: [python3, -m, dynamo.frontend]
           args: [--router-mode, kv]
 
@@ -56,7 +56,7 @@ spec:
         dnsPolicy: ClusterFirst
         mainContainer:
           image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.3.0
-          workingDir: /workspace/examples/backends/vllm
+          workingDir: /workspace
           command: [/bin/sh, -c]
           args:
             - |
@@ -65,13 +65,11 @@ spec:
                 --model "$MODEL_PATH" \
                 --served-model-name "$SERVED_MODEL_NAME" \
                 --tensor-parallel-size 2 \
-                --data-parallel-size 1 \
                 --disaggregation-mode prefill \
-                --kv-transfer-config '{"kv_connector":"NixlConnector","kv_role":"kv_producer","kv_load_failure_policy":"fail"}' \
+                --kv-transfer-config '{"kv_connector":"NixlConnector","kv_role":"kv_both"}' \
                 --kv-events-config '{"publisher":"zmq","topic":"kv-events","endpoint":"tcp://*:20080","enable_kv_cache_events":true}' \
                 --gpu-memory-utilization 0.90 \
                 --max-model-len 40960 \
-                --enable-prefix-caching \
                 --block-size 128 \
                 --no-enable-log-requests
           env: &worker-env
@@ -103,18 +101,6 @@ spec:
               value: mlx5_8:1
             - name: UCX_IB_ADDR_TYPE
               value: eth
-            - name: UCX_RNDV_SCHEME
-              value: get_zcopy
-            - name: UCX_RNDV_THRESH
-              value: "0"
-            - name: UCX_IB_REG_METHODS
-              value: odp,rcache
-            - name: UCX_RCACHE_MAX_UNRELEASED
-              value: "1024"
-            - name: UCX_RC_TIMEOUT
-              value: 600s
-            - name: UCX_KEEPALIVE_INTERVAL
-              value: 300s
           securityContext: &worker-security
             runAsUser: 0
             capabilities:
@@ -129,8 +115,6 @@ spec:
       resources: &worker-resources
         requests:
           gpu: "2"
-          custom:
-            rdma/ib: "2"
         limits:
           gpu: "2"
           custom:
@@ -157,7 +141,7 @@ spec:
         dnsPolicy: ClusterFirst
         mainContainer:
           image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.3.0
-          workingDir: /workspace/examples/backends/vllm
+          workingDir: /workspace
           command: [/bin/sh, -c]
           args:
             - |
@@ -166,13 +150,11 @@ spec:
                 --model "$MODEL_PATH" \
                 --served-model-name "$SERVED_MODEL_NAME" \
                 --tensor-parallel-size 2 \
-                --data-parallel-size 1 \
                 --disaggregation-mode decode \
-                --kv-transfer-config '{"kv_connector":"NixlConnector","kv_role":"kv_consumer","kv_load_failure_policy":"fail"}' \
-                --kv-events-config '{"publisher":"zmq","topic":"kv-events","endpoint":"tcp://*:20080","enable_kv_cache_events":true}' \
+                --kv-transfer-config '{"kv_connector":"NixlConnector","kv_role":"kv_both"}' \
                 --gpu-memory-utilization 0.90 \
                 --max-model-len 40960 \
-                --enable-prefix-caching \
+                --no-enable-prefix-caching \
                 --block-size 128 \
                 --no-enable-log-requests
           env: *worker-env

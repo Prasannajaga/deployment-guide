@@ -1,0 +1,5109 @@
+{
+  "schema_version": "1.0",
+  "aiperf_version": "0.10.0",
+  "benchmark_id": "3f930d45094b",
+  "summary": {
+    "endpoints_configured": [
+      "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics"
+    ],
+    "endpoints_successful": [
+      "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics"
+    ],
+    "start_time": "2026-08-13T10:58:30.757984",
+    "end_time": "2026-08-13T11:57:36.325643",
+    "endpoint_info": {
+      "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics": {
+        "total_fetches": 10639,
+        "first_fetch_ns": 1786618693675603054,
+        "last_fetch_ns": 1786622256333547559,
+        "avg_fetch_latency_ms": 1.3989241587555221,
+        "unique_updates": 10639,
+        "first_update_ns": 1786618693675603054,
+        "last_update_ns": 1786622256333547559,
+        "duration_seconds": 3562.657944505,
+        "avg_update_interval_ms": 334.8992239617409,
+        "median_update_interval_ms": 333.401807
+      }
+    }
+  },
+  "metrics": {
+    "dynamo_component_kv_cache_event_warnings": {
+      "type": "counter",
+      "description": "Total number of suspicious KV cache events seen by the router indexer",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "warning_kind": "duplicate_store",
+            "worker_id": "2ef79bcfb5996"
+          },
+          "stats": {
+            "total": 2.0,
+            "rate": 0.0005640773919918581
+          }
+        }
+      ]
+    },
+    "dynamo_component_kv_cache_events_applied": {
+      "type": "counter",
+      "description": "Total number of KV cache events applied to index",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "event_type": "cleared",
+            "status": "block_not_found",
+            "worker_id": "2ef79bcfb5996"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "event_type": "cleared",
+            "status": "invalid_block",
+            "worker_id": "2ef79bcfb5996"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "event_type": "cleared",
+            "status": "ok",
+            "worker_id": "2ef79bcfb5996"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "event_type": "cleared",
+            "status": "parent_block_not_found",
+            "worker_id": "2ef79bcfb5996"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "event_type": "removed",
+            "status": "block_not_found",
+            "worker_id": "2ef79bcfb5996"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "event_type": "removed",
+            "status": "invalid_block",
+            "worker_id": "2ef79bcfb5996"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "event_type": "removed",
+            "status": "ok",
+            "worker_id": "2ef79bcfb5996"
+          },
+          "stats": {
+            "total": 717249.0,
+            "rate": 202.29197266438413
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "event_type": "removed",
+            "status": "parent_block_not_found",
+            "worker_id": "2ef79bcfb5996"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "event_type": "stored",
+            "status": "block_not_found",
+            "worker_id": "2ef79bcfb5996"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "event_type": "stored",
+            "status": "invalid_block",
+            "worker_id": "2ef79bcfb5996"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "event_type": "stored",
+            "status": "ok",
+            "worker_id": "2ef79bcfb5996"
+          },
+          "stats": {
+            "total": 19464.0,
+            "rate": 5.489601178864763
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "event_type": "stored",
+            "status": "parent_block_not_found",
+            "worker_id": "2ef79bcfb5996"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_component_router_input_sequence_tokens": {
+      "type": "histogram",
+      "description": "Input sequence length in tokens observed at the router",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "router_id": "826256094091670",
+            "worker_id": "2ef79bcfb5996"
+          },
+          "stats": {
+            "count": 11398,
+            "sum": 106187200.0,
+            "avg": 9316.301105457098,
+            "count_rate": 3.2146770569615994,
+            "sum_rate": 29948.899419458918,
+            "p1_estimate": 870.0,
+            "p5_estimate": 960.6468515046987,
+            "p10_estimate": 1097.709734849827,
+            "p25_estimate": 2108.134584410756,
+            "p50_estimate": 6403.3622730601055,
+            "p75_estimate": 13647.268679373792,
+            "p90_estimate": 23067.95248143108,
+            "p95_estimate": 28374.11708559096,
+            "p99_estimate": 36383.266585300094
+          },
+          "buckets": {
+            "0": 0,
+            "100": 0,
+            "210": 0,
+            "430": 0,
+            "870": 0,
+            "1800": 2512,
+            "3600": 3774,
+            "7400": 6200,
+            "15000": 8868,
+            "31000": 11022,
+            "63000": 11398,
+            "130000": 11398,
+            "+Inf": 11398
+          }
+        }
+      ]
+    },
+    "dynamo_component_router_inter_token_latency_seconds": {
+      "type": "histogram",
+      "description": "Average inter-token latency observed at the router",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "router_id": "826256094091670",
+            "worker_id": "2ef79bcfb5996"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0": 0,
+            "0.0019": 0,
+            "0.0035": 0,
+            "0.0067": 0,
+            "0.013": 0,
+            "0.024": 0,
+            "0.045": 0,
+            "0.084": 0,
+            "0.16": 0,
+            "0.3": 0,
+            "0.56": 0,
+            "1.1": 0,
+            "2": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_component_router_kv_hit_rate": {
+      "type": "histogram",
+      "description": "Predicted KV cache hit rate at routing time (0.0-1.0)",
+      "unit": "ratio",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "router_id": "826256094091670",
+            "worker_id": "2ef79bcfb5996"
+          },
+          "stats": {
+            "count": 11398,
+            "sum": 2309.721295438612,
+            "avg": 0.20264268252663728,
+            "count_rate": 3.2146770569615994,
+            "sum_rate": 0.6514307822795341,
+            "p1_estimate": 0.003358680508792529,
+            "p5_estimate": 0.010346535564605915,
+            "p10_estimate": 0.019081354384372647,
+            "p25_estimate": 0.040779573637942344,
+            "p50_estimate": 0.0893823386754852,
+            "p75_estimate": 0.3330879803024326,
+            "p90_estimate": 0.5,
+            "p95_estimate": 0.7144977550812919,
+            "p99_estimate": 0.981991359581398
+          },
+          "buckets": {
+            "0": 12,
+            "0.05": 3744,
+            "0.1": 6152,
+            "0.15000000000000002": 7212,
+            "0.2": 7728,
+            "0.25": 8108,
+            "0.30000000000000004": 8364,
+            "0.35000000000000003": 8692,
+            "0.4": 9094,
+            "0.45": 9350,
+            "0.5": 10694,
+            "0.55": 10716,
+            "0.6000000000000001": 10734,
+            "0.65": 10770,
+            "0.7000000000000001": 10804,
+            "0.75": 10868,
+            "0.8": 10918,
+            "0.8500000000000001": 10950,
+            "0.9": 11050,
+            "0.9500000000000001": 11186,
+            "1": 11398,
+            "+Inf": 11398
+          }
+        }
+      ]
+    },
+    "dynamo_component_router_kv_transfer_estimated_latency_seconds": {
+      "type": "histogram",
+      "description": "Upper-bound estimation of KV cache transfer latency in disaggregated serving (prefill_complete to first_token)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "router_id": "826256094091670",
+            "worker_id": "2ef79bcfb5996"
+          },
+          "stats": {
+            "count": 5699,
+            "sum": 1181.2786682179965,
+            "avg": 0.207278236220038,
+            "count_rate": 1.6073385284807997,
+            "sum_rate": 0.33316629519201146,
+            "p1_estimate": 0.04499836231231156,
+            "p5_estimate": 0.06013612573671713,
+            "p10_estimate": 0.07446254867172408,
+            "p25_estimate": 0.10392800494550054,
+            "p50_estimate": 0.16862061276363705,
+            "p75_estimate": 0.26978645387745337,
+            "p90_estimate": 0.37392869698778686,
+            "p95_estimate": 0.49408352899707053,
+            "p99_estimate": 0.6785750343260711
+          },
+          "buckets": {
+            "0": 0,
+            "0.0019": 0,
+            "0.0037": 0,
+            "0.0072": 0,
+            "0.014": 0,
+            "0.027": 0,
+            "0.052": 74,
+            "0.1": 1227,
+            "0.19": 3196,
+            "0.37": 5070,
+            "0.72": 5658,
+            "1.4": 5698,
+            "2.7": 5699,
+            "5.2": 5699,
+            "10": 5699,
+            "+Inf": 5699
+          }
+        }
+      ]
+    },
+    "dynamo_component_router_output_sequence_tokens": {
+      "type": "histogram",
+      "description": "Output sequence length in tokens observed at the router",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "router_id": "826256094091670",
+            "worker_id": "2ef79bcfb5996"
+          },
+          "stats": {
+            "count": 11398,
+            "sum": 1959879.0,
+            "avg": 171.9493770836989,
+            "count_rate": 3.2146770569615994,
+            "sum_rate": 552.7617174698055,
+            "p1_estimate": 0.0,
+            "p5_estimate": 0.0,
+            "p10_estimate": 0.8996098581974316,
+            "p25_estimate": 3.9568473736430536,
+            "p50_estimate": 38.390878820892965,
+            "p75_estimate": 327.2225253191467,
+            "p90_estimate": 489.27769802532976,
+            "p95_estimate": 644.0017632099944,
+            "p99_estimate": 788.2486388260452
+          },
+          "buckets": {
+            "0": 0,
+            "100": 6803,
+            "210": 7351,
+            "430": 9501,
+            "880": 11290,
+            "1800": 11384,
+            "3700": 11398,
+            "7600": 11398,
+            "16000": 11398,
+            "32000": 11398,
+            "+Inf": 11398
+          }
+        }
+      ]
+    },
+    "dynamo_component_router_requests": {
+      "type": "counter",
+      "description": "Total number of requests processed by the router",
+      "unit": "requests",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "router_id": "826256094091670",
+            "worker_id": "2ef79bcfb5996"
+          },
+          "stats": {
+            "total": 11398.0,
+            "rate": 3.2146770569615994
+          }
+        }
+      ]
+    },
+    "dynamo_component_router_shared_cache_beyond_blocks": {
+      "type": "histogram",
+      "description": "Shared cache blocks beyond device overlap for the selected worker",
+      "unit": "blocks",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "router_id": "826256094091670",
+            "worker_id": "2ef79bcfb5996"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "1": 0,
+            "2": 0,
+            "4": 0,
+            "8": 0,
+            "16": 0,
+            "32": 0,
+            "64": 0,
+            "128": 0,
+            "256": 0,
+            "512": 0,
+            "1024": 0,
+            "2048": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_component_router_shared_cache_hit_rate": {
+      "type": "histogram",
+      "description": "Fraction of request blocks found in the shared KV cache (0.0-1.0)",
+      "unit": "ratio",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "router_id": "826256094091670",
+            "worker_id": "2ef79bcfb5996"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0": 0,
+            "0.05": 0,
+            "0.1": 0,
+            "0.15000000000000002": 0,
+            "0.2": 0,
+            "0.25": 0,
+            "0.30000000000000004": 0,
+            "0.35000000000000003": 0,
+            "0.4": 0,
+            "0.45": 0,
+            "0.5": 0,
+            "0.55": 0,
+            "0.6000000000000001": 0,
+            "0.65": 0,
+            "0.7000000000000001": 0,
+            "0.75": 0,
+            "0.8": 0,
+            "0.8500000000000001": 0,
+            "0.9": 0,
+            "0.9500000000000001": 0,
+            "1": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_component_router_time_to_first_token_seconds": {
+      "type": "histogram",
+      "description": "Time to first token observed at the router",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "router_id": "826256094091670",
+            "worker_id": "2ef79bcfb5996"
+          },
+          "stats": {
+            "count": 11398,
+            "sum": 7709.037132780008,
+            "avg": 0.6763499853290058,
+            "count_rate": 3.2146770569615994,
+            "sum_rate": 2.174246780313469,
+            "p1_estimate": 0.026676460577973262,
+            "p5_estimate": 0.03140604397328127,
+            "p10_estimate": 0.03731802321741627,
+            "p25_estimate": 0.09707579673922628,
+            "p50_estimate": 0.3960085389095534,
+            "p75_estimate": 0.9226695145480314,
+            "p90_estimate": 1.8251123728553962,
+            "p95_estimate": 2.282062659600922,
+            "p99_estimate": 3.645198596307112
+          },
+          "buckets": {
+            "0": 0,
+            "0.0022": 0,
+            "0.0047": 0,
+            "0.01": 0,
+            "0.022": 18,
+            "0.047": 1266,
+            "0.1": 2860,
+            "0.22": 4040,
+            "0.47": 6450,
+            "1": 8776,
+            "2.2": 10694,
+            "4.7": 11382,
+            "10": 11398,
+            "22": 11398,
+            "48": 11398,
+            "100": 11398,
+            "220": 11398,
+            "480": 11398,
+            "+Inf": 11398
+          }
+        }
+      ]
+    },
+    "dynamo_component_router_worker_registered": {
+      "type": "gauge",
+      "description": "Whether the router currently has this worker/dp_rank registered (1 = registered)",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "router_worker_id": "161118591780214",
+            "worker_id": "2ef79bcfb5996",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "avg": 1.0,
+            "min": 1.0,
+            "max": 1.0,
+            "std": 0.0,
+            "p1": 1.0,
+            "p5": 1.0,
+            "p10": 1.0,
+            "p25": 1.0,
+            "p50": 1.0,
+            "p75": 1.0,
+            "p90": 1.0,
+            "p95": 1.0,
+            "p99": 1.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "router_worker_id": "1976693124654411",
+            "worker_id": "2ef79bcfb5996",
+            "worker_type": "decode"
+          },
+          "stats": {
+            "avg": 1.0,
+            "min": 1.0,
+            "max": 1.0,
+            "std": 0.0,
+            "p1": 1.0,
+            "p5": 1.0,
+            "p10": 1.0,
+            "p25": 1.0,
+            "p50": 1.0,
+            "p75": 1.0,
+            "p90": 1.0,
+            "p95": 1.0,
+            "p99": 1.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "router_worker_id": "2379877761932397",
+            "worker_id": "2ef79bcfb5996",
+            "worker_type": "decode"
+          },
+          "stats": {
+            "avg": 1.0,
+            "min": 1.0,
+            "max": 1.0,
+            "std": 0.0,
+            "p1": 1.0,
+            "p5": 1.0,
+            "p10": 1.0,
+            "p25": 1.0,
+            "p50": 1.0,
+            "p75": 1.0,
+            "p90": 1.0,
+            "p95": 1.0,
+            "p99": 1.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "router_worker_id": "2592127224712748",
+            "worker_id": "2ef79bcfb5996",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "avg": 1.0,
+            "min": 1.0,
+            "max": 1.0,
+            "std": 0.0,
+            "p1": 1.0,
+            "p5": 1.0,
+            "p10": 1.0,
+            "p25": 1.0,
+            "p50": 1.0,
+            "p75": 1.0,
+            "p90": 1.0,
+            "p95": 1.0,
+            "p99": 1.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "router_worker_id": "4583327497008416",
+            "worker_id": "2ef79bcfb5996",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "avg": 1.0,
+            "min": 1.0,
+            "max": 1.0,
+            "std": 0.0,
+            "p1": 1.0,
+            "p5": 1.0,
+            "p10": 1.0,
+            "p25": 1.0,
+            "p50": 1.0,
+            "p75": 1.0,
+            "p90": 1.0,
+            "p95": 1.0,
+            "p99": 1.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "router_worker_id": "5168186628234823",
+            "worker_id": "2ef79bcfb5996",
+            "worker_type": "decode"
+          },
+          "stats": {
+            "avg": 1.0,
+            "min": 1.0,
+            "max": 1.0,
+            "std": 0.0,
+            "p1": 1.0,
+            "p5": 1.0,
+            "p10": 1.0,
+            "p25": 1.0,
+            "p50": 1.0,
+            "p75": 1.0,
+            "p90": 1.0,
+            "p95": 1.0,
+            "p99": 1.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "router_worker_id": "5806983444473052",
+            "worker_id": "2ef79bcfb5996",
+            "worker_type": "decode"
+          },
+          "stats": {
+            "avg": 1.0,
+            "min": 1.0,
+            "max": 1.0,
+            "std": 0.0,
+            "p1": 1.0,
+            "p5": 1.0,
+            "p10": 1.0,
+            "p25": 1.0,
+            "p50": 1.0,
+            "p75": 1.0,
+            "p90": 1.0,
+            "p95": 1.0,
+            "p99": 1.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_qwen3_32b_fp8_vllm_disagg_kv",
+            "router_worker_id": "94393227423576",
+            "worker_id": "2ef79bcfb5996",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "avg": 1.0,
+            "min": 1.0,
+            "max": 1.0,
+            "std": 0.0,
+            "p1": 1.0,
+            "p5": 1.0,
+            "p10": 1.0,
+            "p25": 1.0,
+            "p50": 1.0,
+            "p75": 1.0,
+            "p90": 1.0,
+            "p95": 1.0,
+            "p99": 1.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_active_requests": {
+      "type": "gauge",
+      "description": "Number of requests currently being handled by the frontend, from HTTP handler entry to response completion",
+      "unit": "requests",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3-32B-FP8"
+          },
+          "stats": {
+            "avg": 8.670865845633168,
+            "min": 0.0,
+            "max": 24.0,
+            "std": 3.410747527378864,
+            "p1": 2.0,
+            "p5": 4.0,
+            "p10": 5.0,
+            "p25": 6.0,
+            "p50": 8.0,
+            "p75": 11.0,
+            "p90": 13.0,
+            "p95": 15.0,
+            "p99": 18.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_cached_tokens": {
+      "type": "histogram",
+      "description": "Number of cached tokens (prefix cache hits) per request",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3-32B-FP8"
+          },
+          "stats": {
+            "count": 5697,
+            "sum": 5853056.0,
+            "avg": 1027.392662804985,
+            "count_rate": 1.6069256024183993,
+            "sum_rate": 1650.9435735981442,
+            "p1_estimate": 497.39903756244877,
+            "p5_estimate": 497.9809357114177,
+            "p10_estimate": 498.70830839762885,
+            "p25_estimate": 500.89042645626233,
+            "p50_estimate": 504.5272898873181,
+            "p75_estimate": 508.16415331837385,
+            "p90_estimate": 510.3462713770074,
+            "p95_estimate": 2100.5754971451966,
+            "p99_estimate": 17240.287526919932
+          },
+          "buckets": {
+            "0": 0,
+            "100": 0,
+            "210": 0,
+            "430": 0,
+            "870": 5306,
+            "1800": 5400,
+            "3600": 5473,
+            "7400": 5551,
+            "15000": 5627,
+            "31000": 5689,
+            "63000": 5697,
+            "130000": 5697,
+            "+Inf": 5697
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_detokenize_token_count": {
+      "type": "counter",
+      "description": "Total tokens detokenized",
+      "unit": "count",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "stats": {
+            "total": 498710041.0,
+            "rate": 140655.52964371632
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_detokenize_total_us": {
+      "type": "counter",
+      "description": "Cumulative detokenization time (microseconds)",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "stats": {
+            "total": 938592075.0,
+            "rate": 264719.2849051132
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_disconnected_clients": {
+      "type": "gauge",
+      "description": "Number of disconnected clients",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_event_loop_delay_seconds": {
+      "type": "histogram",
+      "description": "Event loop delay canary: drift from 10ms sleep (seconds)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "stats": {
+            "count": 320958,
+            "sum": 335.8533218140011,
+            "avg": 0.001046408943892974,
+            "count_rate": 90.5225757894614,
+            "sum_rate": 0.09472363293032199,
+            "p1_estimate": 0.0,
+            "p5_estimate": 0.0,
+            "p10_estimate": 8.305475417098112e-7,
+            "p25_estimate": 0.00033131174259756285,
+            "p50_estimate": 0.001,
+            "p75_estimate": 0.0018518777961953048,
+            "p90_estimate": 0.002950524588965992,
+            "p95_estimate": 0.003316740186556221,
+            "p99_estimate": 0.0036097126646284037
+          },
+          "buckets": {
+            "0": 0,
+            "0.001": 145676,
+            "0.005": 320957,
+            "0.01": 320957,
+            "0.025": 320958,
+            "0.05": 320958,
+            "0.1": 320958,
+            "0.25": 320958,
+            "0.5": 320958,
+            "1": 320958,
+            "+Inf": 320958
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_event_loop_stall": {
+      "type": "counter",
+      "description": "Number of event loop stalls (delay > 5ms)",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "stats": {
+            "total": 1.0,
+            "rate": 0.00028203869599592905
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_inflight_requests": {
+      "type": "gauge",
+      "description": "Number of inflight requests",
+      "unit": "requests",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3-32B-FP8"
+          },
+          "stats": {
+            "avg": 8.670865845633168,
+            "min": 0.0,
+            "max": 24.0,
+            "std": 3.410747527378864,
+            "p1": 2.0,
+            "p5": 4.0,
+            "p10": 5.0,
+            "p25": 6.0,
+            "p50": 8.0,
+            "p75": 11.0,
+            "p90": 13.0,
+            "p95": 15.0,
+            "p99": 18.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_input_sequence_tokens": {
+      "type": "histogram",
+      "description": "Input sequence length in tokens",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3-32B-FP8"
+          },
+          "stats": {
+            "count": 5699,
+            "sum": 53093600.0,
+            "avg": 9316.301105457098,
+            "count_rate": 1.6074897328738738,
+            "sum_rate": 14975.858375383805,
+            "p1_estimate": 870.0,
+            "p5_estimate": 940.6757122194253,
+            "p10_estimate": 1055.9928698627375,
+            "p25_estimate": 2109.034839599316,
+            "p50_estimate": 6446.828774061119,
+            "p75_estimate": 13653.20827414433,
+            "p90_estimate": 22965.15340522805,
+            "p95_estimate": 28357.616899846154,
+            "p99_estimate": 36552.07168435667
+          },
+          "buckets": {
+            "0": 0,
+            "100": 0,
+            "210": 0,
+            "430": 0,
+            "870": 0,
+            "1800": 1256,
+            "3600": 1887,
+            "7400": 3100,
+            "15000": 4434,
+            "31000": 5511,
+            "63000": 5699,
+            "130000": 5699,
+            "+Inf": 5699
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_inter_token_latency_seconds": {
+      "type": "histogram",
+      "description": "Inter-token latency in seconds",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3-32B-FP8"
+          },
+          "stats": {
+            "count": 1946980,
+            "sum": 25527.853884647677,
+            "avg": 0.013111513156091832,
+            "count_rate": 549.175357099627,
+            "sum_rate": 7.200519919613191,
+            "p1_estimate": 0.008883734071208857,
+            "p5_estimate": 0.009084236048410023,
+            "p10_estimate": 0.009334863519911477,
+            "p25_estimate": 0.010086745934415848,
+            "p50_estimate": 0.011339883291923128,
+            "p75_estimate": 0.012593020649430409,
+            "p90_estimate": 0.021756042410798714,
+            "p95_estimate": 0.02457062043513853,
+            "p99_estimate": 0.03336172290283617
+          },
+          "buckets": {
+            "0": 0,
+            "0.0019": 12,
+            "0.0035": 28,
+            "0.0067": 173,
+            "0.013": 1571190,
+            "0.024": 1804816,
+            "0.045": 1946872,
+            "0.084": 1946945,
+            "0.16": 1946975,
+            "0.3": 1946978,
+            "0.56": 1946978,
+            "1.1": 1946979,
+            "2": 1946980,
+            "+Inf": 1946980
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_lora_churn_loads_total": {
+      "type": "gauge",
+      "description": "Total LoRA loads (new placements) this tick",
+      "unit": "count",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_lora_churn_unloads_total": {
+      "type": "gauge",
+      "description": "Total LoRA unloads (removed placements) this tick",
+      "unit": "count",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_lora_overflow_count": {
+      "type": "gauge",
+      "description": "MCF solver overflow count (unplaceable replicas)",
+      "unit": "count",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_model_context_length": {
+      "type": "gauge",
+      "description": "Maximum context length in tokens for a worker serving the model",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3-32B-FP8"
+          },
+          "stats": {
+            "avg": 40960.0,
+            "min": 40960.0,
+            "max": 40960.0,
+            "std": 0.0,
+            "p1": 40960.0,
+            "p5": 40960.0,
+            "p10": 40960.0,
+            "p25": 40960.0,
+            "p50": 40960.0,
+            "p75": 40960.0,
+            "p90": 40960.0,
+            "p95": 40960.0,
+            "p99": 40960.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_model_kv_cache_block_size": {
+      "type": "gauge",
+      "description": "KV cache block size in tokens for a worker serving the model",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3-32B-FP8"
+          },
+          "stats": {
+            "avg": 128.0,
+            "min": 128.0,
+            "max": 128.0,
+            "std": 0.0,
+            "p1": 128.0,
+            "p5": 128.0,
+            "p10": 128.0,
+            "p25": 128.0,
+            "p50": 128.0,
+            "p75": 128.0,
+            "p90": 128.0,
+            "p95": 128.0,
+            "p99": 128.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_model_max_num_batched_tokens": {
+      "type": "gauge",
+      "description": "Maximum number of batched tokens for a worker serving the model",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3-32B-FP8"
+          },
+          "stats": {
+            "avg": 8192.0,
+            "min": 8192.0,
+            "max": 8192.0,
+            "std": 0.0,
+            "p1": 8192.0,
+            "p5": 8192.0,
+            "p10": 8192.0,
+            "p25": 8192.0,
+            "p50": 8192.0,
+            "p75": 8192.0,
+            "p90": 8192.0,
+            "p95": 8192.0,
+            "p99": 8192.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_model_max_num_seqs": {
+      "type": "gauge",
+      "description": "Maximum number of sequences for a worker serving the model",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3-32B-FP8"
+          },
+          "stats": {
+            "avg": 1024.0,
+            "min": 1024.0,
+            "max": 1024.0,
+            "std": 0.0,
+            "p1": 1024.0,
+            "p5": 1024.0,
+            "p10": 1024.0,
+            "p25": 1024.0,
+            "p50": 1024.0,
+            "p75": 1024.0,
+            "p90": 1024.0,
+            "p95": 1024.0,
+            "p99": 1024.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_model_migration_limit": {
+      "type": "gauge",
+      "description": "Maximum number of request migrations allowed for the model",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3-32B-FP8"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_model_total_kv_blocks": {
+      "type": "gauge",
+      "description": "Total KV cache blocks available for a worker serving the model",
+      "unit": "blocks",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3-32B-FP8"
+          },
+          "stats": {
+            "avg": 3246.0,
+            "min": 3246.0,
+            "max": 3246.0,
+            "std": 0.0,
+            "p1": 3246.0,
+            "p5": 3246.0,
+            "p10": 3246.0,
+            "p25": 3246.0,
+            "p50": 3246.0,
+            "p75": 3246.0,
+            "p90": 3246.0,
+            "p95": 3246.0,
+            "p99": 3246.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_output_sequence_tokens": {
+      "type": "histogram",
+      "description": "Output sequence length in tokens",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3-32B-FP8"
+          },
+          "stats": {
+            "count": 5698,
+            "sum": 1954177.0,
+            "avg": 342.95840645840644,
+            "count_rate": 1.607812687597644,
+            "sum_rate": 551.4128772220956,
+            "p1_estimate": 1.823859665126561,
+            "p5_estimate": 15.11204602144606,
+            "p10_estimate": 32.932154815643706,
+            "p25_estimate": 158.79642558951224,
+            "p50_estimate": 334.36037560224065,
+            "p75_estimate": 470.6932312659654,
+            "p90_estimate": 666.3188470145582,
+            "p95_estimate": 758.2943401504716,
+            "p99_estimate": 1079.86810132804
+          },
+          "buckets": {
+            "0": 0,
+            "100": 1103,
+            "210": 1651,
+            "430": 3801,
+            "880": 5590,
+            "1800": 5684,
+            "3700": 5698,
+            "7600": 5698,
+            "16000": 5698,
+            "32000": 5698,
+            "+Inf": 5698
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_output_tokens": {
+      "type": "counter",
+      "description": "Total number of output tokens generated (updates in real-time)",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3-32B-FP8"
+          },
+          "stats": {
+            "total": 1952679.0,
+            "rate": 550.7828468325009
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_queued_requests": {
+      "type": "gauge",
+      "description": "Number of requests in HTTP processing queue",
+      "unit": "requests",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3-32B-FP8"
+          },
+          "stats": {
+            "avg": 1.4798345398138573,
+            "min": 0.0,
+            "max": 13.0,
+            "std": 1.8752190422083548,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 1.0,
+            "p75": 2.0,
+            "p90": 4.0,
+            "p95": 5.0,
+            "p99": 8.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_request_duration_seconds": {
+      "type": "histogram",
+      "description": "Duration of LLM requests",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3-32B-FP8"
+          },
+          "stats": {
+            "count": 5698,
+            "sum": 30564.247183684973,
+            "avg": 5.364030744767457,
+            "count_rate": 1.607812687597644,
+            "sum_rate": 8.624356688100956,
+            "p1_estimate": 0.0729201602490588,
+            "p5_estimate": 0.49371821982538205,
+            "p10_estimate": 1.0219176772186715,
+            "p25_estimate": 2.5960003769438456,
+            "p50_estimate": 4.732638044327915,
+            "p75_estimate": 7.030149546143613,
+            "p90_estimate": 10.096795281999682,
+            "p95_estimate": 13.373815572266626,
+            "p99_estimate": 18.5861765621164
+          },
+          "buckets": {
+            "0": 0,
+            "2": 1066,
+            "4": 2147,
+            "8": 4701,
+            "16": 5600,
+            "32": 5694,
+            "64": 5698,
+            "130": 5698,
+            "260": 5698,
+            "510": 5698,
+            "+Inf": 5698
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_requests": {
+      "type": "counter",
+      "description": "Total number of LLM requests processed",
+      "unit": "requests",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "endpoint": "chat_completions",
+            "error_type": "",
+            "model": "Qwen/Qwen3-32B-FP8",
+            "request_type": "stream",
+            "status": "success"
+          },
+          "stats": {
+            "total": 5698.0,
+            "rate": 1.607812687597644
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_requests_started": {
+      "type": "counter",
+      "description": "Total number of LLM requests accepted by the frontend handler",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "endpoint": "chat_completions",
+            "model": "Qwen/Qwen3-32B-FP8",
+            "request_type": "stream"
+          },
+          "stats": {
+            "total": 5693.0,
+            "rate": 1.605797341507451
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_router_queue_backpressure": {
+      "type": "counter",
+      "description": "Total number of router scheduler queue backpressure rejections",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3-32B-FP8",
+            "policy_class": "default",
+            "reason": "cached_token_limit",
+            "worker_type": "decode"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3-32B-FP8",
+            "policy_class": "default",
+            "reason": "cached_token_limit",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3-32B-FP8",
+            "policy_class": "default",
+            "reason": "raw_isl_token_limit",
+            "worker_type": "decode"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3-32B-FP8",
+            "policy_class": "default",
+            "reason": "raw_isl_token_limit",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3-32B-FP8",
+            "policy_class": "default",
+            "reason": "request_limit",
+            "worker_type": "decode"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3-32B-FP8",
+            "policy_class": "default",
+            "reason": "request_limit",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_router_queue_pending_cached_tokens": {
+      "type": "gauge",
+      "description": "Estimated cached tokens for requests pending in the router scheduler queue",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3-32B-FP8",
+            "policy_class": "default",
+            "worker_type": "decode"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3-32B-FP8",
+            "policy_class": "default",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_router_queue_pending_isl_tokens": {
+      "type": "gauge",
+      "description": "Sum of isl_tokens for requests pending in the router scheduler queue",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3-32B-FP8",
+            "policy_class": "default",
+            "worker_type": "decode"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3-32B-FP8",
+            "policy_class": "default",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_router_queue_pending_requests": {
+      "type": "gauge",
+      "description": "Number of requests pending in the router scheduler queue",
+      "unit": "requests",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3-32B-FP8",
+            "policy_class": "default",
+            "worker_type": "decode"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3-32B-FP8",
+            "policy_class": "default",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_stage_duration_seconds": {
+      "type": "histogram",
+      "description": "Pipeline stage duration (seconds)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "stage": "preprocess"
+          },
+          "stats": {
+            "count": 5693,
+            "sum": 93.17332160400026,
+            "avg": 0.016366295732302874,
+            "count_rate": 1.605797341507451,
+            "sum_rate": 0.026280954177256694,
+            "p1_estimate": 0.001,
+            "p5_estimate": 0.0012945314766575299,
+            "p10_estimate": 0.0019644478890524543,
+            "p25_estimate": 0.004258805781103381,
+            "p50_estimate": 0.01,
+            "p75_estimate": 0.025509164034661334,
+            "p90_estimate": 0.04023817363333793,
+            "p95_estimate": 0.04514784349956346,
+            "p99_estimate": 0.07126360329535857
+          },
+          "buckets": {
+            "0.0001": 0,
+            "0.0005": 0,
+            "0.001": 0,
+            "0.005": 1554,
+            "0.01": 2531,
+            "0.05": 5485,
+            "0.1": 5692,
+            "0.5": 5693,
+            "1": 5693,
+            "2.5": 5693,
+            "5": 5693,
+            "+Inf": 5693
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "stage": "route"
+          },
+          "stats": {
+            "count": 11392,
+            "sum": 0.0730210420000003,
+            "avg": 6.409852703651712e-6,
+            "count_rate": 3.2132870743813244,
+            "sum_rate": 0.000020596696841332234,
+            "p1_estimate": 2.3818917741863622e-8,
+            "p5_estimate": 5.365621210234408e-7,
+            "p10_estimate": 1.177491125125413e-6,
+            "p25_estimate": 3.100278137431329e-6,
+            "p50_estimate": 6.304941579560872e-6,
+            "p75_estimate": 9.719408848252411e-6,
+            "p90_estimate": 0.000011768100262439144,
+            "p95_estimate": 0.000012450997400501386,
+            "p99_estimate": 0.000012997315110951185
+          },
+          "buckets": {
+            "0.0001": 11392,
+            "0.0005": 11392,
+            "0.001": 11392,
+            "0.005": 11392,
+            "0.01": 11392,
+            "0.05": 11392,
+            "0.1": 11392,
+            "0.5": 11392,
+            "1": 11392,
+            "2.5": 11392,
+            "5": 11392,
+            "+Inf": 11392
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "stage": "transport_roundtrip"
+          },
+          "stats": {
+            "count": 11398,
+            "sum": 4939.310875435997,
+            "avg": 0.43334890993472513,
+            "count_rate": 3.2146770569615994,
+            "sum_rate": 1.3930767984264796,
+            "p1_estimate": 0.018409527473494013,
+            "p5_estimate": 0.034498091273657154,
+            "p10_estimate": 0.05022684662141237,
+            "p25_estimate": 0.1,
+            "p50_estimate": 0.24032773453095932,
+            "p75_estimate": 0.453749097231404,
+            "p90_estimate": 1.034663045904206,
+            "p95_estimate": 1.8021213154359823,
+            "p99_estimate": 2.6639334649264415
+          },
+          "buckets": {
+            "0.0001": 0,
+            "0.0005": 0,
+            "0.001": 0,
+            "0.005": 0,
+            "0.01": 0,
+            "0.05": 851,
+            "0.1": 2718,
+            "0.5": 8826,
+            "1": 10107,
+            "2.5": 11174,
+            "5": 11394,
+            "+Inf": 11398
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_stage_requests": {
+      "type": "gauge",
+      "description": "Number of requests currently in the given pipeline stage",
+      "unit": "requests",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "phase": "",
+            "stage": "preprocess"
+          },
+          "stats": {
+            "avg": 0.04324527592366269,
+            "min": 0.0,
+            "max": 8.0,
+            "std": 0.3790423560241196,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 2.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "phase": "decode",
+            "stage": "dispatch"
+          },
+          "stats": {
+            "avg": 0.3263444904099285,
+            "min": 0.0,
+            "max": 5.0,
+            "std": 0.628896562330154,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 1.0,
+            "p90": 1.0,
+            "p95": 2.0,
+            "p99": 3.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "phase": "decode",
+            "stage": "route"
+          },
+          "stats": {
+            "avg": 0.0000940203083866115,
+            "min": 0.0,
+            "max": 1.0,
+            "std": 0.009696406983342414,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "phase": "prefill",
+            "stage": "dispatch"
+          },
+          "stats": {
+            "avg": 1.109241327441948,
+            "min": 0.0,
+            "max": 13.0,
+            "std": 1.5649130206125774,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 1.0,
+            "p75": 2.0,
+            "p90": 3.0,
+            "p95": 4.0,
+            "p99": 7.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "phase": "prefill",
+            "stage": "route"
+          },
+          "stats": {
+            "avg": 0.00037604587759706683,
+            "min": 0.0,
+            "max": 1.0,
+            "std": 0.019389167329953324,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_template_seconds": {
+      "type": "histogram",
+      "description": "Template application time in preprocessor (seconds)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "stats": {
+            "count": 5699,
+            "sum": 0.7010747949999989,
+            "avg": 0.00012301716002807492,
+            "count_rate": 1.6073385284807997,
+            "sum_rate": 0.00019773022097741298,
+            "p1_estimate": 0.00006232031053976907,
+            "p5_estimate": 0.00006848456467398075,
+            "p10_estimate": 0.00007618988234174537,
+            "p25_estimate": 0.00009197599447932005,
+            "p50_estimate": 0.00011477617404241537,
+            "p75_estimate": 0.00015017846223337554,
+            "p90_estimate": 0.00017827764728112563,
+            "p95_estimate": 0.0001876440422970423,
+            "p99_estimate": 0.00019513715830977567
+          },
+          "buckets": {
+            "0.00001": 0,
+            "0.00005": 0,
+            "0.0001": 1657,
+            "0.0005": 5685,
+            "0.001": 5697,
+            "0.005": 5699,
+            "0.01": 5699,
+            "0.05": 5699,
+            "+Inf": 5699
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_time_to_first_token_seconds": {
+      "type": "histogram",
+      "description": "Time to first token in seconds",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3-32B-FP8"
+          },
+          "stats": {
+            "count": 5699,
+            "sum": 5036.01458452901,
+            "avg": 0.8836663598050553,
+            "count_rate": 1.6074897328738738,
+            "sum_rate": 1.4204846006726566,
+            "p1_estimate": 0.07674326909608295,
+            "p5_estimate": 0.10576920947917556,
+            "p10_estimate": 0.12679655744486443,
+            "p25_estimate": 0.2103182835276473,
+            "p50_estimate": 0.5849137697926835,
+            "p75_estimate": 1.2145627528043283,
+            "p90_estimate": 2.085687015096701,
+            "p95_estimate": 2.6589213678566357,
+            "p99_estimate": 4.101931800344866
+          },
+          "buckets": {
+            "0": 0,
+            "0.0022": 0,
+            "0.0047": 0,
+            "0.01": 0,
+            "0.022": 0,
+            "0.047": 0,
+            "0.1": 122,
+            "0.22": 1457,
+            "0.47": 2346,
+            "1": 3890,
+            "2.2": 5174,
+            "4.7": 5684,
+            "10": 5699,
+            "22": 5699,
+            "48": 5699,
+            "100": 5699,
+            "220": 5699,
+            "480": 5699,
+            "+Inf": 5699
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_tokenize_seconds": {
+      "type": "histogram",
+      "description": "Tokenization time in preprocessor (seconds)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "stats": {
+            "count": 5699,
+            "sum": 92.54659683499985,
+            "avg": 0.016239094022635524,
+            "count_rate": 1.6073385284807997,
+            "sum_rate": 0.026101721490204333,
+            "p1_estimate": 0.001,
+            "p5_estimate": 0.0012565174463801826,
+            "p10_estimate": 0.0018790332035753363,
+            "p25_estimate": 0.00419635161742061,
+            "p50_estimate": 0.01,
+            "p75_estimate": 0.025279075778363188,
+            "p90_estimate": 0.040142104404120416,
+            "p95_estimate": 0.045096447279372814,
+            "p99_estimate": 0.0706731246129755
+          },
+          "buckets": {
+            "0.0001": 0,
+            "0.0005": 0,
+            "0.001": 0,
+            "0.005": 1576,
+            "0.01": 2547,
+            "0.05": 5495,
+            "0.1": 5698,
+            "0.5": 5699,
+            "1": 5699,
+            "+Inf": 5699
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_tokenizer_cache_hits": {
+      "type": "counter",
+      "description": "Cumulative L1 tokenizer prefix-cache hits",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_tokenizer_cache_misses": {
+      "type": "counter",
+      "description": "Cumulative L1 tokenizer prefix-cache misses",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_tokenizer_latency_ms": {
+      "type": "histogram",
+      "description": "Tokenizer latency in milliseconds",
+      "unit": "milliseconds",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "operation": "detokenize"
+          },
+          "stats": {
+            "count": 5698,
+            "sum": 12.218245466966469,
+            "avg": 0.002144304223756839,
+            "count_rate": 1.607812687597644,
+            "sum_rate": 0.003447639537025463,
+            "p1_estimate": 0.0,
+            "p5_estimate": 0.0,
+            "p10_estimate": 0.0,
+            "p25_estimate": 0.0005336828299944074,
+            "p50_estimate": 0.001605835847941212,
+            "p75_estimate": 0.0037547365485670874,
+            "p90_estimate": 0.005044190410313923,
+            "p95_estimate": 0.005474008364229534,
+            "p99_estimate": 0.005817862727362024
+          },
+          "buckets": {
+            "0.5": 5698,
+            "1": 5698,
+            "2": 5698,
+            "4": 5698,
+            "8": 5698,
+            "16": 5698,
+            "32": 5698,
+            "64": 5698,
+            "128": 5698,
+            "256": 5698,
+            "512": 5698,
+            "+Inf": 5698
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "operation": "tokenize"
+          },
+          "stats": {
+            "count": 5696,
+            "sum": 90581.40716899978,
+            "avg": 15.902634685568781,
+            "count_rate": 1.6072483447799544,
+            "sum_rate": 25.559483276020714,
+            "p1_estimate": 1.4708130910547081,
+            "p5_estimate": 1.7840854455252746,
+            "p10_estimate": 2.114071988146807,
+            "p25_estimate": 4.08523155739339,
+            "p50_estimate": 11.344616727734806,
+            "p75_estimate": 22.962674792683178,
+            "p90_estimate": 36.09642237031813,
+            "p95_estimate": 48.0388543176951,
+            "p99_estimate": 61.75208869425248
+          },
+          "buckets": {
+            "0.5": 0,
+            "1": 0,
+            "2": 446,
+            "4": 1366,
+            "8": 2185,
+            "16": 3517,
+            "32": 4908,
+            "64": 5648,
+            "128": 5696,
+            "256": 5696,
+            "512": 5696,
+            "+Inf": 5696
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_worker_active_decode_blocks": {
+      "type": "gauge",
+      "description": "Active KV cache decode blocks per worker",
+      "unit": "blocks",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "worker_id": "161118591780214",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "worker_id": "1976693124654411",
+            "worker_type": "decode"
+          },
+          "stats": {
+            "avg": 139.67368817002068,
+            "min": 0.0,
+            "max": 509.0,
+            "std": 99.39875477896189,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 7.0,
+            "p25": 61.0,
+            "p50": 130.0,
+            "p75": 210.0,
+            "p90": 275.0,
+            "p95": 317.0,
+            "p99": 385.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "worker_id": "2379877761932397",
+            "worker_type": "decode"
+          },
+          "stats": {
+            "avg": 139.49811924017303,
+            "min": 0.0,
+            "max": 558.0,
+            "std": 102.14354008085257,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 7.0,
+            "p25": 58.0,
+            "p50": 126.0,
+            "p75": 212.0,
+            "p90": 279.0,
+            "p95": 319.0,
+            "p99": 411.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "worker_id": "2592127224712748",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "worker_id": "4583327497008416",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "worker_id": "5168186628234823",
+            "worker_type": "decode"
+          },
+          "stats": {
+            "avg": 140.76438510718316,
+            "min": 0.0,
+            "max": 566.0,
+            "std": 101.75641774288472,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 7.0,
+            "p25": 56.0,
+            "p50": 132.0,
+            "p75": 209.0,
+            "p90": 281.0,
+            "p95": 323.0,
+            "p99": 395.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "worker_id": "5806983444473052",
+            "worker_type": "decode"
+          },
+          "stats": {
+            "avg": 166.81739539257168,
+            "min": 0.0,
+            "max": 641.0,
+            "std": 98.8805183546577,
+            "p1": 0.0,
+            "p5": 7.0,
+            "p10": 40.0,
+            "p25": 92.0,
+            "p50": 162.0,
+            "p75": 230.0,
+            "p90": 305.0,
+            "p95": 338.2999999999993,
+            "p99": 411.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "worker_id": "94393227423576",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_worker_active_prefill_tokens": {
+      "type": "gauge",
+      "description": "Active prefill tokens queued per worker",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "worker_id": "161118591780214",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "avg": 4506.558522139701,
+            "min": 0.0,
+            "max": 47010.0,
+            "std": 9539.676274301317,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 20250.0,
+            "p95": 28129.0,
+            "p99": 37981.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "worker_id": "1976693124654411",
+            "worker_type": "decode"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "worker_id": "2379877761932397",
+            "worker_type": "decode"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "worker_id": "2592127224712748",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "avg": 4774.257027357337,
+            "min": 0.0,
+            "max": 47278.0,
+            "std": 9721.74528809151,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 527.0,
+            "p90": 21348.0,
+            "p95": 28940.0,
+            "p99": 37678.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "worker_id": "4583327497008416",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "avg": 4914.939456613707,
+            "min": 0.0,
+            "max": 55762.0,
+            "std": 9868.146303704905,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 1714.0,
+            "p90": 22124.0,
+            "p95": 29161.0,
+            "p99": 37993.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "worker_id": "5168186628234823",
+            "worker_type": "decode"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "worker_id": "5806983444473052",
+            "worker_type": "decode"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "worker_id": "94393227423576",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "avg": 4405.423615681113,
+            "min": 0.0,
+            "max": 53136.0,
+            "std": 9333.625763925522,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 20234.799999999937,
+            "p95": 27583.0,
+            "p99": 37879.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_worker_last_input_sequence_tokens": {
+      "type": "gauge",
+      "description": "Last observed input sequence tokens per worker",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "worker_id": "161118591780214",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "avg": 9252.064704222703,
+            "min": 900.0,
+            "max": 40914.0,
+            "std": 7950.074074652675,
+            "p1": 903.0,
+            "p5": 913.0,
+            "p10": 1137.0,
+            "p25": 3319.0,
+            "p50": 6964.0,
+            "p75": 12703.0,
+            "p90": 19837.40000000025,
+            "p95": 26040.0,
+            "p99": 37860.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "worker_id": "2592127224712748",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "avg": 9161.526474184144,
+            "min": 900.0,
+            "max": 40544.0,
+            "std": 8207.346661477763,
+            "p1": 903.0,
+            "p5": 909.0,
+            "p10": 1045.0,
+            "p25": 2624.0,
+            "p50": 6752.0,
+            "p75": 13239.0,
+            "p90": 20745.0,
+            "p95": 26789.0,
+            "p99": 37106.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "worker_id": "4583327497008416",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "avg": 9570.148890142964,
+            "min": 900.0,
+            "max": 40546.0,
+            "std": 8458.844969507629,
+            "p1": 903.0,
+            "p5": 914.0,
+            "p10": 1120.0,
+            "p25": 3039.0,
+            "p50": 6903.0,
+            "p75": 13574.25,
+            "p90": 21678.0,
+            "p95": 27857.0,
+            "p99": 36162.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "worker_id": "94393227423576",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "avg": 8849.64158751058,
+            "min": 899.0,
+            "max": 40295.0,
+            "std": 7865.593576332356,
+            "p1": 903.0,
+            "p5": 910.0,
+            "p10": 1055.4,
+            "p25": 2682.0,
+            "p50": 6717.0,
+            "p75": 12598.0,
+            "p90": 19705.0,
+            "p95": 25069.399999999987,
+            "p99": 34536.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_worker_last_inter_token_latency_seconds": {
+      "type": "gauge",
+      "description": "Last observed inter-token latency per worker (seconds)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "worker_id": "1976693124654411",
+            "worker_type": "decode"
+          },
+          "stats": {
+            "avg": 0.011143860800376293,
+            "min": 0.005297555,
+            "max": 1.9784341589999999,
+            "std": 0.019108827195186924,
+            "p1": 0.009201688,
+            "p5": 0.00956451665,
+            "p10": 0.0097927773,
+            "p25": 0.01027794525,
+            "p50": 0.0108677965,
+            "p75": 0.01151770775,
+            "p90": 0.0122305365,
+            "p95": 0.01262985745,
+            "p99": 0.013663959209999996
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "worker_id": "2379877761932397",
+            "worker_type": "decode"
+          },
+          "stats": {
+            "avg": 0.010986465585308502,
+            "min": 0.008135259,
+            "max": 0.025236281,
+            "std": 0.0010033030752226847,
+            "p1": 0.00919910956,
+            "p5": 0.009519415500000001,
+            "p10": 0.0097862932,
+            "p25": 0.010309502,
+            "p50": 0.010931934,
+            "p75": 0.01156114925,
+            "p90": 0.012229688,
+            "p95": 0.012682030699999996,
+            "p99": 0.013597100980000002
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "worker_id": "5168186628234823",
+            "worker_type": "decode"
+          },
+          "stats": {
+            "avg": 0.011068943562211983,
+            "min": 0.008235416,
+            "max": 0.267565409,
+            "std": 0.002693759015861867,
+            "p1": 0.009247150800000001,
+            "p5": 0.0095816944,
+            "p10": 0.009812035,
+            "p25": 0.010353235,
+            "p50": 0.010966921,
+            "p75": 0.011625117,
+            "p90": 0.01228283,
+            "p95": 0.0127010194,
+            "p99": 0.01385137516
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "worker_id": "5806983444473052",
+            "worker_type": "decode"
+          },
+          "stats": {
+            "avg": 0.023444977470516316,
+            "min": 0.00443185,
+            "max": 0.06603961,
+            "std": 0.0038196555045222143,
+            "p1": 0.01594741468,
+            "p5": 0.017878261,
+            "p10": 0.018991511399999998,
+            "p25": 0.020767086,
+            "p50": 0.023214505,
+            "p75": 0.025640937,
+            "p90": 0.0283784098,
+            "p95": 0.030080278,
+            "p99": 0.0332902896
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_worker_last_time_to_first_token_seconds": {
+      "type": "gauge",
+      "description": "Last observed time to first token per worker (seconds)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "worker_id": "161118591780214",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "avg": 0.8204702511511333,
+            "min": 0.060989952,
+            "max": 5.851412023,
+            "std": 0.7800575836198077,
+            "p1": 0.090399014,
+            "p5": 0.125121203,
+            "p10": 0.151740673,
+            "p25": 0.280970668,
+            "p50": 0.586192794,
+            "p75": 1.066290506,
+            "p90": 1.7380456574000045,
+            "p95": 2.471774778,
+            "p99": 3.858215184
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "worker_id": "2592127224712748",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "avg": 0.8581570643987585,
+            "min": 0.051139598,
+            "max": 6.504310575,
+            "std": 0.8737368924296847,
+            "p1": 0.093924766,
+            "p5": 0.108340411,
+            "p10": 0.129914372,
+            "p25": 0.241932558,
+            "p50": 0.581426795,
+            "p75": 1.125731917,
+            "p90": 1.8806469670000001,
+            "p95": 2.567126772,
+            "p99": 4.40329354
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "worker_id": "4583327497008416",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "avg": 0.8641286516345936,
+            "min": 0.062985684,
+            "max": 5.414549976,
+            "std": 0.8464864811007015,
+            "p1": 0.094217129,
+            "p5": 0.11355964,
+            "p10": 0.133066044,
+            "p25": 0.252691333,
+            "p50": 0.590243453,
+            "p75": 1.15723054,
+            "p90": 1.944973813,
+            "p95": 2.7544083288999968,
+            "p99": 3.854790992
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "0",
+            "worker_id": "94393227423576",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "avg": 0.8070396205987962,
+            "min": 0.063625978,
+            "max": 5.930967361,
+            "std": 0.7703939943964677,
+            "p1": 0.090372408,
+            "p5": 0.114450843,
+            "p10": 0.13477348,
+            "p25": 0.249114867,
+            "p50": 0.575457711,
+            "p75": 1.063671695,
+            "p90": 1.797168602,
+            "p95": 2.393025722,
+            "p99": 3.82092256
+          }
+        }
+      ]
+    },
+    "dynamo_request_plane_inflight_requests": {
+      "type": "gauge",
+      "description": "Currently in-flight requests at AddressedPushRouter",
+      "unit": "requests",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "stats": {
+            "avg": 8.626398420607314,
+            "min": 0.0,
+            "max": 24.0,
+            "std": 3.3900462017014332,
+            "p1": 2.0,
+            "p5": 4.0,
+            "p10": 5.0,
+            "p25": 6.0,
+            "p50": 8.0,
+            "p75": 11.0,
+            "p90": 13.0,
+            "p95": 15.0,
+            "p99": 18.0
+          }
+        }
+      ]
+    },
+    "dynamo_request_plane_queue_seconds": {
+      "type": "histogram",
+      "description": "Time from generate() entry to send_request() (seconds)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "stats": {
+            "count": 11398,
+            "sum": 1.9251273899999937,
+            "avg": 0.0001689004553430421,
+            "count_rate": 3.2146770569615994,
+            "sum_rate": 0.0005429604187016445,
+            "p1_estimate": 8.400899742988804e-6,
+            "p5_estimate": 0.00001840497836330015,
+            "p10_estimate": 0.00003091007663868933,
+            "p25_estimate": 0.00006464739449290802,
+            "p50_estimate": 0.0001078567365735172,
+            "p75_estimate": 0.0002589718066868342,
+            "p90_estimate": 0.0003953684781702063,
+            "p95_estimate": 0.0004408340353313302,
+            "p99_estimate": 0.0005247693792047564
+          },
+          "buckets": {
+            "0.0001": 4652,
+            "0.0005": 11082,
+            "0.001": 11386,
+            "0.005": 11398,
+            "0.01": 11398,
+            "0.05": 11398,
+            "0.1": 11398,
+            "0.5": 11398,
+            "1": 11398,
+            "+Inf": 11398
+          }
+        }
+      ]
+    },
+    "dynamo_request_plane_roundtrip_ttft_seconds": {
+      "type": "histogram",
+      "description": "Time from send_request() to first response item (seconds)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "stats": {
+            "count": 11398,
+            "sum": 4937.370310854016,
+            "avg": 0.43317865510212455,
+            "count_rate": 3.2146770569615994,
+            "sum_rate": 1.3925294841222815,
+            "p1_estimate": 0.025,
+            "p5_estimate": 0.03568251449269455,
+            "p10_estimate": 0.05259304408257664,
+            "p25_estimate": 0.1,
+            "p50_estimate": 0.2168929943913327,
+            "p75_estimate": 0.4461043539595484,
+            "p90_estimate": 1.0913502340115018,
+            "p95_estimate": 1.8582621448874277,
+            "p99_estimate": 2.7734656310654775
+          },
+          "buckets": {
+            "0.001": 0,
+            "0.005": 0,
+            "0.01": 0,
+            "0.025": 21,
+            "0.05": 855,
+            "0.1": 2719,
+            "0.25": 6291,
+            "0.5": 8826,
+            "1": 10107,
+            "2.5": 11175,
+            "5": 11394,
+            "+Inf": 11398
+          }
+        }
+      ]
+    },
+    "dynamo_request_plane_send_seconds": {
+      "type": "histogram",
+      "description": "Time for send_request() to complete (seconds)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "stats": {
+            "count": 11398,
+            "sum": 4.5169078659999675,
+            "avg": 0.00039628951272152726,
+            "count_rate": 3.2146770569615994,
+            "sum_rate": 0.0012739428044603856,
+            "p1_estimate": 0.0001,
+            "p5_estimate": 0.00010370629615051335,
+            "p10_estimate": 0.00012615453758648955,
+            "p25_estimate": 0.00019349926189441818,
+            "p50_estimate": 0.00032940379604068295,
+            "p75_estimate": 0.0005,
+            "p90_estimate": 0.0007811534347416381,
+            "p95_estimate": 0.0009041633124519528,
+            "p99_estimate": 0.0012882548897258862
+          },
+          "buckets": {
+            "0.0001": 23,
+            "0.0005": 8448,
+            "0.001": 11057,
+            "0.005": 11395,
+            "0.01": 11395,
+            "0.05": 11398,
+            "0.1": 11398,
+            "0.5": 11398,
+            "1": 11398,
+            "+Inf": 11398
+          }
+        }
+      ]
+    },
+    "dynamo_router_overhead_block_hashing_ms": {
+      "type": "histogram",
+      "description": "Time spent computing block hashes in milliseconds",
+      "unit": "milliseconds",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "router_id": "826256094091670"
+          },
+          "stats": {
+            "count": 11398,
+            "sum": 101.14294399999986,
+            "avg": 0.008873744867520605,
+            "count_rate": 3.2146770569615994,
+            "sum_rate": 0.028526224034949237,
+            "p1_estimate": 0.002798328287492107,
+            "p5_estimate": 0.003650137996363334,
+            "p10_estimate": 0.004016272622876645,
+            "p25_estimate": 0.0052980472389217315,
+            "p50_estimate": 0.007246139993779636,
+            "p75_estimate": 0.011165787668108775,
+            "p90_estimate": 0.014922825981345304,
+            "p95_estimate": 0.018863635867147583,
+            "p99_estimate": 0.028754835278789928
+          },
+          "buckets": {
+            "0.001": 0,
+            "0.002": 0,
+            "0.004": 701,
+            "0.008": 6364,
+            "0.016": 10472,
+            "0.032": 11369,
+            "0.064": 11397,
+            "0.128": 11397,
+            "0.256": 11397,
+            "0.512": 11398,
+            "1.024": 11398,
+            "2.048": 11398,
+            "4.096": 11398,
+            "8.192": 11398,
+            "16.384": 11398,
+            "+Inf": 11398
+          }
+        }
+      ]
+    },
+    "dynamo_router_overhead_indexer_find_matches_ms": {
+      "type": "histogram",
+      "description": "Time spent in indexer find_matches in milliseconds",
+      "unit": "milliseconds",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "router_id": "826256094091670"
+          },
+          "stats": {
+            "count": 11398,
+            "sum": 64.59532999999999,
+            "avg": 0.005667251272153008,
+            "count_rate": 3.2146770569615994,
+            "sum_rate": 0.018218382640626713,
+            "p1_estimate": 0.00014506317169378423,
+            "p5_estimate": 0.0005518494500816475,
+            "p10_estimate": 0.0010603322980664775,
+            "p25_estimate": 0.0025857808420209657,
+            "p50_estimate": 0.00513345827934077,
+            "p75_estimate": 0.007706728826218775,
+            "p90_estimate": 0.00925069115434558,
+            "p95_estimate": 0.01238169524738043,
+            "p99_estimate": 0.02414439461304291
+          },
+          "buckets": {
+            "0.01": 10426,
+            "0.03": 11394,
+            "0.09": 11398,
+            "0.27": 11398,
+            "0.81": 11398,
+            "2.43": 11398,
+            "7.290000000000001": 11398,
+            "21.870000000000005": 11398,
+            "65.61000000000001": 11398,
+            "196.83000000000004": 11398,
+            "590.4900000000001": 11398,
+            "1771.4700000000003": 11398,
+            "5314.410000000001": 11398,
+            "15943.230000000003": 11398,
+            "47829.69000000001": 11398,
+            "143489.07000000004": 11398,
+            "430467.2100000001": 11398,
+            "+Inf": 11398
+          }
+        }
+      ]
+    },
+    "dynamo_router_overhead_scheduling_ms": {
+      "type": "histogram",
+      "description": "Time spent in scheduler worker selection in milliseconds",
+      "unit": "milliseconds",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "router_id": "826256094091670"
+          },
+          "stats": {
+            "count": 11398,
+            "sum": 837.4714829999982,
+            "avg": 0.07347530119319164,
+            "count_rate": 3.2146770569615994,
+            "sum_rate": 0.23619936499909638,
+            "p1_estimate": 0.03774625842786881,
+            "p5_estimate": 0.0404095113240179,
+            "p10_estimate": 0.04373857744420428,
+            "p25_estimate": 0.053725775804763384,
+            "p50_estimate": 0.0697175281302013,
+            "p75_estimate": 0.08439539132336649,
+            "p90_estimate": 0.10551283658501105,
+            "p95_estimate": 0.1293743929520327,
+            "p99_estimate": 0.15272380492664686
+          },
+          "buckets": {
+            "0.01": 0,
+            "0.03": 10,
+            "0.09": 9495,
+            "0.27": 11386,
+            "0.81": 11394,
+            "2.43": 11398,
+            "7.290000000000001": 11398,
+            "21.870000000000005": 11398,
+            "65.61000000000001": 11398,
+            "196.83000000000004": 11398,
+            "590.4900000000001": 11398,
+            "1771.4700000000003": 11398,
+            "5314.410000000001": 11398,
+            "15943.230000000003": 11398,
+            "47829.69000000001": 11398,
+            "143489.07000000004": 11398,
+            "430467.2100000001": 11398,
+            "+Inf": 11398
+          }
+        }
+      ]
+    },
+    "dynamo_router_overhead_seq_hashing_ms": {
+      "type": "histogram",
+      "description": "Time spent computing sequence hashes in milliseconds",
+      "unit": "milliseconds",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "router_id": "826256094091670"
+          },
+          "stats": {
+            "count": 11398,
+            "sum": 21.298463999999978,
+            "avg": 0.0018686141428320739,
+            "count_rate": 3.2146770569615994,
+            "sum_rate": 0.006006991013276233,
+            "p1_estimate": 0.0007640449857344304,
+            "p5_estimate": 0.001,
+            "p10_estimate": 0.0010147986758262788,
+            "p25_estimate": 0.0012356234459896848,
+            "p50_estimate": 0.0016283776170675248,
+            "p75_estimate": 0.0022079613327212013,
+            "p90_estimate": 0.0031982985923356922,
+            "p95_estimate": 0.003612376774790697,
+            "p99_estimate": 0.004676061809477306
+          },
+          "buckets": {
+            "0.001": 350,
+            "0.002": 7676,
+            "0.004": 11129,
+            "0.008": 11388,
+            "0.016": 11395,
+            "0.032": 11397,
+            "0.064": 11397,
+            "0.128": 11398,
+            "0.256": 11398,
+            "0.512": 11398,
+            "1.024": 11398,
+            "2.048": 11398,
+            "4.096": 11398,
+            "8.192": 11398,
+            "16.384": 11398,
+            "+Inf": 11398
+          }
+        }
+      ]
+    },
+    "dynamo_router_overhead_shared_cache_query_ms": {
+      "type": "histogram",
+      "description": "Time spent querying the shared KV cache in milliseconds",
+      "unit": "milliseconds",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "router_id": "826256094091670"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0.01": 0,
+            "0.03": 0,
+            "0.09": 0,
+            "0.27": 0,
+            "0.81": 0,
+            "2.43": 0,
+            "7.290000000000001": 0,
+            "21.870000000000005": 0,
+            "65.61000000000001": 0,
+            "196.83000000000004": 0,
+            "590.4900000000001": 0,
+            "1771.4700000000003": 0,
+            "5314.410000000001": 0,
+            "15943.230000000003": 0,
+            "47829.69000000001": 0,
+            "143489.07000000004": 0,
+            "430467.2100000001": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_router_overhead_total_ms": {
+      "type": "histogram",
+      "description": "Total routing overhead per request in milliseconds",
+      "unit": "milliseconds",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "router_id": "826256094091670"
+          },
+          "stats": {
+            "count": 11398,
+            "sum": 1065.071939000002,
+            "avg": 0.09344375671170398,
+            "count_rate": 3.2146770569615994,
+            "sum_rate": 0.3003915008174163,
+            "p1_estimate": 0.048302024359278495,
+            "p5_estimate": 0.051700955119559744,
+            "p10_estimate": 0.05594961856991132,
+            "p25_estimate": 0.068695608920966,
+            "p50_estimate": 0.08142590844712422,
+            "p75_estimate": 0.10836079487836087,
+            "p90_estimate": 0.15449218486818658,
+            "p95_estimate": 0.17211166787502397,
+            "p99_estimate": 0.18620725428049392
+          },
+          "buckets": {
+            "0.01": 0,
+            "0.03": 1,
+            "0.09": 6492,
+            "0.27": 11385,
+            "0.81": 11394,
+            "2.43": 11398,
+            "7.290000000000001": 11398,
+            "21.870000000000005": 11398,
+            "65.61000000000001": 11398,
+            "196.83000000000004": 11398,
+            "590.4900000000001": 11398,
+            "1771.4700000000003": 11398,
+            "5314.410000000001": 11398,
+            "15943.230000000003": 11398,
+            "47829.69000000001": 11398,
+            "143489.07000000004": 11398,
+            "430467.2100000001": 11398,
+            "+Inf": 11398
+          }
+        }
+      ]
+    },
+    "dynamo_router_shared_cache_errors": {
+      "type": "counter",
+      "description": "Total shared cache query errors",
+      "unit": "errors",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "router_id": "826256094091670"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_alive_tasks": {
+      "type": "gauge",
+      "description": "Number of alive tasks in the runtime",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "stats": {
+            "avg": 162.58127291529567,
+            "min": 92.0,
+            "max": 230.0,
+            "std": 15.839919951847163,
+            "p1": 131.0,
+            "p5": 139.0,
+            "p10": 144.0,
+            "p25": 152.0,
+            "p50": 161.0,
+            "p75": 172.0,
+            "p90": 183.0,
+            "p95": 190.0,
+            "p99": 205.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_blocking_idle_threads": {
+      "type": "gauge",
+      "description": "Number of idle blocking threads",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_blocking_queue_depth": {
+      "type": "gauge",
+      "description": "Number of tasks in the blocking thread pool queue",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_blocking_threads": {
+      "type": "gauge",
+      "description": "Number of blocking threads",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_budget_forced_yield": {
+      "type": "counter",
+      "description": "Number of times tasks were forced to yield after exhausting budget",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "stats": {
+            "total": 940.0,
+            "rate": 0.2651163742361733
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_global_queue_depth": {
+      "type": "gauge",
+      "description": "Number of tasks in the runtime global queue",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_worker_busy_ratio": {
+      "type": "gauge",
+      "description": "Worker busy ratio (0-1) as integer mill ratio; >950 = saturated",
+      "unit": "ratio",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "0"
+          },
+          "stats": {
+            "avg": 196.35912381310519,
+            "min": 6.0,
+            "max": 1000.0,
+            "std": 293.63034201154204,
+            "p1": 18.0,
+            "p5": 24.0,
+            "p10": 26.0,
+            "p25": 31.0,
+            "p50": 45.0,
+            "p75": 229.0,
+            "p90": 728.0,
+            "p95": 1000.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "1"
+          },
+          "stats": {
+            "avg": 104.74588699821378,
+            "min": 3.0,
+            "max": 1000.0,
+            "std": 233.90944617164584,
+            "p1": 3.0,
+            "p5": 3.0,
+            "p10": 3.0,
+            "p25": 3.0,
+            "p50": 3.0,
+            "p75": 38.0,
+            "p90": 397.0,
+            "p95": 799.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "10"
+          },
+          "stats": {
+            "avg": 212.3722854188211,
+            "min": 6.0,
+            "max": 1000.0,
+            "std": 287.9210927259293,
+            "p1": 17.0,
+            "p5": 22.0,
+            "p10": 26.0,
+            "p25": 32.0,
+            "p50": 60.0,
+            "p75": 258.0,
+            "p90": 757.0,
+            "p95": 1000.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "11"
+          },
+          "stats": {
+            "avg": 225.61304879195262,
+            "min": 13.0,
+            "max": 1000.0,
+            "std": 285.8810565574177,
+            "p1": 19.0,
+            "p5": 23.0,
+            "p10": 27.0,
+            "p25": 35.0,
+            "p50": 77.0,
+            "p75": 304.0,
+            "p90": 777.0,
+            "p95": 1000.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "12"
+          },
+          "stats": {
+            "avg": 233.28325655729998,
+            "min": 12.0,
+            "max": 1000.0,
+            "std": 320.62858262812273,
+            "p1": 13.0,
+            "p5": 23.0,
+            "p10": 23.0,
+            "p25": 30.0,
+            "p50": 50.0,
+            "p75": 280.0,
+            "p90": 949.3999999999996,
+            "p95": 1000.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "13"
+          },
+          "stats": {
+            "avg": 210.50540565949046,
+            "min": 13.0,
+            "max": 1000.0,
+            "std": 280.8334103621354,
+            "p1": 22.0,
+            "p5": 28.0,
+            "p10": 34.0,
+            "p25": 66.0,
+            "p50": 77.0,
+            "p75": 259.0,
+            "p90": 893.0,
+            "p95": 893.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "14"
+          },
+          "stats": {
+            "avg": 74.10707906364577,
+            "min": 8.0,
+            "max": 1000.0,
+            "std": 183.5626022449144,
+            "p1": 8.0,
+            "p5": 8.0,
+            "p10": 8.0,
+            "p25": 8.0,
+            "p50": 8.0,
+            "p75": 29.0,
+            "p90": 234.0,
+            "p95": 436.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "15"
+          },
+          "stats": {
+            "avg": 222.37529378584188,
+            "min": 2.0,
+            "max": 1000.0,
+            "std": 259.17950276000226,
+            "p1": 19.0,
+            "p5": 25.0,
+            "p10": 28.0,
+            "p25": 38.0,
+            "p50": 118.0,
+            "p75": 242.0,
+            "p90": 603.0,
+            "p95": 1000.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "2"
+          },
+          "stats": {
+            "avg": 181.06543198270188,
+            "min": 3.0,
+            "max": 1000.0,
+            "std": 278.60775570681915,
+            "p1": 3.0,
+            "p5": 3.0,
+            "p10": 3.0,
+            "p25": 25.0,
+            "p50": 46.0,
+            "p75": 218.0,
+            "p90": 689.0,
+            "p95": 1000.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "3"
+          },
+          "stats": {
+            "avg": 235.66240481338724,
+            "min": 3.0,
+            "max": 1000.0,
+            "std": 313.8466940065158,
+            "p1": 3.0,
+            "p5": 19.0,
+            "p10": 25.0,
+            "p25": 34.0,
+            "p50": 107.0,
+            "p75": 238.0,
+            "p90": 986.0,
+            "p95": 1000.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "4"
+          },
+          "stats": {
+            "avg": 222.35000470057346,
+            "min": 11.0,
+            "max": 1000.0,
+            "std": 285.9240856093187,
+            "p1": 21.0,
+            "p5": 26.0,
+            "p10": 29.0,
+            "p25": 36.0,
+            "p50": 110.0,
+            "p75": 254.0,
+            "p90": 748.0,
+            "p95": 1000.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "5"
+          },
+          "stats": {
+            "avg": 281.1971420513303,
+            "min": 8.0,
+            "max": 1000.0,
+            "std": 330.5523019611402,
+            "p1": 20.0,
+            "p5": 24.0,
+            "p10": 27.0,
+            "p25": 35.0,
+            "p50": 94.0,
+            "p75": 415.0,
+            "p90": 948.0,
+            "p95": 1000.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "6"
+          },
+          "stats": {
+            "avg": 247.41421453417317,
+            "min": 8.0,
+            "max": 1000.0,
+            "std": 266.44116501104844,
+            "p1": 18.0,
+            "p5": 24.0,
+            "p10": 28.0,
+            "p25": 36.0,
+            "p50": 237.0,
+            "p75": 279.0,
+            "p90": 631.0,
+            "p95": 1000.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "7"
+          },
+          "stats": {
+            "avg": 266.20221867067784,
+            "min": 14.0,
+            "max": 1000.0,
+            "std": 263.25381101420925,
+            "p1": 18.0,
+            "p5": 24.0,
+            "p10": 28.0,
+            "p25": 42.0,
+            "p50": 236.0,
+            "p75": 321.0,
+            "p90": 633.0,
+            "p95": 1000.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "8"
+          },
+          "stats": {
+            "avg": 286.62113377832094,
+            "min": 12.0,
+            "max": 1000.0,
+            "std": 306.2837104377807,
+            "p1": 21.0,
+            "p5": 25.0,
+            "p10": 30.0,
+            "p25": 43.0,
+            "p50": 136.0,
+            "p75": 558.0,
+            "p90": 824.0,
+            "p95": 1000.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "9"
+          },
+          "stats": {
+            "avg": 216.81949797875342,
+            "min": 12.0,
+            "max": 1000.0,
+            "std": 247.35954517225767,
+            "p1": 21.0,
+            "p5": 26.0,
+            "p10": 29.0,
+            "p25": 44.0,
+            "p50": 168.0,
+            "p75": 245.0,
+            "p90": 578.0,
+            "p95": 962.0,
+            "p99": 1000.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_worker_local_queue_depth": {
+      "type": "gauge",
+      "description": "Number of tasks in worker local queue",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "0"
+          },
+          "stats": {
+            "avg": 0.01974240857384601,
+            "min": 0.0,
+            "max": 3.0,
+            "std": 0.15987434369779038,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 1.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "1"
+          },
+          "stats": {
+            "avg": 0.0012221491021904673,
+            "min": 0.0,
+            "max": 1.0,
+            "std": 0.034939522323075324,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "10"
+          },
+          "stats": {
+            "avg": 0.0016922064491868007,
+            "min": 0.0,
+            "max": 1.0,
+            "std": 0.041103548740459045,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "11"
+          },
+          "stats": {
+            "avg": 0.0016922064491868007,
+            "min": 0.0,
+            "max": 1.0,
+            "std": 0.041103548740459045,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "12"
+          },
+          "stats": {
+            "avg": 0.0019742408573846008,
+            "min": 0.0,
+            "max": 1.0,
+            "std": 0.04439063507880672,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "13"
+          },
+          "stats": {
+            "avg": 0.0005640688163956002,
+            "min": 0.0,
+            "max": 1.0,
+            "std": 0.023744549833072358,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "14"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "15"
+          },
+          "stats": {
+            "avg": 0.0008461032245934004,
+            "min": 0.0,
+            "max": 1.0,
+            "std": 0.02907691210401433,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "2"
+          },
+          "stats": {
+            "avg": 0.004230516122967002,
+            "min": 0.0,
+            "max": 2.0,
+            "std": 0.06911683426158907,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "3"
+          },
+          "stats": {
+            "avg": 0.0028203440819780014,
+            "min": 0.0,
+            "max": 1.0,
+            "std": 0.05303446203166416,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "4"
+          },
+          "stats": {
+            "avg": 0.002538309673780201,
+            "min": 0.0,
+            "max": 1.0,
+            "std": 0.050320022900075805,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "5"
+          },
+          "stats": {
+            "avg": 0.0017862179185860676,
+            "min": 0.0,
+            "max": 1.0,
+            "std": 0.042227893446324626,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "6"
+          },
+          "stats": {
+            "avg": 0.0015041835103882673,
+            "min": 0.0,
+            "max": 1.0,
+            "std": 0.038756446604732944,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "7"
+          },
+          "stats": {
+            "avg": 0.0005640688163956002,
+            "min": 0.0,
+            "max": 1.0,
+            "std": 0.02374454983307235,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "8"
+          },
+          "stats": {
+            "avg": 0.0019742408573846008,
+            "min": 0.0,
+            "max": 1.0,
+            "std": 0.04439063507880672,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "9"
+          },
+          "stats": {
+            "avg": 0.002068252326783868,
+            "min": 0.0,
+            "max": 1.0,
+            "std": 0.04543312354032652,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_worker_mean_poll_time_ns": {
+      "type": "gauge",
+      "description": "Worker mean task poll time (nanoseconds)",
+      "unit": "nanoseconds",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "0"
+          },
+          "stats": {
+            "avg": 263139.26407821756,
+            "min": 6981.0,
+            "max": 7376046.0,
+            "std": 578099.2598195275,
+            "p1": 18902.0,
+            "p5": 24181.0,
+            "p10": 26704.0,
+            "p25": 31101.0,
+            "p50": 45346.0,
+            "p75": 229792.0,
+            "p90": 728040.0,
+            "p95": 1187586.1999999995,
+            "p99": 3023886.7199998265
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "1"
+          },
+          "stats": {
+            "avg": 117725.06599605152,
+            "min": 3278.0,
+            "max": 5169047.0,
+            "std": 310140.65589049,
+            "p1": 3278.0,
+            "p5": 3278.0,
+            "p10": 3278.0,
+            "p25": 3278.0,
+            "p50": 3278.0,
+            "p75": 38259.0,
+            "p90": 397912.0,
+            "p95": 799099.0,
+            "p99": 1345227.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "10"
+          },
+          "stats": {
+            "avg": 259235.94923380652,
+            "min": 6060.0,
+            "max": 4201167.0,
+            "std": 463739.52803621447,
+            "p1": 17578.0,
+            "p5": 22943.0,
+            "p10": 26288.0,
+            "p25": 32540.0,
+            "p50": 60540.0,
+            "p75": 258987.0,
+            "p90": 757593.0,
+            "p95": 1319762.0,
+            "p99": 2280891.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "11"
+          },
+          "stats": {
+            "avg": 271091.7041459058,
+            "min": 13071.0,
+            "max": 4773423.0,
+            "std": 475278.5947352606,
+            "p1": 19345.0,
+            "p5": 23896.0,
+            "p10": 27466.0,
+            "p25": 35022.0,
+            "p50": 77665.0,
+            "p75": 304726.0,
+            "p90": 777477.0,
+            "p95": 1120795.0,
+            "p99": 2443871.679999993
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "12"
+          },
+          "stats": {
+            "avg": 279934.9517721162,
+            "min": 12589.0,
+            "max": 4415353.0,
+            "std": 471963.66839612596,
+            "p1": 13711.0,
+            "p5": 23316.0,
+            "p10": 23790.0,
+            "p25": 30870.0,
+            "p50": 50572.0,
+            "p75": 280974.0,
+            "p90": 949896.1999999996,
+            "p95": 1250040.0,
+            "p99": 2293466.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "13"
+          },
+          "stats": {
+            "avg": 236692.35414120523,
+            "min": 13415.0,
+            "max": 5417762.0,
+            "std": 398450.0973442122,
+            "p1": 22096.0,
+            "p5": 28229.0,
+            "p10": 34565.0,
+            "p25": 66661.0,
+            "p50": 77784.0,
+            "p75": 259920.0,
+            "p90": 893827.0,
+            "p95": 893827.0,
+            "p99": 1892094.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "14"
+          },
+          "stats": {
+            "avg": 92282.61774936542,
+            "min": 8320.0,
+            "max": 3526610.0,
+            "std": 297626.21421913465,
+            "p1": 8320.0,
+            "p5": 8320.0,
+            "p10": 8320.0,
+            "p25": 8320.0,
+            "p50": 8320.0,
+            "p75": 29985.0,
+            "p90": 234340.0,
+            "p95": 436665.0,
+            "p99": 1784608.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "15"
+          },
+          "stats": {
+            "avg": 258193.38610510482,
+            "min": 2276.0,
+            "max": 5467034.0,
+            "std": 426660.3557811929,
+            "p1": 19830.0,
+            "p5": 25575.0,
+            "p10": 28754.0,
+            "p25": 38896.0,
+            "p50": 118259.0,
+            "p75": 242734.0,
+            "p90": 603302.0,
+            "p95": 1021350.0,
+            "p99": 1889270.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "2"
+          },
+          "stats": {
+            "avg": 212617.31070790638,
+            "min": 3278.0,
+            "max": 4166761.0,
+            "std": 407579.38020538236,
+            "p1": 3278.0,
+            "p5": 3278.0,
+            "p10": 3278.0,
+            "p25": 25004.0,
+            "p50": 46328.0,
+            "p75": 218988.0,
+            "p90": 689137.0,
+            "p95": 1032815.0,
+            "p99": 1958884.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "3"
+          },
+          "stats": {
+            "avg": 302541.31672464043,
+            "min": 3278.0,
+            "max": 6646138.0,
+            "std": 535471.6067494818,
+            "p1": 3278.0,
+            "p5": 19986.400000000005,
+            "p10": 25730.0,
+            "p25": 34753.0,
+            "p50": 107316.0,
+            "p75": 238786.0,
+            "p90": 986285.0,
+            "p95": 1445452.0,
+            "p99": 2397075.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "4"
+          },
+          "stats": {
+            "avg": 301878.17796371155,
+            "min": 11362.0,
+            "max": 6064088.0,
+            "std": 584502.1624804965,
+            "p1": 21241.0,
+            "p5": 26042.0,
+            "p10": 29854.0,
+            "p25": 36240.0,
+            "p50": 110246.0,
+            "p75": 254754.0,
+            "p90": 748900.0,
+            "p95": 1235303.0,
+            "p99": 2840607.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "5"
+          },
+          "stats": {
+            "avg": 335814.37595186615,
+            "min": 8677.0,
+            "max": 5123234.0,
+            "std": 527453.5213479003,
+            "p1": 20410.0,
+            "p5": 24351.0,
+            "p10": 27679.0,
+            "p25": 35369.0,
+            "p50": 94367.0,
+            "p75": 415599.0,
+            "p90": 948989.0,
+            "p95": 1135061.0,
+            "p99": 2602972.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "6"
+          },
+          "stats": {
+            "avg": 297251.21002162265,
+            "min": 8765.0,
+            "max": 5371143.0,
+            "std": 476825.96137698303,
+            "p1": 18921.0,
+            "p5": 24662.4,
+            "p10": 28054.0,
+            "p25": 36081.0,
+            "p50": 237394.0,
+            "p75": 279616.0,
+            "p90": 631262.0,
+            "p95": 1124461.0,
+            "p99": 2514908.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "7"
+          },
+          "stats": {
+            "avg": 317825.04597160855,
+            "min": 14265.0,
+            "max": 4710506.0,
+            "std": 459379.81433809845,
+            "p1": 18935.0,
+            "p5": 24953.2,
+            "p10": 28817.0,
+            "p25": 42693.0,
+            "p50": 236894.0,
+            "p75": 321584.0,
+            "p90": 633197.0,
+            "p95": 1177612.5999999747,
+            "p99": 2381201.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "8"
+          },
+          "stats": {
+            "avg": 347488.66926765064,
+            "min": 12307.0,
+            "max": 4082390.0,
+            "std": 509680.1125369394,
+            "p1": 21480.0,
+            "p5": 25917.0,
+            "p10": 30132.600000000002,
+            "p25": 43219.0,
+            "p50": 136975.0,
+            "p75": 558961.0,
+            "p90": 824294.0,
+            "p95": 1268731.0,
+            "p99": 2428895.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "9"
+          },
+          "stats": {
+            "avg": 242525.09786593964,
+            "min": 12738.0,
+            "max": 7054660.0,
+            "std": 373710.4826994865,
+            "p1": 21981.0,
+            "p5": 26641.0,
+            "p10": 29669.0,
+            "p25": 44446.0,
+            "p50": 168915.0,
+            "p75": 245332.0,
+            "p90": 578592.0,
+            "p95": 962150.0,
+            "p99": 1709051.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_worker_overflow_count": {
+      "type": "counter",
+      "description": "Total number of times worker local queue overflowed",
+      "unit": "count",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "0"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "1"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "10"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "11"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "12"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "13"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "14"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "15"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "2"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "3"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "4"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "5"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "6"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "7"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "8"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "9"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_worker_park_count": {
+      "type": "counter",
+      "description": "Total number of times worker has parked",
+      "unit": "count",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "0"
+          },
+          "stats": {
+            "total": 382329.0,
+            "rate": 107.83157260142757
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "1"
+          },
+          "stats": {
+            "total": 97233.0,
+            "rate": 27.42346852777217
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "10"
+          },
+          "stats": {
+            "total": 304125.0,
+            "rate": 85.77501841976192
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "11"
+          },
+          "stats": {
+            "total": 323786.0,
+            "rate": 91.32018122173788
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "12"
+          },
+          "stats": {
+            "total": 333440.0,
+            "rate": 94.04298279288258
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "13"
+          },
+          "stats": {
+            "total": 115204.0,
+            "rate": 32.49198593351501
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "14"
+          },
+          "stats": {
+            "total": 95979.0,
+            "rate": 27.069792002993275
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "15"
+          },
+          "stats": {
+            "total": 246582.0,
+            "rate": 69.54566573606817
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "2"
+          },
+          "stats": {
+            "total": 250210.0,
+            "rate": 70.5689021251414
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "3"
+          },
+          "stats": {
+            "total": 264470.0,
+            "rate": 74.59077393004335
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "4"
+          },
+          "stats": {
+            "total": 217274.0,
+            "rate": 61.279675633819494
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "5"
+          },
+          "stats": {
+            "total": 319981.0,
+            "rate": 90.24702398347338
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "6"
+          },
+          "stats": {
+            "total": 262241.0,
+            "rate": 73.96210967666843
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "7"
+          },
+          "stats": {
+            "total": 212497.0,
+            "rate": 59.93237678304694
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "8"
+          },
+          "stats": {
+            "total": 227118.0,
+            "rate": 64.05606455720341
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "9"
+          },
+          "stats": {
+            "total": 219993.0,
+            "rate": 62.04653884823242
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_worker_steal_count": {
+      "type": "counter",
+      "description": "Total number of tasks stolen by worker",
+      "unit": "count",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "0"
+          },
+          "stats": {
+            "total": 45679.0,
+            "rate": 12.883245594398044
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "1"
+          },
+          "stats": {
+            "total": 12474.0,
+            "rate": 3.518150693853219
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "10"
+          },
+          "stats": {
+            "total": 36418.0,
+            "rate": 10.271285230779744
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "11"
+          },
+          "stats": {
+            "total": 39222.0,
+            "rate": 11.06212173435233
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "12"
+          },
+          "stats": {
+            "total": 39501.0,
+            "rate": 11.140810530535195
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "13"
+          },
+          "stats": {
+            "total": 13894.0,
+            "rate": 3.9186456421674385
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "14"
+          },
+          "stats": {
+            "total": 11928.0,
+            "rate": 3.364157565839442
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "15"
+          },
+          "stats": {
+            "total": 30099.0,
+            "rate": 8.489082710781469
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "2"
+          },
+          "stats": {
+            "total": 30106.0,
+            "rate": 8.49105698165344
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "3"
+          },
+          "stats": {
+            "total": 31750.0,
+            "rate": 8.954728597870748
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "4"
+          },
+          "stats": {
+            "total": 26137.0,
+            "rate": 7.371645397245598
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "5"
+          },
+          "stats": {
+            "total": 38866.0,
+            "rate": 10.961715958577779
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "6"
+          },
+          "stats": {
+            "total": 31396.0,
+            "rate": 8.85488689948819
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "7"
+          },
+          "stats": {
+            "total": 25641.0,
+            "rate": 7.231754204031617
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "8"
+          },
+          "stats": {
+            "total": 27347.0,
+            "rate": 7.712912219400672
+          }
+        },
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "labels": {
+            "worker": "9"
+          },
+          "stats": {
+            "total": 26702.0,
+            "rate": 7.530997260483298
+          }
+        }
+      ]
+    },
+    "dynamo_transport_tcp_bytes_received": {
+      "type": "counter",
+      "description": "Total bytes received by TCP request client",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_transport_tcp_bytes_sent": {
+      "type": "counter",
+      "description": "Total bytes sent by TCP request client",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "stats": {
+            "total": 535834691.0,
+            "rate": 151126.1175190216
+          }
+        }
+      ]
+    },
+    "dynamo_transport_tcp_errors": {
+      "type": "counter",
+      "description": "Total TCP request errors (send failure or timeout)",
+      "unit": "errors",
+      "series": [
+        {
+          "endpoint_url": "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000/metrics",
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        }
+      ]
+    }
+  },
+  "input_config": {
+    "models": {
+      "items": [
+        {
+          "name": "Qwen/Qwen3-32B-FP8"
+        }
+      ]
+    },
+    "endpoint": {
+      "urls": [
+        "http://qwen3-32b-fp8-vllm-disagg-kv-frontend:8000"
+      ],
+      "streaming": true,
+      "use_server_token_count": true,
+      "extra": {
+        "ignore_eos": true
+      }
+    },
+    "datasets": [
+      {
+        "name": "main",
+        "type": "file",
+        "path": "/perf-cache/traces/conversation_trace.maxctx40960.jsonl",
+        "format": "mooncake_trace"
+      }
+    ],
+    "phases": [
+      {
+        "name": "profiling",
+        "type": "fixed_schedule",
+        "requests": 11457
+      }
+    ],
+    "artifacts": {
+      "dir": "/perf-cache/artifacts/04-disagg-routing-kv-aware/2026-08-13T10-58-11Z/aiperf",
+      "records": [
+        "jsonl"
+      ],
+      "auto_plot": false,
+      "plot_required": false
+    },
+    "slos": {
+      "time_to_first_token": 2000.0,
+      "inter_token_latency": 25.0
+    },
+    "tokenizer": {
+      "name": "Qwen/Qwen3-32B-FP8",
+      "revision": "aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df"
+    },
+    "gpu_telemetry": {
+      "enabled": false
+    },
+    "server_metrics": {
+      "enabled": true,
+      "urls": [],
+      "formats": [
+        "json",
+        "csv"
+      ]
+    },
+    "otel": {},
+    "mlflow": {},
+    "runtime": {
+      "ui": "simple"
+    }
+  }
+}

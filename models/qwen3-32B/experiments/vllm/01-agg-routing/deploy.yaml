@@ -1,108 +1,134 @@
 apiVersion: nvidia.com/v1alpha1
 kind: DynamoGraphDeployment
 metadata:
-  name: qwen3-32b-fp8-vllm-agg-routing
+  annotations: {}
   labels:
-    benchmark.nvidia.com/experiment: qwen3-32b-fp8-vllm-agg-routing
+    benchmark.nvidia.com/experiment: exp1-agg-round-robin
+  name: qwen3-32b-fp8-vllm-agg
+  namespace: qwen32-bench
 spec:
   backendFramework: vllm
   pvcs:
-    - name: model-cache
-      create: false
-    - name: compilation-cache
-      create: false
+  - create: false
+    name: model-cache
   services:
     Frontend:
       componentType: frontend
-      replicas: 2
       envs:
-        - name: HF_HOME
-          value: /opt/models
-      volumeMounts:
-        - name: model-cache
-          mountPoint: /opt/models
-      resources:
-        requests:
-          cpu: "8"
-          memory: 8Gi
-        limits:
-          cpu: "16"
-          memory: 16Gi
+      - name: HF_HOME
+        value: "/opt/models"
+      - name: DYN_ROUTER_MODE
+        value: round-robin
       extraPodSpec:
         mainContainer:
           image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.3.0
-          workingDir: /workspace/
-          command: [python3, -m, dynamo.frontend]
-          args: [--router-mode, round-robin]
-
+          workingDir: "/workspace/examples/backends/vllm"
+      replicas: 8
+      resources:
+        limits:
+          memory: 128Gi
+        requests:
+          cpu: '32'
+          memory: 64Gi
+      volumeMounts:
+      - mountPoint: "/opt/models"
+        name: model-cache
     VllmWorkerGpu05:
       componentType: worker
-      replicas: 4
       envFromSecret: hf-token-secret
-      sharedMemory:
-        size: 40Gi
-      volumeMounts:
-        - name: model-cache
-          mountPoint: /opt/models
-        - name: compilation-cache
-          mountPoint: /home/dynamo/.cache/vllm
-          useAsCompilationCache: true
       extraPodSpec:
-        hostNetwork: false
         dnsPolicy: ClusterFirst
+        hostNetwork: false
+        mainContainer:
+          args:
+          - |
+            python3 -m dynamo.vllm \
+              --model "$MODEL_PATH" \
+              --served-model-name "$SERVED_MODEL_NAME" \
+              --tensor-parallel-size 2 \
+              --data-parallel-size 1 \
+              --gpu-memory-utilization 0.90 \
+              --max-model-len 40960 \
+              --enable-prefix-caching \
+              --block-size 128 \
+              --no-enable-log-requests
+          command:
+          - "/bin/sh"
+          - "-c"
+          env:
+          - name: SERVED_MODEL_NAME
+            value: Qwen/Qwen3-32B-FP8
+          - name: MODEL_PATH
+            value: "/opt/models/hub/models--Qwen--Qwen3-32B-FP8/snapshots/aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df"
+          - name: HF_HOME
+            value: "/opt/models"
+          - name: PYTHONHASHSEED
+            value: '0'
+          image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.3.0
+          ports:
+          - containerPort: 9090
+            name: system
+          workingDir: "/workspace/examples/backends/vllm"
         nodeSelector:
           kubernetes.io/hostname: inst-1onle-devrel-rdma-pool
-        mainContainer: &aggregate-container
-          image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.3.0
-          workingDir: /workspace/examples/backends/vllm
-          command: [/bin/sh, -c]
-          args:
-            - |
-              python3 -m dynamo.vllm \
-                --model "$MODEL_PATH" \
-                --served-model-name "$SERVED_MODEL_NAME" \
-                --tensor-parallel-size 2 \
-                --data-parallel-size 1 \
-                --gpu-memory-utilization 0.90 \
-                --max-model-len 40960 \
-                --enable-prefix-caching \
-                --block-size 128 \
-                --no-enable-log-requests
-          env:
-            - name: SERVED_MODEL_NAME
-              value: Qwen/Qwen3-32B-FP8
-            - name: MODEL_PATH
-              value: /opt/models/hub/models--Qwen--Qwen3-32B-FP8/snapshots/aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df
-            - name: HF_HOME
-              value: /opt/models
-            - name: PYTHONHASHSEED
-              value: "0"
-          ports:
-            # Dynamo's injected startup/readiness probes address this named port.
-            - name: system
-              containerPort: 9090
-      resources: &worker-resources
-        requests:
-          gpu: "2"
-        limits:
-          gpu: "2"
-
-    VllmWorkerGpu06:
-      componentType: worker
       replicas: 4
-      envFromSecret: hf-token-secret
+      resources:
+        limits:
+          gpu: '2'
+        requests:
+          gpu: '2'
       sharedMemory:
         size: 40Gi
       volumeMounts:
-        - name: model-cache
-          mountPoint: /opt/models
-        - name: compilation-cache
-          mountPoint: /home/dynamo/.cache/vllm
-          useAsCompilationCache: true
+      - mountPoint: "/opt/models"
+        name: model-cache
+    VllmWorkerGpu06:
+      componentType: worker
+      envFromSecret: hf-token-secret
       extraPodSpec:
-        hostNetwork: false
         dnsPolicy: ClusterFirst
+        hostNetwork: false
+        mainContainer:
+          args:
+          - |
+            python3 -m dynamo.vllm \
+              --model "$MODEL_PATH" \
+              --served-model-name "$SERVED_MODEL_NAME" \
+              --tensor-parallel-size 2 \
+              --data-parallel-size 1 \
+              --gpu-memory-utilization 0.90 \
+              --max-model-len 40960 \
+              --enable-prefix-caching \
+              --block-size 128 \
+              --no-enable-log-requests
+          command:
+          - "/bin/sh"
+          - "-c"
+          env:
+          - name: SERVED_MODEL_NAME
+            value: Qwen/Qwen3-32B-FP8
+          - name: MODEL_PATH
+            value: "/opt/models/hub/models--Qwen--Qwen3-32B-FP8/snapshots/aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df"
+          - name: HF_HOME
+            value: "/opt/models"
+          - name: PYTHONHASHSEED
+            value: '0'
+          image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.3.0
+          ports:
+          - containerPort: 9090
+            name: system
+          workingDir: "/workspace/examples/backends/vllm"
         nodeSelector:
           kubernetes.io/hostname: inst-g9dwj-devrel-rdma-pool
-        mainContainer: *aggregate-container
-      resources: *worker-resources
+      replicas: 4
+      resources:
+        limits:
+          gpu: '2'
+        requests:
+          gpu: '2'
+      sharedMemory:
+        size: 40Gi
+      volumeMounts:
+      - mountPoint: "/opt/models"
+        name: model-cache
+

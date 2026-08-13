@@ -1,0 +1,162 @@
+[
+  {
+    "pod": "qwen3-32b-fp8-vllm-0436-0-frontend-4jqd6",
+    "uid": "79d3a7fd-9d25-4d3b-984e-64f3c941cc5f",
+    "role": "frontend",
+    "node": "inst-1onle-devrel-rdma-pool",
+    "pod_ip": "192.168.12.179",
+    "phase": "Running",
+    "restarts": 0,
+    "gpu_requests": 0
+  },
+  {
+    "pod": "qwen3-32b-fp8-vllm-0436-0-frontend-c6fh2",
+    "uid": "76c791d8-c47d-4709-a07a-8a927eed645d",
+    "role": "frontend",
+    "node": "inst-g9dwj-devrel-rdma-pool",
+    "pod_ip": "192.168.63.162",
+    "phase": "Running",
+    "restarts": 0,
+    "gpu_requests": 0
+  },
+  {
+    "pod": "qwen3-32b-fp8-vllm-0436-0-frontend-dm4xw",
+    "uid": "3560b314-04f4-4ac9-a13b-cb6276022fe0",
+    "role": "frontend",
+    "node": "inst-1onle-devrel-rdma-pool",
+    "pod_ip": "192.168.12.138",
+    "phase": "Running",
+    "restarts": 0,
+    "gpu_requests": 0
+  },
+  {
+    "pod": "qwen3-32b-fp8-vllm-0436-0-frontend-kdnhp",
+    "uid": "167d993b-4dd1-4fcf-9891-4b8a722d6f6b",
+    "role": "frontend",
+    "node": "inst-1onle-devrel-rdma-pool",
+    "pod_ip": "192.168.12.142",
+    "phase": "Running",
+    "restarts": 0,
+    "gpu_requests": 0
+  },
+  {
+    "pod": "qwen3-32b-fp8-vllm-0436-0-frontend-mxc8m",
+    "uid": "11432a12-23cb-40a9-b4fe-489789f03ced",
+    "role": "frontend",
+    "node": "inst-1onle-devrel-rdma-pool",
+    "pod_ip": "192.168.12.132",
+    "phase": "Running",
+    "restarts": 0,
+    "gpu_requests": 0
+  },
+  {
+    "pod": "qwen3-32b-fp8-vllm-0436-0-frontend-pzdwj",
+    "uid": "3b94c13e-2917-4f3d-9dd0-9de8d40bce53",
+    "role": "frontend",
+    "node": "inst-1onle-devrel-rdma-pool",
+    "pod_ip": "192.168.12.166",
+    "phase": "Running",
+    "restarts": 0,
+    "gpu_requests": 0
+  },
+  {
+    "pod": "qwen3-32b-fp8-vllm-0436-0-frontend-qscwc",
+    "uid": "f5a51582-131e-4482-8aed-0cc6f221e57b",
+    "role": "frontend",
+    "node": "inst-g9dwj-devrel-rdma-pool",
+    "pod_ip": "192.168.63.130",
+    "phase": "Running",
+    "restarts": 0,
+    "gpu_requests": 0
+  },
+  {
+    "pod": "qwen3-32b-fp8-vllm-0436-0-frontend-xq8j2",
+    "uid": "5914ba2e-bd7a-41a7-b600-6c0ee61c2f3a",
+    "role": "frontend",
+    "node": "inst-1onle-devrel-rdma-pool",
+    "pod_ip": "192.168.12.177",
+    "phase": "Running",
+    "restarts": 0,
+    "gpu_requests": 0
+  },
+  {
+    "pod": "qwen3-32b-fp8-vllm-0436-0-vllmdecodeworkergpu05-f6lfj",
+    "uid": "2a522478-19f0-4bfc-a8b5-2cd133029ec0",
+    "role": "decode",
+    "node": "inst-1onle-devrel-rdma-pool",
+    "pod_ip": "192.168.12.164",
+    "phase": "Running",
+    "restarts": 0,
+    "gpu_requests": 2
+  },
+  {
+    "pod": "qwen3-32b-fp8-vllm-0436-0-vllmdecodeworkergpu05-tlsjm",
+    "uid": "feb9f197-5c46-4ad0-b47b-02525c3e8612",
+    "role": "decode",
+    "node": "inst-1onle-devrel-rdma-pool",
+    "pod_ip": "192.168.12.157",
+    "phase": "Running",
+    "restarts": 0,
+    "gpu_requests": 2
+  },
+  {
+    "pod": "qwen3-32b-fp8-vllm-0436-0-vllmdecodeworkergpu06-mvwp6",
+    "uid": "64548aab-54e1-461e-9079-5c17a4863c92",
+    "role": "decode",
+    "node": "inst-g9dwj-devrel-rdma-pool",
+    "pod_ip": "192.168.63.142",
+    "phase": "Running",
+    "restarts": 0,
+    "gpu_requests": 2
+  },
+  {
+    "pod": "qwen3-32b-fp8-vllm-0436-0-vllmdecodeworkergpu06-zrbbj",
+    "uid": "f87dbf05-6baa-42e8-8d0d-a6fd41bbee93",
+    "role": "decode",
+    "node": "inst-g9dwj-devrel-rdma-pool",
+    "pod_ip": "192.168.63.150",
+    "phase": "Running",
+    "restarts": 0,
+    "gpu_requests": 2
+  },
+  {
+    "pod": "qwen3-32b-fp8-vllm-0436-0-vllmprefillworkergpu05-mv9jn",
+    "uid": "5bd4bf38-ff79-46b2-8f19-b4af4554f501",
+    "role": "prefill",
+    "node": "inst-1onle-devrel-rdma-pool",
+    "pod_ip": "192.168.12.182",
+    "phase": "Running",
+    "restarts": 0,
+    "gpu_requests": 2
+  },
+  {
+    "pod": "qwen3-32b-fp8-vllm-0436-0-vllmprefillworkergpu05-zrfwg",
+    "uid": "ba9edeeb-fb01-4e5e-b408-083ef8d899c9",
+    "role": "prefill",
+    "node": "inst-1onle-devrel-rdma-pool",
+    "pod_ip": "192.168.12.146",
+    "phase": "Running",
+    "restarts": 0,
+    "gpu_requests": 2
+  },
+  {
+    "pod": "qwen3-32b-fp8-vllm-0436-0-vllmprefillworkergpu06-kf7nd",
+    "uid": "9f2e139d-0919-433c-8ab6-1250212f859a",
+    "role": "prefill",
+    "node": "inst-g9dwj-devrel-rdma-pool",
+    "pod_ip": "192.168.63.152",
+    "phase": "Running",
+    "restarts": 0,
+    "gpu_requests": 2
+  },
+  {
+    "pod": "qwen3-32b-fp8-vllm-0436-0-vllmprefillworkergpu06-z28p4",
+    "uid": "d6c1ce3a-f522-4e48-9ff1-d51679c1c96a",
+    "role": "prefill",
+    "node": "inst-g9dwj-devrel-rdma-pool",
+    "pod_ip": "192.168.63.131",
+    "phase": "Running",
+    "restarts": 0,
+    "gpu_requests": 2
+  }
+]

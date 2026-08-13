@@ -1,0 +1,43 @@
+# HELP exposer_transferred_bytes_total Transferred bytes to metrics services
+# TYPE exposer_transferred_bytes_total counter
+exposer_transferred_bytes_total 117625
+# HELP exposer_scrapes_total Number of times metrics were scraped
+# TYPE exposer_scrapes_total counter
+exposer_scrapes_total 34
+# HELP exposer_request_latencies Latencies of serving scrape requests, in microseconds
+# TYPE exposer_request_latencies summary
+exposer_request_latencies_count 34
+exposer_request_latencies_sum 6636
+exposer_request_latencies{quantile="0.5"} 180
+exposer_request_latencies{quantile="0.9"} 208
+exposer_request_latencies{quantile="0.99"} 211
+# HELP agent_tx_bytes_total Number of bytes sent by the agent
+# TYPE agent_tx_bytes_total counter
+agent_tx_bytes_total{agent_name="12dd2461-a859-4be2-974a-0b4f89e8c43d",category="NIXL_TELEMETRY_TRANSFER",hostname="qwen3-32b-fp8-vllm-0436-0-vllmprefillworkergpu05-0"} 0
+# HELP agent_rx_bytes_total Number of bytes received by the agent
+# TYPE agent_rx_bytes_total counter
+agent_rx_bytes_total{agent_name="12dd2461-a859-4be2-974a-0b4f89e8c43d",category="NIXL_TELEMETRY_TRANSFER",hostname="qwen3-32b-fp8-vllm-0436-0-vllmprefillworkergpu05-0"} 0
+# HELP agent_tx_requests_num_total Number of requests sent by the agent
+# TYPE agent_tx_requests_num_total counter
+agent_tx_requests_num_total{agent_name="12dd2461-a859-4be2-974a-0b4f89e8c43d",category="NIXL_TELEMETRY_TRANSFER",hostname="qwen3-32b-fp8-vllm-0436-0-vllmprefillworkergpu05-0"} 0
+# HELP agent_rx_requests_num_total Number of requests received by the agent
+# TYPE agent_rx_requests_num_total counter
+agent_rx_requests_num_total{agent_name="12dd2461-a859-4be2-974a-0b4f89e8c43d",category="NIXL_TELEMETRY_TRANSFER",hostname="qwen3-32b-fp8-vllm-0436-0-vllmprefillworkergpu05-0"} 0
+# HELP agent_memory_registered_total Cumulative memory registered
+# TYPE agent_memory_registered_total counter
+agent_memory_registered_total{agent_name="12dd2461-a859-4be2-974a-0b4f89e8c43d",category="NIXL_TELEMETRY_MEMORY",hostname="qwen3-32b-fp8-vllm-0436-0-vllmprefillworkergpu05-0"} 54458843136
+# HELP agent_memory_deregistered_total Cumulative memory deregistered
+# TYPE agent_memory_deregistered_total counter
+agent_memory_deregistered_total{agent_name="12dd2461-a859-4be2-974a-0b4f89e8c43d",category="NIXL_TELEMETRY_MEMORY",hostname="qwen3-32b-fp8-vllm-0436-0-vllmprefillworkergpu05-0"} 0
+# HELP agent_xfer_time_total Start to Complete (per request)
+# TYPE agent_xfer_time_total counter
+agent_xfer_time_total{agent_name="12dd2461-a859-4be2-974a-0b4f89e8c43d",category="NIXL_TELEMETRY_PERFORMANCE",hostname="qwen3-32b-fp8-vllm-0436-0-vllmprefillworkergpu05-0"} 0
+# HELP agent_xfer_post_time_total Start to posting to Back-End (per request)
+# TYPE agent_xfer_post_time_total counter
+agent_xfer_post_time_total{agent_name="12dd2461-a859-4be2-974a-0b4f89e8c43d",category="NIXL_TELEMETRY_PERFORMANCE",hostname="qwen3-32b-fp8-vllm-0436-0-vllmprefillworkergpu05-0"} 0
+# HELP agent_memory_registered Memory registered
+# TYPE agent_memory_registered gauge
+agent_memory_registered{agent_name="12dd2461-a859-4be2-974a-0b4f89e8c43d",category="NIXL_TELEMETRY_MEMORY",hostname="qwen3-32b-fp8-vllm-0436-0-vllmprefillworkergpu05-0"} 54458843136
+# HELP agent_memory_deregistered Memory deregistered
+# TYPE agent_memory_deregistered gauge
+agent_memory_deregistered{agent_name="12dd2461-a859-4be2-974a-0b4f89e8c43d",category="NIXL_TELEMETRY_MEMORY",hostname="qwen3-32b-fp8-vllm-0436-0-vllmprefillworkergpu05-0"} 0

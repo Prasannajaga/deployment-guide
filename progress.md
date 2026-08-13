@@ -677,7 +677,7 @@ window, and a per-worker/per-GPU utilization summary are saved under
 `/ephemeral/shared/dynamo/aiperf-results/dcgm-last-8h/`.
 
 The complete executable procedure is documented in
-[`fetch-metrics.md`](models/qwen3-32B/experiments/vllm/disagg-routing/fetch-metrics.md).
+[`fetch-metrics.md`](models/qwen3-32B/experiments/vllm/02-disagg-routing/fetch-metrics.md).
 
 NIXL transfer telemetry was not enabled for this completed run. NIXL latency
 collection is deferred to the next benchmark round, when the NIXL exporter

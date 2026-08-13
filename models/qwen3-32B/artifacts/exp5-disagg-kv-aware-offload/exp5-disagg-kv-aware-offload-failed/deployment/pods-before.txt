@@ -1,0 +1,17 @@
+NAME                                                     READY   STATUS    RESTARTS   AGE     IP               NODE                          NOMINATED NODE   READINESS GATES   DYNAMO-COMPONENT-TYPE   DYNAMO-SUB-COMPONENT-TYPE
+qwen3-32b-fp8-vllm-0436-0-frontend-4jqd6                 1/1     Running   0          5m38s   192.168.12.179   inst-1onle-devrel-rdma-pool   <none>           <none>            frontend                
+qwen3-32b-fp8-vllm-0436-0-frontend-c6fh2                 1/1     Running   0          5m38s   192.168.63.162   inst-g9dwj-devrel-rdma-pool   <none>           <none>            frontend                
+qwen3-32b-fp8-vllm-0436-0-frontend-dm4xw                 1/1     Running   0          5m38s   192.168.12.138   inst-1onle-devrel-rdma-pool   <none>           <none>            frontend                
+qwen3-32b-fp8-vllm-0436-0-frontend-kdnhp                 1/1     Running   0          5m38s   192.168.12.142   inst-1onle-devrel-rdma-pool   <none>           <none>            frontend                
+qwen3-32b-fp8-vllm-0436-0-frontend-mxc8m                 1/1     Running   0          5m39s   192.168.12.132   inst-1onle-devrel-rdma-pool   <none>           <none>            frontend                
+qwen3-32b-fp8-vllm-0436-0-frontend-pzdwj                 1/1     Running   0          5m38s   192.168.12.166   inst-1onle-devrel-rdma-pool   <none>           <none>            frontend                
+qwen3-32b-fp8-vllm-0436-0-frontend-qscwc                 1/1     Running   0          5m38s   192.168.63.130   inst-g9dwj-devrel-rdma-pool   <none>           <none>            frontend                
+qwen3-32b-fp8-vllm-0436-0-frontend-xq8j2                 1/1     Running   0          5m38s   192.168.12.177   inst-1onle-devrel-rdma-pool   <none>           <none>            frontend                
+qwen3-32b-fp8-vllm-0436-0-vllmdecodeworkergpu05-f6lfj    1/1     Running   0          5m38s   192.168.12.164   inst-1onle-devrel-rdma-pool   <none>           <none>            decode                  decode
+qwen3-32b-fp8-vllm-0436-0-vllmdecodeworkergpu05-tlsjm    1/1     Running   0          5m38s   192.168.12.157   inst-1onle-devrel-rdma-pool   <none>           <none>            decode                  decode
+qwen3-32b-fp8-vllm-0436-0-vllmdecodeworkergpu06-mvwp6    1/1     Running   0          5m39s   192.168.63.142   inst-g9dwj-devrel-rdma-pool   <none>           <none>            decode                  decode
+qwen3-32b-fp8-vllm-0436-0-vllmdecodeworkergpu06-zrbbj    1/1     Running   0          5m38s   192.168.63.150   inst-g9dwj-devrel-rdma-pool   <none>           <none>            decode                  decode
+qwen3-32b-fp8-vllm-0436-0-vllmprefillworkergpu05-mv9jn   1/1     Running   0          5m38s   192.168.12.182   inst-1onle-devrel-rdma-pool   <none>           <none>            prefill                 prefill
+qwen3-32b-fp8-vllm-0436-0-vllmprefillworkergpu05-zrfwg   1/1     Running   0          5m38s   192.168.12.146   inst-1onle-devrel-rdma-pool   <none>           <none>            prefill                 prefill
+qwen3-32b-fp8-vllm-0436-0-vllmprefillworkergpu06-kf7nd   1/1     Running   0          5m38s   192.168.63.152   inst-g9dwj-devrel-rdma-pool   <none>           <none>            prefill                 prefill
+qwen3-32b-fp8-vllm-0436-0-vllmprefillworkergpu06-z28p4   1/1     Running   0          5m38s   192.168.63.131   inst-g9dwj-devrel-rdma-pool   <none>           <none>            prefill                 prefill
