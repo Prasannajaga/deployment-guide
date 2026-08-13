@@ -12,7 +12,7 @@ spec:
   services:
     Frontend:
       componentType: frontend
-      replicas: 1
+      replicas: 2
       envs:
         - name: HF_HOME
           value: /opt/models
