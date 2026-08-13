@@ -1,0 +1,20 @@
+# Set the Prometheus UI time range to benchmark_start_utc..benchmark_end_utc
+# from the run's manifest.json before evaluating these queries. Run only one
+# benchmark deployment at a time so the DCGM worker selector is unambiguous.
+
+# GPU utilization by worker Pod and GPU.
+DCGM_FI_DEV_GPU_UTIL{exported_namespace="qwen32-bench",exported_pod=~"qwen3-32b-fp8-vllm-.*worker.*"}
+
+# GPU framebuffer usage in MiB.
+DCGM_FI_DEV_FB_USED{exported_namespace="qwen32-bench",exported_pod=~"qwen3-32b-fp8-vllm-.*worker.*"}
+
+# GPU power usage in watts.
+DCGM_FI_DEV_POWER_USAGE{exported_namespace="qwen32-bench",exported_pod=~"qwen3-32b-fp8-vllm-.*worker.*"}
+
+# NIXL transmit and receive throughput, grouped by deployment and worker Pod.
+sum by (dynamo_graph_deployment, pod) (
+  rate(agent_tx_bytes_total{namespace="qwen32-bench"}[1m])
+)
+sum by (dynamo_graph_deployment, pod) (
+  rate(agent_rx_bytes_total{namespace="qwen32-bench"}[1m])
+)
