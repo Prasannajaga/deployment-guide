@@ -1,0 +1,58 @@
+{
+  "experiment_id": "exp2-disagg-round-robin",
+  "run_id": "20260812T110028Z_qwen3-32b-fp8-vllm-disagg-perf",
+  "deployment": "qwen3-32b-fp8-vllm-disagg",
+  "endpoint": "qwen3-32b-fp8-vllm-disagg-frontend:8000",
+  "model": "Qwen/Qwen3-32B-FP8",
+  "model_path": "/opt/models/hub/models--Qwen--Qwen3-32B-FP8/snapshots/aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df",
+  "model_revision": "aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df",
+  "aiperf_version": "0.10.0",
+  "workload": "mooncake_trace_fixed_schedule",
+  "original_trace": "/perf-cache/traces/conversation_trace.jsonl",
+  "effective_trace": "/perf-cache/traces/conversation_trace.maxctx40960.jsonl",
+  "original_trace_sha256": "b8cbb061a85206d729d91cdc2981f43c9e0d99209dce588d3af5f7934408b9df",
+  "effective_trace_sha256": "32e7c8976c7a0b1536cc6b361faf5c87582e9b17b27566fbccf623d25f53115d",
+  "original_request_count": 12031,
+  "effective_request_count": 11457,
+  "trace_stats": {
+    "request_count": 12031,
+    "max_input_tokens": 126195,
+    "max_output_tokens": 2000,
+    "max_total_tokens": 126527,
+    "over_context_count": 574
+  },
+  "max_context_tokens": 40960,
+  "over_context_count": 574,
+  "trace_overflow_policy": "filter",
+  "gpu_count": 16,
+  "topology": "6P(TP2)+2D(TP2)",
+  "router_mode": "round-robin",
+  "kv_offload": false,
+  "ignore_eos": true,
+  "use_server_token_count": true,
+  "slo_ms": {
+    "ttft": 2000,
+    "itl": 25
+  },
+  "benchmark_start_utc": "2026-08-12T11:00:28Z",
+  "benchmark_start_epoch": 1786532428,
+  "benchmark_end_utc": "2026-08-12T12:07:35Z",
+  "benchmark_end_epoch": 1786536455,
+  "aiperf_exit_code": 0,
+  "declared_topology": "6P(TP2)+2D(TP2)",
+  "declared_gpu_count": 16,
+  "observed_worker_topology": {
+    "prefill_replicas": 6,
+    "decode_replicas": 2,
+    "prefill_gpu_request_per_pod": 2,
+    "decode_gpu_request_per_pod": 2
+  },
+  "collection": {
+    "job_result": "succeeded",
+    "prometheus_step": "5s",
+    "deployment_snapshot": "deployment/",
+    "dcgm_metrics": "metrics/dcgm/",
+    "backend_metrics": "metrics/backend/",
+    "nixl_metrics": "metrics/nixl/"
+  }
+}
