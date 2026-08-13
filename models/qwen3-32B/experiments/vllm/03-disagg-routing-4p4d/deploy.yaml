@@ -9,6 +9,8 @@ spec:
   pvcs:
     - name: model-cache
       create: false
+    - name: compilation-cache
+      create: false
   services:
     Frontend:
       componentType: frontend
@@ -16,8 +18,6 @@ spec:
       envs:
         - name: HF_HOME
           value: /opt/models
-        - name: DYN_ROUTER_MODE
-          value: round-robin
       resources:
         requests:
           cpu: "8"
@@ -32,6 +32,8 @@ spec:
         mainContainer:
           image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.3.0
           workingDir: /workspace/
+          command: [python3, -m, dynamo.frontend]
+          args: [--router-mode, round-robin]
 
     VllmPrefillWorker:
       componentType: worker
@@ -46,6 +48,9 @@ spec:
       volumeMounts:
         - name: model-cache
           mountPoint: /opt/models
+        - name: compilation-cache
+          mountPoint: /home/dynamo/.cache/vllm
+          useAsCompilationCache: true
       extraPodSpec:
         hostNetwork: false
         dnsPolicy: ClusterFirst
@@ -143,6 +148,9 @@ spec:
       volumeMounts:
         - name: model-cache
           mountPoint: /opt/models
+        - name: compilation-cache
+          mountPoint: /home/dynamo/.cache/vllm
+          useAsCompilationCache: true
       extraPodSpec:
         hostNetwork: false
         dnsPolicy: ClusterFirst

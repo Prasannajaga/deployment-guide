@@ -1,6 +1,8 @@
 # Exp 3: disaggregated 4P+4D, round-robin
 
 4P + 4D, keeping round-robin routing and GPU-only KV cache.
+Prefix caching is enabled on both prefill and decode workers, matching the
+other experiments in this benchmark series so routing remains the compared variable.
 
 | Pool | Replicas | TP | GPUs |
 |---|---:|---:|---:|

@@ -9,6 +9,8 @@ spec:
   pvcs:
     - name: model-cache
       create: false
+    - name: compilation-cache
+      create: false
   services:
     Frontend:
       componentType: frontend
@@ -46,6 +48,9 @@ spec:
       volumeMounts:
         - name: model-cache
           mountPoint: /opt/models
+        - name: compilation-cache
+          mountPoint: /home/dynamo/.cache/vllm
+          useAsCompilationCache: true
       extraPodSpec:
         hostNetwork: false
         dnsPolicy: ClusterFirst
@@ -144,6 +149,9 @@ spec:
       volumeMounts:
         - name: model-cache
           mountPoint: /opt/models
+        - name: compilation-cache
+          mountPoint: /home/dynamo/.cache/vllm
+          useAsCompilationCache: true
       extraPodSpec:
         hostNetwork: false
         dnsPolicy: ClusterFirst
