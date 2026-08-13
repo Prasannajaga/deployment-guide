@@ -1,0 +1,80 @@
+apiVersion: nvidia.com/v1alpha1
+kind: DynamoGraphDeployment
+metadata:
+  name: deepseek-v4-flash-fp8-sglang-agg-tp4
+spec:
+  backendFramework: sglang
+  pvcs:
+    - name: model-cache
+      create: false
+  services:
+    Frontend:
+      componentType: frontend
+      volumeMounts:
+        - name: model-cache
+          mountPoint: /opt/models
+      extraPodSpec:
+        mainContainer:
+          image: nvcr.io/nvidia/ai-dynamo/sglang-runtime:1.3.0
+          workingDir: /workspace/examples/backends/sglang
+      envs:
+        - name: HF_HOME
+          value: /opt/models
+      replicas: 1
+      resources:
+        requests:
+          cpu: "8"
+          memory: 32Gi
+        limits:
+          memory: 64Gi
+    SglangWorker:
+      componentType: worker
+      volumeMounts:
+        - name: model-cache
+          mountPoint: /opt/models
+      sharedMemory:
+        size: 64Gi
+      extraPodSpec:
+        mainContainer:
+          image: nvcr.io/nvidia/ai-dynamo/sglang-runtime:1.3.0
+          workingDir: /workspace/examples/backends/sglang
+          command:
+            - /bin/sh
+            - -c
+          args:
+            - |
+              exec python3 -m dynamo.sglang \
+                --model-path "$MODEL_PATH" \
+                --served-model-name "$SERVED_MODEL_NAME" \
+                --tp-size 4 \
+                --context-length 8192 \
+                --chunked-prefill-size 4096 \
+                --page-size 64 \
+                --max-running-requests 8 \
+                --mem-fraction-static 0.98 \
+                --disable-cuda-graph \
+                --trust-remote-code \
+                --reasoning-parser deepseek-v4 \
+                --dyn-reasoning-parser deepseek_v4 \
+                --dyn-tool-call-parser deepseek_v4 \
+                --host 0.0.0.0 \
+                --enable-metrics
+          env:
+            - name: SERVED_MODEL_NAME
+              value: sgl-project/DeepSeek-V4-Flash-FP8
+            - name: MODEL_PATH
+              value: /opt/models/hub/models--sgl-project--DeepSeek-V4-Flash-FP8/snapshots/ae01d80c06cdfe30581edfd0e1c5449dc7ed7f17
+            - name: HF_HOME
+              value: /opt/models
+            - name: PYTHONHASHSEED
+              value: "0"
+            - name: SGLANG_DSV4_FP4_EXPERTS
+              value: "0"
+            - name: SGLANG_JIT_DEEPGEMM_PRECOMPILE
+              value: "0"
+      replicas: 4
+      resources:
+        limits:
+          gpu: "4"
+        requests:
+          gpu: "4"

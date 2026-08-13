@@ -1,0 +1,255 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: qwen36-vllm-tp1-4p4d-perf
+spec:
+  backoffLimit: 0
+  completions: 1
+  parallelism: 1
+  activeDeadlineSeconds: 14400
+  template:
+    metadata:
+      labels:
+        app: qwen36-vllm-tp1-4p4d-perf
+    spec:
+      restartPolicy: Never
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+        - key: nvidia.com/gpu
+          operator: Equal
+          value: "true"
+          effect: NoSchedule
+      containers:
+        - name: perf
+          image: python:3.12-slim
+          imagePullPolicy: IfNotPresent
+          workingDir: /workspace
+          command:
+            - /bin/bash
+            - -lc
+          args:
+            - |
+              set -euo pipefail
+
+              apt-get update
+              apt-get install -y --no-install-recommends build-essential curl jq procps
+              rm -rf /var/lib/apt/lists/*
+              python -m pip install --no-cache-dir "aiperf==0.10.0"
+
+              aiperf --version || true
+              python --version
+
+              case "$PREFIX_MODE" in
+                isolated)
+                  prompt_tokens="$ISL"
+                  prefix_args=()
+                  ;;
+                shared)
+                  prefix_tokens=$((ISL * PREFIX_REUSE_PERCENT / 100))
+                  prompt_tokens=$((ISL - prefix_tokens))
+                  if [ "$prefix_tokens" -lt 1 ] || [ "$prompt_tokens" -lt 1 ]; then
+                    echo "PREFIX_REUSE_PERCENT must leave positive shared and unique lengths" >&2
+                    exit 2
+                  fi
+                  prefix_args=(
+                    --prefix-prompt-pool-size "$PREFIX_GROUPS"
+                    --prefix-prompt-length "$prefix_tokens"
+                  )
+                  ;;
+                *)
+                  echo "PREFIX_MODE must be isolated or shared" >&2
+                  exit 2
+                  ;;
+              esac
+
+              endpoint_url="${ENDPOINT%/}"
+              case "$endpoint_url" in
+                http://*|https://*) ;;
+                *) endpoint_url="http://${endpoint_url}" ;;
+              esac
+
+              echo "Waiting for ${TARGET_MODEL} at ${endpoint_url}/v1/models"
+              attempt=1
+              until models_json="$(curl -fsS --max-time 10 "${endpoint_url}/v1/models")" &&
+                printf '%s' "$models_json" | jq -e --arg model "$TARGET_MODEL" \
+                  '.data[]? | select(.id == $model)' >/dev/null; do
+                if [ "$attempt" -ge 540 ]; then
+                  echo "Model readiness timed out after 45 minutes" >&2
+                  exit 1
+                fi
+                attempt=$((attempt + 1))
+                sleep 5
+              done
+              printf '%s' "$models_json" | jq .
+
+              test -e "$TOKENIZER" || {
+                echo "Tokenizer path does not exist: $TOKENIZER" >&2
+                exit 1
+              }
+
+              mkdir -p "$ARTIFACT_ROOT" "$HF_HOME" /perf-cache/tmp
+              export TMPDIR=/perf-cache/tmp
+              run_root="${ARTIFACT_ROOT}/${TOPOLOGY_NAME}/${PREFIX_MODE}/${WORKLOAD_NAME}/isl-${ISL}_osl-${OSL}"
+              mkdir -p "$run_root"
+              status_file="${run_root}/matrix-status.tsv"
+
+              printf '%s\n' "$models_json" > "${run_root}/models.json"
+              curl -fsS "${endpoint_url}/metrics" > "${run_root}/frontend-metrics-before.prom" || true
+              jq -n \
+                --arg topology "$TOPOLOGY_NAME" \
+                --arg workload "$WORKLOAD_NAME" \
+                --arg prefix_mode "$PREFIX_MODE" \
+                --arg model "$TARGET_MODEL" \
+                --arg tokenizer "$TOKENIZER" \
+                --arg endpoint "$endpoint_url" \
+                --arg concurrencies "$CONCURRENCIES" \
+                --argjson isl "$ISL" \
+                --argjson osl "$OSL" \
+                --argjson duration "$BENCHMARK_DURATION" \
+                --argjson warmup "$WARMUP_REQUESTS" \
+                --argjson seed "$RANDOM_SEED" \
+                --argjson request_timeout "$REQUEST_TIMEOUT" \
+                --argjson prefix_groups "$PREFIX_GROUPS" \
+                --argjson prefix_reuse_percent "$PREFIX_REUSE_PERCENT" \
+                '{topology:$topology, workload:$workload, prefix_mode:$prefix_mode,
+                  model:$model, tokenizer:$tokenizer, endpoint:$endpoint,
+                  isl:$isl, osl:$osl, concurrencies:$concurrencies,
+                  benchmark_duration_seconds:$duration, warmup_requests:$warmup,
+                  random_seed:$seed, request_timeout_seconds:$request_timeout,
+                  prefix_groups:$prefix_groups,
+                  target_prefix_token_percent:$prefix_reuse_percent,
+                  aiperf:"0.10.0", dynamo:"1.3.0", vllm:"0.23.0"}' \
+                > "${run_root}/input-config.json"
+              printf 'concurrency\tstatus\tfinished_utc\n' > "$status_file"
+
+              server_metric_args=()
+              if [ -n "$SERVER_METRICS_URLS" ]; then
+                read -r -a metric_urls <<< "$SERVER_METRICS_URLS"
+                server_metric_args=(--server-metrics "${metric_urls[@]}")
+              fi
+
+              failures=0
+              for concurrency in $CONCURRENCIES; do
+                artifact_dir="${run_root}/c${concurrency}"
+                if [ -e "${artifact_dir}/profile_export_raw.jsonl" ]; then
+                  echo "Refusing to overwrite existing raw artifacts: $artifact_dir" >&2
+                  exit 1
+                fi
+                mkdir -p "$artifact_dir"
+
+                if ! curl -fsS --max-time 10 "${endpoint_url}/v1/models" |
+                  jq -e --arg model "$TARGET_MODEL" \
+                    '.data[]? | select(.id == $model)' >/dev/null; then
+                  echo "Expected model disappeared before concurrency $concurrency" >&2
+                  exit 1
+                fi
+
+                echo "Starting workload=$WORKLOAD_NAME prefix=$PREFIX_MODE ISL=$ISL OSL=$OSL concurrency=$concurrency"
+                if aiperf profile \
+                  --model "$TARGET_MODEL" \
+                  --tokenizer "$TOKENIZER" \
+                  --url "$endpoint_url" \
+                  --endpoint-type chat \
+                  --streaming \
+                  --concurrency "$concurrency" \
+                  --benchmark-duration "$BENCHMARK_DURATION" \
+                  --benchmark-grace-period "$GRACE_PERIOD" \
+                  --warmup-request-count "$WARMUP_REQUESTS" \
+                  --request-timeout-seconds "$REQUEST_TIMEOUT" \
+                  --isl "$prompt_tokens" \
+                  --isl-stddev 0 \
+                  --osl "$OSL" \
+                  --osl-stddev 0 \
+                  --extra-inputs "max_tokens:$OSL" \
+                  --extra-inputs "min_tokens:$OSL" \
+                  --extra-inputs ignore_eos:true \
+                  --extra-inputs temperature:0.0 \
+                  --extra-inputs '{"chat_template_kwargs":{"enable_thinking":false}}' \
+                  --num-dataset-entries "$NUM_DATASET_ENTRIES" \
+                  --random-seed "$RANDOM_SEED" \
+                  --server-metrics-formats json csv jsonl \
+                  "${prefix_args[@]}" \
+                  "${server_metric_args[@]}" \
+                  --ui simple \
+                  --artifact-dir "$artifact_dir"; then
+                  status=PASS
+                else
+                  status=FAIL
+                  failures=$((failures + 1))
+                fi
+                printf '%s\t%s\t%s\n' "$concurrency" "$status" \
+                  "$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$status_file"
+              done
+
+              curl -fsS "${endpoint_url}/metrics" > "${run_root}/frontend-metrics-after.prom" || true
+              echo "Benchmark artifacts: $run_root"
+              [ "$failures" -eq 0 ]
+          env:
+            - name: TARGET_MODEL
+              value: Qwen/Qwen3.6-35B-A3B-FP8
+            - name: TOKENIZER
+              value: /opt/models/hub/models--Qwen--Qwen3.6-35B-A3B-FP8/snapshots/95a723d08a9490559dae23d0cff1d9466213d989
+            - name: ENDPOINT
+              value: qwen36-35b-a3b-vllm-disagg-kv-tp1-4p4d-frontend:8000
+            - name: ISL
+              value: "8000"
+            - name: OSL
+              value: "1024"
+            - name: CONCURRENCIES
+              value: "1 2 4 8 16 32 64 128"
+            - name: BENCHMARK_DURATION
+              value: "180"
+            - name: WARMUP_REQUESTS
+              value: "32"
+            - name: RANDOM_SEED
+              value: "42"
+            - name: ARTIFACT_ROOT
+              value: /perf-cache/aiperf/qwen36
+            - name: TOPOLOGY_NAME
+              value: tp1-4p4d
+            - name: WORKLOAD_NAME
+              value: balanced
+            - name: PREFIX_MODE
+              value: isolated
+            - name: REQUEST_TIMEOUT
+              value: "3600"
+            - name: PREFIX_GROUPS
+              value: "8"
+            - name: PREFIX_REUSE_PERCENT
+              value: "75"
+            - name: NUM_DATASET_ENTRIES
+              value: "4096"
+            - name: GRACE_PERIOD
+              value: "600"
+            - name: SERVER_METRICS_URLS
+              value: ""
+            - name: AIPERF_HTTP_CONNECTION_LIMIT
+              value: "512"
+            - name: HF_HOME
+              value: /perf-cache/hf-aiperf-cache
+            - name: PYTHONUNBUFFERED
+              value: "1"
+          resources:
+            requests:
+              cpu: "4"
+              memory: 8Gi
+              ephemeral-storage: 4Gi
+            limits:
+              cpu: "16"
+              memory: 32Gi
+              ephemeral-storage: 16Gi
+          volumeMounts:
+            - name: perf-cache
+              mountPath: /perf-cache
+            - name: model-cache
+              mountPath: /opt/models
+              readOnly: true
+      volumes:
+        - name: perf-cache
+          persistentVolumeClaim:
+            claimName: perf-cache
+        - name: model-cache
+          persistentVolumeClaim:
+            claimName: model-cache

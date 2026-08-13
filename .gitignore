@@ -82,4 +82,6 @@ tmp/
 profile_export*
 server_metrics_export*
 chat.html
-models/qwen3-32B/benchmarks
+benchmarks*/
+benchmark*/
+models/qwen3-235B-A22B

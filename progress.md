@@ -682,3 +682,252 @@ The complete executable procedure is documented in
 NIXL transfer telemetry was not enabled for this completed run. NIXL latency
 collection is deferred to the next benchmark round, when the NIXL exporter
 will be enabled before traffic starts and scraped for the entire run.
+
+## Progress in the last 24 hours — August 13–14, 2026
+
+The last day expanded the cluster work from the earlier Qwen3-32B deployment
+into three new MoE model families and several controlled serving topologies.
+The most important completed result is that Qwen3.6-35B-A3B-FP8 was deployed
+successfully with SGLang in two different disaggregated layouts and both
+layouts completed the same seven-point AIPerf matrix. DeepSeek-V4-Flash-FP8
+and Qwen3-235B-A22B-FP8 received pinned model-cache jobs, full SGLang
+deployment manifests, and operational runbooks. We also prepared vLLM
+Qwen3.6 P/D recipes and a new SGLang TP1-attention + EP2 experiment with
+KV-aware routing and complete transfer telemetry.
+
+The evidence level is intentionally separated below. A checked-in manifest is
+not described as a successful deployment unless retained smoke-test or
+benchmark artifacts prove that the model served requests.
+
+| Model / topology | GPU layout | Status after this work |
+|---|---:|---|
+| Qwen3.6 SGLang P/D TP1 4P4D | 4 prefill × 1 GPU + 4 decode × 1 GPU = 8 | Deployed and benchmarked; all seven concurrency points passed |
+| Qwen3.6 SGLang P/D TP2 2P2D | 2 prefill × 2 GPUs + 2 decode × 2 GPUs = 8 | Deployed and benchmarked; all seven concurrency points passed |
+| DeepSeek-V4-Flash-FP8 SGLang aggregate | 4 replicas × TP=4 = 16 | H100 capacity probe prepared and attempted; no retained acceptance artifact, so not marked validated |
+| Qwen3-235B-A22B-FP8 SGLang aggregate | 4 replicas × TP=4 = 16 | Complete pinned recipe and runbook prepared; cluster acceptance result not retained in this repository |
+| Qwen3-235B-A22B-FP8 SGLang P/D | 2 prefill × TP=4 + 2 decode × TP=4 = 16 | Complete NIXL/RoCE recipe prepared; cluster acceptance result not retained |
+| Qwen3.6 vLLM KV-aware P/D TP1 4P4D | 4 prefill + 4 decode = 8 | Deployment, hybrid-cache compatibility gate, and benchmark job prepared; not yet supported by retained pass evidence |
+| Qwen3.6 vLLM KV-aware P/D TP2 2P2D | 2 prefill × TP=2 + 2 decode × TP=2 = 8 | Deployment, hybrid-cache compatibility gate, and benchmark job prepared; not yet supported by retained pass evidence |
+| Qwen3.6 SGLang TP1-attention + EP2 4P4D | 4 prefill × 2 GPUs + 4 decode × 2 GPUs = 16 | New KV-aware recipe and metrics acceptance gate completed; cluster preflight still required |
+
+### DeepSeek-V4-Flash-FP8 H100 capacity probe
+
+We added a pinned cache and SGLang aggregate recipe for
+`sgl-project/DeepSeek-V4-Flash-FP8`, revision
+`ae01d80c06cdfe30581edfd0e1c5449dc7ed7f17`. The checkpoint is approximately
+294 GB. The intended experiment uses four independent TP=4 replicas, placing
+approximately 1.176 TB of weights into the cluster's 1.28 TB of aggregate HBM
+before KV cache, CUDA workspaces, and runtime allocations are counted.
+
+This made it a deliberately aggressive H100 capacity probe. The official
+SGLang Hopper TP=4 configuration is an H200-oriented layout; four copies leave
+too little H100 headroom to assume success. The recipe therefore uses a short
+8,192-token context, chunked prefill, eight maximum running requests,
+`--disable-cuda-graph`, and explicit DeepSeek-V4 reasoning/tool parsers. It
+also contains a hard cleanup path when a worker fails during loading or memory
+profiling. The repository does not contain a completed smoke-test or benchmark
+artifact for this model, so the probe must not be presented as a validated
+serving result.
+
+The executable recipe is in
+[`models/deepseek-v4-flash-fp8/sglang/agg/`](models/deepseek-v4-flash-fp8/sglang/agg/README.md).
+
+### Qwen3-235B-A22B-FP8 TP=4 baselines
+
+We added a second large-model family using the pinned public checkpoint
+`Qwen/Qwen3-235B-A22B-FP8`, revision
+`2180ded38a22f6ab0ea405cbb02af2f7a6090379`. This is a roughly 239 GB sparse
+MoE checkpoint with 235B total parameters, 22B active parameters per token,
+128 experts, and eight selected experts per token.
+
+TP=4 was chosen deliberately:
+
+- the model has four KV heads, which divide exactly across four ranks;
+- its FP8 MoE scale layout is compatible with TP=4 but not the proposed TP=8
+  baseline;
+- each rank holds roughly 59.75 GB of checkpoint weights, leaving materially
+  more H100 runtime headroom than the DeepSeek-V4 four-copy probe.
+
+Two matching SGLang recipes now exist:
+
+1. **Aggregated:** four independent TP=4 workers, two per node, consuming all
+   16 GPUs.
+2. **Disaggregated:** two TP=4 prefill workers on `gpu05` and two TP=4 decode
+   workers on `gpu06`, also consuming all 16 GPUs. Every P-to-D transfer
+   crosses the physical RoCE link through NIXL/UCX.
+
+Both layouts deliberately keep expert parallelism, speculative decoding,
+KV-aware routing, and KV offloading disabled so that the initial comparison
+changes only the serving topology. The disaggregated manifest reuses the
+pod-native `qwen-roce` attachment, requests `rdma/ib`, pins UCX to
+`mlx5_8:1`, and avoids `hostNetwork` and host-port collisions. Complete cache,
+deploy, log, smoke-test, and cleanup procedures are under
+[`models/qwen3-235B-A22B/`](models/qwen3-235B-A22B/README.md). No retained
+request or benchmark artifact is present yet, so these remain ready-to-run
+baselines rather than published performance results.
+
+### Qwen3.6-35B-A3B-FP8 model bring-up
+
+The main successful model deployment of the day was
+`Qwen/Qwen3.6-35B-A3B-FP8`, pinned to revision
+`95a723d08a9490559dae23d0cff1d9466213d989`. It is a 37.5 GB multimodal sparse
+MoE with 35B total parameters, approximately 3B active parameters per token,
+256 experts, eight selected experts, two KV heads, and a 262,144-token native
+context. Three of every four language layers use Gated DeltaNet recurrent
+linear attention, which makes disaggregated transfer more demanding than a
+standard transformer KV cache.
+
+The serving baseline was held at 131,072 tokens, 85% static GPU-memory
+fraction, and a 64-token SGLang page size. Both layouts used Dynamo 1.3.0,
+SGLang 0.5.14, namespace-isolated Pods, the existing Multus/MacVLAN
+`qwen-roce` network, and NIXL/UCX over `mlx5_8:1`.
+
+#### Successful SGLang TP1 4P4D deployment
+
+The first controlled layout ran four single-GPU prefill workers and four
+single-GPU decode workers:
+
+```text
+gpu05: 4 × prefill, TP=1
+gpu06: 4 × decode,  TP=1
+total: 8 H100 GPUs
+```
+
+The deployment served the model successfully and the benchmark completed at
+concurrencies `1, 4, 8, 16, 32, 64, 128`. Every point is recorded as `PASS`
+with zero entries in AIPerf's error summary.
+
+#### Successful SGLang TP2 2P2D deployment
+
+The matching TP2 layout ran two two-GPU prefill workers and two two-GPU decode
+workers:
+
+```text
+gpu05: 2 × prefill, TP=2
+gpu06: 2 × decode,  TP=2
+total: 8 H100 GPUs
+```
+
+It used the same model revision, context, memory fraction, workload, random
+seed, benchmark duration, and concurrency points. All seven points also
+finished with `PASS` and no recorded AIPerf errors.
+
+### Qwen3.6 TP1-versus-TP2 quick mixed benchmark
+
+The comparable retained workload was a 60-second mixed-sequence run at each
+concurrency after 16 warmup requests. Thinking was disabled and the random
+seed was fixed at 42. The sequence distribution was:
+
+```text
+ISL 1,024 / OSL 256:   35%
+ISL 4,096 / OSL 512:   30%
+ISL 8,192 / OSL 1,024: 20%
+ISL 16,384 / OSL 512:  10%
+ISL 32,768 / OSL 256:   5%
+```
+
+Headline retained results are:
+
+| Concurrency | TP1 output tok/s | TP2 output tok/s | TP1 median TTFT | TP2 median TTFT | TP1 median ITL | TP2 median ITL |
+|---:|---:|---:|---:|---:|---:|---:|
+| 1 | 214.60 | 247.77 | 138.55 ms | 146.35 ms | 4.05 ms | 3.51 ms |
+| 4 | 819.60 | 931.42 | 134.55 ms | 143.76 ms | 4.21 ms | 3.73 ms |
+| 8 | 1,529.92 | 1,634.64 | 134.40 ms | 144.98 ms | 4.56 ms | 4.30 ms |
+| 16 | 2,573.50 | 2,709.46 | 137.11 ms | 238.59 ms | 5.43 ms | 4.95 ms |
+| 32 | 4,179.99 | 4,302.14 | 224.84 ms | 304.62 ms | 6.66 ms | 6.13 ms |
+| 64 | 6,470.49 | 6,226.02 | 238.95 ms | 445.88 ms | 8.51 ms | 7.80 ms |
+| 128 | 9,435.67 | 7,201.80 | 474.86 ms | 1,073.26 ms | 11.44 ms | 8.85 ms |
+
+TP2 had the expected small-concurrency advantage: at concurrency 1 its output
+throughput was about 15.5% higher than TP1. The two layouts were close around
+concurrency 32, where TP2 was about 2.9% higher. The crossover occurred before
+concurrency 64. At concurrency 128 the replicated TP1 layout delivered about
+31.0% more output-token throughput and substantially lower median TTFT, which
+shows the benefit of having four independent horizontal workers instead of
+two TP groups when the workload becomes highly concurrent. TP2 retained lower
+median inter-token latency at the highest point, illustrating the latency
+versus aggregate-capacity tradeoff rather than a universal winner.
+
+These are short controlled comparison runs, not final production numbers.
+They establish that both topologies function, exercise long mixed prompts,
+and remain error-free through concurrency 128. The retained configurations,
+matrix status files, frontend metric snapshots, raw profiles, CSV/JSON
+exports, inputs, logs, and plots are stored under:
+
+- [`tp1-4p4d/benchmarks`](models/qwen3.6-35B-A3B/sglang/disagg/tp1-4p4d/benchmarks/)
+- [`tp2-2p2d/benchmarks`](models/qwen3.6-35B-A3B/sglang/disagg/tp2-2p2d/benchmarks/)
+
+### Qwen3.6 vLLM KV-aware recipes
+
+We also created controlled vLLM 0.23.0 P/D recipes for the same TP1 4P4D and
+TP2 2P2D comparison. Both use Dynamo's KV-aware frontend, prefix caching,
+128-token blocks, NIXL producer/consumer roles, pod-native RoCE, and explicit
+hybrid/Mamba cache settings. Each topology has an AIPerf job using the same
+workload controls.
+
+Because Qwen3.6 contains Gated DeltaNet recurrent state, these recipes include
+a strict compatibility gate rather than assuming ordinary transformer KV
+transfer is enough. Acceptance requires successful model readiness, a real
+P-to-D request, NIXL/UCX initialization, and logs proving that the pinned vLLM
+connector supports the model's hybrid memory architecture. There are no
+retained passing vLLM artifacts in the repository yet, so SGLang remains the
+validated backend for this comparison.
+
+### New SGLang TP1-attention + EP2 KV-aware recipe
+
+The final addition was a full 16-GPU expert-parallel experiment for Qwen3.6.
+Each worker has a two-GPU SGLang world configured as:
+
+```text
+--tp-size 2
+--dp-size 2
+--ep-size 2
+--enable-dp-attention
+--enable-dp-lm-head
+--moe-dense-tp-size 1
+```
+
+With SGLang's DP-attention layout this means effective attention/dense TP=1
+and expert parallelism EP=2; it is not a four-GPU `TP × EP` product. The full
+deployment contains four prefill workers and four decode workers:
+
+```text
+4 prefill × 2 GPUs + 4 decode × 2 GPUs = 16 GPUs
+```
+
+The frontend uses `--router-mode kv`, and prefill workers publish KV events
+through ZMQ for KV-aware routing. The transfer and observability stack now
+contains three separate Prometheus paths:
+
+- frontend and KV-router metrics on port `8000`;
+- Dynamo plus SGLang engine metrics on worker port `9090`;
+- NIXL transfer telemetry on port `19090` using
+  `NIXL_TELEMETRY_ENABLE=y` and the Prometheus exporter.
+
+The preflight does more than wait for Ready Pods. It sends a real disaggregated
+request, checks SGLang/Dynamo metrics, requires a positive NIXL transferred-byte
+counter, and rejects any nonzero failed-transfer counter. A separate metrics
+runbook covers direct endpoint checks, Prometheus target discovery,
+before/after snapshots, and range-query export. YAML parsing, embedded-manifest
+equality, Bash syntax, topology accounting, and observability configuration
+were validated locally. The cluster canary and full benchmark are still the
+next acceptance steps.
+
+The recipe is under
+[`models/qwen3.6-35B-A3B/sglang/disagg/tp1-ep2-4p4d/`](models/qwen3.6-35B-A3B/sglang/disagg/tp1-ep2-4p4d/README.md),
+with the telemetry procedure in
+[`metrics.md`](models/qwen3.6-35B-A3B/sglang/disagg/tp1-ep2-4p4d/metrics.md).
+
+### Immediate next steps
+
+1. Run the TP1-attention + EP2 four-GPU canary and require positive NIXL
+   transfer telemetry before allocating all 16 GPUs.
+2. If the canary passes, execute the same mixed AIPerf matrix so EP2 can be
+   compared fairly with the retained TP1 and TP2 results.
+3. Run and retain explicit acceptance artifacts for Qwen3-235B aggregate and
+   disaggregated TP=4 layouts.
+4. Treat the DeepSeek-V4 four-copy TP=4 topology as a capacity experiment; if
+   H100 headroom is insufficient, change the topology rather than repeatedly
+   restarting OOM workers.
+5. Keep the vLLM Qwen3.6 results unpublished until the hybrid GDN/NIXL gate
+   proves recurrent-state transfer end to end.

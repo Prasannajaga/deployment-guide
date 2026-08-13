@@ -17,4 +17,10 @@ The nodes share private storage at `/ephemeral/shared`. gpu05 hosts the share an
 
 `/ephemeral` is node-local scratch. `/shared` is cluster-wide storage visible to other users.
 
-The reservation releases on August 16 at 11:59:59 PM UTC.
+The reservation releases on August 16 at 11:59:59 PM UTC.\
+
+
+
+BLOGS UPCOMING:
+
+TP, DP & EP write detailed comparison please
