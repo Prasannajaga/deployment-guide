@@ -3,7 +3,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: qwen3-32b-fp8-vllm-disagg-routing-4p4d-perf
+  name: qwen3-32b-fp8-vllm-disagg-kv-perf
 spec:
   backoffLimit: 0
   completions: 1
@@ -12,7 +12,7 @@ spec:
   template:
     metadata:
       labels:
-        app: qwen3-32b-fp8-vllm-disagg-routing-4p4d-perf
+        app: qwen3-32b-fp8-vllm-disagg-kv-perf
     spec:
       restartPolicy: Never
       tolerations:
@@ -183,15 +183,15 @@ spec:
               exit "$aiperf_exit"
           env:
             - name: EXPERIMENT_ID
-              value: 03-disagg-routing-4p4d
+              value: 04-disagg-routing-kv-aware
             - name: DEPLOYMENT_NAME
-              value: qwen3-32b-fp8-vllm-disagg-routing-4p4d
+              value: qwen3-32b-fp8-vllm-disagg-kv
             - name: MODEL_NAME
               value: Qwen/Qwen3-32B-FP8
             - name: MODEL_REVISION
               value: aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df
             - name: ENDPOINT
-              value: qwen3-32b-fp8-vllm-disagg-routing-4p4d-frontend:8000
+              value: qwen3-32b-fp8-vllm-disagg-kv-frontend:8000
             - name: AIPERF_VERSION
               value: "0.10.0"
             - name: MODEL_READY_TIMEOUT_SECONDS

@@ -1,9 +1,9 @@
 apiVersion: nvidia.com/v1alpha1
 kind: DynamoGraphDeployment
 metadata:
-  name: qwen3-32b-fp8-vllm-disagg-routing-4p4d
+  name: qwen3-32b-fp8-vllm-disagg-kv
   labels:
-    benchmark.nvidia.com/experiment: qwen3-32b-fp8-vllm-disagg-routing-4p4d
+    benchmark.nvidia.com/experiment: qwen3-32b-fp8-vllm-disagg-kv
 spec:
   backendFramework: vllm
   pvcs:
@@ -16,8 +16,6 @@ spec:
       envs:
         - name: HF_HOME
           value: /opt/models
-        - name: DYN_ROUTER_MODE
-          value: round-robin
       resources:
         requests:
           cpu: "8"
@@ -32,6 +30,8 @@ spec:
         mainContainer:
           image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.3.0
           workingDir: /workspace/
+          command: [python3, -m, dynamo.frontend]
+          args: [--router-mode, kv]
 
     VllmPrefillWorker:
       componentType: worker
@@ -63,6 +63,7 @@ spec:
                 --data-parallel-size 1 \
                 --disaggregation-mode prefill \
                 --kv-transfer-config '{"kv_connector":"NixlConnector","kv_role":"kv_producer","kv_load_failure_policy":"fail"}' \
+                --kv-events-config '{"publisher":"zmq","topic":"kv-events","endpoint":"tcp://*:20080","enable_kv_cache_events":true}' \
                 --gpu-memory-utilization 0.90 \
                 --max-model-len 40960 \
                 --enable-prefix-caching \
@@ -160,6 +161,7 @@ spec:
                 --data-parallel-size 1 \
                 --disaggregation-mode decode \
                 --kv-transfer-config '{"kv_connector":"NixlConnector","kv_role":"kv_consumer","kv_load_failure_policy":"fail"}' \
+                --kv-events-config '{"publisher":"zmq","topic":"kv-events","endpoint":"tcp://*:20080","enable_kv_cache_events":true}' \
                 --gpu-memory-utilization 0.90 \
                 --max-model-len 40960 \
                 --enable-prefix-caching \

@@ -1,9 +1,11 @@
+# EXPERIMENTAL: stock Dynamo 1.3.0 must contain vLLM >=0.24.0 and the
+# MultiConnector disaggregated-offload fix. Run the documented runtime gate first.
 apiVersion: nvidia.com/v1alpha1
 kind: DynamoGraphDeployment
 metadata:
-  name: qwen3-32b-fp8-vllm-disagg-routing-4p4d
+  name: qwen3-32b-fp8-vllm-disagg-kv-offload
   labels:
-    benchmark.nvidia.com/experiment: qwen3-32b-fp8-vllm-disagg-routing-4p4d
+    benchmark.nvidia.com/experiment: qwen3-32b-fp8-vllm-disagg-kv-offload
 spec:
   backendFramework: vllm
   pvcs:
@@ -16,8 +18,6 @@ spec:
       envs:
         - name: HF_HOME
           value: /opt/models
-        - name: DYN_ROUTER_MODE
-          value: round-robin
       resources:
         requests:
           cpu: "8"
@@ -32,6 +32,12 @@ spec:
         mainContainer:
           image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.3.0
           workingDir: /workspace/
+          command: [python3, -m, dynamo.frontend]
+          args:
+            - --router-mode
+            - kv
+            - --router-host-cache-hit-weight
+            - "1.0"
 
     VllmPrefillWorker:
       componentType: worker
@@ -62,7 +68,8 @@ spec:
                 --tensor-parallel-size 2 \
                 --data-parallel-size 1 \
                 --disaggregation-mode prefill \
-                --kv-transfer-config '{"kv_connector":"NixlConnector","kv_role":"kv_producer","kv_load_failure_policy":"fail"}' \
+                --kv-transfer-config "$KV_TRANSFER_CONFIG" \
+                --kv-events-config '{"publisher":"zmq","topic":"kv-events","endpoint":"tcp://*:20080","enable_kv_cache_events":true}' \
                 --gpu-memory-utilization 0.90 \
                 --max-model-len 40960 \
                 --enable-prefix-caching \
@@ -77,6 +84,9 @@ spec:
               value: /opt/models
             - name: PYTHONHASHSEED
               value: "0"
+            # 32 GiB pinned CPU tier per TP2 engine (shared across its TP ranks).
+            - name: KV_TRANSFER_CONFIG
+              value: '{"kv_connector":"MultiConnector","kv_role":"kv_both","kv_connector_extra_config":{"connectors":[{"kv_connector":"NixlConnector","kv_role":"kv_both"},{"kv_connector":"OffloadingConnector","kv_role":"kv_both","kv_connector_extra_config":{"cpu_bytes_to_use":34359738368,"block_size":256,"self_describing_kv_events":true}}]}}'
             - name: VLLM_NIXL_SIDE_CHANNEL_HOST
               valueFrom:
                 fieldRef:
@@ -123,10 +133,12 @@ spec:
       resources: &worker-resources
         requests:
           gpu: "2"
+          memory: 48Gi
           custom:
             rdma/ib: "2"
         limits:
           gpu: "2"
+          memory: 96Gi
           custom:
             rdma/ib: "2"
 
@@ -159,7 +171,8 @@ spec:
                 --tensor-parallel-size 2 \
                 --data-parallel-size 1 \
                 --disaggregation-mode decode \
-                --kv-transfer-config '{"kv_connector":"NixlConnector","kv_role":"kv_consumer","kv_load_failure_policy":"fail"}' \
+                --kv-transfer-config "$KV_TRANSFER_CONFIG" \
+                --kv-events-config '{"publisher":"zmq","topic":"kv-events","endpoint":"tcp://*:20080","enable_kv_cache_events":true}' \
                 --gpu-memory-utilization 0.90 \
                 --max-model-len 40960 \
                 --enable-prefix-caching \
