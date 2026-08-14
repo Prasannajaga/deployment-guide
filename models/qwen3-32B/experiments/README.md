@@ -12,7 +12,54 @@ Every experiment uses Qwen3-32B-FP8 model on 16 x H100 GPUs, have a 40,960-token
 | [`04-disagg-routing-kv-aware`](./vllm/04-disagg-routing-kv-aware/) | 4 prefill + 4 decode, TP2 | KV-aware | no |
 | [`05-disagg-routing-kv-aware-offloading`](./vllm/05-disagg-routing-kv-aware-offloading/) | 4 prefill + 4 decode, TP2 | KV-aware | 32 GiB/engine |
 
-## cache setup
+## Comparability and known differences
+
+The following configurations remain aligned across all five experiments:
+
+- 2 nodes (8 GPUs each), 16 GPUs total
+- Qwen3-32B-FP8 revision `aa55da1`
+- Dynamo v1.3.0
+- 8 workers, TP2 per worker
+- 40,960-token maximum context length
+  - The original trace contains 12,031 requests. After filtering 574 over-context requests, the same 11,457 requests were used in all five manifests.
+- GPU-memory utilization 0.90
+- 128-token GPU blocks
+- synchronous scheduling
+- Mooncake FAST25 fixed schedule, streaming, `ignore_eos: true`
+- Goodput thresholds: 2,000 ms TTFT / 25 ms ITL
+
+There are some known differences in `deploy.yaml` / `perf.yaml` of the experiments.
+
+### Exp 1. aggregate(TP2 per worker) baseline
+
+- Serves as the aggregate reference
+- Uses 8 frontend replicas and the first-generation benchmark wrapper.
+  - this was to avoid frontend crash but turns out 8 replicas were too much.
+  - We reduced the frontend replicas in exp4 and exp5.
+
+### Exp 2. 6P+2D(TP2 per worker) disaggregated
+
+- Explicitly adds the NIXL/RDMA path, producer/consumer KV-transfer roles, and explicit UCX settings.
+
+### Exp 3. 4P+4D(TP2 per worker) disaggregated
+
+- Keeps Exp 2's frontend, transfer path, worker flags, and benchmark wrapper and only the prefill/decode balance and per-node role allocation materially change.
+
+
+### Exp 4. 4P+4D(TP2 per worker) with KV-aware routing
+
+- Uses kv-aware routing instead of Round-Robin routing.
+- Changes the frontend from eight large replicas to two replicas.
+- Allows scheduler placement instead of node pinning, adjusts KV roles, events, prefix caching, and UCX settings, and simplifies the benchmark wrapper (this may have slightly influenced the performance).
+  - These operational differences were not isolated, but are expected to have limited influence on the overall trajectory
+
+### Exp 5. 4P+4D(TP2 per worker) with KV-aware routing and CPU KV offload
+
+- Adds `MultiConnector`, a 32 GiB/engine CPU tier, host-cache-aware routing, KV events and prefix caching on both roles, and explicit worker memory limits.
+- Everything else is same as exp 4
+
+
+## one time cache setup
 
 [`vllm/setup/cache.yaml`](./vllm/setup/cache.yaml) creates the shared model, vLLM compilation, and benchmark artifact PV/PVC pairs. It is specific to this
 two-node lab and assumes `/ephemeral/shared` is available on both nodes. Apply it only during initial setup or after `qwen32-bench` namespace is created:
