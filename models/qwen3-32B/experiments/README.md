@@ -1,6 +1,6 @@
 # Qwen3-32B serving experiments
 
-Five experiments to compare worker layout, router, and ~~CPU KV-cache offloading~~ (unfinished) under the same workload (Mooncake FAST25 fixed-schedule trace).
+Five experiments to compare worker layout, router, and CPU KV-cache offloading under the same workload (Mooncake FAST25 fixed-schedule trace).
 
 Every experiment uses Qwen3-32B-FP8 model on 16 x H100 GPUs, have a 40,960-token context limit.
 

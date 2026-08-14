@@ -1,0 +1,25 @@
+{
+  "run_id": "2026-08-14T01-15-51Z",
+  "experiment_id": "05-disagg-routing-kv-aware-offloading",
+  "deployment": "qwen3-32b-fp8-vllm-disagg-kv-offload",
+  "model": "Qwen/Qwen3-32B-FP8",
+  "model_revision": "aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df",
+  "aiperf_version": "0.10.0",
+  "workload": "mooncake_trace_fixed_schedule",
+  "trace_overflow_policy": "filter",
+  "original_trace_sha256": "b8cbb061a85206d729d91cdc2981f43c9e0d99209dce588d3af5f7934408b9df",
+  "trace_sha256": "32e7c8976c7a0b1536cc6b361faf5c87582e9b17b27566fbccf623d25f53115d",
+  "original_request_count": 12031,
+  "request_count": 11457,
+  "filtered_request_count": 574,
+  "max_context_tokens": 40960,
+  "slo_ms": {
+    "ttft": 2000,
+    "itl": 25
+  },
+  "benchmark_start_utc": "2026-08-14T01:15:51Z",
+  "benchmark_start_epoch": 1786670151,
+  "benchmark_end_utc": "2026-08-14T02:15:20Z",
+  "benchmark_end_epoch": 1786673720,
+  "aiperf_exit_code": 0
+}

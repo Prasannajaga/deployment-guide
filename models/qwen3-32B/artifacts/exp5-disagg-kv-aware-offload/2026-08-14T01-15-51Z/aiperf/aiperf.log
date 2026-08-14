@@ -1,0 +1,619 @@
+01:15:52.578 INFO     Starting AIPerf System (_single_run.py:64)
+01:15:52.871 INFO     GPU telemetry disabled via --no-gpu-telemetry (system_controller.py:253)
+01:15:52.880 INFO     Registered Worker Manager (id: 'worker_manager') (system_controller.py:387)
+01:15:52.880 INFO     Registered Dataset Manager (id: 'dataset_manager') (system_controller.py:387)
+01:15:52.906 INFO     Server Metrics: Discovered 1 endpoints: ['http://qwen3-32b-fp8-vllm-disagg-kv-offload-frontend:8000/metrics'] (manager.py:74)
+01:15:52.907 INFO     Telemetry streaming is disabled (set --otel-url and/or --mlflow-tracking-uri to enable) (otel_metrics_results_processor.py:128)
+01:15:52.907 INFO     OTel metrics streamer is disabled and will not be used: Telemetry streaming is disabled (set --otel-url and/or --mlflow-tracking-uri to enable) (records_manager.py:206)
+01:15:52.908 INFO     Record metrics export enabled: /perf-cache/artifacts/05-disagg-routing-kv-aware-offloading/2026-08-14T01-15-51Z/aiperf/profile_export.jsonl (record_export_results_processor.py:58)
+01:15:53.106 INFO     Registered Records Manager (id: 'records_manager') (system_controller.py:387)
+01:15:53.106 INFO     Registered Timing Manager (id: 'timing_manager') (system_controller.py:387)
+01:15:53.106 INFO     Registered Server Metrics Manager (id: 'server_metrics_manager') (system_controller.py:387)
+01:15:53.151 INFO     Registered Record Processor (id: 'record_processor_3d24c6ca') (system_controller.py:387)
+01:15:53.154 INFO     Registered Record Processor (id: 'record_processor_997b82c9') (system_controller.py:387)
+01:15:53.156 INFO     Registered Record Processor (id: 'record_processor_3e6ab99f') (system_controller.py:387)
+01:15:53.190 INFO     Registered Record Processor (id: 'record_processor_5e7a452b') (system_controller.py:387)
+01:15:53.192 INFO     Registered Worker (id: 'worker_81ad3788') (system_controller.py:387)
+01:15:53.193 INFO     Registered Worker (id: 'worker_4a3da44e') (system_controller.py:387)
+01:15:53.194 INFO     Registered Record Processor (id: 'record_processor_cbeae74f') (system_controller.py:387)
+01:15:53.197 INFO     Registered Record Processor (id: 'record_processor_c9bd2bd4') (system_controller.py:387)
+01:15:53.199 INFO     Registered Worker (id: 'worker_9eeaae05') (system_controller.py:387)
+01:15:53.200 INFO     Registered Worker (id: 'worker_847717bc') (system_controller.py:387)
+01:15:53.200 INFO     Registered Record Processor (id: 'record_processor_12f226c9') (system_controller.py:387)
+01:15:53.201 INFO     Registered Record Processor (id: 'record_processor_becbcf6e') (system_controller.py:387)
+01:15:53.203 INFO     Registered Worker (id: 'worker_08aa9c9e') (system_controller.py:387)
+01:15:53.206 INFO     Registered Worker (id: 'worker_f73ec9ad') (system_controller.py:387)
+01:15:53.217 INFO     Registered Worker (id: 'worker_5c49ff45') (system_controller.py:387)
+01:15:53.222 INFO     Registered Worker (id: 'worker_b47842cd') (system_controller.py:387)
+01:15:53.222 INFO     Registered Worker (id: 'worker_02223f67') (system_controller.py:387)
+01:15:53.224 INFO     Registered Worker (id: 'worker_36030220') (system_controller.py:387)
+01:15:53.253 INFO     Registered Worker (id: 'worker_5d746f85') (system_controller.py:387)
+01:15:53.259 INFO     Registered Worker (id: 'worker_4a62132e') (system_controller.py:387)
+01:15:53.260 INFO     Registered Worker (id: 'worker_60ebcca4') (system_controller.py:387)
+01:15:53.260 INFO     Registered Worker (id: 'worker_6d0b429d') (system_controller.py:387)
+01:15:53.350 INFO     Registered Worker (id: 'worker_8767672c') (system_controller.py:387)
+01:15:53.350 INFO     Registered Worker (id: 'worker_9dd99a90') (system_controller.py:387)
+01:15:53.350 INFO     Registered Worker (id: 'worker_801c9132') (system_controller.py:387)
+01:15:53.350 INFO     Registered Worker (id: 'worker_c95cee3d') (system_controller.py:387)
+01:15:53.351 INFO     Registered Worker (id: 'worker_bf3bab81') (system_controller.py:387)
+01:15:53.351 INFO     Registered Worker (id: 'worker_de214d15') (system_controller.py:387)
+01:15:53.354 INFO     Registered Worker (id: 'worker_5e7b8fe3') (system_controller.py:387)
+01:15:53.355 INFO     Registered Worker (id: 'worker_9010499a') (system_controller.py:387)
+01:15:53.373 INFO     Registered Worker (id: 'worker_041fff62') (system_controller.py:387)
+01:15:53.373 INFO     Registered Worker (id: 'worker_ab00e9eb') (system_controller.py:387)
+01:15:53.373 INFO     AIPerf System is CONFIGURING (system_controller.py:276)
+01:15:53.373 INFO     Configuring all services to start profiling (system_controller.py:289)
+01:15:53.374 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
+01:15:53.374 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
+01:15:53.374 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
+01:15:53.374 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
+01:15:53.374 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
+01:15:53.374 INFO     Waiting for dataset to be configured before configuring timing (manager.py:122)
+01:15:53.374 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
+01:15:53.374 INFO     Configuring tokenizer(s) for dataset manager (dataset_manager.py:139)
+01:15:53.374 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
+01:15:53.374 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
+01:15:53.379 INFO     Server Metrics: Capturing baseline metrics... (manager.py:156)
+01:15:53.391 INFO     Registered Worker (id: 'worker_6bb1fb19') (system_controller.py:387)
+01:15:53.394 INFO     Server metrics enabled - 1/1 endpoint(s) reachable. (system_controller.py:527)
+01:15:53.397 INFO     Registered Worker (id: 'worker_c3b9ace5') (system_controller.py:387)
+01:15:53.400 INFO     Registered Worker (id: 'worker_17cbb1ec') (system_controller.py:387)
+01:15:53.430 INFO     Registered Worker (id: 'worker_b7a18b46') (system_controller.py:387)
+01:15:53.449 INFO     Registered Worker (id: 'worker_5e0cb0d1') (system_controller.py:387)
+01:15:53.491 INFO     Registered Worker (id: 'worker_e9d233e2') (system_controller.py:387)
+01:15:53.491 INFO     Registered Worker (id: 'worker_631e4f9d') (system_controller.py:387)
+01:15:53.492 INFO     Registered Worker (id: 'worker_9bcde330') (system_controller.py:387)
+01:15:54.647 INFO     Tokenizer(s) configured in 1.27 seconds (dataset_manager.py:143)
+01:15:54.647 INFO     Configuring dataset for dataset_manager (dataset_manager.py:149)
+01:15:55.019 INFO     Using explicit dataset format: mooncake_trace (custom.py:60)
+01:16:06.965 INFO     Memory-mapped backing store initialized (streaming to /tmp/aiperf_mmap_feca77651651/dataset.dat) (memory_map_utils.py:141)
+01:16:08.299 INFO     Data file finalized: 11457 conversations, 448.62 MB (memory_map_utils.py:245)
+01:16:08.300 INFO     Index file created: /tmp/aiperf_mmap_feca77651651/index.dat (memory_map_utils.py:252)
+01:16:08.300 INFO     Backing store finalized: client_type=DatasetClientStoreType.MEMORY_MAP data_file_path=PosixPath('/tmp/aiperf_mmap_feca77651651/dataset.dat') index_file_path=PosixPath('/tmp/aiperf_mmap_feca77651651/index.dat') conversation_count=11457 total_size_bytes=470412757 compressed_data_file_path=None compressed_index_file_path=None compressed_size_bytes=0 (dataset_manager.py:479)
+01:16:08.476 INFO     sampling strategy: sequential, unique conversations: 11457, unique turn count: 11457 (dataset_manager.py:497)
+01:16:08.504 INFO     Generating inputs.json file at /perf-cache/artifacts/05-disagg-routing-kv-aware-offloading/2026-08-14T01-15-51Z/aiperf/inputs.json (dataset_manager.py:337)
+01:16:08.608 INFO     Initialized 1 phase(s): ['Profiling'] (phase_orchestrator.py:165)
+01:16:08.690 WARNING  Received command response for service we were not expecting: worker_c3b9ace5. Ignoring. (command_handler_mixin.py:356)
+01:16:08.690 WARNING  Received command response for service we were not expecting: worker_b7a18b46. Ignoring. (command_handler_mixin.py:356)
+01:16:08.695 WARNING  Received command response for service we were not expecting: worker_5e0cb0d1. Ignoring. (command_handler_mixin.py:356)
+01:16:08.730 WARNING  Received command response for service we were not expecting: worker_17cbb1ec. Ignoring. (command_handler_mixin.py:356)
+01:16:09.689 INFO     inputs.json file generated in 1.18 seconds (dataset_manager.py:356)
+01:16:09.882 INFO     Dataset client initialized and freed 11457 conversations from memory (dataset_manager.py:185)
+01:16:09.882 INFO     Dataset configured in 15.23 seconds (dataset_manager.py:156)
+01:16:09.883 INFO     All services configured in 16.51 seconds (system_controller.py:300)
+01:16:09.883 INFO     AIPerf System is CONFIGURED (system_controller.py:278)
+01:16:09.884 INFO     Server Metrics: Started 1 collector(s) successfully (manager.py:220)
+01:16:09.886 INFO     All services started profiling successfully (system_controller.py:322)
+01:16:09.886 INFO     AIPerf System is PROFILING (system_controller.py:280)
+01:16:09.923 INFO     Built schedule with 11457 timestamps, zero_ms=0, auto_offset=True (fixed_schedule.py:119)
+01:16:09.923 NOTICE   Phase profiling started | target: 11,457 requests, 11,457 sessions (runner.py:369)
+01:16:09.924 INFO     Credit phase start: profiling (records_manager.py:518)
+
+Profiling: 0/11,457 |[32m          [0m|   0% [00:00<?]
+Profiling: 0/11,457 |[32m          [0m|   0% [00:00<?]
+                                               
+01:16:11.640 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:12.097 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:14.322 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:14.322 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:14.511 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:14.667 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:14.924 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:15.358 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:15.358 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:15.615 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:15.679 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:17.024 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:17.063 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:17.213 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:20.023 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:20.049 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:20.171 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:23.023 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:23.060 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:24.051 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:24.144 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:25.079 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:25.079 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:26.098 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:26.098 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:26.568 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:27.119 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:27.119 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:27.490 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:29.318 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:30.080 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:32.116 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:32.231 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:33.681 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:35.060 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:36.946 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:38.762 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:39.136 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:39.945 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:40.158 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:40.167 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:42.570 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:44.046 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:44.047 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:45.227 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:45.847 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:46.998 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:46.998 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:46.998 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:47.093 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:47.153 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:49.981 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:49.981 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:50.018 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:51.006 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:51.006 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:51.693 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:52.714 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:53.182 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:53.182 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:54.205 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+
+Profiling: 115/11,457 |[32m          [0m|   1% [00:46<1:15:37]
+Profiling: 115/11,457 |[32m          [0m|   1% [00:46<1:15:37]01:16:56.028 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:56.028 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:56.030 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:58.055 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:59.078 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:59.084 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:59.359 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:16:59.849 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:00.112 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:01.981 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:01.981 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:02.286 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:05.245 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:05.425 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:08.241 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:08.360 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:09.385 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:11.077 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:11.102 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:11.734 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:14.263 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:14.325 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:16.989 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:17.192 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:17.199 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:18.012 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:18.220 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:18.375 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:20.469 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:20.962 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:21.029 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:21.037 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:22.002 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:23.017 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:23.041 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:23.477 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:24.049 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:24.049 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:24.118 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:25.965 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:26.022 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:26.382 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:26.576 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:27.310 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:27.411 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:27.759 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:29.863 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:29.936 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:32.032 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:32.178 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:32.178 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:32.393 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:32.404 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:32.405 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:33.739 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:33.886 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:34.888 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:35.245 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:36.277 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:36.401 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:37.421 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:38.344 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:38.352 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:38.769 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:38.886 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:39.844 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+
+Profiling: 236/11,457 |[32m▏         [0m|   2% [01:30<1:10:43]
+Profiling: 236/11,457 |[32m▏         [0m|   2% [01:30<1:10:43]01:17:40.270 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:40.562 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:41.166 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:41.586 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:43.986 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:46.536 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:47.122 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:47.596 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:49.998 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:50.111 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:50.280 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:51.026 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:51.136 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:53.138 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:53.351 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:53.575 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:54.141 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:54.825 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:56.467 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:56.534 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:59.510 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:17:59.603 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:00.355 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:00.626 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:01.087 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:01.089 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:02.760 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:03.818 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:05.216 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:05.272 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:07.448 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:08.048 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:09.055 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:11.006 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:11.341 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:11.912 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:12.029 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:12.029 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:13.368 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:14.013 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:17.163 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:17.163 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:18.056 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:18.837 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:20.226 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:21.166 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:22.997 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:23.043 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:23.069 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:24.052 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:24.162 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:26.396 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:27.038 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+
+Profiling: 352/11,457 |[32m▎         [0m|   3% [02:18<1:12:58]
+Profiling: 352/11,457 |[32m▎         [0m|   3% [02:18<1:12:58]01:18:27.992 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:28.064 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:29.261 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:29.338 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:29.363 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:30.290 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:32.013 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:32.013 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:32.046 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:32.208 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:32.209 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:32.454 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:33.054 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:34.213 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:34.448 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:35.046 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:36.067 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:36.780 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:38.158 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:38.381 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+01:18:39.553 WARNING  Server did not provide token usage information. Token count metrics will be unavailable. Verify that your API endpoint supports usage reporting (stream_options are automatically configured for OpenAI-compatible endpoints). (inference_result_parser.py:317)
+
+Profiling: 469/11,457 |[32m▍         [0m|   4% [02:52<1:04:43]
+Profiling: 469/11,457 |[32m▍         [0m|   4% [02:52<1:04:43]
+Profiling: 591/11,457 |[32m▌         [0m|   5% [03:34<1:03:23]
+Profiling: 591/11,457 |[32m▌         [0m|   5% [03:34<1:03:23]
+Profiling: 708/11,457 |[32m▌         [0m|   6% [04:18<1:04:17]
+Profiling: 708/11,457 |[32m▌         [0m|   6% [04:18<1:04:17]
+Profiling: 827/11,457 |[32m▋         [0m|   7% [04:54<1:00:18]
+Profiling: 827/11,457 |[32m▋         [0m|   7% [04:54<1:00:18]
+Profiling: 948/11,457 |[32m▊         [0m|   8% [05:40<1:01:52]
+Profiling: 948/11,457 |[32m▊         [0m|   8% [05:40<1:01:52]
+Profiling: 1,064/11,457 |[32m▉         [0m|   9% [06:26<1:03:29]
+Profiling: 1,064/11,457 |[32m▉         [0m|   9% [06:26<1:03:29]
+Profiling: 1,188/11,457 |[32m█         [0m|  10% [07:20<1:06:29]
+Profiling: 1,188/11,457 |[32m█         [0m|  10% [07:20<1:06:29]
+Profiling: 1,307/11,457 |[32m█▏        [0m|  11% [08:02<1:03:53]
+Profiling: 1,307/11,457 |[32m█▏        [0m|  11% [08:02<1:03:53]
+Profiling: 1,422/11,457 |[32m█▏        [0m|  12% [08:46<1:03:24]
+Profiling: 1,422/11,457 |[32m█▏        [0m|  12% [08:46<1:03:24]
+Profiling: 1,538/11,457 |[32m█▎        [0m|  13% [09:32<1:03:32]
+Profiling: 1,538/11,457 |[32m█▎        [0m|  13% [09:32<1:03:32]
+Profiling: 1,655/11,457 |[32m█▍        [0m|  14% [10:12<1:00:42]
+Profiling: 1,655/11,457 |[32m█▍        [0m|  14% [10:12<1:00:42]
+Profiling: 1,770/11,457 |[32m█▌        [0m|  15% [10:44<55:31]  
+Profiling: 1,770/11,457 |[32m█▌        [0m|  15% [10:44<55:31]
+Profiling: 1,887/11,457 |[32m█▋        [0m|  16% [11:18<52:17]
+Profiling: 1,887/11,457 |[32m█▋        [0m|  16% [11:18<52:17]
+Profiling: 2,006/11,457 |[32m█▊        [0m|  18% [11:58<52:02]
+Profiling: 2,006/11,457 |[32m█▊        [0m|  18% [11:58<52:02]
+Profiling: 2,121/11,457 |[32m█▊        [0m|  19% [12:36<51:24]
+Profiling: 2,121/11,457 |[32m█▊        [0m|  19% [12:36<51:24]
+Profiling: 2,243/11,457 |[32m█▉        [0m|  20% [13:22<52:57]
+Profiling: 2,243/11,457 |[32m█▉        [0m|  20% [13:22<52:57]
+Profiling: 2,360/11,457 |[32m██        [0m|  21% [13:54<49:03]
+Profiling: 2,360/11,457 |[32m██        [0m|  21% [13:54<49:03]
+Profiling: 2,478/11,457 |[32m██▏       [0m|  22% [14:44<52:55]
+Profiling: 2,478/11,457 |[32m██▏       [0m|  22% [14:44<52:55]
+Profiling: 2,603/11,457 |[32m██▎       [0m|  23% [15:18<48:25]
+Profiling: 2,603/11,457 |[32m██▎       [0m|  23% [15:18<48:25]
+Profiling: 2,726/11,457 |[32m██▍       [0m|  24% [16:06<50:30]
+Profiling: 2,726/11,457 |[32m██▍       [0m|  24% [16:06<50:30]
+Profiling: 2,841/11,457 |[32m██▍       [0m|  25% [16:40<47:42]
+Profiling: 2,841/11,457 |[32m██▍       [0m|  25% [16:40<47:42]
+Profiling: 2,958/11,457 |[32m██▌       [0m|  26% [17:26<49:37]
+Profiling: 2,958/11,457 |[32m██▌       [0m|  26% [17:26<49:37]
+Profiling: 3,074/11,457 |[32m██▋       [0m|  27% [18:10<50:08]
+Profiling: 3,074/11,457 |[32m██▋       [0m|  27% [18:10<50:08]
+Profiling: 3,196/11,457 |[32m██▊       [0m|  28% [18:52<48:47]
+Profiling: 3,196/11,457 |[32m██▊       [0m|  28% [18:52<48:47]
+Profiling: 3,317/11,457 |[32m██▉       [0m|  29% [19:28<45:44]
+Profiling: 3,317/11,457 |[32m██▉       [0m|  29% [19:28<45:44]
+Profiling: 3,432/11,457 |[32m██▉       [0m|  30% [20:02<43:28]
+Profiling: 3,432/11,457 |[32m██▉       [0m|  30% [20:02<43:28]
+Profiling: 3,555/11,457 |[32m███       [0m|  31% [20:44<43:28]
+Profiling: 3,555/11,457 |[32m███       [0m|  31% [20:44<43:28]
+Profiling: 3,674/11,457 |[32m███▏      [0m|  32% [21:16<40:26]
+Profiling: 3,674/11,457 |[32m███▏      [0m|  32% [21:16<40:26]
+Profiling: 3,794/11,457 |[32m███▎      [0m|  33% [21:54<40:00]
+Profiling: 3,794/11,457 |[32m███▎      [0m|  33% [21:54<40:00]
+Profiling: 3,913/11,457 |[32m███▍      [0m|  34% [22:28<38:21]
+Profiling: 3,913/11,457 |[32m███▍      [0m|  34% [22:28<38:21]
+Profiling: 4,033/11,457 |[32m███▌      [0m|  35% [23:02<36:56]
+Profiling: 4,033/11,457 |[32m███▌      [0m|  35% [23:02<36:56]
+Profiling: 4,150/11,457 |[32m███▌      [0m|  36% [23:38<36:41]
+Profiling: 4,150/11,457 |[32m███▌      [0m|  36% [23:38<36:41]
+Profiling: 4,265/11,457 |[32m███▋      [0m|  37% [24:14<36:31]
+Profiling: 4,265/11,457 |[32m███▋      [0m|  37% [24:14<36:31]
+Profiling: 4,384/11,457 |[32m███▊      [0m|  38% [24:56<37:38]
+Profiling: 4,384/11,457 |[32m███▊      [0m|  38% [24:56<37:38]
+Profiling: 4,507/11,457 |[32m███▉      [0m|  39% [25:32<36:02]
+Profiling: 4,507/11,457 |[32m███▉      [0m|  39% [25:32<36:02]
+Profiling: 4,626/11,457 |[32m████      [0m|  40% [26:04<33:58]
+Profiling: 4,626/11,457 |[32m████      [0m|  40% [26:04<33:58]
+Profiling: 4,745/11,457 |[32m████▏     [0m|  41% [26:44<34:39]
+Profiling: 4,745/11,457 |[32m████▏     [0m|  41% [26:44<34:39]
+Profiling: 4,866/11,457 |[32m████▏     [0m|  42% [27:20<33:37]
+Profiling: 4,866/11,457 |[32m████▏     [0m|  42% [27:20<33:37]
+Profiling: 4,984/11,457 |[32m████▎     [0m|  44% [27:56<32:59]
+Profiling: 4,984/11,457 |[32m████▎     [0m|  44% [27:56<32:59]
+Profiling: 5,105/11,457 |[32m████▍     [0m|  45% [28:34<32:38]
+Profiling: 5,105/11,457 |[32m████▍     [0m|  45% [28:34<32:38]
+Profiling: 5,220/11,457 |[32m████▌     [0m|  46% [29:08<31:39]
+Profiling: 5,220/11,457 |[32m████▌     [0m|  46% [29:08<31:39]
+Profiling: 5,340/11,457 |[32m████▋     [0m|  47% [29:44<30:54]
+Profiling: 5,340/11,457 |[32m████▋     [0m|  47% [29:44<30:54]
+Profiling: 5,461/11,457 |[32m████▊     [0m|  48% [30:16<29:07]
+Profiling: 5,461/11,457 |[32m████▊     [0m|  48% [30:16<29:07]
+Profiling: 5,581/11,457 |[32m████▊     [0m|  49% [30:50<28:18]
+Profiling: 5,581/11,457 |[32m████▊     [0m|  49% [30:50<28:18]
+Profiling: 5,697/11,457 |[32m████▉     [0m|  50% [31:26<28:20]
+Profiling: 5,697/11,457 |[32m████▉     [0m|  50% [31:26<28:20]
+Profiling: 5,812/11,457 |[32m█████     [0m|  51% [32:04<28:45]
+Profiling: 5,812/11,457 |[32m█████     [0m|  51% [32:04<28:45]
+Profiling: 5,934/11,457 |[32m█████▏    [0m|  52% [32:46<29:13]
+Profiling: 5,934/11,457 |[32m█████▏    [0m|  52% [32:46<29:13]
+Profiling: 6,049/11,457 |[32m█████▎    [0m|  53% [33:20<28:02]
+Profiling: 6,049/11,457 |[32m█████▎    [0m|  53% [33:20<28:02]
+Profiling: 6,166/11,457 |[32m█████▍    [0m|  54% [33:58<27:47]
+Profiling: 6,166/11,457 |[32m█████▍    [0m|  54% [33:58<27:47]
+Profiling: 6,284/11,457 |[32m█████▍    [0m|  55% [34:30<26:02]
+Profiling: 6,284/11,457 |[32m█████▍    [0m|  55% [34:30<26:02]
+Profiling: 6,399/11,457 |[32m█████▌    [0m|  56% [35:02<24:52]
+Profiling: 6,399/11,457 |[32m█████▌    [0m|  56% [35:02<24:52]
+Profiling: 6,514/11,457 |[32m█████▋    [0m|  57% [35:36<24:19]
+Profiling: 6,514/11,457 |[32m█████▋    [0m|  57% [35:36<24:19]
+Profiling: 6,636/11,457 |[32m█████▊    [0m|  58% [36:12<23:43]
+Profiling: 6,636/11,457 |[32m█████▊    [0m|  58% [36:12<23:43]
+Profiling: 6,753/11,457 |[32m█████▉    [0m|  59% [36:48<23:26]
+Profiling: 6,753/11,457 |[32m█████▉    [0m|  59% [36:48<23:26]
+Profiling: 6,874/11,457 |[32m█████▉    [0m|  60% [37:18<21:38]
+Profiling: 6,874/11,457 |[32m█████▉    [0m|  60% [37:18<21:38]
+Profiling: 6,990/11,457 |[32m██████    [0m|  61% [37:58<22:26]
+Profiling: 6,990/11,457 |[32m██████    [0m|  61% [37:58<22:26]
+Profiling: 7,111/11,457 |[32m██████▏   [0m|  62% [38:26<20:17]
+Profiling: 7,111/11,457 |[32m██████▏   [0m|  62% [38:26<20:17]
+Profiling: 7,227/11,457 |[32m██████▎   [0m|  63% [39:02<20:22]
+Profiling: 7,227/11,457 |[32m██████▎   [0m|  63% [39:02<20:22]
+Profiling: 7,342/11,457 |[32m██████▍   [0m|  64% [39:36<19:57]
+Profiling: 7,342/11,457 |[32m██████▍   [0m|  64% [39:36<19:57]
+Profiling: 7,465/11,457 |[32m██████▌   [0m|  65% [40:06<18:23]
+Profiling: 7,465/11,457 |[32m██████▌   [0m|  65% [40:06<18:23]
+Profiling: 7,580/11,457 |[32m██████▌   [0m|  66% [40:36<17:33]
+Profiling: 7,580/11,457 |[32m██████▌   [0m|  66% [40:36<17:33]
+Profiling: 7,695/11,457 |[32m██████▋   [0m|  67% [41:16<18:27]
+Profiling: 7,695/11,457 |[32m██████▋   [0m|  67% [41:16<18:27]
+Profiling: 7,815/11,457 |[32m██████▊   [0m|  68% [41:46<17:02]
+Profiling: 7,815/11,457 |[32m██████▊   [0m|  68% [41:46<17:02]
+Profiling: 7,937/11,457 |[32m██████▉   [0m|  69% [42:16<15:50]
+Profiling: 7,937/11,457 |[32m██████▉   [0m|  69% [42:16<15:50]
+Profiling: 8,055/11,457 |[32m███████   [0m|  70% [42:56<16:28]
+Profiling: 8,055/11,457 |[32m███████   [0m|  70% [42:56<16:28]
+Profiling: 8,170/11,457 |[32m███████▏  [0m|  71% [43:34<16:33]
+Profiling: 8,170/11,457 |[32m███████▏  [0m|  71% [43:34<16:33]
+Profiling: 8,296/11,457 |[32m███████▏  [0m|  72% [44:04<14:51]
+Profiling: 8,296/11,457 |[32m███████▏  [0m|  72% [44:04<14:51]
+Profiling: 8,412/11,457 |[32m███████▎  [0m|  73% [44:38<14:28]
+Profiling: 8,412/11,457 |[32m███████▎  [0m|  73% [44:38<14:28]
+Profiling: 8,533/11,457 |[32m███████▍  [0m|  74% [45:14<14:05]
+Profiling: 8,533/11,457 |[32m███████▍  [0m|  74% [45:14<14:05]
+Profiling: 8,652/11,457 |[32m███████▌  [0m|  76% [45:48<13:28]
+Profiling: 8,652/11,457 |[32m███████▌  [0m|  76% [45:48<13:28]
+Profiling: 8,769/11,457 |[32m███████▋  [0m|  77% [46:20<12:42]
+Profiling: 8,769/11,457 |[32m███████▋  [0m|  77% [46:20<12:42]
+Profiling: 8,888/11,457 |[32m███████▊  [0m|  78% [46:58<12:36]
+Profiling: 8,888/11,457 |[32m███████▊  [0m|  78% [46:58<12:36]
+Profiling: 9,008/11,457 |[32m███████▊  [0m|  79% [47:26<11:15]
+Profiling: 9,008/11,457 |[32m███████▊  [0m|  79% [47:26<11:15]
+Profiling: 9,124/11,457 |[32m███████▉  [0m|  80% [48:02<11:07]
+Profiling: 9,124/11,457 |[32m███████▉  [0m|  80% [48:02<11:07]
+Profiling: 9,239/11,457 |[32m████████  [0m|  81% [48:36<10:40]
+Profiling: 9,239/11,457 |[32m████████  [0m|  81% [48:36<10:40]
+Profiling: 9,360/11,457 |[32m████████▏ [0m|  82% [49:08<09:50]
+Profiling: 9,360/11,457 |[32m████████▏ [0m|  82% [49:08<09:50]
+Profiling: 9,480/11,457 |[32m████████▎ [0m|  83% [49:42<09:17]
+Profiling: 9,480/11,457 |[32m████████▎ [0m|  83% [49:42<09:17]
+Profiling: 9,600/11,457 |[32m████████▍ [0m|  84% [50:16<08:44]
+Profiling: 9,600/11,457 |[32m████████▍ [0m|  84% [50:16<08:44]
+Profiling: 9,716/11,457 |[32m████████▍ [0m|  85% [50:48<08:08]
+Profiling: 9,716/11,457 |[32m████████▍ [0m|  85% [50:48<08:08]
+Profiling: 9,831/11,457 |[32m████████▌ [0m|  86% [51:22<07:43]
+Profiling: 9,831/11,457 |[32m████████▌ [0m|  86% [51:22<07:43]
+Profiling: 9,946/11,457 |[32m████████▋ [0m|  87% [51:50<06:52]
+Profiling: 9,946/11,457 |[32m████████▋ [0m|  87% [51:50<06:52]
+Profiling: 10,066/11,457 |[32m████████▊ [0m|  88% [52:24<06:23]
+Profiling: 10,066/11,457 |[32m████████▊ [0m|  88% [52:24<06:23]
+Profiling: 10,183/11,457 |[32m████████▉ [0m|  89% [52:56<05:50]
+Profiling: 10,183/11,457 |[32m████████▉ [0m|  89% [52:56<05:50]
+Profiling: 10,298/11,457 |[32m████████▉ [0m|  90% [53:26<05:14]
+Profiling: 10,298/11,457 |[32m████████▉ [0m|  90% [53:26<05:14]
+Profiling: 10,421/11,457 |[32m█████████ [0m|  91% [54:02<04:47]
+Profiling: 10,421/11,457 |[32m█████████ [0m|  91% [54:02<04:47]
+Profiling: 10,537/11,457 |[32m█████████▏[0m|  92% [54:38<04:24]
+Profiling: 10,537/11,457 |[32m█████████▏[0m|  92% [54:38<04:24]
+Profiling: 10,656/11,457 |[32m█████████▎[0m|  93% [55:12<03:49]
+Profiling: 10,656/11,457 |[32m█████████▎[0m|  93% [55:12<03:49]
+Profiling: 10,772/11,457 |[32m█████████▍[0m|  94% [55:46<03:17]
+Profiling: 10,772/11,457 |[32m█████████▍[0m|  94% [55:46<03:17]
+Profiling: 10,887/11,457 |[32m█████████▌[0m|  95% [56:16<02:39]
+Profiling: 10,887/11,457 |[32m█████████▌[0m|  95% [56:16<02:39]
+Profiling: 11,004/11,457 |[32m█████████▌[0m|  96% [56:50<02:08]
+Profiling: 11,004/11,457 |[32m█████████▌[0m|  96% [56:50<02:08]
+Profiling: 11,123/11,457 |[32m█████████▋[0m|  97% [57:28<01:38]
+Profiling: 11,123/11,457 |[32m█████████▋[0m|  97% [57:28<01:38]
+Profiling: 11,242/11,457 |[32m█████████▊[0m|  98% [57:56<00:59]
+Profiling: 11,242/11,457 |[32m█████████▊[0m|  98% [57:56<00:59]
+Profiling: 11,358/11,457 |[32m█████████▉[0m|  99% [58:34<00:28]
+Profiling: 11,358/11,457 |[32m█████████▉[0m|  99% [58:34<00:28]02:15:06.923 NOTICE   Phase profiling sending complete | sent=11,457, completed=11,433, in_flight=24 | sessions: sent=11,457, completed=11,433 (runner.py:608)
+02:15:06.924 INFO     Sent 11,457 requests. Waiting for all to complete... (records_manager.py:534)
+02:15:17.006 NOTICE   Phase profiling complete | completed=11,457, cancelled=0, errors=0 | sessions: completed=11,457, cancelled=0 | elapsed=3547.08s (runner.py:686)
+02:15:17.006 NOTICE   All credits completed (phase_orchestrator.py:180)
+02:15:17.006 INFO     Received credits complete from 'timing_manager' (system_controller.py:422)
+02:15:17.007 INFO     Received CREDIT_PHASE_COMPLETE message, Phase complete: PhaseRecordsStats(phase=CreditPhase.PROFILING, start_ns=1786670169923840257, sent_end_ns=1786673706923312678, requests_end_ns=1786673717006240718, total_expected_requests=11457, expected_duration_sec=None, expected_num_sessions=None, expected_grace_period_sec=None, final_requests_sent=None, final_requests_completed=11457, final_requests_cancelled=0, final_request_errors=0, final_sent_sessions=None, final_completed_sessions=None, final_cancelled_sessions=None, timeout_triggered=False, grace_period_timeout_triggered=False, was_cancelled=False, records_end_ns=None, success_records=11255, error_records=201) (records_manager.py:560)
+02:15:17.007 NOTICE   All requests have completed, please wait for the results to be processed (currently 11,456 of 11,457 records processed)... (records_manager.py:565)
+02:15:17.007 INFO     All credits complete, please wait for the results to be processed... (records_manager.py:589)
+
+Processing Records: 0/11,457 |[34m          [0m|   0% [00:00<?]02:15:17.012 INFO     Processed 11256 valid requests and 201 errors (11457 total). (records_manager.py:296)
+02:15:17.012 INFO     Received all records, processing now... (records_manager.py:302)
+02:15:17.013 INFO     Server Metrics: Profiling complete, capturing final metrics... (manager.py:250)
+02:15:17.014 INFO     Waiting 2.0s for server metrics flush period... (records_manager.py:352)
+
+Processing Records: 11,457/11,457 |[34m██████████[0m| 100% [00:00<00:00]
+Processing Records: 11,457/11,457 |[34m██████████[0m| 100% [00:00<00:00]02:15:19.006 INFO     Processing records results... (records_manager.py:777)
+02:15:19.028 INFO     Waiting for server metrics results... (system_controller.py:779)
+02:15:19.352 INFO     _finalize_and_process_results completed (records_manager.py:359)
+02:15:19.356 INFO     All results received, initiating shutdown (system_controller.py:774)
+02:15:19.967 INFO     Exporting all records (exporter_manager.py:62)
+02:15:20.031 INFO     Exporting console data (exporter_manager.py:134)
+
+
+                                   NVIDIA AIPerf | Error Summary                                    
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Code ┃                        Type ┃ Message                                             ┃ Count ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│  N/A │ InvalidInferenceResultError │ InvalidInferenceResultError('Invalid inference      │   201 │
+│      │                             │ result: No responses with actual content were       │       │
+│      │                             │ received from the server (only usage/metadata,      │       │
+│      │                             │ null/empty data, or [DONE] markers)')               │       │
+└──────┴─────────────────────────────┴─────────────────────────────────────────────────────┴───────┘
+
+
+                                    NVIDIA AIPerf | LLM Metrics                                     
+┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┓
+┃            Metric ┃       avg ┃    min ┃       max ┃       p99 ┃       p90 ┃      p50 ┃      std ┃
+┡━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━┩
+│     Time to First │  1,441.35 │  45.46 │ 30,803.46 │ 12,296.34 │  3,183.81 │   715.49 │ 2,265.99 │
+│        Token (ms) │           │        │           │           │           │          │          │
+│    Time to Second │     19.49 │   0.00 │  1,005.23 │    145.43 │     45.48 │    10.88 │    33.99 │
+│        Token (ms) │           │        │           │           │           │          │          │
+│     Time to First │  1,441.35 │  45.46 │ 30,803.46 │ 12,296.34 │  3,183.81 │   715.49 │ 2,265.99 │
+│ Output Token (ms) │           │        │           │           │           │          │          │
+│   Request Latency │  5,131.33 │  77.27 │ 41,515.01 │ 18,446.26 │  8,915.68 │ 4,826.17 │ 3,605.49 │
+│              (ms) │           │        │           │           │           │          │          │
+│       Inter Token │     10.99 │   0.00 │    151.42 │     15.57 │     11.95 │    10.78 │     3.03 │
+│      Latency (ms) │           │        │           │           │           │          │          │
+│      Output Token │     92.98 │   6.60 │    601.45 │    123.33 │    102.30 │    92.73 │    12.19 │
+│    Throughput Per │           │        │           │           │           │          │          │
+│              User │           │        │           │           │           │          │          │
+│ (tokens/sec/user) │           │        │           │           │           │          │          │
+│  E2E Output Token │     65.50 │   0.07 │    131.04 │    101.32 │     92.22 │    72.60 │    25.81 │
+│        Throughput │           │        │           │           │           │          │          │
+│ (tokens/sec/user) │           │        │           │           │           │          │          │
+│   Output Sequence │    338.63 │   1.00 │  2,000.00 │  1,049.80 │    593.50 │   347.00 │   240.77 │
+│   Length (tokens) │           │        │           │           │           │          │          │
+│    Input Sequence │  9,265.30 │ 899.00 │ 40,914.00 │ 36,381.95 │ 22,253.00 │ 6,364.00 │ 8,685.30 │
+│   Length (tokens) │           │        │           │           │           │          │          │
+│      Output Token │  1,074.59 │    N/A │       N/A │       N/A │       N/A │      N/A │      N/A │
+│        Throughput │           │        │           │           │           │          │          │
+│      (tokens/sec) │           │        │           │           │           │          │          │
+│           Request │      3.17 │    N/A │       N/A │       N/A │       N/A │      N/A │      N/A │
+│        Throughput │           │        │           │           │           │          │          │
+│    (requests/sec) │           │        │           │           │           │          │          │
+│           Goodput │      2.53 │    N/A │       N/A │       N/A │       N/A │      N/A │      N/A │
+│    (requests/sec) │           │        │           │           │           │          │          │
+│     Request Count │ 11,256.00 │    N/A │       N/A │       N/A │       N/A │      N/A │      N/A │
+│        (requests) │           │        │           │           │           │          │          │
+└───────────────────┴───────────┴────────┴───────────┴───────────┴───────────┴──────────┴──────────┘
+                                 NVIDIA AIPerf | LLM Metrics: Usage                                 
+┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┓
+┃        Metric ┃           avg ┃    min ┃       max ┃       p99 ┃       p90 ┃      p50 ┃      std ┃
+┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━┩
+│  Usage Prompt │      9,265.30 │ 899.00 │ 40,914.00 │ 36,381.95 │ 22,253.00 │ 6,364.00 │ 8,685.30 │
+│        Tokens │               │        │           │           │           │          │          │
+│      (tokens) │               │        │           │           │           │          │          │
+│  Usage Prompt │        687.06 │ 512.00 │ 35,840.00 │  6,144.00 │    512.00 │   512.00 │ 1,748.99 │
+│    Cache Read │               │        │           │           │           │          │          │
+│        Tokens │               │        │           │           │           │          │          │
+│      (tokens) │               │        │           │           │           │          │          │
+│         Usage │        338.63 │   1.00 │  2,000.00 │  1,049.80 │    593.50 │   347.00 │   240.77 │
+│    Completion │               │        │           │           │           │          │          │
+│        Tokens │               │        │           │           │           │          │          │
+│      (tokens) │               │        │           │           │           │          │          │
+│   Usage Total │      9,603.93 │ 903.00 │ 40,946.00 │ 36,717.40 │ 22,655.00 │ 6,726.50 │ 8,703.05 │
+│        Tokens │               │        │           │           │           │          │          │
+│      (tokens) │               │        │           │           │           │          │          │
+│   Total Usage │ 104,290,211.… │    N/A │       N/A │       N/A │       N/A │      N/A │      N/A │
+│ Prompt Tokens │               │        │           │           │           │          │          │
+│      (tokens) │               │        │           │           │           │          │          │
+│   Total Usage │  7,732,224.00 │    N/A │       N/A │       N/A │       N/A │      N/A │      N/A │
+│  Prompt Cache │               │        │           │           │           │          │          │
+│   Read Tokens │               │        │           │           │           │          │          │
+│      (tokens) │               │        │           │           │           │          │          │
+│ Overall Usage │          7.41 │    N/A │       N/A │       N/A │       N/A │      N/A │      N/A │
+│  Prompt Cache │               │        │           │           │           │          │          │
+│        Read % │               │        │           │           │           │          │          │
+│           (%) │               │        │           │           │           │          │          │
+│   Total Usage │  3,811,613.00 │    N/A │       N/A │       N/A │       N/A │      N/A │      N/A │
+│    Completion │               │        │           │           │           │          │          │
+│        Tokens │               │        │           │           │           │          │          │
+│      (tokens) │               │        │           │           │           │          │          │
+│   Total Usage │ 108,101,824.… │    N/A │       N/A │       N/A │       N/A │      N/A │      N/A │
+│  Total Tokens │               │        │           │           │           │          │          │
+│      (tokens) │               │        │           │           │           │          │          │
+└───────────────┴───────────────┴────────┴───────────┴───────────┴───────────┴──────────┴──────────┘
+
+CLI Command: aiperf profile --model 'Qwen/Qwen3-32B-FP8' --tokenizer 'Qwen/Qwen3-32B-FP8' 
+--tokenizer-revision 'aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df' --input-file 
+'/perf-cache/traces/conversation_trace.maxctx40960.jsonl' --custom-dataset-type 'mooncake_trace' 
+--fixed-schedule --url 'http://qwen3-32b-fp8-vllm-disagg-kv-offload-frontend:8000' --streaming 
+--extra-inputs 'ignore_eos:true' --use-server-token-count --no-gpu-telemetry --artifact-dir 
+'/perf-cache/artifacts/05-disagg-routing-kv-aware-offloading/2026-08-14T01-15-51Z/aiperf' --goodput 
+'time_to_first_token:2000 inter_token_latency:25' --ui 'simple'
+Benchmark Duration: 3547.06 sec
+CSV Export: 
+/perf-cache/artifacts/05-disagg-routing-kv-aware-offloading/2026-08-14T01-15-51Z/aiperf/profile_expo
+rt_aiperf.csv
+JSON Export: 
+/perf-cache/artifacts/05-disagg-routing-kv-aware-offloading/2026-08-14T01-15-51Z/aiperf/profile_expo
+rt_aiperf.json
+Server Metrics CSV Export: 
+/perf-cache/artifacts/05-disagg-routing-kv-aware-offloading/2026-08-14T01-15-51Z/aiperf/server_metri
+cs_export.csv
+Server Metrics JSON Export: 
+/perf-cache/artifacts/05-disagg-routing-kv-aware-offloading/2026-08-14T01-15-51Z/aiperf/server_metri
+cs_export.json
+Log File: 
+/perf-cache/artifacts/05-disagg-routing-kv-aware-offloading/2026-08-14T01-15-51Z/aiperf/logs/aiperf.
+log
+
