@@ -1,0 +1,43 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: qwen36-35b-a3b-sglang-worker
+  namespace: qwen32-bench
+spec:
+  scaleTargetRef:
+    apiVersion: nvidia.com/v1beta1
+    kind: DynamoGraphDeploymentScalingAdapter
+    name: qwen36-35b-a3b-fp8-sglang-agg-tp2-sglangworker
+  minReplicaCount: 1
+  maxReplicaCount: 8
+  pollingInterval: 15
+  advanced:
+    restoreToOriginalReplicaCount: true
+    horizontalPodAutoscalerConfig:
+      behavior:
+        scaleUp:
+          stabilizationWindowSeconds: 0
+          selectPolicy: Max
+          policies:
+            - type: Pods
+              value: 2
+              periodSeconds: 30
+        scaleDown:
+          stabilizationWindowSeconds: 300
+          selectPolicy: Min
+          policies:
+            - type: Pods
+              value: 1
+              periodSeconds: 60
+  triggers:
+    - type: prometheus
+      metricType: AverageValue
+      metadata:
+        serverAddress: http://monitoring-kube-prometheus-prometheus.monitoring.svc:9090
+        query: |
+          sum(dynamo_frontend_active_requests{
+            namespace="qwen32-bench",
+            pod=~"qwen36-35b-a3b-fp8-sglang-agg-tp2.*frontend.*"
+          })
+        threshold: "16"
+        ignoreNullValues: "false"

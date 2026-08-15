@@ -1078,3 +1078,145 @@ The repository does not currently contain the raw metric snapshots behind the
 1 TB, 1.5 GB/s, under-60-ms, 95%, and 99% observations. I need to retain those
 files under the experiment directory before treating these as final published
 numbers.
+
+## Qwen3.6 aggregated KEDA autoscaling — August 15–16, 2026
+
+Today I brought up Prometheus-based KEDA autoscaling for the aggregated
+Qwen3.6-35B-A3B-FP8 SGLang TP=2 deployment. The frontend remains a single
+CPU-only replica. Each aggregated worker performs both prefill and decode and
+requests two H100 GPUs.
+
+### Prometheus and KEDA failure investigation
+
+The initial `ScaledObject` was accepted by KEDA and its HPA could read the
+DGDSA scale subresource, but the external metric stayed `<unknown>`. KEDA
+repeatedly reported:
+
+```text
+prometheus metrics 'prometheus' target may be lost, the result is empty
+```
+
+This was a metrics-discovery failure rather than a DGDSA or HPA failure. The
+important observations were:
+
+- the `DynamoGraphDeploymentScalingAdapter` existed and reported one current
+  worker;
+- KEDA created `keda-hpa-qwen36-35b-a3b-sglang-worker` successfully;
+- Prometheus returned no `dynamo_frontend_active_requests` series at all;
+- `qwen32-bench` contained no `PodMonitor`;
+- the monitoring Prometheus selected PodMonitors carrying
+  `release=monitoring`, while its empty namespace selector already permitted
+  cross-namespace discovery.
+
+The fix was to create one frontend-only PodMonitor in `qwen32-bench`, label it
+`release: monitoring`, select the DGD's frontend Pod labels, and scrape
+`/metrics` on declared container port 8000. The Prometheus resource itself did
+not need to be broadened.
+
+The original PromQL also assumed that the frontend-local active-request gauge
+carried `dynamo_namespace`. The retained series instead had Prometheus target
+labels such as `namespace` and `pod`, so the scaler and dashboard query now
+use:
+
+```promql
+sum(
+  dynamo_frontend_active_requests{
+    namespace="qwen32-bench",
+    pod=~"qwen36-35b-a3b-fp8-sglang-agg-tp2.*frontend.*"
+  }
+)
+```
+
+The ScaledObject target was also changed from the deprecated
+`nvidia.com/v1alpha1` DGDSA API to the API served by this cluster,
+`nvidia.com/v1beta1`. The corrected checked-in scaler and complete discovery
+procedure are under
+[`models/qwen3.6-35B-A3B/sglang/agg-autoscaling/`](models/qwen3.6-35B-A3B/sglang/agg-autoscaling/README.md).
+
+### Successful autoscaling evidence
+
+Once Prometheus retained the frontend metric, the HPA stopped reporting
+`<unknown>` and KEDA scaled the worker DGDSA under load. Observed HPA samples
+were:
+
+```text
+85334m / 16 average at 3 replicas
+51200m / 16 average at 5 replicas
+36572m / 16 average at 7 replicas
+```
+
+The `m` suffix is Kubernetes milli-units, so these values mean approximately
+85.334, 51.2, and 36.572 active requests per current worker. Each sample is
+consistent with roughly 256 global active requests divided by the current
+replica count. This proves the intended `AverageValue` behavior: desired
+workers are calculated from approximately
+`ceil(global active requests / 16)`, subject to the configured maximum.
+
+The Grafana frontend panel had the same stale `dynamo_namespace` selector and
+therefore also returned no data. Its replacement query is the same working
+`namespace`/`pod` sum shown above. A second optional panel divides that global
+sum by the HPA's current replica count so its value can be compared directly
+with the per-worker threshold of 16. Dashboard display against the corrected
+Prometheus data source still needs a final saved-panel confirmation.
+
+### GPU capacity ceiling exposed by the scale test
+
+The traffic signal worked, but KEDA requested more workers than the scheduler
+could place. Eight is a total worker count, not eight workers in addition to
+the seed worker:
+
+```text
+8 workers total × 2 GPUs per TP=2 worker = 16 GPUs
+```
+
+That maximum is possible only when all 16 allocatable GPUs are free and
+dedicated to this deployment. It leaves no GPU headroom. During the test, two
+workers were running or starting while six were Pending. KAI Scheduler
+reported that neither node had enough GPU resources for another two-GPU Pod.
+KEDA is demand-aware but not GPU-capacity-aware; it can update the DGDSA to
+eight even when Kubernetes cannot schedule eight workers.
+
+The operational rule is therefore:
+
+```text
+maxReplicaCount = guaranteed GPU budget for this deployment / 2
+```
+
+For the capacity visible during this run, two workers were the immediately
+schedulable ceiling. A maximum of eight should be used only for an exclusive
+16-GPU benchmark after all competing GPU workloads are removed. Seven is a
+safer exclusive-cluster ceiling when one two-GPU pair should remain available
+as rollout or recovery headroom.
+
+### Cleanup finding and remaining work
+
+The first cleanup path removed the KEDA ScaledObject and restored the original
+worker count; it did not delete the underlying DGD. That behavior is useful
+when removing autoscaling while retaining service, but it is not a full GPU
+cleanup.
+
+The later `nvidia-smi` capture did not show an abstract Kubernetes reservation.
+It showed live processes named `VLLM::Worker_DP*_EP*`, each retaining roughly
+66 GB of VRAM while idle. Those process names do not match this SGLang recipe
+and likely belong to another or older VLLM deployment. The two terminal panes
+also displayed identical PIDs, so they may have been observing the same node
+rather than proving identical occupancy on both nodes.
+
+Before removing anything at the node runtime level, the remaining work is:
+
+1. list every GPU-requesting Pod across all namespaces, including its node,
+   phase, GPU request, and image;
+2. map the VLLM processes to their container cgroups and Kubernetes Pod/DGD
+   ownership;
+3. delete the confirmed stale top-level DGD so its controllers do not recreate
+   individual Pods;
+4. wait for all graph-labeled Pods to disappear and verify GPU release with
+   both Kubernetes allocation data and `nvidia-smi`;
+5. use `crictl stop`/`rm` only if a process is proven to belong to an orphaned
+   container with no live Kubernetes Pod.
+
+Directly killing the visible PIDs is intentionally excluded: a live
+controller may restart them, and ownership has not yet been established. The
+next session should finish that ownership mapping, confirm the final Grafana
+panel, and then set `maxReplicaCount` from the GPU budget actually reserved for
+this experiment.

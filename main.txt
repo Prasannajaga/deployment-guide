@@ -26,3 +26,7 @@ BLOGS UPCOMING:
 1. TP, DP & EP write detailed comparison please
 
 2. write about how model-cache works at production
+
+3. write about the kv aware vs kv aware + offloading 
+
+4. KEDA AUtoscaler

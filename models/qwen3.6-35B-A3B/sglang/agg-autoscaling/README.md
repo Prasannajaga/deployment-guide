@@ -1,12 +1,23 @@
-# SGLang aggregated TP-only baseline
+# SGLang aggregated KEDA autoscaling
 
-Eight independent SGLang workers run at TP=2. Each worker performs both
-prefill and decode, so the deployment uses all 16 H100 GPUs without data
-parallelism, expert parallelism, KV-aware routing, KV offloading, or NIXL.
+The deployment starts with one aggregated SGLang worker at TP=2. KEDA can
+scale the worker service from one to eight replicas using Dynamo frontend
+active-request count, while the frontend remains at one replica. Each worker
+performs both prefill and decode and consumes two H100 GPUs. The topology does
+not use data parallelism, expert parallelism, KV-aware routing, KV offloading,
+or NIXL.
+
+The frontend retains enough CPU and memory to remain stable during load. Do
+not deliberately throttle it to manufacture queue depth: that can reset
+clients and measures frontend starvation rather than worker demand. The KEDA
+trigger uses `dynamo_frontend_active_requests`, Dynamo 1.3's gauge for requests
+from frontend entry through completion.
 
 This is the aggregated comparison point for the matching
-[disaggregated recipe](../disagg/README.md). Run only one 16-GPU recipe at a
-time.
+[disaggregated recipe](../disagg/README.md). The complete KEDA, Prometheus,
+Grafana, load-test, and live Pod workflow is in
+[autoscaling.md](autoscaling.md). Do not run another GPU experiment while
+allowing this recipe to scale to its eight-worker maximum.
 
 ## Variables
 
@@ -15,7 +26,7 @@ Set these variables in the shell used to create and operate the deployment:
 ```bash
 export NAMESPACE=qwen32-bench
 export RECIPE_ROOT=/ephemeral/shared/qwen3.6-35b-a3b
-export EXP_DIR="${RECIPE_ROOT}/sglang/agg"
+export EXP_DIR="${RECIPE_ROOT}/sglang/agg-autoscaling"
 export MODEL_CACHE_DIR="${RECIPE_ROOT}/model-cache"
 export DEPLOYMENT=qwen36-35b-a3b-fp8-sglang-agg-tp2
 export GRAPH_LABEL="nvidia.com/dynamo-graph-deployment-name=${DEPLOYMENT}"
@@ -34,7 +45,10 @@ the commands and manifest labels continue to match.
 
 | File | Purpose |
 |---|---|
-| `deploy.yaml` | Aggregated `DynamoGraphDeployment` manifest |
+| `preflight.yaml` | Isolated one-worker TP=2 compatibility canary |
+| `deploy.yaml` | One-worker `DynamoGraphDeployment` with a worker scaling adapter |
+| `scaledobject.yaml` | KEDA active-request scaler for the worker DGDSA |
+| `autoscaling.md` | KEDA, Prometheus, Grafana, load-test, and live scaling runbook |
 | `../../model-cache/model-download.yaml` | Optional pinned model-cache population Job |
 
 ## Prerequisites
@@ -44,6 +58,7 @@ manifest:
 
 ```bash
 kubectl get crd dynamographdeployments.nvidia.com
+kubectl get crd dynamographdeploymentscalingadapters.nvidia.com
 kubectl get pvc model-cache -n "$NAMESPACE"
 kubectl get nodes \
   -o custom-columns='NODE:.metadata.name,GPU:.status.allocatable.nvidia\.com/gpu'
@@ -52,13 +67,15 @@ kubectl get dynamographdeployments.nvidia.com -n "$NAMESPACE"
 
 Continue only when:
 
-- the Dynamo CRD exists;
+- the Dynamo deployment and scaling-adapter CRDs exist;
 - `model-cache` is `Bound` and is accessible from both GPU nodes;
-- the two nodes expose 16 available H100 GPUs in total;
-- no other 16-GPU experiment is running.
+- at least two H100 GPUs are available for the initial worker;
+- up to 16 H100 GPUs are available if KEDA may reach eight workers;
+- no other experiment competes for the GPU capacity KEDA is allowed to use.
 
 This aggregated topology does not request RDMA resources and does not require
-the `qwen-roce` NetworkAttachmentDefinition.
+the `qwen-roce` NetworkAttachmentDefinition. Complete this README first, then
+continue with [autoscaling.md](autoscaling.md) to install and configure KEDA.
 
 ## Create model-download.yaml
 
@@ -176,6 +193,8 @@ spec:
           memory: 64Gi
     SglangWorker:
       componentType: worker
+      scalingAdapter:
+        enabled: true
       volumeMounts:
         - name: model-cache
           mountPoint: /opt/models
@@ -211,7 +230,7 @@ spec:
               value: /opt/models
             - name: PYTHONHASHSEED
               value: "0"
-      replicas: 8
+      replicas: 1
       resources:
         limits:
           gpu: "2"
@@ -239,9 +258,19 @@ kubectl get pods -n "$NAMESPACE" \
   -o wide -w
 ```
 
-Expected result: one frontend and eight worker Pods. Every worker requests two
-GPUs, so a fully ready deployment consumes all 16 GPUs and places four workers
-on each 8-GPU node.
+Expected initial result: one frontend and one worker Pod. The worker requests
+two GPUs. `replicas: 1` is both the deployment seed and the safe minimum;
+[autoscaling.md](autoscaling.md) configures KEDA to retain that minimum while
+scaling as high as eight workers.
+
+The frontend should report an eight-CPU request with no CPU limit. Confirm the
+applied resources before generating load:
+
+```bash
+kubectl get pods -n "$NAMESPACE" \
+  -l "$GRAPH_LABEL,nvidia.com/dynamo-component-type=frontend" \
+  -o custom-columns='POD:.metadata.name,CPU_REQUEST:.spec.containers[*].resources.requests.cpu,CPU_LIMIT:.spec.containers[*].resources.limits.cpu,MEMORY_REQUEST:.spec.containers[*].resources.requests.memory,MEMORY_LIMIT:.spec.containers[*].resources.limits.memory'
+```
 
 In a separate terminal, wait for every deployment Pod to become ready:
 
@@ -281,7 +310,8 @@ kubectl logs -n "$NAMESPACE" -l "$GRAPH_LABEL" \
   --all-containers --prefix --previous --tail=500
 ```
 
-Confirm that all eight workers received two GPUs and that no Pod is restarting:
+Confirm that the initial worker received two GPUs and that no Pod is
+restarting:
 
 ```bash
 kubectl get pods -n "$NAMESPACE" -l "$GRAPH_LABEL" \
@@ -324,13 +354,20 @@ Pass criteria:
 - HTTP request succeeds without a 4xx/5xx response;
 - response model is `Qwen/Qwen3.6-35B-A3B-FP8`;
 - response content is `ready` apart from harmless whitespace or punctuation;
-- all eight workers remain ready with zero restarts.
+- the frontend and initial worker remain ready with zero restarts.
+
+After the smoke test passes, follow [autoscaling.md](autoscaling.md) to apply
+the KEDA `ScaledObject`, create the Grafana panels, generate load, and watch
+worker Pods scale live.
 
 ## Cleanup
 
-Stop the port-forward with `Ctrl-C`, then remove the graph deployment:
+Stop the port-forward with `Ctrl-C`. If KEDA was configured, remove its
+`ScaledObject` before removing the graph deployment:
 
 ```bash
+kubectl delete scaledobject qwen36-35b-a3b-sglang-worker \
+  -n "$NAMESPACE" --ignore-not-found
 kubectl delete dynamographdeployment.nvidia.com "$DEPLOYMENT" \
   -n "$NAMESPACE" --wait=false --ignore-not-found
 ```

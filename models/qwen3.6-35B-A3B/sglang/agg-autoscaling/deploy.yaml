@@ -29,6 +29,8 @@ spec:
           memory: 64Gi
     SglangWorker:
       componentType: worker
+      scalingAdapter:
+        enabled: true
       volumeMounts:
         - name: model-cache
           mountPoint: /opt/models
@@ -64,7 +66,7 @@ spec:
               value: /opt/models
             - name: PYTHONHASHSEED
               value: "0"
-      replicas: 8
+      replicas: 1
       resources:
         limits:
           gpu: "2"
