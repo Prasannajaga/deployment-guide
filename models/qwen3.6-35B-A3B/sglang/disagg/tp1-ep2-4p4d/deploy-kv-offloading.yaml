@@ -68,7 +68,7 @@ spec:
               # Context, page, and memory flags size the GPU KV cache and maximum request window.
               # Parser flags enable Qwen reasoning and tool-call response handling through Dynamo.
               # Disaggregation flags make this the prefill role and transfer live state through NIXL.
-              # Cache reporting exposes reused prompt-token details without CPU KV offload.
+              # Cache flags enable usage reporting and the hybrid-compatible CPU host tier.
               # KV events feed Dynamo's KV-aware router with prefix-cache residency updates.
               # Metrics exposes SGLang/Dynamo Prometheus series on the worker system port.
               exec python3 -m dynamo.sglang \
@@ -91,6 +91,11 @@ spec:
                 --disaggregation-bootstrap-port 30001 \
                 --host 0.0.0.0 \
                 --enable-cache-report \
+                --enable-hierarchical-cache \
+                --hicache-ratio 1.2 \
+                --hicache-write-policy write_through \
+                --hicache-mem-layout page_first_direct \
+                --hicache-io-backend direct \
                 --kv-events-config '{"publisher":"zmq","topic":"kv-events","endpoint":"tcp://*:5557"}' \
                 --enable-metrics
           env: &worker-env

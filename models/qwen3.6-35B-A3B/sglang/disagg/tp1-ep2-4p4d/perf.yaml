@@ -44,6 +44,14 @@ spec:
               prefix_args=()
               length_args=()
               exact_output_args=()
+              warmup_args=()
+
+              if [ "$WARMUP_REQUESTS" -gt 0 ]; then
+                warmup_args=(--warmup-request-count "$WARMUP_REQUESTS")
+              elif [ "$WARMUP_REQUESTS" -lt 0 ]; then
+                echo "WARMUP_REQUESTS must be zero or positive" >&2
+                exit 2
+              fi
 
               case "$WORKLOAD_MODE" in
                 fixed)
@@ -173,6 +181,7 @@ spec:
               jq -n \
                 --arg topology "$TOPOLOGY_NAME" \
                 --arg workload "$WORKLOAD_NAME" \
+                --arg experiment_variant "$EXPERIMENT_VARIANT" \
                 --arg workload_mode "$WORKLOAD_MODE" \
                 --arg prefix_mode "$PREFIX_MODE" \
                 --arg sequence_distribution "$SEQUENCE_DISTRIBUTION" \
@@ -189,6 +198,7 @@ spec:
                 --argjson prefix_groups "$PREFIX_GROUPS" \
                 --argjson prefix_reuse_percent "$PREFIX_REUSE_PERCENT" \
                 '{topology:$topology, workload:$workload,
+                  experiment_variant:$experiment_variant,
                   workload_mode:$workload_mode, prefix_mode:$prefix_mode,
                   sequence_distribution:$sequence_distribution,
                   model:$model, tokenizer:$tokenizer, endpoint:$endpoint,
@@ -232,10 +242,11 @@ spec:
                   --url "$endpoint_url" \
                   --endpoint-type chat \
                   --streaming \
+                  --use-server-token-count \
                   --concurrency "$concurrency" \
                   --benchmark-duration "$BENCHMARK_DURATION" \
                   --benchmark-grace-period "$GRACE_PERIOD" \
-                  --warmup-request-count "$WARMUP_REQUESTS" \
+                  "${warmup_args[@]}" \
                   --request-timeout-seconds "$REQUEST_TIMEOUT" \
                   "${length_args[@]}" \
                   "${exact_output_args[@]}" \
@@ -290,6 +301,8 @@ spec:
               value: tp1-ep2-4p4d
             - name: WORKLOAD_NAME
               value: balanced
+            - name: EXPERIMENT_VARIANT
+              value: unset
             - name: PREFIX_MODE
               value: isolated
             - name: REQUEST_TIMEOUT

@@ -708,7 +708,7 @@ benchmark artifacts prove that the model served requests.
 | Qwen3-235B-A22B-FP8 SGLang P/D | 2 prefill × TP=4 + 2 decode × TP=4 = 16 | Complete NIXL/RoCE recipe prepared; cluster acceptance result not retained |
 | Qwen3.6 vLLM KV-aware P/D TP1 4P4D | 4 prefill + 4 decode = 8 | Deployment, hybrid-cache compatibility gate, and benchmark job prepared; not yet supported by retained pass evidence |
 | Qwen3.6 vLLM KV-aware P/D TP2 2P2D | 2 prefill × TP=2 + 2 decode × TP=2 = 8 | Deployment, hybrid-cache compatibility gate, and benchmark job prepared; not yet supported by retained pass evidence |
-| Qwen3.6 SGLang TP1-attention + EP2 4P4D | 4 prefill × 2 GPUs + 4 decode × 2 GPUs = 16 | New KV-aware recipe and metrics acceptance gate completed; cluster preflight still required |
+| Qwen3.6 SGLang TP1-attention + EP2 4P4D | 4 prefill × 2 GPUs + 4 decode × 2 GPUs = 16 | KV-aware CPU-offload deployment passed a prefill-heavy sweep at concurrency 1–32; matching no-offload A/B run is still pending |
 
 ### DeepSeek-V4-Flash-FP8 H100 capacity probe
 
@@ -910,20 +910,21 @@ counter, and rejects any nonzero failed-transfer counter. A separate metrics
 runbook covers direct endpoint checks, Prometheus target discovery,
 before/after snapshots, and range-query export. YAML parsing, embedded-manifest
 equality, Bash syntax, topology accounting, and observability configuration
-were validated locally. The cluster canary and full benchmark are still the
-next acceptance steps.
+were validated locally. The CPU-offload deployment has now completed the
+prefill-heavy sweep; the matching no-offload run and final A/B plots are still
+the next acceptance steps.
 
 The recipe is under
 [`models/qwen3.6-35B-A3B/sglang/disagg/tp1-ep2-4p4d/`](models/qwen3.6-35B-A3B/sglang/disagg/tp1-ep2-4p4d/README.md),
-with the telemetry procedure in
-[`metrics.md`](models/qwen3.6-35B-A3B/sglang/disagg/tp1-ep2-4p4d/metrics.md).
+with the workload and telemetry procedure in
+[`benchmark.md`](models/qwen3.6-35B-A3B/sglang/disagg/tp1-ep2-4p4d/benchmark.md).
 
 ### Immediate next steps
 
-1. Run the TP1-attention + EP2 four-GPU canary and require positive NIXL
-   transfer telemetry before allocating all 16 GPUs.
-2. If the canary passes, execute the same mixed AIPerf matrix so EP2 can be
-   compared fairly with the retained TP1 and TP2 results.
+1. Preserve the raw before/after NIXL and HiCache snapshots from the completed
+   CPU-offload prefill-heavy run under the experiment directory.
+2. Run the same prefill-heavy matrix without CPU offload, changing only the
+   deployment variant, then generate the A/B plots.
 3. Run and retain explicit acceptance artifacts for Qwen3-235B aggregate and
    disaggregated TP=4 layouts.
 4. Treat the DeepSeek-V4 four-copy TP=4 topology as a capacity experiment; if
@@ -931,3 +932,149 @@ with the telemetry procedure in
    restarting OOM workers.
 5. Keep the vLLM Qwen3.6 results unpublished until the hybrid GDN/NIXL gate
    proves recurrent-state transfer end to end.
+
+
+### Qwen3.6 TP1-attention + EP2 prefill-heavy CPU-offload test
+
+I ran this preset against the CPU-offload deployment:
+
+```bash
+export PRESET=prefill-heavy
+export WORKLOAD_NAME="${VARIANT}-${PRESET}"
+capture_worker_metrics "${PRESET}-before"
+
+kubectl delete job -n "$NAMESPACE" "$PERF_JOB_NAME" --ignore-not-found
+kubectl set env --local -f "$EXP_DIR/perf.yaml" -o yaml \
+  EXPERIMENT_VARIANT="$VARIANT" \
+  WORKLOAD_MODE=fixed WORKLOAD_NAME="$WORKLOAD_NAME" \
+  ISL=32768 OSL=256 PREFIX_MODE=shared \
+  PREFIX_GROUPS=64 PREFIX_REUSE_PERCENT=75 \
+  CONCURRENCIES='1 4 8 16 32' BENCHMARK_DURATION=300 \
+  WARMUP_REQUESTS=16 RANDOM_SEED=42 NUM_DATASET_ENTRIES=4096 \
+  ARTIFACT_ROOT="${RESULT_ROOT}/${VARIANT}" |
+  kubectl apply -n "$NAMESPACE" -f -
+kubectl logs -n "$NAMESPACE" -f "job/$PERF_JOB_NAME"
+kubectl wait -n "$NAMESPACE" --for=condition=Complete \
+  "job/$PERF_JOB_NAME" --timeout=14400s
+
+capture_worker_metrics "${PRESET}-after"
+```
+
+Ran the prefill-heavy experiment at concurrency `1, 4, 8, 16, 32`, with
+300 seconds at every point and 16 warmup requests before every measurement.
+So this was 1,500 seconds of measured load across the full sweep, not one
+single 300-second run.
+
+Each request takes a 32K context window with OSL 256 to keep the decode
+workload small and make this properly prefill heavy. With 75% prefix reuse,
+the 32K input is split like this:
+
+```text
+shared prefix: 32,768 × 75% = 24,576 tokens
+unique part:   32,768 - 24,576 = 8,192 tokens
+output:        256 tokens
+prefix groups: 64
+```
+
+This gives us a large working set: many requests can reuse a long 24K prefix,
+but the 64 different prefix groups can still push older cache pages out of GPU
+memory and into the CPU HiCache tier.
+
+since this is prefill heavy, Dynamo spread different requests across the four
+prefill replicas using KV locality and load. One important correction here:
+it did not split one request into four pieces across all four replicas. Each
+full request was routed to one prefill worker, and that selected worker used
+its own two GPU ranks with `DP=2` and `EP=2`. Across all traffic, the four
+prefill workers fed the four decode workers.
+
+From the live NIXL counters, each prefill worker appeared to handle roughly
+1 TB of cumulative transfer and the graph showed around 1.5 GB/s at sampled
+points. I need to keep these as two different measurements:
+
+- cumulative bytes tell how much moved during the chosen window;
+- GB/s tells how quickly it moved at a point or averaged over a window;
+- the correct average is `(after bytes - before bytes) / elapsed seconds`;
+- 1 TB in one 300-second point is about 3.3 GB/s, while 1 TB across the full
+  five-point 1,500-second sweep is about 0.67 GB/s. So 1.5 GB/s was likely a
+  sampled rate, not the average that produces the 1 TB counter.
+
+even with this sweep, the live graph kept the KV transfer under 60 ms, which
+is nice considering the model is deployed with two GPU ranks per worker and
+expert parallelism across them. This is NIXL P-to-D transfer time only; it is
+not the full request TTFT. The final A/B result still needs the AIPerf TTFT,
+TPOT, request-throughput, and output-token-throughput plots.
+
+#### How the HiCache ratio math works here
+
+We configured `--hicache-ratio 1.2`. In easy words, SGLang first works out the
+size of the GPU KV pool for one rank, then creates a CPU host KV pool that is
+1.2 times that size:
+
+```text
+CPU host KV capacity per rank = GPU KV capacity per rank × 1.2
+```
+
+For example, if one rank can hold 100,000 KV tokens on GPU, ratio 1.2 gives
+that rank space for about 120,000 KV tokens in CPU memory. This ratio is based
+on the GPU KV pool, not the full 80 GB GPU and not the full host RAM.
+
+We have four prefill workers with two ranks each, so there are eight separate
+prefill host pools using this math. Decode workers do not have CPU HiCache in
+this recipe. Because the policy is `write_through`, new reusable pages are
+copied into the CPU tier while a GPU copy may still exist. That means the CPU
+tier is a backup/cache level, not automatically 1.2 times more unique KV on top
+of everything still resident on GPU.
+
+The 95% number also needs the right wording. If it came from:
+
+```text
+sglang:hicache_host_used_tokens / sglang:hicache_host_total_tokens
+```
+
+then it means the allocated CPU HiCache pool was 95% full. It does not mean
+95% of every request's KV, or 95% of all KV traffic, was offloaded to CPU.
+This is still very good evidence that the long-prefix workload actually filled
+and exercised the host cache instead of only enabling the flag.
+
+#### Why the CPU went 99% hot
+
+The CPU becoming hot makes sense with this workload. We used `write_through`,
+so new cache pages are copied from GPU memory into CPU memory as they are
+created. If an older prefix is needed again after leaving GPU cache, HiCache
+also has to find its pages and copy them back from CPU to GPU. Long 32K inputs,
+64 prefix groups, and concurrency up to 32 keep that page-copy pipeline busy.
+
+The `page_first_direct` memory layout and `direct` I/O backend make these local
+GPU-to-CPU and CPU-to-GPU copies possible for this hybrid attention/Mamba
+model. The CPU is coordinating page tables, cache bookkeeping, request
+scheduling, network work, and host-memory copies. The model's MoE math is
+still running on the GPUs; 99% CPU does not mean inference moved to CPU.
+
+One more detail: if the 99% came from `top` for one process, it normally means
+roughly one logical CPU core was fully busy, not 99% of the entire node. If it
+came from a node-wide Grafana panel, then it means almost all node CPU capacity
+was busy. I need to record which metric produced it before calling this a
+node-wide CPU bottleneck.
+
+There are also two different copy paths in this test:
+
+- HiCache `direct` moves cache pages locally between a prefill GPU and that
+  worker's CPU memory;
+- NIXL/UCX moves the finished KV and recurrent state from the selected prefill
+  worker to the selected decode worker over RDMA.
+
+Interesting that the NIXL connection was very smooth without errors. But it
+was not one KV object copied across all 16 GPUs. The deployment uses 16 GPUs
+in total, while each request follows one selected prefill-to-decode path; all
+16 GPUs participate across the complete workload.
+
+nice output. Next I will run the exact same preset against the non-offload
+deployment and keep the same seed, duration, prefix groups, and concurrency
+points. This offload run proves that the setup survives the pressure and uses
+CPU HiCache, but only the matching A/B plots can show whether offloading
+actually improves QPS or TTFT enough to justify the extra CPU work.
+
+The repository does not currently contain the raw metric snapshots behind the
+1 TB, 1.5 GB/s, under-60-ms, 95%, and 99% observations. I need to retain those
+files under the experiment directory before treating these as final published
+numbers.

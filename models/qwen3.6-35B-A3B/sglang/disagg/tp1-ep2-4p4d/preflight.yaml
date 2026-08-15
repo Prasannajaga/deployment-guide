@@ -24,6 +24,8 @@ spec:
           args:
             - --router-mode
             - kv
+            - --router-host-cache-hit-weight
+            - "0.75"
       envs:
         - name: HF_HOME
           value: /opt/models
@@ -59,7 +61,16 @@ spec:
             - -c
           args:
             - |
+              set -e
               ulimit -l unlimited
+              # Model flags select the local checkpoint and public API model name.
+              # Parallelism flags keep attention TP=1 and expert parallelism EP=2 across two GPUs.
+              # Context, page, and memory flags size the GPU KV cache and maximum request window.
+              # Parser flags enable Qwen reasoning and tool-call response handling through Dynamo.
+              # Disaggregation flags make this the prefill role and transfer live state through NIXL.
+              # Cache flags enable usage reporting and the hybrid-compatible CPU host tier.
+              # KV events feed Dynamo's KV-aware router with prefix-cache residency updates.
+              # Metrics exposes SGLang/Dynamo Prometheus series on the worker system port.
               exec python3 -m dynamo.sglang \
                 --model-path "$MODEL_PATH" \
                 --served-model-name "$SERVED_MODEL_NAME" \
@@ -79,6 +90,12 @@ spec:
                 --disaggregation-transfer-backend nixl \
                 --disaggregation-bootstrap-port 30001 \
                 --host 0.0.0.0 \
+                --enable-cache-report \
+                --enable-hierarchical-cache \
+                --hicache-ratio 1.2 \
+                --hicache-write-policy write_through \
+                --hicache-mem-layout page_first_direct \
+                --hicache-io-backend direct \
                 --kv-events-config '{"publisher":"zmq","topic":"kv-events","endpoint":"tcp://*:5557"}' \
                 --enable-metrics
           env: &worker-env
@@ -166,7 +183,15 @@ spec:
             - -c
           args:
             - |
+              set -e
               ulimit -l unlimited
+              # Model flags select the same checkpoint and API name used by the prefill worker.
+              # Parallelism flags must match prefill so transferred KV and recurrent state align.
+              # Context, page, and memory flags keep decode allocation compatible with prefill.
+              # Parser flags enable the same Qwen reasoning and tool-call response handling.
+              # Disaggregation flags make this the decode role and receive live state through NIXL.
+              # Cache reporting adds cached-token details; hybrid decode KV offload stays disabled.
+              # Metrics exposes SGLang/Dynamo Prometheus series on the worker system port.
               exec python3 -m dynamo.sglang \
                 --model-path "$MODEL_PATH" \
                 --served-model-name "$SERVED_MODEL_NAME" \
@@ -186,6 +211,7 @@ spec:
                 --disaggregation-transfer-backend nixl \
                 --disaggregation-bootstrap-port 30002 \
                 --host 0.0.0.0 \
+                --enable-cache-report \
                 --enable-metrics
           env: *worker-env
           securityContext: *worker-security-context

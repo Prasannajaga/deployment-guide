@@ -23,4 +23,6 @@ The reservation releases on August 16 at 11:59:59 PM UTC.\
 
 BLOGS UPCOMING:
 
-TP, DP & EP write detailed comparison please
+1. TP, DP & EP write detailed comparison please
+
+2. write about how model-cache works at production

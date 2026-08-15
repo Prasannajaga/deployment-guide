@@ -9,7 +9,12 @@ the reservation.
 The Dynamo frontend runs with KV-aware routing. Prefill workers publish SGLang
 KV events, NIXL is configured to transfer KV/recurrent state over UCX/RDMA,
 and every worker exports SGLang/Dynamo metrics on port 9090 plus NIXL transfer
-metrics on port 19090.
+metrics on port 19090. The baseline `deploy.yaml` enables cache reporting but
+does not enable hierarchical cache or CPU KV offload. The optional
+`deploy-kv-offloading.yaml` adds prefill-only GPU-to-CPU HiCache offload.
+Decode workers retain live NIXL P-to-D transfer and telemetry in both variants,
+but decode-side cache offload remains disabled because the pinned runtime does
+not support it for this hybrid model.
 
 This is an experimental backend comparison. SGLang supports NIXL
 prefill/decode disaggregation generally, but this runbook does not assume that
@@ -24,7 +29,6 @@ export EXP_DIR=/ephemeral/shared/qwen3.6-35b-a3b/sglang/disagg/tp1-ep2-4p4d
 export DEPLOYMENT=q36-sgl-pd-tp1ep2-4p4d
 export PERF_JOB_NAME=qwen36-sglang-tp1ep2-4p4d-perf
 export GRAPH_LABEL="nvidia.com/dynamo-graph-deployment-name=${DEPLOYMENT}"
-export FRONTEND_SERVICE="${DEPLOYMENT}-frontend"
 export MODEL=Qwen/Qwen3.6-35B-A3B-FP8
 ```
 
@@ -32,352 +36,65 @@ Complete the shared namespace, PVC, model-cache, and RoCE recovery in the
 [parent runbook](../README.md) first. This recipe consumes all 16 GPUs; run no
 other GPU recipe concurrently.
 
+## Optional KV-offloading configuration
+
+The optional `deploy-kv-offloading.yaml` keeps the baseline P/D topology and
+enables hierarchical cache only on prefill. A conservative
+`--hicache-ratio 1.2` allocates a CPU host-cache tier per rank without changing
+the existing Pod resource template. The
+`page_first_direct`/`direct` combination copies hybrid attention KV and Mamba
+state between GPU and host memory. Both roles keep `--enable-cache-report`,
+SGLang/Dynamo metrics, and NIXL P-to-D transfer metrics.
+
+Do not add `--disaggregation-decode-enable-offload-kvcache` to the decode
+worker for this image/model pair. SGLang 0.5.14 accepts that path only for
+pure `MHATokenToKVPool` or `MLATokenToKVPool`; Qwen3.6 creates a hybrid
+attention/Mamba `HybridLinearKVPool`, which raises `Unsupported KV cache type
+for decode offload`. The following scheduler `EOFError` is only a consequence
+of that initialization failure. `--disaggregation-decode-enable-radix-cache`
+is not a workaround because the same runtime rejects decode radix cache for
+hybrid Mamba/SSM models.
+
+Do not add `--hicache-storage-backend nixl` on prefill either. Qwen3.6 passes
+multiple hybrid pools to SGLang's v2 storage interface, while the NIXL HiCache
+backend in SGLang 0.5.14 implements only the v1 interface. Its prefetch thread
+therefore calls the base `batch_exists_v2()` and raises `NotImplementedError`.
+The later `First message should be b'NixlMsgGuard'. Foreign traffic?` assertion
+is a separate SGLang bug: an aborted request sends an `ABORT` tag that the NIXL
+prefill receiver does not handle before its guard assertion. It is downstream
+of the stalled request, not evidence that unrelated network traffic reached
+the worker.
+
+Qwen3.6 is a hybrid attention/Mamba-GDN model. Its SGLang 0.5.14 host pool
+requires `--hicache-mem-layout page_first_direct` with
+`--hicache-io-backend direct`; using the `page_first`/`kernel` combination
+causes `MambaPoolHost` to fail during scheduler initialization.
+
+`--disaggregation-transfer-backend nixl` still moves live P-to-D state over
+UCX/RDMA on both roles. It does not provide the CPU HiCache tier; the HiCache
+`direct` I/O backend provides that local GPU-to-host copy. `NIXL_TELEMETRY_*`
+instruments P-to-D transfers, and `--enable-cache-report` exposes reused
+prompt tokens in `usage.prompt_tokens_details.cached_tokens`.
+
 ## Preflight
 
-```bash
-kubectl get pvc model-cache perf-cache -n "$NAMESPACE"
-kubectl get network-attachment-definition qwen-roce -n "$NAMESPACE"
-kubectl get nodes -L qwen.nvidia.com/role \
-  -o custom-columns='NODE:.metadata.name,ROLE:.metadata.labels.qwen\.nvidia\.com/role,GPU:.status.allocatable.nvidia\.com/gpu,RDMA:.status.allocatable.rdma/ib'
-kubectl get dynamographdeployments.nvidia.com -A
-kubectl get pods -A \
-  -o custom-columns='NAMESPACE:.metadata.namespace,POD:.metadata.name,NODE:.spec.nodeName,PHASE:.status.phase,GPU:.spec.containers[*].resources.requests.nvidia\.com/gpu'
-```
+Complete the four-GPU canary in [preflight.md](preflight.md) before applying
+the optional KV-offloading manifest. It contains the resource checks,
+single-replica deployment, bounded request tests, CPU HiCache proof,
+cache-report proof, NIXL transfer counters, log acceptance gates, and canary
+cleanup. The baseline manifest does not expose CPU HiCache metrics because it
+does not allocate that tier; use the common startup and NIXL transfer gates
+below for the baseline.
 
-Require both PVCs to be `Bound`, `qwen-roce` to exist, eight free GPUs and
-eight free `rdma/ib` resources on each role node, and no competing GPU
-deployment.
+## Production manifest
 
-Run a CPU-only image/CLI preflight:
+The baseline production manifest is [deploy.yaml](deploy.yaml). It has four
+prefill and four decode replicas, cache reporting, NIXL telemetry, UCX, and
+KV-aware routing, but no `--enable-hierarchical-cache` or `--hicache-*` flags.
+Use [deploy-kv-offloading.yaml](deploy-kv-offloading.yaml) only when prefill CPU
+KV offload is desired and the offload-specific preflight passes.
 
-```bash
-kubectl delete pod -n "$NAMESPACE" sglang-runtime-preflight --ignore-not-found
-kubectl run sglang-runtime-preflight -n "$NAMESPACE" --restart=Never \
-  --image=nvcr.io/nvidia/ai-dynamo/sglang-runtime:1.3.0 \
-  --command -- /bin/bash -lc '
-    set -e
-    python3 -c "import sglang, nixl; print(\"SGLANG_AND_NIXL_IMPORT_OK\")"
-    python3 -m dynamo.sglang --help |
-      grep -E -- "--disaggregation-mode|--disaggregation-transfer-backend|--kv-events-config|--tp-size|--dp-size|--ep-size|--enable-dp-attention|--enable-dp-lm-head|--moe-dense-tp-size|--enable-metrics"
-  '
-kubectl wait -n "$NAMESPACE" --for=jsonpath='{.status.phase}'=Succeeded \
-  pod/sglang-runtime-preflight --timeout=300s
-kubectl logs -n "$NAMESPACE" sglang-runtime-preflight
-kubectl delete pod -n "$NAMESPACE" sglang-runtime-preflight
-```
-
-This first check validates only the image and CLI. Next run an actual
-one-prefill/one-decode GPU canary using the same attention-TP/EP settings
-as the full recipe.
-
-### GPU model and NIXL canary
-
-These high-level Dynamo Operator 1.3 manifests intentionally use
-`nvidia.com/v1alpha1`: that schema accepts `spec.pvcs` and `spec.services`
-and the operator converts it internally to beta `spec.components`. The
-deprecation warning is expected; changing only `apiVersion` to `v1beta1`
-causes a strict-decoding failure.
-
-```bash
-(
-set -e
-tee "$EXP_DIR/preflight.yaml" >/dev/null <<'EOF'
-apiVersion: nvidia.com/v1alpha1
-kind: DynamoGraphDeployment
-metadata:
-  name: q36-sgl-pd-tp1ep2-4p4d-pf
-spec:
-  backendFramework: sglang
-  pvcs:
-    - name: model-cache
-      create: false
-  services:
-    Frontend:
-      componentType: frontend
-      volumeMounts:
-        - name: model-cache
-          mountPoint: /opt/models
-      extraPodSpec:
-        mainContainer:
-          image: nvcr.io/nvidia/ai-dynamo/sglang-runtime:1.3.0
-          workingDir: /workspace/examples/backends/sglang
-          command:
-            - python3
-            - -m
-            - dynamo.frontend
-          args:
-            - --router-mode
-            - kv
-      envs:
-        - name: HF_HOME
-          value: /opt/models
-      replicas: 1
-      resources:
-        requests:
-          cpu: "16"
-          memory: 64Gi
-        limits:
-          cpu: "32"
-          memory: 128Gi
-    SglangPrefillWorker:
-      componentType: worker
-      subComponentType: prefill
-      volumeMounts:
-        - name: model-cache
-          mountPoint: /opt/models
-      sharedMemory:
-        size: 80Gi
-      extraPodMetadata:
-        annotations:
-          k8s.v1.cni.cncf.io/networks: qwen-roce
-      extraPodSpec:
-        hostNetwork: false
-        dnsPolicy: ClusterFirst
-        nodeSelector:
-          qwen.nvidia.com/role: prefill
-        mainContainer:
-          image: nvcr.io/nvidia/ai-dynamo/sglang-runtime:1.3.0
-          workingDir: /workspace/examples/backends/sglang
-          command:
-            - /bin/sh
-            - -c
-          args:
-            - |
-              ulimit -l unlimited
-              exec python3 -m dynamo.sglang \
-                --model-path "$MODEL_PATH" \
-                --served-model-name "$SERVED_MODEL_NAME" \
-                --tp-size 2 \
-                --dp-size 2 \
-                --ep-size 2 \
-                --enable-dp-attention \
-                --enable-dp-lm-head \
-                --moe-dense-tp-size 1 \
-                --context-length 131072 \
-                --page-size 64 \
-                --mem-fraction-static 0.85 \
-                --reasoning-parser qwen3 \
-                --dyn-reasoning-parser qwen3 \
-                --dyn-tool-call-parser qwen3_coder \
-                --disaggregation-mode prefill \
-                --disaggregation-transfer-backend nixl \
-                --disaggregation-bootstrap-port 30001 \
-                --host 0.0.0.0 \
-                --kv-events-config '{"publisher":"zmq","topic":"kv-events","endpoint":"tcp://*:5557"}' \
-                --enable-metrics
-          env: &worker-env
-            - name: SERVED_MODEL_NAME
-              value: Qwen/Qwen3.6-35B-A3B-FP8
-            - name: MODEL_PATH
-              value: /opt/models/hub/models--Qwen--Qwen3.6-35B-A3B-FP8/snapshots/95a723d08a9490559dae23d0cff1d9466213d989
-            - name: HF_HOME
-              value: /opt/models
-            - name: PYTHONHASHSEED
-              value: "0"
-            - name: SGLANG_DISAGGREGATION_NIXL_BACKEND
-              value: UCX
-            - name: UCX_TLS
-              value: rc_x,rc,cuda_copy,cuda_ipc
-            - name: UCX_NET_DEVICES
-              value: mlx5_8:1
-            - name: UCX_IB_ADDR_TYPE
-              value: eth
-            - name: UCX_RNDV_SCHEME
-              value: get_zcopy
-            - name: UCX_RNDV_THRESH
-              value: "0"
-            - name: UCX_IB_REG_METHODS
-              value: odp,rcache
-            - name: UCX_RCACHE_MAX_UNRELEASED
-              value: "1024"
-            - name: UCX_RC_TIMEOUT
-              value: 600s
-            - name: UCX_KEEPALIVE_INTERVAL
-              value: 300s
-            - name: UCX_LOG_LEVEL
-              value: info
-            - name: NIXL_LOG_LEVEL
-              value: INFO
-            - name: DYN_SYSTEM_PORT
-              value: "9090"
-            - name: NIXL_TELEMETRY_ENABLE
-              value: "y"
-            - name: NIXL_TELEMETRY_EXPORTER
-              value: prometheus
-            - name: NIXL_TELEMETRY_PROMETHEUS_PORT
-              value: "19090"
-          securityContext: &worker-security-context
-            runAsUser: 0
-            capabilities:
-              add:
-                - IPC_LOCK
-                - SYS_RESOURCE
-      replicas: 1
-      resources: &worker-resources
-        requests:
-          gpu: "2"
-          cpu: "16"
-          memory: 128Gi
-          custom:
-            rdma/ib: "2"
-        limits:
-          gpu: "2"
-          cpu: "32"
-          memory: 192Gi
-          custom:
-            rdma/ib: "2"
-    SglangDecodeWorker:
-      componentType: worker
-      subComponentType: decode
-      volumeMounts:
-        - name: model-cache
-          mountPoint: /opt/models
-      sharedMemory:
-        size: 80Gi
-      extraPodMetadata:
-        annotations:
-          k8s.v1.cni.cncf.io/networks: qwen-roce
-      extraPodSpec:
-        hostNetwork: false
-        dnsPolicy: ClusterFirst
-        nodeSelector:
-          qwen.nvidia.com/role: decode
-        mainContainer:
-          image: nvcr.io/nvidia/ai-dynamo/sglang-runtime:1.3.0
-          workingDir: /workspace/examples/backends/sglang
-          command:
-            - /bin/sh
-            - -c
-          args:
-            - |
-              ulimit -l unlimited
-              exec python3 -m dynamo.sglang \
-                --model-path "$MODEL_PATH" \
-                --served-model-name "$SERVED_MODEL_NAME" \
-                --tp-size 2 \
-                --dp-size 2 \
-                --ep-size 2 \
-                --enable-dp-attention \
-                --enable-dp-lm-head \
-                --moe-dense-tp-size 1 \
-                --context-length 131072 \
-                --page-size 64 \
-                --mem-fraction-static 0.85 \
-                --reasoning-parser qwen3 \
-                --dyn-reasoning-parser qwen3 \
-                --dyn-tool-call-parser qwen3_coder \
-                --disaggregation-mode decode \
-                --disaggregation-transfer-backend nixl \
-                --disaggregation-bootstrap-port 30002 \
-                --host 0.0.0.0 \
-                --enable-metrics
-          env: *worker-env
-          securityContext: *worker-security-context
-      replicas: 1
-      resources: *worker-resources
-EOF
-
-export PREFLIGHT_DEPLOYMENT="${DEPLOYMENT}-pf"
-export PREFLIGHT_GRAPH_LABEL="nvidia.com/dynamo-graph-deployment-name=${PREFLIGHT_DEPLOYMENT}"
-export PREFLIGHT_SERVICE="${PREFLIGHT_DEPLOYMENT}-frontend"
-
-kubectl delete dynamographdeployment.nvidia.com -n "$NAMESPACE" \
-  "$PREFLIGHT_DEPLOYMENT" --ignore-not-found
-kubectl apply --dry-run=server -n "$NAMESPACE" -f "$EXP_DIR/preflight.yaml"
-kubectl apply -n "$NAMESPACE" -f "$EXP_DIR/preflight.yaml"
-
-found=0
-for attempt in $(seq 1 120); do
-  count="$(kubectl get pods -n "$NAMESPACE" \
-    -l "$PREFLIGHT_GRAPH_LABEL" --no-headers 2>/dev/null | wc -l)"
-  if [ "$count" -ge 3 ]; then
-    found=1
-    break
-  fi
-  sleep 5
-done
-
-if [ "$found" -ne 1 ]; then
-  echo "FAIL: operator did not create all three canary Pods" >&2
-  kubectl describe dynamographdeployment "$PREFLIGHT_DEPLOYMENT" \
-    -n "$NAMESPACE"
-  kubectl get events -n "$NAMESPACE" --sort-by=.lastTimestamp | tail -50
-  exit 1
-fi
-
-if ! kubectl wait -n "$NAMESPACE" --for=condition=Ready pod \
-  -l "$PREFLIGHT_GRAPH_LABEL" --timeout=1800s; then
-  kubectl get pods -n "$NAMESPACE" -l "$PREFLIGHT_GRAPH_LABEL" -o wide
-  kubectl logs -n "$NAMESPACE" -l "$PREFLIGHT_GRAPH_LABEL" \
-    --all-containers --prefix --tail=1500 || true
-  exit 1
-fi
-
-kubectl logs -n "$NAMESPACE" -l "$PREFLIGHT_GRAPH_LABEL" \
-  --all-containers --prefix --tail=1500 |
-  tee "/tmp/qwen36-sglang-tp1ep2-4p4d-preflight.log"
-
-if grep -Ei 'traceback|assertionerror|notimplementederror|nixl_err|out of memory|does not support|unsupported' \
-  "/tmp/qwen36-sglang-tp1ep2-4p4d-preflight.log"; then
-  echo "FAIL: canary startup logs contain a fatal signature" >&2
-  exit 1
-fi
-
-kubectl run qwen-sglang-preflight-request --rm -i --restart=Never \
-  --namespace "$NAMESPACE" --image=curlimages/curl -- \
-  curl -fsS -H 'Content-Type: application/json' \
-  --data-binary "{\"model\":\"${MODEL}\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly: sglang-preflight-ok\"}],\"temperature\":0,\"max_tokens\":32,\"stream\":false}" \
-  "http://${PREFLIGHT_SERVICE}:8000/v1/chat/completions"
-
-kubectl logs -n "$NAMESPACE" -l "$PREFLIGHT_GRAPH_LABEL" \
-  --all-containers --prefix --since=10m |
-  tee -a "/tmp/qwen36-sglang-tp1ep2-4p4d-preflight.log"
-
-if grep -Ei 'traceback|assertionerror|notimplementederror|nixl_err|transfer.*fail|does not support|unsupported' \
-  "/tmp/qwen36-sglang-tp1ep2-4p4d-preflight.log"; then
-  echo "FAIL: canary request or transfer logs contain a fatal signature" >&2
-  exit 1
-fi
-
-nixl_transfer_seen=0
-for pod in $(kubectl get pods -n "$NAMESPACE" \
-  -l "$PREFLIGHT_GRAPH_LABEL" \
-  -l 'nvidia.com/dynamo-component-type=worker' \
-  -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}'); do
-  system_metrics="$(kubectl exec -n "$NAMESPACE" "$pod" -- \
-    python3 -c 'import urllib.request; print(urllib.request.urlopen("http://127.0.0.1:9090/metrics", timeout=5).read().decode())')"
-  printf '%s\n' "$system_metrics" | grep -E '^(sglang:|dynamo_)' >/dev/null
-
-  nixl_metrics="$(kubectl exec -n "$NAMESPACE" "$pod" -- \
-    python3 -c 'import urllib.request; print(urllib.request.urlopen("http://127.0.0.1:19090/metrics", timeout=5).read().decode())')"
-  printf '%s\n' "$nixl_metrics" | grep -E '^nixl_' >/dev/null
-  printf '%s\n' "$nixl_metrics" |
-    awk '$1 ~ /^nixl_num_failed_transfers_total(\{|$)/ && ($2 + 0) > 0 { bad=1 } END { exit bad }'
-  if printf '%s\n' "$nixl_metrics" |
-    awk '$1 ~ /^nixl_bytes_transferred_count(\{|$)/ && ($2 + 0) > 0 { found=1 } END { exit !found }'; then
-    nixl_transfer_seen=1
-  fi
-done
-
-[ "$nixl_transfer_seen" -eq 1 ] || {
-  echo "FAIL: NIXL telemetry did not record a KV transfer" >&2
-  exit 1
-}
-
-echo "PASS: SGLang model load and one P-to-D request completed"
-kubectl delete dynamographdeployment.nvidia.com -n "$NAMESPACE" \
-  "$PREFLIGHT_DEPLOYMENT" --wait=true
-)
-```
-
-Do not apply the full deployment unless the canary prints `PASS`. The canary
-uses four GPUs and must be deleted before the full sixteen-GPU recipe. A pass
-substantially reduces risk, but it cannot guarantee that higher concurrency or
-long-context requests will never expose another runtime failure.
-
-## Create deploy.yaml
-
-The same API-version note applies to the full deployment.
+Create the production manifest on the cluster host:
 
 ```bash
 mkdir -p "$EXP_DIR"
@@ -408,10 +125,12 @@ spec:
           args:
             - --router-mode
             - kv
+            - --router-host-cache-hit-weight
+            - "0.75"
       envs:
         - name: HF_HOME
           value: /opt/models
-      replicas: 4
+      replicas: 6
       resources:
         requests:
           cpu: "16"
@@ -443,7 +162,16 @@ spec:
             - -c
           args:
             - |
+              set -e
               ulimit -l unlimited
+              # Model flags select the local checkpoint and public API model name.
+              # Parallelism flags keep attention TP=1 and expert parallelism EP=2 across two GPUs.
+              # Context, page, and memory flags size the GPU KV cache and maximum request window.
+              # Parser flags enable Qwen reasoning and tool-call response handling through Dynamo.
+              # Disaggregation flags make this the prefill role and transfer live state through NIXL.
+              # Cache reporting exposes reused prompt-token details without CPU KV offload.
+              # KV events feed Dynamo's KV-aware router with prefix-cache residency updates.
+              # Metrics exposes SGLang/Dynamo Prometheus series on the worker system port.
               exec python3 -m dynamo.sglang \
                 --model-path "$MODEL_PATH" \
                 --served-model-name "$SERVED_MODEL_NAME" \
@@ -463,6 +191,7 @@ spec:
                 --disaggregation-transfer-backend nixl \
                 --disaggregation-bootstrap-port 30001 \
                 --host 0.0.0.0 \
+                --enable-cache-report \
                 --kv-events-config '{"publisher":"zmq","topic":"kv-events","endpoint":"tcp://*:5557"}' \
                 --enable-metrics
           env: &worker-env
@@ -550,7 +279,15 @@ spec:
             - -c
           args:
             - |
+              set -e
               ulimit -l unlimited
+              # Model flags select the same checkpoint and API name used by the prefill worker.
+              # Parallelism flags must match prefill so transferred KV and recurrent state align.
+              # Context, page, and memory flags keep decode allocation compatible with prefill.
+              # Parser flags enable the same Qwen reasoning and tool-call response handling.
+              # Disaggregation flags make this the decode role and receive live state through NIXL.
+              # Cache reporting adds cached-token details; hybrid decode KV offload stays disabled.
+              # Metrics exposes SGLang/Dynamo Prometheus series on the worker system port.
               exec python3 -m dynamo.sglang \
                 --model-path "$MODEL_PATH" \
                 --served-model-name "$SERVED_MODEL_NAME" \
@@ -570,6 +307,7 @@ spec:
                 --disaggregation-transfer-backend nixl \
                 --disaggregation-bootstrap-port 30002 \
                 --host 0.0.0.0 \
+                --enable-cache-report \
                 --enable-metrics
           env: *worker-env
           securityContext: *worker-security-context
@@ -578,13 +316,264 @@ spec:
 EOF
 ```
 
-## Validate and deploy
+## KV-offloading production manifest
+
+Use this optional variant when prefill CPU KV offload is required. It is
+identical to the baseline topology except for the prefill hierarchical-cache
+flags. It intentionally does not enable decode-side KV offload or the NIXL
+HiCache storage backend.
+
+Create the offload manifest on the cluster host:
 
 ```bash
-kubectl apply --dry-run=server -n "$NAMESPACE" -f "$EXP_DIR/deploy.yaml"
-kubectl apply -n "$NAMESPACE" -f "$EXP_DIR/deploy.yaml"
+tee "$EXP_DIR/deploy-kv-offloading.yaml" >/dev/null <<'EOF'
+apiVersion: nvidia.com/v1alpha1
+kind: DynamoGraphDeployment
+metadata:
+  name: q36-sgl-pd-tp1ep2-4p4d
+spec:
+  backendFramework: sglang
+  pvcs:
+    - name: model-cache
+      create: false
+  services:
+    Frontend:
+      componentType: frontend
+      volumeMounts:
+        - name: model-cache
+          mountPoint: /opt/models
+      extraPodSpec:
+        mainContainer:
+          image: nvcr.io/nvidia/ai-dynamo/sglang-runtime:1.3.0
+          workingDir: /workspace/examples/backends/sglang
+          command:
+            - python3
+            - -m
+            - dynamo.frontend
+          args:
+            - --router-mode
+            - kv
+            - --router-host-cache-hit-weight
+            - "0.75"
+      envs:
+        - name: HF_HOME
+          value: /opt/models
+      replicas: 6
+      resources:
+        requests:
+          cpu: "16"
+          memory: 64Gi
+        limits:
+          cpu: "32"
+          memory: 128Gi
+    SglangPrefillWorker:
+      componentType: worker
+      subComponentType: prefill
+      volumeMounts:
+        - name: model-cache
+          mountPoint: /opt/models
+      sharedMemory:
+        size: 80Gi
+      extraPodMetadata:
+        annotations:
+          k8s.v1.cni.cncf.io/networks: qwen-roce
+      extraPodSpec:
+        hostNetwork: false
+        dnsPolicy: ClusterFirst
+        nodeSelector:
+          qwen.nvidia.com/role: prefill
+        mainContainer:
+          image: nvcr.io/nvidia/ai-dynamo/sglang-runtime:1.3.0
+          workingDir: /workspace/examples/backends/sglang
+          command:
+            - /bin/sh
+            - -c
+          args:
+            - |
+              set -e
+              ulimit -l unlimited
+              # Model flags select the local checkpoint and public API model name.
+              # Parallelism flags keep attention TP=1 and expert parallelism EP=2 across two GPUs.
+              # Context, page, and memory flags size the GPU KV cache and maximum request window.
+              # Parser flags enable Qwen reasoning and tool-call response handling through Dynamo.
+              # Disaggregation flags make this the prefill role and transfer live state through NIXL.
+              # Cache flags enable usage reporting and the hybrid-compatible CPU host tier.
+              # KV events feed Dynamo's KV-aware router with prefix-cache residency updates.
+              # Metrics exposes SGLang/Dynamo Prometheus series on the worker system port.
+              exec python3 -m dynamo.sglang \
+                --model-path "$MODEL_PATH" \
+                --served-model-name "$SERVED_MODEL_NAME" \
+                --tp-size 2 \
+                --dp-size 2 \
+                --ep-size 2 \
+                --enable-dp-attention \
+                --enable-dp-lm-head \
+                --moe-dense-tp-size 1 \
+                --context-length 131072 \
+                --page-size 64 \
+                --mem-fraction-static 0.85 \
+                --reasoning-parser qwen3 \
+                --dyn-reasoning-parser qwen3 \
+                --dyn-tool-call-parser qwen3_coder \
+                --disaggregation-mode prefill \
+                --disaggregation-transfer-backend nixl \
+                --disaggregation-bootstrap-port 30001 \
+                --host 0.0.0.0 \
+                --enable-cache-report \
+                --enable-hierarchical-cache \
+                --hicache-ratio 1.2 \
+                --hicache-write-policy write_back \
+                --hicache-mem-layout page_first_direct \
+                --hicache-io-backend direct \
+                --kv-events-config '{"publisher":"zmq","topic":"kv-events","endpoint":"tcp://*:5557"}' \
+                --enable-metrics
+          env: &worker-env
+            - name: SERVED_MODEL_NAME
+              value: Qwen/Qwen3.6-35B-A3B-FP8
+            - name: MODEL_PATH
+              value: /opt/models/hub/models--Qwen--Qwen3.6-35B-A3B-FP8/snapshots/95a723d08a9490559dae23d0cff1d9466213d989
+            - name: HF_HOME
+              value: /opt/models
+            - name: PYTHONHASHSEED
+              value: "0"
+            - name: SGLANG_DISAGGREGATION_NIXL_BACKEND
+              value: UCX
+            - name: UCX_TLS
+              value: rc_x,rc,cuda_copy,cuda_ipc
+            - name: UCX_NET_DEVICES
+              value: mlx5_8:1
+            - name: UCX_IB_ADDR_TYPE
+              value: eth
+            - name: UCX_RNDV_SCHEME
+              value: get_zcopy
+            - name: UCX_RNDV_THRESH
+              value: "0"
+            - name: UCX_IB_REG_METHODS
+              value: odp,rcache
+            - name: UCX_RCACHE_MAX_UNRELEASED
+              value: "1024"
+            - name: UCX_RC_TIMEOUT
+              value: 600s
+            - name: UCX_KEEPALIVE_INTERVAL
+              value: 300s
+            - name: UCX_LOG_LEVEL
+              value: info
+            - name: NIXL_LOG_LEVEL
+              value: INFO
+            - name: DYN_SYSTEM_PORT
+              value: "9090"
+            - name: NIXL_TELEMETRY_ENABLE
+              value: "y"
+            - name: NIXL_TELEMETRY_EXPORTER
+              value: prometheus
+            - name: NIXL_TELEMETRY_PROMETHEUS_PORT
+              value: "19090"
+          securityContext: &worker-security-context
+            runAsUser: 0
+            capabilities:
+              add:
+                - IPC_LOCK
+                - SYS_RESOURCE
+      replicas: 4
+      resources: &worker-resources
+        requests:
+          gpu: "2"
+          cpu: "16"
+          memory: 128Gi
+          custom:
+            rdma/ib: "2"
+        limits:
+          gpu: "2"
+          cpu: "32"
+          memory: 192Gi
+          custom:
+            rdma/ib: "2"
+    SglangDecodeWorker:
+      componentType: worker
+      subComponentType: decode
+      volumeMounts:
+        - name: model-cache
+          mountPoint: /opt/models
+      sharedMemory:
+        size: 80Gi
+      extraPodMetadata:
+        annotations:
+          k8s.v1.cni.cncf.io/networks: qwen-roce
+      extraPodSpec:
+        hostNetwork: false
+        dnsPolicy: ClusterFirst
+        nodeSelector:
+          qwen.nvidia.com/role: decode
+        mainContainer:
+          image: nvcr.io/nvidia/ai-dynamo/sglang-runtime:1.3.0
+          workingDir: /workspace/examples/backends/sglang
+          command:
+            - /bin/sh
+            - -c
+          args:
+            - |
+              set -e
+              ulimit -l unlimited
+              # Model flags select the same checkpoint and API name used by the prefill worker.
+              # Parallelism flags must match prefill so transferred KV and recurrent state align.
+              # Context, page, and memory flags keep decode allocation compatible with prefill.
+              # Parser flags enable the same Qwen reasoning and tool-call response handling.
+              # Disaggregation flags make this the decode role and receive live state through NIXL.
+              # Cache reporting adds cached-token details; hybrid decode KV offload stays disabled.
+              # Metrics exposes SGLang/Dynamo Prometheus series on the worker system port.
+              exec python3 -m dynamo.sglang \
+                --model-path "$MODEL_PATH" \
+                --served-model-name "$SERVED_MODEL_NAME" \
+                --tp-size 2 \
+                --dp-size 2 \
+                --ep-size 2 \
+                --enable-dp-attention \
+                --enable-dp-lm-head \
+                --moe-dense-tp-size 1 \
+                --context-length 131072 \
+                --page-size 64 \
+                --mem-fraction-static 0.85 \
+                --reasoning-parser qwen3 \
+                --dyn-reasoning-parser qwen3 \
+                --dyn-tool-call-parser qwen3_coder \
+                --disaggregation-mode decode \
+                --disaggregation-transfer-backend nixl \
+                --disaggregation-bootstrap-port 30002 \
+                --host 0.0.0.0 \
+                --enable-cache-report \
+                --enable-metrics
+          env: *worker-env
+          securityContext: *worker-security-context
+      replicas: 4
+      resources: *worker-resources
+EOF
+```
+
+The two manifests use the same DynamoGraphDeployment name and are alternatives;
+do not apply them as independent deployments at the same time.
+
+## Validate and deploy
+
+Choose exactly one manifest. Both variants use the same
+`DynamoGraphDeployment` name, so applying one updates the other rather than
+creating an independent deployment:
+
+```bash
+# Baseline: no CPU KV offload.
+export DEPLOY_FILE="$EXP_DIR/deploy.yaml"
+
+# Optional prefill CPU KV offload; use this instead of the line above.
+# export DEPLOY_FILE="$EXP_DIR/deploy-kv-offloading.yaml"
+
+kubectl apply --dry-run=server -n "$NAMESPACE" -f "$DEPLOY_FILE"
+kubectl apply -n "$NAMESPACE" -f "$DEPLOY_FILE"
 kubectl get pods -n "$NAMESPACE" -l "$GRAPH_LABEL" -o wide -w
 ```
+
+Successful request, cache-report, and NIXL transfer gates are mandatory for
+both variants. Positive prefill CPU-HiCache total and used tokens are mandatory
+only for `deploy-kv-offloading.yaml`; those series should be absent from the
+baseline deployment.
 
 Wait for all 9 Pods:
 
@@ -600,26 +589,54 @@ kubectl get pods -n "$NAMESPACE" -l "$GRAPH_LABEL" \
 ```bash
 kubectl logs -n "$NAMESPACE" -l "$GRAPH_LABEL" \
   --all-containers --prefix --tail=1500 |
-  tee "/tmp/qwen36-sglang-tp1ep2-4p4d-startup.log"
+  tee "$EXP_DIR/qwen36-sglang-tp1ep2-4p4d-startup.log"
 
 if grep -Ei 'traceback|assertionerror|notimplementederror|nixl_err|out of memory|does not support|unsupported' \
-  "/tmp/qwen36-sglang-tp1ep2-4p4d-startup.log"; then
+  "$EXP_DIR/qwen36-sglang-tp1ep2-4p4d-startup.log"; then
   echo "SGLang startup compatibility gate failed" >&2
-  exit 1
+  echo "STOP: do not continue to the request or benchmark steps" >&2
 fi
 
 grep -Ei 'sglang|nixl|ucx|rdma|prefill|decode|transfer|ready' \
-  "/tmp/qwen36-sglang-tp1ep2-4p4d-startup.log" | tail -300
+  "$EXP_DIR/qwen36-sglang-tp1ep2-4p4d-startup.log" | tail -300
 ```
 
 Do not benchmark merely because Pods are Ready. Send a real request:
 
 ```bash
-kubectl run qwen-smoke --rm -i --restart=Never \
-  --namespace "$NAMESPACE" --image=curlimages/curl -- \
-  curl -fsS -H 'Content-Type: application/json' \
-  --data-binary "{\"model\":\"${MODEL}\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly: smoke-test-ok\"}],\"temperature\":0,\"max_tokens\":32,\"stream\":false}" \
-  "http://${FRONTEND_SERVICE}:8000/v1/chat/completions"
+frontend_pod="$(kubectl get pods -n "$NAMESPACE" \
+  -l "$GRAPH_LABEL,nvidia.com/dynamo-component-type=frontend" \
+  -o jsonpath='{.items[0].metadata.name}')"
+
+timeout 330s kubectl exec -n "$NAMESPACE" "$frontend_pod" -- \
+  env "MODEL=$MODEL" \
+  python3 -c '
+import json
+import os
+import urllib.request
+
+body = json.dumps({
+    "model": os.environ["MODEL"],
+    "messages": [{
+        "role": "user",
+        "content": "Production NIXL smoke-test prefix. " * 256
+            + "\nReply with exactly: smoke-test-ok"
+    }],
+    "temperature": 0,
+    "max_tokens": 32,
+    "stream": False
+}).encode()
+
+request = urllib.request.Request(
+    "http://127.0.0.1:8000/v1/chat/completions",
+    body,
+    {"Content-Type": "application/json"},
+    method="POST"
+)
+
+with urllib.request.urlopen(request, timeout=300) as response:
+    print(json.dumps(json.load(response), indent=2))
+'
 
 kubectl logs -n "$NAMESPACE" -l "$GRAPH_LABEL" \
   --all-containers --prefix --since=10m |
@@ -630,418 +647,13 @@ Accept only a successful response plus successful NIXL/UCX transfer evidence.
 If logs report unsupported recurrent/GDN state, stop; changing TP size will not
 repair backend support.
 
-## Metrics and KV-transfer acceptance
+## Benchmark
 
-The manifest explicitly enables all three observability paths:
-
-- frontend/router Prometheus metrics at `http://${FRONTEND_SERVICE}:8000/metrics`;
-- Dynamo plus SGLang engine metrics at each worker's `9090/metrics`;
-- NIXL transfer metrics at each worker's `19090/metrics`.
-
-The Dynamo Operator should create the application PodMonitor and the managed
-Pods should expose named `system` and `nixl` ports. Verify this before a
-benchmark:
-
-```bash
-kubectl get podmonitor -A
-kubectl get pods -n "$NAMESPACE" -l "$GRAPH_LABEL" \
-  -o custom-columns='POD:.metadata.name,TYPE:.metadata.labels.nvidia\.com/dynamo-component-type,METRICS:.metadata.labels.nvidia\.com/metrics-enabled,PORTS:.spec.containers[0].ports[*].name'
-
-for pod in $(kubectl get pods -n "$NAMESPACE" -l "$GRAPH_LABEL" \
-  -l 'nvidia.com/dynamo-component-type=worker' -o name); do
-  echo "===== $pod: SGLang/Dynamo ====="
-  kubectl exec -n "$NAMESPACE" "$pod" -- \
-    python3 -c 'import urllib.request; print(urllib.request.urlopen("http://127.0.0.1:9090/metrics", timeout=5).read().decode())' |
-    grep -E '^(sglang:|dynamo_)' | head -20
-
-  echo "===== $pod: NIXL ====="
-  kubectl exec -n "$NAMESPACE" "$pod" -- \
-    python3 -c 'import urllib.request; print(urllib.request.urlopen("http://127.0.0.1:19090/metrics", timeout=5).read().decode())' |
-    grep -E '^nixl_' | head -30
-done
-```
-
-NIXL series are created lazily, so send the smoke request before requiring
-transfer counters. After traffic, require transferred bytes to increase and
-failed transfers to remain zero. Use [metrics.md](metrics.md) for direct
-endpoint checks, Prometheus target validation, and range-query export.
-
-## Create perf.yaml
-
-The benchmark supports two sequence-length modes:
-
-- `WORKLOAD_MODE=fixed` uses only `ISL` and `OSL`, with zero variance.
-- `WORKLOAD_MODE=mixed` ignores `ISL` and `OSL` and passes
-  `SEQUENCE_DISTRIBUTION` to AIPerf's native
-  `--sequence-distribution` option.
-
-Mixed mode requires `PREFIX_MODE=isolated`. The Job validates the distribution
-format, requires positive lengths and weights totaling 100, and records the
-selected mode and distribution in `input-config.json`.
-
-```bash
-tee "$EXP_DIR/perf.yaml" >/dev/null <<'EOF'
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: qwen36-sglang-tp1ep2-4p4d-perf
-spec:
-  backoffLimit: 0
-  completions: 1
-  parallelism: 1
-  activeDeadlineSeconds: 14400
-  template:
-    metadata:
-      labels:
-        app: qwen36-sglang-tp1ep2-4p4d-perf
-    spec:
-      restartPolicy: Never
-      tolerations:
-        - key: node-role.kubernetes.io/control-plane
-          operator: Exists
-          effect: NoSchedule
-        - key: nvidia.com/gpu
-          operator: Equal
-          value: "true"
-          effect: NoSchedule
-      containers:
-        - name: perf
-          image: python:3.12-slim
-          imagePullPolicy: IfNotPresent
-          workingDir: /workspace
-          command:
-            - /bin/bash
-            - -lc
-          args:
-            - |
-              set -euo pipefail
-
-              apt-get update
-              apt-get install -y --no-install-recommends build-essential curl jq procps
-              rm -rf /var/lib/apt/lists/*
-              python -m pip install --no-cache-dir "aiperf==0.10.0"
-
-              aiperf --version || true
-              python --version
-
-              prefix_args=()
-              length_args=()
-              exact_output_args=()
-
-              case "$WORKLOAD_MODE" in
-                fixed)
-                  case "$PREFIX_MODE" in
-                    isolated)
-                      prompt_tokens="$ISL"
-                      ;;
-                    shared)
-                      prefix_tokens=$((ISL * PREFIX_REUSE_PERCENT / 100))
-                      prompt_tokens=$((ISL - prefix_tokens))
-                      if [ "$prefix_tokens" -lt 1 ] || [ "$prompt_tokens" -lt 1 ]; then
-                        echo "PREFIX_REUSE_PERCENT must leave positive shared and unique lengths" >&2
-                        exit 2
-                      fi
-                      prefix_args=(
-                        --prefix-prompt-pool-size "$PREFIX_GROUPS"
-                        --prefix-prompt-length "$prefix_tokens"
-                      )
-                      ;;
-                    *)
-                      echo "PREFIX_MODE must be isolated or shared" >&2
-                      exit 2
-                      ;;
-                  esac
-                  length_args=(
-                    --isl "$prompt_tokens"
-                    --isl-stddev 0
-                    --osl "$OSL"
-                    --osl-stddev 0
-                  )
-                  exact_output_args=(
-                    --extra-inputs "max_tokens:$OSL"
-                    --extra-inputs "min_tokens:$OSL"
-                  )
-                  run_shape="isl-${ISL}_osl-${OSL}"
-                  ;;
-                mixed)
-                  if [ "$PREFIX_MODE" != isolated ]; then
-                    echo "WORKLOAD_MODE=mixed requires PREFIX_MODE=isolated" >&2
-                    exit 2
-                  fi
-                  python - "$SEQUENCE_DISTRIBUTION" <<'PY'
-              import sys
-
-              raw = sys.argv[1]
-              if not raw:
-                  raise SystemExit("SEQUENCE_DISTRIBUTION must not be empty")
-
-              total = 0
-              for entry in raw.split(";"):
-                  try:
-                      pair, weight_text = entry.split(":", 1)
-                      isl_text, osl_text = pair.split(",", 1)
-                      isl = int(isl_text)
-                      osl = int(osl_text)
-                      weight = int(weight_text)
-                  except ValueError as exc:
-                      raise SystemExit(
-                          f"Invalid sequence-distribution entry: {entry!r}"
-                      ) from exc
-                  if isl < 1 or osl < 1 or weight < 1:
-                      raise SystemExit(
-                          f"ISL, OSL, and weight must be positive: {entry!r}"
-                      )
-                  total += weight
-
-              if total != 100:
-                  raise SystemExit(
-                      f"Sequence-distribution weights must total 100, got {total}"
-                  )
-              print(f"Validated mixed sequence distribution: {raw}")
-              PY
-                  aiperf profile --help |
-                    grep -F -- '--sequence-distribution' >/dev/null || {
-                      echo "Installed AIPerf lacks --sequence-distribution" >&2
-                      exit 2
-                    }
-                  length_args=(
-                    --sequence-distribution "$SEQUENCE_DISTRIBUTION"
-                  )
-                  distribution_id="$(
-                    printf '%s' "$SEQUENCE_DISTRIBUTION" |
-                      sha256sum |
-                      cut -c1-12
-                  )"
-                  run_shape="mixed-${distribution_id}"
-                  ;;
-                *)
-                  echo "WORKLOAD_MODE must be fixed or mixed" >&2
-                  exit 2
-                  ;;
-              esac
-
-              endpoint_url="${ENDPOINT%/}"
-              case "$endpoint_url" in
-                http://*|https://*) ;;
-                *) endpoint_url="http://${endpoint_url}" ;;
-              esac
-
-              echo "Waiting for ${TARGET_MODEL} at ${endpoint_url}/v1/models"
-              attempt=1
-              until models_json="$(curl -fsS --max-time 10 "${endpoint_url}/v1/models")" &&
-                printf '%s' "$models_json" | jq -e --arg model "$TARGET_MODEL" \
-                  '.data[]? | select(.id == $model)' >/dev/null; do
-                if [ "$attempt" -ge 540 ]; then
-                  echo "Model readiness timed out after 45 minutes" >&2
-                  exit 1
-                fi
-                attempt=$((attempt + 1))
-                sleep 5
-              done
-              printf '%s' "$models_json" | jq .
-
-              test -e "$TOKENIZER" || {
-                echo "Tokenizer path does not exist: $TOKENIZER" >&2
-                exit 1
-              }
-
-              mkdir -p "$ARTIFACT_ROOT" "$HF_HOME" /perf-cache/tmp
-              export TMPDIR=/perf-cache/tmp
-              run_root="${ARTIFACT_ROOT}/${TOPOLOGY_NAME}/${PREFIX_MODE}/${WORKLOAD_NAME}/${run_shape}"
-              mkdir -p "$run_root"
-              status_file="${run_root}/matrix-status.tsv"
-
-              printf '%s\n' "$models_json" > "${run_root}/models.json"
-              curl -fsS "${endpoint_url}/metrics" > "${run_root}/frontend-metrics-before.prom" || true
-              jq -n \
-                --arg topology "$TOPOLOGY_NAME" \
-                --arg workload "$WORKLOAD_NAME" \
-                --arg workload_mode "$WORKLOAD_MODE" \
-                --arg prefix_mode "$PREFIX_MODE" \
-                --arg sequence_distribution "$SEQUENCE_DISTRIBUTION" \
-                --arg model "$TARGET_MODEL" \
-                --arg tokenizer "$TOKENIZER" \
-                --arg endpoint "$endpoint_url" \
-                --arg concurrencies "$CONCURRENCIES" \
-                --argjson isl "$ISL" \
-                --argjson osl "$OSL" \
-                --argjson duration "$BENCHMARK_DURATION" \
-                --argjson warmup "$WARMUP_REQUESTS" \
-                --argjson seed "$RANDOM_SEED" \
-                --argjson request_timeout "$REQUEST_TIMEOUT" \
-                --argjson prefix_groups "$PREFIX_GROUPS" \
-                --argjson prefix_reuse_percent "$PREFIX_REUSE_PERCENT" \
-                '{topology:$topology, workload:$workload,
-                  workload_mode:$workload_mode, prefix_mode:$prefix_mode,
-                  sequence_distribution:$sequence_distribution,
-                  model:$model, tokenizer:$tokenizer, endpoint:$endpoint,
-                  isl:(if $workload_mode == "fixed" then $isl else null end),
-                  osl:(if $workload_mode == "fixed" then $osl else null end),
-                  concurrencies:$concurrencies,
-                  benchmark_duration_seconds:$duration, warmup_requests:$warmup,
-                  random_seed:$seed, request_timeout_seconds:$request_timeout,
-                  prefix_groups:$prefix_groups,
-                  target_prefix_token_percent:$prefix_reuse_percent,
-                  aiperf:"0.10.0", dynamo:"1.3.0", backend:"sglang"}' \
-                > "${run_root}/input-config.json"
-              printf 'concurrency\tstatus\tfinished_utc\n' > "$status_file"
-
-              server_metric_args=()
-              if [ -n "$SERVER_METRICS_URLS" ]; then
-                read -r -a metric_urls <<< "$SERVER_METRICS_URLS"
-                server_metric_args=(--server-metrics "${metric_urls[@]}")
-              fi
-
-              failures=0
-              for concurrency in $CONCURRENCIES; do
-                artifact_dir="${run_root}/c${concurrency}"
-                if [ -e "${artifact_dir}/profile_export_raw.jsonl" ]; then
-                  echo "Refusing to overwrite existing raw artifacts: $artifact_dir" >&2
-                  exit 1
-                fi
-                mkdir -p "$artifact_dir"
-
-                if ! curl -fsS --max-time 10 "${endpoint_url}/v1/models" |
-                  jq -e --arg model "$TARGET_MODEL" \
-                    '.data[]? | select(.id == $model)' >/dev/null; then
-                  echo "Expected model disappeared before concurrency $concurrency" >&2
-                  exit 1
-                fi
-
-                echo "Starting workload=$WORKLOAD_NAME mode=$WORKLOAD_MODE prefix=$PREFIX_MODE shape=$run_shape concurrency=$concurrency"
-                if aiperf profile \
-                  --model "$TARGET_MODEL" \
-                  --tokenizer "$TOKENIZER" \
-                  --url "$endpoint_url" \
-                  --endpoint-type chat \
-                  --streaming \
-                  --concurrency "$concurrency" \
-                  --benchmark-duration "$BENCHMARK_DURATION" \
-                  --benchmark-grace-period "$GRACE_PERIOD" \
-                  --warmup-request-count "$WARMUP_REQUESTS" \
-                  --request-timeout-seconds "$REQUEST_TIMEOUT" \
-                  "${length_args[@]}" \
-                  "${exact_output_args[@]}" \
-                  --extra-inputs ignore_eos:true \
-                  --extra-inputs temperature:0.0 \
-                  --extra-inputs '{"chat_template_kwargs":{"enable_thinking":false}}' \
-                  --num-dataset-entries "$NUM_DATASET_ENTRIES" \
-                  --random-seed "$RANDOM_SEED" \
-                  --server-metrics-formats json csv jsonl \
-                  "${prefix_args[@]}" \
-                  "${server_metric_args[@]}" \
-                  --ui simple \
-                  --artifact-dir "$artifact_dir"; then
-                  status=PASS
-                else
-                  status=FAIL
-                  failures=$((failures + 1))
-                fi
-                printf '%s\t%s\t%s\n' "$concurrency" "$status" \
-                  "$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$status_file"
-              done
-
-              curl -fsS "${endpoint_url}/metrics" > "${run_root}/frontend-metrics-after.prom" || true
-              echo "Benchmark artifacts: $run_root"
-              [ "$failures" -eq 0 ]
-          env:
-            - name: TARGET_MODEL
-              value: Qwen/Qwen3.6-35B-A3B-FP8
-            - name: TOKENIZER
-              value: /opt/models/hub/models--Qwen--Qwen3.6-35B-A3B-FP8/snapshots/95a723d08a9490559dae23d0cff1d9466213d989
-            - name: ENDPOINT
-              value: q36-sgl-pd-tp1ep2-4p4d-frontend:8000
-            - name: ISL
-              value: "8000"
-            - name: OSL
-              value: "1024"
-            - name: WORKLOAD_MODE
-              value: fixed
-            - name: SEQUENCE_DISTRIBUTION
-              value: "1024,256:35;4096,512:30;8192,1024:20;16384,512:10;32768,256:5"
-            - name: CONCURRENCIES
-              value: "1 2 4 8 16 32 64 128"
-            - name: BENCHMARK_DURATION
-              value: "180"
-            - name: WARMUP_REQUESTS
-              value: "32"
-            - name: RANDOM_SEED
-              value: "42"
-            - name: ARTIFACT_ROOT
-              value: /perf-cache/aiperf/qwen36-sglang
-            - name: TOPOLOGY_NAME
-              value: tp1-ep2-4p4d
-            - name: WORKLOAD_NAME
-              value: balanced
-            - name: PREFIX_MODE
-              value: isolated
-            - name: REQUEST_TIMEOUT
-              value: "3600"
-            - name: PREFIX_GROUPS
-              value: "8"
-            - name: PREFIX_REUSE_PERCENT
-              value: "75"
-            - name: NUM_DATASET_ENTRIES
-              value: "4096"
-            - name: GRACE_PERIOD
-              value: "600"
-            - name: SERVER_METRICS_URLS
-              value: ""
-            - name: AIPERF_HTTP_CONNECTION_LIMIT
-              value: "512"
-            - name: HF_HOME
-              value: /perf-cache/hf-aiperf-cache
-            - name: PYTHONUNBUFFERED
-              value: "1"
-          resources:
-            requests:
-              cpu: "4"
-              memory: 8Gi
-              ephemeral-storage: 4Gi
-            limits:
-              cpu: "16"
-              memory: 32Gi
-              ephemeral-storage: 16Gi
-          volumeMounts:
-            - name: perf-cache
-              mountPath: /perf-cache
-            - name: model-cache
-              mountPath: /opt/models
-              readOnly: true
-      volumes:
-        - name: perf-cache
-          persistentVolumeClaim:
-            claimName: perf-cache
-        - name: model-cache
-          persistentVolumeClaim:
-            claimName: model-cache
-EOF
-```
-
-## Quick benchmark
-
-The quick benchmark exercises mixed-mode support with the configured weighted
-distribution. It uses a new artifact root on every rerun:
-
-```bash
-kubectl delete job -n "$NAMESPACE" "$PERF_JOB_NAME" --ignore-not-found
-kubectl set env --local -f "$EXP_DIR/perf.yaml" -o yaml \
-  WORKLOAD_MODE=mixed WORKLOAD_NAME=quick-mixed \
-  SEQUENCE_DISTRIBUTION='1024,256:35;4096,512:30;8192,1024:20;16384,512:10;32768,256:5' \
-  PREFIX_MODE=isolated CONCURRENCIES=4 BENCHMARK_DURATION=30 \
-  WARMUP_REQUESTS=4 \
-  ARTIFACT_ROOT="/perf-cache/aiperf/qwen36-sglang-quick-$(date -u +%Y%m%dT%H%M%SZ)" |
-  kubectl apply -n "$NAMESPACE" -f -
-kubectl logs -n "$NAMESPACE" -f "job/$PERF_JOB_NAME"
-kubectl wait -n "$NAMESPACE" --for=condition=Complete \
-  "job/$PERF_JOB_NAME" --timeout=14400s
-```
-
-This 30-second run verifies feature operation; it is too short to guarantee
-that completed requests exactly match the target percentages, particularly
-for 32K inputs. For measurements, use at least 180 seconds and keep the
-distribution, concurrency, duration, warmup, and random seed identical across
-the compared deployments.
+After all acceptance gates pass, follow [benchmark.md](benchmark.md) to create
+`$EXP_DIR/perf.yaml` and compare KV-aware routing against KV-aware routing with
+prefill CPU offload. The benchmark runbook owns the prefill-heavy,
+decode-heavy, and mixed presets, metric snapshots, A/B plots, cold-burst
+diagnostic, required environment variables, and artifact locations.
 
 ## Cleanup
 
