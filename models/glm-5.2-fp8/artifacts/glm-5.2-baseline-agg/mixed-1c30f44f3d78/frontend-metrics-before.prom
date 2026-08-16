@@ -1,0 +1,568 @@
+# HELP dynamo_frontend_detokenize_token_count Total tokens detokenized
+# TYPE dynamo_frontend_detokenize_token_count counter
+dynamo_frontend_detokenize_token_count 0
+# HELP dynamo_frontend_detokenize_total_us Cumulative detokenization time (microseconds)
+# TYPE dynamo_frontend_detokenize_total_us counter
+dynamo_frontend_detokenize_total_us 0
+# HELP dynamo_frontend_disconnected_clients Number of disconnected clients
+# TYPE dynamo_frontend_disconnected_clients gauge
+dynamo_frontend_disconnected_clients 0
+# HELP dynamo_frontend_event_loop_delay_seconds Event loop delay canary: drift from 10ms sleep (seconds)
+# TYPE dynamo_frontend_event_loop_delay_seconds histogram
+dynamo_frontend_event_loop_delay_seconds_bucket{le="0"} 0
+dynamo_frontend_event_loop_delay_seconds_bucket{le="0.001"} 4404
+dynamo_frontend_event_loop_delay_seconds_bucket{le="0.005"} 368582
+dynamo_frontend_event_loop_delay_seconds_bucket{le="0.01"} 368582
+dynamo_frontend_event_loop_delay_seconds_bucket{le="0.025"} 368582
+dynamo_frontend_event_loop_delay_seconds_bucket{le="0.05"} 368582
+dynamo_frontend_event_loop_delay_seconds_bucket{le="0.1"} 368582
+dynamo_frontend_event_loop_delay_seconds_bucket{le="0.25"} 368582
+dynamo_frontend_event_loop_delay_seconds_bucket{le="0.5"} 368582
+dynamo_frontend_event_loop_delay_seconds_bucket{le="1"} 368582
+dynamo_frontend_event_loop_delay_seconds_bucket{le="+Inf"} 368582
+dynamo_frontend_event_loop_delay_seconds_sum 389.0795950590325
+dynamo_frontend_event_loop_delay_seconds_count 368582
+# HELP dynamo_frontend_event_loop_stall_total Number of event loop stalls (delay > 5ms)
+# TYPE dynamo_frontend_event_loop_stall_total counter
+dynamo_frontend_event_loop_stall_total 0
+# HELP dynamo_frontend_lora_churn_loads_total Total LoRA loads (new placements) this tick
+# TYPE dynamo_frontend_lora_churn_loads_total gauge
+dynamo_frontend_lora_churn_loads_total 0
+# HELP dynamo_frontend_lora_churn_unloads_total Total LoRA unloads (removed placements) this tick
+# TYPE dynamo_frontend_lora_churn_unloads_total gauge
+dynamo_frontend_lora_churn_unloads_total 0
+# HELP dynamo_frontend_lora_overflow_count MCF solver overflow count (unplaceable replicas)
+# TYPE dynamo_frontend_lora_overflow_count gauge
+dynamo_frontend_lora_overflow_count 0
+# HELP dynamo_frontend_model_context_length Maximum context length in tokens for a worker serving the model
+# TYPE dynamo_frontend_model_context_length gauge
+dynamo_frontend_model_context_length{model="zai-org/GLM-5.2-FP8"} 131072
+# HELP dynamo_frontend_model_kv_cache_block_size KV cache block size in tokens for a worker serving the model
+# TYPE dynamo_frontend_model_kv_cache_block_size gauge
+dynamo_frontend_model_kv_cache_block_size{model="zai-org/GLM-5.2-FP8"} 64
+# HELP dynamo_frontend_model_max_num_batched_tokens Maximum number of batched tokens for a worker serving the model
+# TYPE dynamo_frontend_model_max_num_batched_tokens gauge
+dynamo_frontend_model_max_num_batched_tokens{model="zai-org/GLM-5.2-FP8"} 8192
+# HELP dynamo_frontend_model_max_num_seqs Maximum number of sequences for a worker serving the model
+# TYPE dynamo_frontend_model_max_num_seqs gauge
+dynamo_frontend_model_max_num_seqs{model="zai-org/GLM-5.2-FP8"} 16
+# HELP dynamo_frontend_model_migration_limit Maximum number of request migrations allowed for the model
+# TYPE dynamo_frontend_model_migration_limit gauge
+dynamo_frontend_model_migration_limit{model="zai-org/GLM-5.2-FP8"} 0
+# HELP dynamo_frontend_model_total_kv_blocks Total KV cache blocks available for a worker serving the model
+# TYPE dynamo_frontend_model_total_kv_blocks gauge
+dynamo_frontend_model_total_kv_blocks{model="zai-org/GLM-5.2-FP8"} 3533
+# HELP dynamo_frontend_template_seconds Template application time in preprocessor (seconds)
+# TYPE dynamo_frontend_template_seconds histogram
+dynamo_frontend_template_seconds_bucket{le="0.00001"} 0
+dynamo_frontend_template_seconds_bucket{le="0.00005"} 0
+dynamo_frontend_template_seconds_bucket{le="0.0001"} 0
+dynamo_frontend_template_seconds_bucket{le="0.0005"} 0
+dynamo_frontend_template_seconds_bucket{le="0.001"} 0
+dynamo_frontend_template_seconds_bucket{le="0.005"} 0
+dynamo_frontend_template_seconds_bucket{le="0.01"} 0
+dynamo_frontend_template_seconds_bucket{le="0.05"} 0
+dynamo_frontend_template_seconds_bucket{le="+Inf"} 0
+dynamo_frontend_template_seconds_sum 0
+dynamo_frontend_template_seconds_count 0
+# HELP dynamo_frontend_tokenize_seconds Tokenization time in preprocessor (seconds)
+# TYPE dynamo_frontend_tokenize_seconds histogram
+dynamo_frontend_tokenize_seconds_bucket{le="0.0001"} 0
+dynamo_frontend_tokenize_seconds_bucket{le="0.0005"} 0
+dynamo_frontend_tokenize_seconds_bucket{le="0.001"} 0
+dynamo_frontend_tokenize_seconds_bucket{le="0.005"} 0
+dynamo_frontend_tokenize_seconds_bucket{le="0.01"} 0
+dynamo_frontend_tokenize_seconds_bucket{le="0.05"} 0
+dynamo_frontend_tokenize_seconds_bucket{le="0.1"} 0
+dynamo_frontend_tokenize_seconds_bucket{le="0.5"} 0
+dynamo_frontend_tokenize_seconds_bucket{le="1"} 0
+dynamo_frontend_tokenize_seconds_bucket{le="+Inf"} 0
+dynamo_frontend_tokenize_seconds_sum 0
+dynamo_frontend_tokenize_seconds_count 0
+# HELP dynamo_frontend_tokenizer_cache_hits_total Cumulative L1 tokenizer prefix-cache hits
+# TYPE dynamo_frontend_tokenizer_cache_hits_total counter
+dynamo_frontend_tokenizer_cache_hits_total 0
+# HELP dynamo_frontend_tokenizer_cache_misses_total Cumulative L1 tokenizer prefix-cache misses
+# TYPE dynamo_frontend_tokenizer_cache_misses_total counter
+dynamo_frontend_tokenizer_cache_misses_total 0
+# HELP dynamo_request_plane_inflight_requests Currently in-flight requests at AddressedPushRouter
+# TYPE dynamo_request_plane_inflight_requests gauge
+dynamo_request_plane_inflight_requests 0
+# HELP dynamo_request_plane_queue_seconds Time from generate() entry to send_request() (seconds)
+# TYPE dynamo_request_plane_queue_seconds histogram
+dynamo_request_plane_queue_seconds_bucket{le="0.0001"} 0
+dynamo_request_plane_queue_seconds_bucket{le="0.0005"} 0
+dynamo_request_plane_queue_seconds_bucket{le="0.001"} 0
+dynamo_request_plane_queue_seconds_bucket{le="0.005"} 0
+dynamo_request_plane_queue_seconds_bucket{le="0.01"} 0
+dynamo_request_plane_queue_seconds_bucket{le="0.05"} 0
+dynamo_request_plane_queue_seconds_bucket{le="0.1"} 0
+dynamo_request_plane_queue_seconds_bucket{le="0.5"} 0
+dynamo_request_plane_queue_seconds_bucket{le="1"} 0
+dynamo_request_plane_queue_seconds_bucket{le="+Inf"} 0
+dynamo_request_plane_queue_seconds_sum 0
+dynamo_request_plane_queue_seconds_count 0
+# HELP dynamo_request_plane_roundtrip_ttft_seconds Time from send_request() to first response item (seconds)
+# TYPE dynamo_request_plane_roundtrip_ttft_seconds histogram
+dynamo_request_plane_roundtrip_ttft_seconds_bucket{le="0.001"} 0
+dynamo_request_plane_roundtrip_ttft_seconds_bucket{le="0.005"} 0
+dynamo_request_plane_roundtrip_ttft_seconds_bucket{le="0.01"} 0
+dynamo_request_plane_roundtrip_ttft_seconds_bucket{le="0.025"} 0
+dynamo_request_plane_roundtrip_ttft_seconds_bucket{le="0.05"} 0
+dynamo_request_plane_roundtrip_ttft_seconds_bucket{le="0.1"} 0
+dynamo_request_plane_roundtrip_ttft_seconds_bucket{le="0.25"} 0
+dynamo_request_plane_roundtrip_ttft_seconds_bucket{le="0.5"} 0
+dynamo_request_plane_roundtrip_ttft_seconds_bucket{le="1"} 0
+dynamo_request_plane_roundtrip_ttft_seconds_bucket{le="2.5"} 0
+dynamo_request_plane_roundtrip_ttft_seconds_bucket{le="5"} 0
+dynamo_request_plane_roundtrip_ttft_seconds_bucket{le="+Inf"} 0
+dynamo_request_plane_roundtrip_ttft_seconds_sum 0
+dynamo_request_plane_roundtrip_ttft_seconds_count 0
+# HELP dynamo_request_plane_send_seconds Time for send_request() to complete (seconds)
+# TYPE dynamo_request_plane_send_seconds histogram
+dynamo_request_plane_send_seconds_bucket{le="0.0001"} 0
+dynamo_request_plane_send_seconds_bucket{le="0.0005"} 0
+dynamo_request_plane_send_seconds_bucket{le="0.001"} 0
+dynamo_request_plane_send_seconds_bucket{le="0.005"} 0
+dynamo_request_plane_send_seconds_bucket{le="0.01"} 0
+dynamo_request_plane_send_seconds_bucket{le="0.05"} 0
+dynamo_request_plane_send_seconds_bucket{le="0.1"} 0
+dynamo_request_plane_send_seconds_bucket{le="0.5"} 0
+dynamo_request_plane_send_seconds_bucket{le="1"} 0
+dynamo_request_plane_send_seconds_bucket{le="+Inf"} 0
+dynamo_request_plane_send_seconds_sum 0
+dynamo_request_plane_send_seconds_count 0
+# HELP dynamo_router_overhead_block_hashing_ms Time spent computing block hashes in milliseconds
+# TYPE dynamo_router_overhead_block_hashing_ms histogram
+dynamo_router_overhead_block_hashing_ms_bucket{router_id="1774436734316588",le="0.001"} 0
+dynamo_router_overhead_block_hashing_ms_bucket{router_id="1774436734316588",le="0.002"} 0
+dynamo_router_overhead_block_hashing_ms_bucket{router_id="1774436734316588",le="0.004"} 0
+dynamo_router_overhead_block_hashing_ms_bucket{router_id="1774436734316588",le="0.008"} 0
+dynamo_router_overhead_block_hashing_ms_bucket{router_id="1774436734316588",le="0.016"} 0
+dynamo_router_overhead_block_hashing_ms_bucket{router_id="1774436734316588",le="0.032"} 0
+dynamo_router_overhead_block_hashing_ms_bucket{router_id="1774436734316588",le="0.064"} 0
+dynamo_router_overhead_block_hashing_ms_bucket{router_id="1774436734316588",le="0.128"} 0
+dynamo_router_overhead_block_hashing_ms_bucket{router_id="1774436734316588",le="0.256"} 0
+dynamo_router_overhead_block_hashing_ms_bucket{router_id="1774436734316588",le="0.512"} 0
+dynamo_router_overhead_block_hashing_ms_bucket{router_id="1774436734316588",le="1.024"} 0
+dynamo_router_overhead_block_hashing_ms_bucket{router_id="1774436734316588",le="2.048"} 0
+dynamo_router_overhead_block_hashing_ms_bucket{router_id="1774436734316588",le="4.096"} 0
+dynamo_router_overhead_block_hashing_ms_bucket{router_id="1774436734316588",le="8.192"} 0
+dynamo_router_overhead_block_hashing_ms_bucket{router_id="1774436734316588",le="16.384"} 0
+dynamo_router_overhead_block_hashing_ms_bucket{router_id="1774436734316588",le="+Inf"} 0
+dynamo_router_overhead_block_hashing_ms_sum{router_id="1774436734316588"} 0
+dynamo_router_overhead_block_hashing_ms_count{router_id="1774436734316588"} 0
+# HELP dynamo_router_overhead_indexer_find_matches_ms Time spent in indexer find_matches in milliseconds
+# TYPE dynamo_router_overhead_indexer_find_matches_ms histogram
+dynamo_router_overhead_indexer_find_matches_ms_bucket{router_id="1774436734316588",le="0.01"} 0
+dynamo_router_overhead_indexer_find_matches_ms_bucket{router_id="1774436734316588",le="0.03"} 0
+dynamo_router_overhead_indexer_find_matches_ms_bucket{router_id="1774436734316588",le="0.09"} 0
+dynamo_router_overhead_indexer_find_matches_ms_bucket{router_id="1774436734316588",le="0.27"} 0
+dynamo_router_overhead_indexer_find_matches_ms_bucket{router_id="1774436734316588",le="0.81"} 0
+dynamo_router_overhead_indexer_find_matches_ms_bucket{router_id="1774436734316588",le="2.43"} 0
+dynamo_router_overhead_indexer_find_matches_ms_bucket{router_id="1774436734316588",le="7.290000000000001"} 0
+dynamo_router_overhead_indexer_find_matches_ms_bucket{router_id="1774436734316588",le="21.870000000000005"} 0
+dynamo_router_overhead_indexer_find_matches_ms_bucket{router_id="1774436734316588",le="65.61000000000001"} 0
+dynamo_router_overhead_indexer_find_matches_ms_bucket{router_id="1774436734316588",le="196.83000000000004"} 0
+dynamo_router_overhead_indexer_find_matches_ms_bucket{router_id="1774436734316588",le="590.4900000000001"} 0
+dynamo_router_overhead_indexer_find_matches_ms_bucket{router_id="1774436734316588",le="1771.4700000000003"} 0
+dynamo_router_overhead_indexer_find_matches_ms_bucket{router_id="1774436734316588",le="5314.410000000001"} 0
+dynamo_router_overhead_indexer_find_matches_ms_bucket{router_id="1774436734316588",le="15943.230000000003"} 0
+dynamo_router_overhead_indexer_find_matches_ms_bucket{router_id="1774436734316588",le="47829.69000000001"} 0
+dynamo_router_overhead_indexer_find_matches_ms_bucket{router_id="1774436734316588",le="143489.07000000004"} 0
+dynamo_router_overhead_indexer_find_matches_ms_bucket{router_id="1774436734316588",le="430467.2100000001"} 0
+dynamo_router_overhead_indexer_find_matches_ms_bucket{router_id="1774436734316588",le="+Inf"} 0
+dynamo_router_overhead_indexer_find_matches_ms_sum{router_id="1774436734316588"} 0
+dynamo_router_overhead_indexer_find_matches_ms_count{router_id="1774436734316588"} 0
+# HELP dynamo_router_overhead_scheduling_ms Time spent in scheduler worker selection in milliseconds
+# TYPE dynamo_router_overhead_scheduling_ms histogram
+dynamo_router_overhead_scheduling_ms_bucket{router_id="1774436734316588",le="0.01"} 0
+dynamo_router_overhead_scheduling_ms_bucket{router_id="1774436734316588",le="0.03"} 0
+dynamo_router_overhead_scheduling_ms_bucket{router_id="1774436734316588",le="0.09"} 0
+dynamo_router_overhead_scheduling_ms_bucket{router_id="1774436734316588",le="0.27"} 0
+dynamo_router_overhead_scheduling_ms_bucket{router_id="1774436734316588",le="0.81"} 0
+dynamo_router_overhead_scheduling_ms_bucket{router_id="1774436734316588",le="2.43"} 0
+dynamo_router_overhead_scheduling_ms_bucket{router_id="1774436734316588",le="7.290000000000001"} 0
+dynamo_router_overhead_scheduling_ms_bucket{router_id="1774436734316588",le="21.870000000000005"} 0
+dynamo_router_overhead_scheduling_ms_bucket{router_id="1774436734316588",le="65.61000000000001"} 0
+dynamo_router_overhead_scheduling_ms_bucket{router_id="1774436734316588",le="196.83000000000004"} 0
+dynamo_router_overhead_scheduling_ms_bucket{router_id="1774436734316588",le="590.4900000000001"} 0
+dynamo_router_overhead_scheduling_ms_bucket{router_id="1774436734316588",le="1771.4700000000003"} 0
+dynamo_router_overhead_scheduling_ms_bucket{router_id="1774436734316588",le="5314.410000000001"} 0
+dynamo_router_overhead_scheduling_ms_bucket{router_id="1774436734316588",le="15943.230000000003"} 0
+dynamo_router_overhead_scheduling_ms_bucket{router_id="1774436734316588",le="47829.69000000001"} 0
+dynamo_router_overhead_scheduling_ms_bucket{router_id="1774436734316588",le="143489.07000000004"} 0
+dynamo_router_overhead_scheduling_ms_bucket{router_id="1774436734316588",le="430467.2100000001"} 0
+dynamo_router_overhead_scheduling_ms_bucket{router_id="1774436734316588",le="+Inf"} 0
+dynamo_router_overhead_scheduling_ms_sum{router_id="1774436734316588"} 0
+dynamo_router_overhead_scheduling_ms_count{router_id="1774436734316588"} 0
+# HELP dynamo_router_overhead_seq_hashing_ms Time spent computing sequence hashes in milliseconds
+# TYPE dynamo_router_overhead_seq_hashing_ms histogram
+dynamo_router_overhead_seq_hashing_ms_bucket{router_id="1774436734316588",le="0.001"} 0
+dynamo_router_overhead_seq_hashing_ms_bucket{router_id="1774436734316588",le="0.002"} 0
+dynamo_router_overhead_seq_hashing_ms_bucket{router_id="1774436734316588",le="0.004"} 0
+dynamo_router_overhead_seq_hashing_ms_bucket{router_id="1774436734316588",le="0.008"} 0
+dynamo_router_overhead_seq_hashing_ms_bucket{router_id="1774436734316588",le="0.016"} 0
+dynamo_router_overhead_seq_hashing_ms_bucket{router_id="1774436734316588",le="0.032"} 0
+dynamo_router_overhead_seq_hashing_ms_bucket{router_id="1774436734316588",le="0.064"} 0
+dynamo_router_overhead_seq_hashing_ms_bucket{router_id="1774436734316588",le="0.128"} 0
+dynamo_router_overhead_seq_hashing_ms_bucket{router_id="1774436734316588",le="0.256"} 0
+dynamo_router_overhead_seq_hashing_ms_bucket{router_id="1774436734316588",le="0.512"} 0
+dynamo_router_overhead_seq_hashing_ms_bucket{router_id="1774436734316588",le="1.024"} 0
+dynamo_router_overhead_seq_hashing_ms_bucket{router_id="1774436734316588",le="2.048"} 0
+dynamo_router_overhead_seq_hashing_ms_bucket{router_id="1774436734316588",le="4.096"} 0
+dynamo_router_overhead_seq_hashing_ms_bucket{router_id="1774436734316588",le="8.192"} 0
+dynamo_router_overhead_seq_hashing_ms_bucket{router_id="1774436734316588",le="16.384"} 0
+dynamo_router_overhead_seq_hashing_ms_bucket{router_id="1774436734316588",le="+Inf"} 0
+dynamo_router_overhead_seq_hashing_ms_sum{router_id="1774436734316588"} 0
+dynamo_router_overhead_seq_hashing_ms_count{router_id="1774436734316588"} 0
+# HELP dynamo_router_overhead_shared_cache_query_ms Time spent querying the shared KV cache in milliseconds
+# TYPE dynamo_router_overhead_shared_cache_query_ms histogram
+dynamo_router_overhead_shared_cache_query_ms_bucket{router_id="1774436734316588",le="0.01"} 0
+dynamo_router_overhead_shared_cache_query_ms_bucket{router_id="1774436734316588",le="0.03"} 0
+dynamo_router_overhead_shared_cache_query_ms_bucket{router_id="1774436734316588",le="0.09"} 0
+dynamo_router_overhead_shared_cache_query_ms_bucket{router_id="1774436734316588",le="0.27"} 0
+dynamo_router_overhead_shared_cache_query_ms_bucket{router_id="1774436734316588",le="0.81"} 0
+dynamo_router_overhead_shared_cache_query_ms_bucket{router_id="1774436734316588",le="2.43"} 0
+dynamo_router_overhead_shared_cache_query_ms_bucket{router_id="1774436734316588",le="7.290000000000001"} 0
+dynamo_router_overhead_shared_cache_query_ms_bucket{router_id="1774436734316588",le="21.870000000000005"} 0
+dynamo_router_overhead_shared_cache_query_ms_bucket{router_id="1774436734316588",le="65.61000000000001"} 0
+dynamo_router_overhead_shared_cache_query_ms_bucket{router_id="1774436734316588",le="196.83000000000004"} 0
+dynamo_router_overhead_shared_cache_query_ms_bucket{router_id="1774436734316588",le="590.4900000000001"} 0
+dynamo_router_overhead_shared_cache_query_ms_bucket{router_id="1774436734316588",le="1771.4700000000003"} 0
+dynamo_router_overhead_shared_cache_query_ms_bucket{router_id="1774436734316588",le="5314.410000000001"} 0
+dynamo_router_overhead_shared_cache_query_ms_bucket{router_id="1774436734316588",le="15943.230000000003"} 0
+dynamo_router_overhead_shared_cache_query_ms_bucket{router_id="1774436734316588",le="47829.69000000001"} 0
+dynamo_router_overhead_shared_cache_query_ms_bucket{router_id="1774436734316588",le="143489.07000000004"} 0
+dynamo_router_overhead_shared_cache_query_ms_bucket{router_id="1774436734316588",le="430467.2100000001"} 0
+dynamo_router_overhead_shared_cache_query_ms_bucket{router_id="1774436734316588",le="+Inf"} 0
+dynamo_router_overhead_shared_cache_query_ms_sum{router_id="1774436734316588"} 0
+dynamo_router_overhead_shared_cache_query_ms_count{router_id="1774436734316588"} 0
+# HELP dynamo_router_overhead_total_ms Total routing overhead per request in milliseconds
+# TYPE dynamo_router_overhead_total_ms histogram
+dynamo_router_overhead_total_ms_bucket{router_id="1774436734316588",le="0.01"} 0
+dynamo_router_overhead_total_ms_bucket{router_id="1774436734316588",le="0.03"} 0
+dynamo_router_overhead_total_ms_bucket{router_id="1774436734316588",le="0.09"} 0
+dynamo_router_overhead_total_ms_bucket{router_id="1774436734316588",le="0.27"} 0
+dynamo_router_overhead_total_ms_bucket{router_id="1774436734316588",le="0.81"} 0
+dynamo_router_overhead_total_ms_bucket{router_id="1774436734316588",le="2.43"} 0
+dynamo_router_overhead_total_ms_bucket{router_id="1774436734316588",le="7.290000000000001"} 0
+dynamo_router_overhead_total_ms_bucket{router_id="1774436734316588",le="21.870000000000005"} 0
+dynamo_router_overhead_total_ms_bucket{router_id="1774436734316588",le="65.61000000000001"} 0
+dynamo_router_overhead_total_ms_bucket{router_id="1774436734316588",le="196.83000000000004"} 0
+dynamo_router_overhead_total_ms_bucket{router_id="1774436734316588",le="590.4900000000001"} 0
+dynamo_router_overhead_total_ms_bucket{router_id="1774436734316588",le="1771.4700000000003"} 0
+dynamo_router_overhead_total_ms_bucket{router_id="1774436734316588",le="5314.410000000001"} 0
+dynamo_router_overhead_total_ms_bucket{router_id="1774436734316588",le="15943.230000000003"} 0
+dynamo_router_overhead_total_ms_bucket{router_id="1774436734316588",le="47829.69000000001"} 0
+dynamo_router_overhead_total_ms_bucket{router_id="1774436734316588",le="143489.07000000004"} 0
+dynamo_router_overhead_total_ms_bucket{router_id="1774436734316588",le="430467.2100000001"} 0
+dynamo_router_overhead_total_ms_bucket{router_id="1774436734316588",le="+Inf"} 0
+dynamo_router_overhead_total_ms_sum{router_id="1774436734316588"} 0
+dynamo_router_overhead_total_ms_count{router_id="1774436734316588"} 0
+# HELP dynamo_router_shared_cache_errors_total Total shared cache query errors
+# TYPE dynamo_router_shared_cache_errors_total counter
+dynamo_router_shared_cache_errors_total{router_id="1774436734316588"} 0
+# HELP dynamo_tokio_alive_tasks Number of alive tasks in the runtime
+# TYPE dynamo_tokio_alive_tasks gauge
+dynamo_tokio_alive_tasks 21
+# HELP dynamo_tokio_blocking_idle_threads Number of idle blocking threads
+# TYPE dynamo_tokio_blocking_idle_threads gauge
+dynamo_tokio_blocking_idle_threads 0
+# HELP dynamo_tokio_blocking_queue_depth Number of tasks in the blocking thread pool queue
+# TYPE dynamo_tokio_blocking_queue_depth gauge
+dynamo_tokio_blocking_queue_depth 0
+# HELP dynamo_tokio_blocking_threads Number of blocking threads
+# TYPE dynamo_tokio_blocking_threads gauge
+dynamo_tokio_blocking_threads 0
+# HELP dynamo_tokio_budget_forced_yield_total Number of times tasks were forced to yield after exhausting budget
+# TYPE dynamo_tokio_budget_forced_yield_total counter
+dynamo_tokio_budget_forced_yield_total 0
+# HELP dynamo_tokio_global_queue_depth Number of tasks in the runtime global queue
+# TYPE dynamo_tokio_global_queue_depth gauge
+dynamo_tokio_global_queue_depth 0
+# HELP dynamo_tokio_worker_busy_ratio Worker busy ratio (0-1) as integer mill ratio; >950 = saturated
+# TYPE dynamo_tokio_worker_busy_ratio gauge
+dynamo_tokio_worker_busy_ratio{worker="0"} 1
+dynamo_tokio_worker_busy_ratio{worker="1"} 3
+dynamo_tokio_worker_busy_ratio{worker="10"} 3
+dynamo_tokio_worker_busy_ratio{worker="11"} 4
+dynamo_tokio_worker_busy_ratio{worker="12"} 9
+dynamo_tokio_worker_busy_ratio{worker="13"} 1000
+dynamo_tokio_worker_busy_ratio{worker="14"} 7
+dynamo_tokio_worker_busy_ratio{worker="15"} 9
+dynamo_tokio_worker_busy_ratio{worker="2"} 3
+dynamo_tokio_worker_busy_ratio{worker="3"} 3
+dynamo_tokio_worker_busy_ratio{worker="4"} 3
+dynamo_tokio_worker_busy_ratio{worker="5"} 3
+dynamo_tokio_worker_busy_ratio{worker="6"} 3
+dynamo_tokio_worker_busy_ratio{worker="7"} 3
+dynamo_tokio_worker_busy_ratio{worker="8"} 3
+dynamo_tokio_worker_busy_ratio{worker="9"} 3
+# HELP dynamo_tokio_worker_local_queue_depth Number of tasks in worker local queue
+# TYPE dynamo_tokio_worker_local_queue_depth gauge
+dynamo_tokio_worker_local_queue_depth{worker="0"} 0
+dynamo_tokio_worker_local_queue_depth{worker="1"} 0
+dynamo_tokio_worker_local_queue_depth{worker="10"} 0
+dynamo_tokio_worker_local_queue_depth{worker="11"} 0
+dynamo_tokio_worker_local_queue_depth{worker="12"} 0
+dynamo_tokio_worker_local_queue_depth{worker="13"} 0
+dynamo_tokio_worker_local_queue_depth{worker="14"} 0
+dynamo_tokio_worker_local_queue_depth{worker="15"} 0
+dynamo_tokio_worker_local_queue_depth{worker="2"} 0
+dynamo_tokio_worker_local_queue_depth{worker="3"} 0
+dynamo_tokio_worker_local_queue_depth{worker="4"} 0
+dynamo_tokio_worker_local_queue_depth{worker="5"} 0
+dynamo_tokio_worker_local_queue_depth{worker="6"} 0
+dynamo_tokio_worker_local_queue_depth{worker="7"} 0
+dynamo_tokio_worker_local_queue_depth{worker="8"} 0
+dynamo_tokio_worker_local_queue_depth{worker="9"} 0
+# HELP dynamo_tokio_worker_mean_poll_time_ns Worker mean task poll time (nanoseconds)
+# TYPE dynamo_tokio_worker_mean_poll_time_ns gauge
+dynamo_tokio_worker_mean_poll_time_ns{worker="0"} 1192
+dynamo_tokio_worker_mean_poll_time_ns{worker="1"} 3278
+dynamo_tokio_worker_mean_poll_time_ns{worker="10"} 3278
+dynamo_tokio_worker_mean_poll_time_ns{worker="11"} 4693
+dynamo_tokio_worker_mean_poll_time_ns{worker="12"} 9809
+dynamo_tokio_worker_mean_poll_time_ns{worker="13"} 4172113
+dynamo_tokio_worker_mean_poll_time_ns{worker="14"} 7395
+dynamo_tokio_worker_mean_poll_time_ns{worker="15"} 9871
+dynamo_tokio_worker_mean_poll_time_ns{worker="2"} 3278
+dynamo_tokio_worker_mean_poll_time_ns{worker="3"} 3278
+dynamo_tokio_worker_mean_poll_time_ns{worker="4"} 3278
+dynamo_tokio_worker_mean_poll_time_ns{worker="5"} 3278
+dynamo_tokio_worker_mean_poll_time_ns{worker="6"} 3278
+dynamo_tokio_worker_mean_poll_time_ns{worker="7"} 3278
+dynamo_tokio_worker_mean_poll_time_ns{worker="8"} 3278
+dynamo_tokio_worker_mean_poll_time_ns{worker="9"} 3278
+# HELP dynamo_tokio_worker_overflow_count_total Total number of times worker local queue overflowed
+# TYPE dynamo_tokio_worker_overflow_count_total counter
+dynamo_tokio_worker_overflow_count_total{worker="0"} 0
+dynamo_tokio_worker_overflow_count_total{worker="1"} 0
+dynamo_tokio_worker_overflow_count_total{worker="10"} 0
+dynamo_tokio_worker_overflow_count_total{worker="11"} 0
+dynamo_tokio_worker_overflow_count_total{worker="12"} 0
+dynamo_tokio_worker_overflow_count_total{worker="13"} 0
+dynamo_tokio_worker_overflow_count_total{worker="14"} 0
+dynamo_tokio_worker_overflow_count_total{worker="15"} 0
+dynamo_tokio_worker_overflow_count_total{worker="2"} 0
+dynamo_tokio_worker_overflow_count_total{worker="3"} 0
+dynamo_tokio_worker_overflow_count_total{worker="4"} 0
+dynamo_tokio_worker_overflow_count_total{worker="5"} 0
+dynamo_tokio_worker_overflow_count_total{worker="6"} 0
+dynamo_tokio_worker_overflow_count_total{worker="7"} 0
+dynamo_tokio_worker_overflow_count_total{worker="8"} 0
+dynamo_tokio_worker_overflow_count_total{worker="9"} 0
+# HELP dynamo_tokio_worker_park_count_total Total number of times worker has parked
+# TYPE dynamo_tokio_worker_park_count_total counter
+dynamo_tokio_worker_park_count_total{worker="0"} 269448
+dynamo_tokio_worker_park_count_total{worker="1"} 1
+dynamo_tokio_worker_park_count_total{worker="10"} 1
+dynamo_tokio_worker_park_count_total{worker="11"} 176993
+dynamo_tokio_worker_park_count_total{worker="12"} 9
+dynamo_tokio_worker_park_count_total{worker="13"} 36973
+dynamo_tokio_worker_park_count_total{worker="14"} 305511
+dynamo_tokio_worker_park_count_total{worker="15"} 4
+dynamo_tokio_worker_park_count_total{worker="2"} 1
+dynamo_tokio_worker_park_count_total{worker="3"} 1
+dynamo_tokio_worker_park_count_total{worker="4"} 1
+dynamo_tokio_worker_park_count_total{worker="5"} 1
+dynamo_tokio_worker_park_count_total{worker="6"} 1
+dynamo_tokio_worker_park_count_total{worker="7"} 1
+dynamo_tokio_worker_park_count_total{worker="8"} 1
+dynamo_tokio_worker_park_count_total{worker="9"} 1
+# HELP dynamo_tokio_worker_steal_count_total Total number of tasks stolen by worker
+# TYPE dynamo_tokio_worker_steal_count_total counter
+dynamo_tokio_worker_steal_count_total{worker="0"} 3
+dynamo_tokio_worker_steal_count_total{worker="1"} 0
+dynamo_tokio_worker_steal_count_total{worker="10"} 0
+dynamo_tokio_worker_steal_count_total{worker="11"} 3
+dynamo_tokio_worker_steal_count_total{worker="12"} 1
+dynamo_tokio_worker_steal_count_total{worker="13"} 7
+dynamo_tokio_worker_steal_count_total{worker="14"} 7
+dynamo_tokio_worker_steal_count_total{worker="15"} 2
+dynamo_tokio_worker_steal_count_total{worker="2"} 0
+dynamo_tokio_worker_steal_count_total{worker="3"} 0
+dynamo_tokio_worker_steal_count_total{worker="4"} 0
+dynamo_tokio_worker_steal_count_total{worker="5"} 0
+dynamo_tokio_worker_steal_count_total{worker="6"} 0
+dynamo_tokio_worker_steal_count_total{worker="7"} 0
+dynamo_tokio_worker_steal_count_total{worker="8"} 0
+dynamo_tokio_worker_steal_count_total{worker="9"} 0
+# HELP dynamo_transport_tcp_bytes_received_total Total bytes received by TCP request client
+# TYPE dynamo_transport_tcp_bytes_received_total counter
+dynamo_transport_tcp_bytes_received_total 0
+# HELP dynamo_transport_tcp_bytes_sent_total Total bytes sent by TCP request client
+# TYPE dynamo_transport_tcp_bytes_sent_total counter
+dynamo_transport_tcp_bytes_sent_total 0
+# HELP dynamo_transport_tcp_errors_total Total TCP request errors (send failure or timeout)
+# TYPE dynamo_transport_tcp_errors_total counter
+dynamo_transport_tcp_errors_total 0
+# HELP dynamo_component_router_input_sequence_tokens Input sequence length in tokens observed at the router
+# TYPE dynamo_component_router_input_sequence_tokens histogram
+dynamo_component_router_input_sequence_tokens_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0"} 0
+dynamo_component_router_input_sequence_tokens_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="100"} 0
+dynamo_component_router_input_sequence_tokens_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="210"} 0
+dynamo_component_router_input_sequence_tokens_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="430"} 0
+dynamo_component_router_input_sequence_tokens_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="870"} 0
+dynamo_component_router_input_sequence_tokens_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="1800"} 0
+dynamo_component_router_input_sequence_tokens_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="3600"} 0
+dynamo_component_router_input_sequence_tokens_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="7400"} 0
+dynamo_component_router_input_sequence_tokens_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="15000"} 0
+dynamo_component_router_input_sequence_tokens_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="31000"} 0
+dynamo_component_router_input_sequence_tokens_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="63000"} 0
+dynamo_component_router_input_sequence_tokens_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="130000"} 0
+dynamo_component_router_input_sequence_tokens_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="+Inf"} 0
+dynamo_component_router_input_sequence_tokens_sum{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c"} 0
+dynamo_component_router_input_sequence_tokens_count{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c"} 0
+# HELP dynamo_component_router_inter_token_latency_seconds Average inter-token latency observed at the router
+# TYPE dynamo_component_router_inter_token_latency_seconds histogram
+dynamo_component_router_inter_token_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0"} 0
+dynamo_component_router_inter_token_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.0019"} 0
+dynamo_component_router_inter_token_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.0035"} 0
+dynamo_component_router_inter_token_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.0067"} 0
+dynamo_component_router_inter_token_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.013"} 0
+dynamo_component_router_inter_token_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.024"} 0
+dynamo_component_router_inter_token_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.045"} 0
+dynamo_component_router_inter_token_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.084"} 0
+dynamo_component_router_inter_token_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.16"} 0
+dynamo_component_router_inter_token_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.3"} 0
+dynamo_component_router_inter_token_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.56"} 0
+dynamo_component_router_inter_token_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="1.1"} 0
+dynamo_component_router_inter_token_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="2"} 0
+dynamo_component_router_inter_token_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="+Inf"} 0
+dynamo_component_router_inter_token_latency_seconds_sum{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c"} 0
+dynamo_component_router_inter_token_latency_seconds_count{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c"} 0
+# HELP dynamo_component_router_kv_hit_rate Predicted KV cache hit rate at routing time (0.0-1.0)
+# TYPE dynamo_component_router_kv_hit_rate histogram
+dynamo_component_router_kv_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0"} 0
+dynamo_component_router_kv_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.05"} 0
+dynamo_component_router_kv_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.1"} 0
+dynamo_component_router_kv_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.15000000000000002"} 0
+dynamo_component_router_kv_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.2"} 0
+dynamo_component_router_kv_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.25"} 0
+dynamo_component_router_kv_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.30000000000000004"} 0
+dynamo_component_router_kv_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.35000000000000003"} 0
+dynamo_component_router_kv_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.4"} 0
+dynamo_component_router_kv_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.45"} 0
+dynamo_component_router_kv_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.5"} 0
+dynamo_component_router_kv_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.55"} 0
+dynamo_component_router_kv_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.6000000000000001"} 0
+dynamo_component_router_kv_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.65"} 0
+dynamo_component_router_kv_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.7000000000000001"} 0
+dynamo_component_router_kv_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.75"} 0
+dynamo_component_router_kv_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.8"} 0
+dynamo_component_router_kv_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.8500000000000001"} 0
+dynamo_component_router_kv_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.9"} 0
+dynamo_component_router_kv_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.9500000000000001"} 0
+dynamo_component_router_kv_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="1"} 0
+dynamo_component_router_kv_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="+Inf"} 0
+dynamo_component_router_kv_hit_rate_sum{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c"} 0
+dynamo_component_router_kv_hit_rate_count{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c"} 0
+# HELP dynamo_component_router_kv_transfer_estimated_latency_seconds Upper-bound estimation of KV cache transfer latency in disaggregated serving (prefill_complete to first_token)
+# TYPE dynamo_component_router_kv_transfer_estimated_latency_seconds histogram
+dynamo_component_router_kv_transfer_estimated_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0"} 0
+dynamo_component_router_kv_transfer_estimated_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.0019"} 0
+dynamo_component_router_kv_transfer_estimated_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.0037"} 0
+dynamo_component_router_kv_transfer_estimated_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.0072"} 0
+dynamo_component_router_kv_transfer_estimated_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.014"} 0
+dynamo_component_router_kv_transfer_estimated_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.027"} 0
+dynamo_component_router_kv_transfer_estimated_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.052"} 0
+dynamo_component_router_kv_transfer_estimated_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.1"} 0
+dynamo_component_router_kv_transfer_estimated_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.19"} 0
+dynamo_component_router_kv_transfer_estimated_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.37"} 0
+dynamo_component_router_kv_transfer_estimated_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.72"} 0
+dynamo_component_router_kv_transfer_estimated_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="1.4"} 0
+dynamo_component_router_kv_transfer_estimated_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="2.7"} 0
+dynamo_component_router_kv_transfer_estimated_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="5.2"} 0
+dynamo_component_router_kv_transfer_estimated_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="10"} 0
+dynamo_component_router_kv_transfer_estimated_latency_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="+Inf"} 0
+dynamo_component_router_kv_transfer_estimated_latency_seconds_sum{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c"} 0
+dynamo_component_router_kv_transfer_estimated_latency_seconds_count{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c"} 0
+# HELP dynamo_component_router_output_sequence_tokens Output sequence length in tokens observed at the router
+# TYPE dynamo_component_router_output_sequence_tokens histogram
+dynamo_component_router_output_sequence_tokens_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0"} 0
+dynamo_component_router_output_sequence_tokens_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="100"} 0
+dynamo_component_router_output_sequence_tokens_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="210"} 0
+dynamo_component_router_output_sequence_tokens_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="430"} 0
+dynamo_component_router_output_sequence_tokens_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="880"} 0
+dynamo_component_router_output_sequence_tokens_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="1800"} 0
+dynamo_component_router_output_sequence_tokens_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="3700"} 0
+dynamo_component_router_output_sequence_tokens_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="7600"} 0
+dynamo_component_router_output_sequence_tokens_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="16000"} 0
+dynamo_component_router_output_sequence_tokens_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="32000"} 0
+dynamo_component_router_output_sequence_tokens_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="+Inf"} 0
+dynamo_component_router_output_sequence_tokens_sum{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c"} 0
+dynamo_component_router_output_sequence_tokens_count{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c"} 0
+# HELP dynamo_component_router_requests_total Total number of requests processed by the router
+# TYPE dynamo_component_router_requests_total counter
+dynamo_component_router_requests_total{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c"} 0
+# HELP dynamo_component_router_shared_cache_beyond_blocks Shared cache blocks beyond device overlap for the selected worker
+# TYPE dynamo_component_router_shared_cache_beyond_blocks histogram
+dynamo_component_router_shared_cache_beyond_blocks_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="1"} 0
+dynamo_component_router_shared_cache_beyond_blocks_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="2"} 0
+dynamo_component_router_shared_cache_beyond_blocks_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="4"} 0
+dynamo_component_router_shared_cache_beyond_blocks_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="8"} 0
+dynamo_component_router_shared_cache_beyond_blocks_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="16"} 0
+dynamo_component_router_shared_cache_beyond_blocks_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="32"} 0
+dynamo_component_router_shared_cache_beyond_blocks_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="64"} 0
+dynamo_component_router_shared_cache_beyond_blocks_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="128"} 0
+dynamo_component_router_shared_cache_beyond_blocks_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="256"} 0
+dynamo_component_router_shared_cache_beyond_blocks_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="512"} 0
+dynamo_component_router_shared_cache_beyond_blocks_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="1024"} 0
+dynamo_component_router_shared_cache_beyond_blocks_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="2048"} 0
+dynamo_component_router_shared_cache_beyond_blocks_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="+Inf"} 0
+dynamo_component_router_shared_cache_beyond_blocks_sum{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c"} 0
+dynamo_component_router_shared_cache_beyond_blocks_count{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c"} 0
+# HELP dynamo_component_router_shared_cache_hit_rate Fraction of request blocks found in the shared KV cache (0.0-1.0)
+# TYPE dynamo_component_router_shared_cache_hit_rate histogram
+dynamo_component_router_shared_cache_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0"} 0
+dynamo_component_router_shared_cache_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.05"} 0
+dynamo_component_router_shared_cache_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.1"} 0
+dynamo_component_router_shared_cache_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.15000000000000002"} 0
+dynamo_component_router_shared_cache_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.2"} 0
+dynamo_component_router_shared_cache_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.25"} 0
+dynamo_component_router_shared_cache_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.30000000000000004"} 0
+dynamo_component_router_shared_cache_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.35000000000000003"} 0
+dynamo_component_router_shared_cache_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.4"} 0
+dynamo_component_router_shared_cache_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.45"} 0
+dynamo_component_router_shared_cache_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.5"} 0
+dynamo_component_router_shared_cache_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.55"} 0
+dynamo_component_router_shared_cache_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.6000000000000001"} 0
+dynamo_component_router_shared_cache_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.65"} 0
+dynamo_component_router_shared_cache_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.7000000000000001"} 0
+dynamo_component_router_shared_cache_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.75"} 0
+dynamo_component_router_shared_cache_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.8"} 0
+dynamo_component_router_shared_cache_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.8500000000000001"} 0
+dynamo_component_router_shared_cache_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.9"} 0
+dynamo_component_router_shared_cache_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.9500000000000001"} 0
+dynamo_component_router_shared_cache_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="1"} 0
+dynamo_component_router_shared_cache_hit_rate_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="+Inf"} 0
+dynamo_component_router_shared_cache_hit_rate_sum{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c"} 0
+dynamo_component_router_shared_cache_hit_rate_count{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c"} 0
+# HELP dynamo_component_router_time_to_first_token_seconds Time to first token observed at the router
+# TYPE dynamo_component_router_time_to_first_token_seconds histogram
+dynamo_component_router_time_to_first_token_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0"} 0
+dynamo_component_router_time_to_first_token_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.0022"} 0
+dynamo_component_router_time_to_first_token_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.0047"} 0
+dynamo_component_router_time_to_first_token_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.01"} 0
+dynamo_component_router_time_to_first_token_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.022"} 0
+dynamo_component_router_time_to_first_token_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.047"} 0
+dynamo_component_router_time_to_first_token_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.1"} 0
+dynamo_component_router_time_to_first_token_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.22"} 0
+dynamo_component_router_time_to_first_token_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="0.47"} 0
+dynamo_component_router_time_to_first_token_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="1"} 0
+dynamo_component_router_time_to_first_token_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="2.2"} 0
+dynamo_component_router_time_to_first_token_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="4.7"} 0
+dynamo_component_router_time_to_first_token_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="10"} 0
+dynamo_component_router_time_to_first_token_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="22"} 0
+dynamo_component_router_time_to_first_token_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="48"} 0
+dynamo_component_router_time_to_first_token_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="100"} 0
+dynamo_component_router_time_to_first_token_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="220"} 0
+dynamo_component_router_time_to_first_token_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="480"} 0
+dynamo_component_router_time_to_first_token_seconds_bucket{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c",le="+Inf"} 0
+dynamo_component_router_time_to_first_token_seconds_sum{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c"} 0
+dynamo_component_router_time_to_first_token_seconds_count{dynamo_component="backend",dynamo_namespace="qwen32_bench_glm52_fp8_vllm_agg_tp16",router_id="1774436734316588",worker_id="64dd73f39b02c"} 0
+# HELP dynamo_component_uptime_seconds Total uptime of the DistributedRuntime in seconds
+# TYPE dynamo_component_uptime_seconds gauge
+dynamo_component_uptime_seconds{worker_id="64dd73f39b02c"} 4075.043819218

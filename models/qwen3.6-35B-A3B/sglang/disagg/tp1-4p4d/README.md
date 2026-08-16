@@ -828,7 +828,7 @@ spec:
             - name: TOKENIZER
               value: /opt/models/hub/models--Qwen--Qwen3.6-35B-A3B-FP8/snapshots/95a723d08a9490559dae23d0cff1d9466213d989
             - name: ENDPOINT
-              value: q36-sgl-pd-tp1-4p4d-frontend:8000
+              value: glm52-fp8-vllm-a-984b-0-frontend:8000
             - name: ISL
               value: "8000"
             - name: OSL

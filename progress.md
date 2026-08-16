@@ -1220,3 +1220,196 @@ controller may restart them, and ownership has not yet been established. The
 next session should finish that ownership mapping, confirm the final Grafana
 panel, and then set `maxReplicaCount` from the GPU budget actually reserved for
 this experiment.
+
+## Documentation and HiCache capacity analysis — August 17, 2026
+
+The last three conversation threads focused on documenting a small cross-node
+SGLang P/D canary, explaining the observed 3.10-million-token CPU HiCache
+capacity, and preserving the resulting decisions in this progress log. No
+cluster workload was deployed or changed as part of these documentation and
+capacity-analysis conversations.
+
+### Standalone cross-node SGLang canary analysis
+
+The standalone manifest supplied as `sanjeev.md` was identified as a compact
+Qwen3.6 disaggregated-serving canary rather than a full performance topology:
+
+```text
+1 Dynamo frontend
+1 prefill worker × TP=2 = 2 GPUs
+1 decode worker  × TP=2 = 2 GPUs
+Total                    = 4 GPUs
+```
+
+The prefill and decode workers were selected onto their respective role nodes
+and used SGLang disaggregation with NIXL over UCX/RoCE. Its intended use was to
+validate model startup, cross-node prefill-to-decode state transfer, UCX GPU
+memory registration, and one real request before attempting a larger topology.
+It was not a KV-to-disk offload configuration, an autoscaling deployment, or a
+meaningful high-availability/performance result by itself.
+
+The raw manifest was converted during that conversation into a self-contained
+runbook with:
+
+- cluster-host variables and an `EXP_DIR` under `/ephemeral/shared`;
+- namespace, retained PV, and PVC creation;
+- safe recovery of a retained PV in `Released` state;
+- operator, node-role, GPU, RDMA, cache, and RoCE preflight checks;
+- generated storage and `DynamoGraphDeployment` manifests;
+- readiness, startup-log, smoke-request, and transfer acceptance gates; and
+- normal deployment cleanup separated from optional PVC/PV/namespace teardown.
+
+Local validation at that point proved that all Bash fences were syntactically
+valid, both generated YAML manifests parsed, container-time variables remained
+literal after shell expansion, and the topology requested four GPUs. It also
+exposed two assumptions that must be treated as deployment gates:
+
+1. A `hostPath` PV is not made cross-node by declaring `ReadWriteMany`.
+   `/ephemeral/shared/huggingface` must already be a genuinely shared mount at
+   the same path on both selected nodes, or the PV must be replaced by the
+   cluster's real RWX storage class.
+2. The workers referenced the cross-namespace
+   `qwen32-bench/qwen-roce` NetworkAttachmentDefinition. Multus authorization,
+   the selected `mlx5_8:1` device, and attachment behavior must be verified in
+   the target namespace.
+
+The current workspace no longer contains `sanjeev.md`, so that validated
+runbook is not a retained repository artifact at this checkpoint. It must be
+restored or recreated before claiming that the standalone canary documentation
+is checked in. No other recipe was modified during that conversation.
+
+### What the 3.10-million-token CPU cache represents
+
+The `3.10 Mil` value comes from the CPU HiCache capacity metric, not from a
+direct setting of 3.10 million tokens. The dashboard query in
+[`preflight.md`](models/qwen3.6-35B-A3B/sglang/disagg/tp1-ep2-4p4d/preflight.md)
+uses:
+
+```promql
+sum by (pod) (
+  sglang:hicache_host_total_tokens{...}
+)
+```
+
+It sums the rank-level series inside one prefill Pod and leaves one value per
+Pod. The related `sglang:hicache_host_used_tokens` gauge reports occupied
+capacity. Neither metric changes the per-request `--context-length 131072`;
+the host tier stores reusable pages from many prompts or conversations rather
+than enabling one multi-million-token request.
+
+The CPU tier is sized relative to the GPU cache tier:
+
+```text
+host-token capacity ≈ device-token capacity × hicache ratio
+```
+
+With the observed per-Pod capacity and the current ratio:
+
+```text
+observed host capacity = 3.10 million tokens
+current ratio          = 1.2
+implied device capacity ≈ 3.10M / 1.2 = 2.583M tokens per Pod
+```
+
+To target 10 million host-cache token slots on every prefill Pod while keeping
+the model, runtime, parallelism, GPU pool, page size, and memory fraction
+unchanged:
+
+```text
+required ratio = 1.2 × 10.0M / 3.10M ≈ 3.87
+```
+
+`--hicache-ratio 3.9` should therefore produce roughly 10.08 million token
+slots per Pod, while `4.0` should provide roughly 10.33 million after the same
+linear estimate. The actual value is page- and allocator-rounded and must be
+read back from the metric after startup.
+
+The scope of the target matters. Production has four independent prefill Pods,
+so four Pods each reporting 3.10 million already provide approximately 12.4
+million raw fleet-wide slots. Those are not one shared cache: a prefix stored
+on one worker is useful only when KV-aware routing returns matching traffic to
+that worker. Duplicate prefixes, uneven routing, eviction, and page alignment
+make useful unique capacity lower than the raw sum.
+
+### HiCache and P-to-D transfer are separate mechanisms
+
+The request path has two distinct data movements:
+
+```text
+reused prefix on prefill:
+GPU L1 <-> local prefill CPU L2 through HiCache direct I/O
+
+new request handoff:
+selected prefill worker -> selected decode worker through NIXL/UCX/RDMA
+```
+
+`--enable-hierarchical-cache`, `page_first_direct`, and the `direct` I/O backend
+provide the local GPU/CPU cache tier for Qwen3.6's hybrid attention and
+Mamba/GDN state. `--disaggregation-transfer-backend nixl` moves the live state
+between prefill and decode workers; it does not allocate CPU HiCache. Decode
+HiCache remains disabled for this pinned hybrid-model/runtime combination.
+
+The frontend's KV-aware router and prefill KV events are therefore essential.
+On a GPU hit the selected worker reuses L1 pages directly. On a CPU hit it
+copies the required L2 pages back to GPU before continuing prefill. On a miss
+it computes the prefix, admits pages according to the configured write policy,
+and later evicts finite CPU pages as its working set changes.
+
+### Memory cost of a 10-million-token per-Pod target
+
+Changing the ratio from `1.2` to `4.0` multiplies the host-cache allocation by
+approximately:
+
+```text
+4.0 / 1.2 = 3.33×
+```
+
+The existing prefill resource template requests 128 GiB and limits each worker
+Pod to 192 GiB. That template cannot be assumed to fit a 3.33× larger host
+pool. Exact sizing requires the current startup lines for every rank, including
+`Allocating ... host memory`, plus the non-HiCache Pod baseline. The target
+must include runtime RSS, both rank pools, shared-memory use, transfer buffers,
+and safety headroom. Four prefill replicas are placed on the prefill role node,
+so node-level RAM must cover the sum of all four Pod requests rather than only
+one enlarged cache.
+
+The manifest also anchors one resource block and reuses it for prefill and
+decode. Raising that shared memory request would reserve the same large amount
+for decode even though decode offload is disabled. A 10-million-per-Pod test
+should first split prefill and decode resource blocks, then enlarge only
+prefill based on measured allocation.
+
+### Write-policy inconsistency found
+
+The runbook and checked-in offload manifest currently disagree:
+
+- the offload manifest embedded in
+  [`README.md`](models/qwen3.6-35B-A3B/sglang/disagg/tp1-ep2-4p4d/README.md)
+  uses `--hicache-write-policy write_back`;
+- [`deploy-kv-offloading.yaml`](models/qwen3.6-35B-A3B/sglang/disagg/tp1-ep2-4p4d/deploy-kv-offloading.yaml)
+  uses `--hicache-write-policy write_through`.
+
+The policy does not change `hicache_host_total_tokens`, but it changes when
+`used_tokens` grows and how much copy traffic is added. `write_through` places
+new reusable pages into L2 promptly, while `write_back` delays the L2 write
+until upper-tier eviction. The completed prefill-heavy notes describe a
+`write_through` run, which matches the checked-in standalone deployment file,
+but the generated runbook manifest must be reconciled before the next A/B run.
+Neither file was changed during the capacity-analysis conversation.
+
+### Next actions from these conversations
+
+1. Decide whether “10 million” means fleet-wide raw capacity or capacity on
+   every prefill Pod. Query both `sum by (pod)` and a fleet-wide `sum` before
+   changing the ratio.
+2. Reconcile the README and checked-in deployment to one intentional HiCache
+   write policy and record which exact manifest produced each benchmark.
+3. Capture per-rank host-allocation startup logs, current Pod memory, node
+   allocatable memory, and current total/used-token metrics.
+4. If 10 million per Pod is still required, split prefill/decode resource
+   blocks and test ratios `2.0`, `3.0`, then `3.9` or `4.0` in the single
+   prefill/decode canary before scaling to four prefill replicas.
+5. At every stage retain cache capacity/use, OOM status, CPU utilization,
+   CPU-to-GPU reload behavior, NIXL transfer health, TTFT, and throughput.
+6. Restore the standalone canary runbook if it is still wanted as a retained
+   repository artifact; it is absent from the current workspace.
