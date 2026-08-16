@@ -1,0 +1,9 @@
+AIPerf Plot Export Summary
+==================================================
+
+Generated 2 plots:
+
+  - ttft_vs_context_by_concurrency.png
+  - tpot_vs_context_by_concurrency.png
+
+Output directory: /data/inference/cluster/models/qwen3.6-35B-A3B/artifacts/baseline-kv-aware+offloading/isl-64536_osl-256/plots
