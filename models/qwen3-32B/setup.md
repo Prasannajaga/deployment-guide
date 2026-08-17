@@ -2,7 +2,7 @@
 
 This runbook prepares `gpu05` and `gpu06` for the Qwen3-32B-FP8 Dynamo
 experiments. It stops at cluster readiness; deployment and benchmark commands
-live in the [experiment matrix](experiments/README.md).
+live in the [experiment matrix](README.md).
 
 Run only one 16-GPU experiment at a time. The eight maintained variants cover
 the same four topologies in vLLM and SGLang.
@@ -804,7 +804,7 @@ Do not start an experiment until all of the following are true:
 
 ## 12. Run the experiments
 
-Use the [experiment matrix](experiments/README.md) to select a backend and
+Use the [experiment matrix](README.md) to select a backend and
 topology. Each folder contains one `deploy.yaml` and a short operator runbook.
 Always delete the active DGD and wait for its pods to terminate before applying
 the next 16-GPU experiment. Keep model revision, input/output lengths, warmup,
