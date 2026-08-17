@@ -11,3 +11,23 @@ Agents must treat SSH private keys and other credentials as opaque secrets.
   patches, test fixtures, or command output.
 - If SSH access is required, ask the user to provide access through an SSH
   agent or a secret mounted outside the agent-readable workspace.
+
+# Cluster runbook paths
+
+The repository under `/data/inference/cluster` is an authoring workspace, not
+a runtime filesystem available to cluster administration hosts or Kubernetes
+Pods.
+
+- Never place `/data/inference/cluster/...` paths in runnable README commands,
+  shell variables, Kubernetes arguments, deployment instructions, or generated
+  cluster configuration.
+- For cluster recipes, generate manifests and artifacts under the recipe's
+  `/ephemeral/shared/...` directory. Define that location as `EXP_DIR` and use
+  it for `tee`, `kubectl apply -f`, benchmark outputs, logs, and metric exports.
+- When a checked-in manifest must be runnable from a cluster host, document it
+  as a complete quoted heredoc such as
+  `tee "$EXP_DIR/deploy.yaml" <<'EOF'`; do not tell the user to apply the
+  repository copy directly.
+- Local repository paths are permitted only for agent-side file inspection,
+  editing, validation, and clickable response links. They must not appear in
+  commands intended for the user to execute on the cluster.

@@ -79,7 +79,12 @@ logs/
 tmp/
 
 # Benchmark & AIPerf Generated Artifacts
-profile_export*
-server_metrics_export*
 chat.html
-models/qwen3-32B/benchmarks
+benchmarks*/
+benchmark*/
+models/qwen3-235B-A22B
+# Ignore large input payload files (e.g. inside artifacts/) while pushing all other artifact contents
+**/input.json
+**/inputs.json
+**/input*.json
+main.txt

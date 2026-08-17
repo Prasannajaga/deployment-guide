@@ -1,0 +1,3776 @@
+{
+  "schema_version": "1.0",
+  "aiperf_version": "0.10.0",
+  "benchmark_id": "38ce0e701bf0",
+  "summary": {
+    "endpoints_configured": [
+      "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics"
+    ],
+    "endpoints_successful": [
+      "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics"
+    ],
+    "start_time": "2026-08-16T11:29:31.203392",
+    "end_time": "2026-08-16T11:40:31.216658",
+    "endpoint_info": {
+      "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics": {
+        "total_fetches": 2831,
+        "first_fetch_ns": 1786879458790558571,
+        "last_fetch_ns": 1786880431219573155,
+        "avg_fetch_latency_ms": 1.1412257901801484,
+        "unique_updates": 2831,
+        "first_update_ns": 1786879458790558571,
+        "last_update_ns": 1786880431219573155,
+        "duration_seconds": 972.429014584,
+        "avg_update_interval_ms": 343.6144927858657,
+        "median_update_interval_ms": 333.1960315
+      }
+    }
+  },
+  "metrics": {
+    "dynamo_component_router_input_sequence_tokens": {
+      "type": "histogram",
+      "description": "Input sequence length in tokens observed at the router",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_glm52_fp8_vllm_agg_tp16",
+            "router_id": "1774436734316588",
+            "worker_id": "64dd73f39b02c"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0": 0,
+            "100": 0,
+            "210": 0,
+            "430": 0,
+            "870": 0,
+            "1800": 0,
+            "3600": 0,
+            "7400": 0,
+            "15000": 0,
+            "31000": 0,
+            "63000": 0,
+            "130000": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_component_router_inter_token_latency_seconds": {
+      "type": "histogram",
+      "description": "Average inter-token latency observed at the router",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_glm52_fp8_vllm_agg_tp16",
+            "router_id": "1774436734316588",
+            "worker_id": "64dd73f39b02c"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0": 0,
+            "0.0019": 0,
+            "0.0035": 0,
+            "0.0067": 0,
+            "0.013": 0,
+            "0.024": 0,
+            "0.045": 0,
+            "0.084": 0,
+            "0.16": 0,
+            "0.3": 0,
+            "0.56": 0,
+            "1.1": 0,
+            "2": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_component_router_kv_hit_rate": {
+      "type": "histogram",
+      "description": "Predicted KV cache hit rate at routing time (0.0-1.0)",
+      "unit": "ratio",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_glm52_fp8_vllm_agg_tp16",
+            "router_id": "1774436734316588",
+            "worker_id": "64dd73f39b02c"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0": 0,
+            "0.05": 0,
+            "0.1": 0,
+            "0.15000000000000002": 0,
+            "0.2": 0,
+            "0.25": 0,
+            "0.30000000000000004": 0,
+            "0.35000000000000003": 0,
+            "0.4": 0,
+            "0.45": 0,
+            "0.5": 0,
+            "0.55": 0,
+            "0.6000000000000001": 0,
+            "0.65": 0,
+            "0.7000000000000001": 0,
+            "0.75": 0,
+            "0.8": 0,
+            "0.8500000000000001": 0,
+            "0.9": 0,
+            "0.9500000000000001": 0,
+            "1": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_component_router_kv_transfer_estimated_latency_seconds": {
+      "type": "histogram",
+      "description": "Upper-bound estimation of KV cache transfer latency in disaggregated serving (prefill_complete to first_token)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_glm52_fp8_vllm_agg_tp16",
+            "router_id": "1774436734316588",
+            "worker_id": "64dd73f39b02c"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0": 0,
+            "0.0019": 0,
+            "0.0037": 0,
+            "0.0072": 0,
+            "0.014": 0,
+            "0.027": 0,
+            "0.052": 0,
+            "0.1": 0,
+            "0.19": 0,
+            "0.37": 0,
+            "0.72": 0,
+            "1.4": 0,
+            "2.7": 0,
+            "5.2": 0,
+            "10": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_component_router_output_sequence_tokens": {
+      "type": "histogram",
+      "description": "Output sequence length in tokens observed at the router",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_glm52_fp8_vllm_agg_tp16",
+            "router_id": "1774436734316588",
+            "worker_id": "64dd73f39b02c"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0": 0,
+            "100": 0,
+            "210": 0,
+            "430": 0,
+            "880": 0,
+            "1800": 0,
+            "3700": 0,
+            "7600": 0,
+            "16000": 0,
+            "32000": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_component_router_requests": {
+      "type": "counter",
+      "description": "Total number of requests processed by the router",
+      "unit": "requests",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_glm52_fp8_vllm_agg_tp16",
+            "router_id": "1774436734316588",
+            "worker_id": "64dd73f39b02c"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_component_router_shared_cache_beyond_blocks": {
+      "type": "histogram",
+      "description": "Shared cache blocks beyond device overlap for the selected worker",
+      "unit": "blocks",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_glm52_fp8_vllm_agg_tp16",
+            "router_id": "1774436734316588",
+            "worker_id": "64dd73f39b02c"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "1": 0,
+            "2": 0,
+            "4": 0,
+            "8": 0,
+            "16": 0,
+            "32": 0,
+            "64": 0,
+            "128": 0,
+            "256": 0,
+            "512": 0,
+            "1024": 0,
+            "2048": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_component_router_shared_cache_hit_rate": {
+      "type": "histogram",
+      "description": "Fraction of request blocks found in the shared KV cache (0.0-1.0)",
+      "unit": "ratio",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_glm52_fp8_vllm_agg_tp16",
+            "router_id": "1774436734316588",
+            "worker_id": "64dd73f39b02c"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0": 0,
+            "0.05": 0,
+            "0.1": 0,
+            "0.15000000000000002": 0,
+            "0.2": 0,
+            "0.25": 0,
+            "0.30000000000000004": 0,
+            "0.35000000000000003": 0,
+            "0.4": 0,
+            "0.45": 0,
+            "0.5": 0,
+            "0.55": 0,
+            "0.6000000000000001": 0,
+            "0.65": 0,
+            "0.7000000000000001": 0,
+            "0.75": 0,
+            "0.8": 0,
+            "0.8500000000000001": 0,
+            "0.9": 0,
+            "0.9500000000000001": 0,
+            "1": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_component_router_time_to_first_token_seconds": {
+      "type": "histogram",
+      "description": "Time to first token observed at the router",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_glm52_fp8_vllm_agg_tp16",
+            "router_id": "1774436734316588",
+            "worker_id": "64dd73f39b02c"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0": 0,
+            "0.0022": 0,
+            "0.0047": 0,
+            "0.01": 0,
+            "0.022": 0,
+            "0.047": 0,
+            "0.1": 0,
+            "0.22": 0,
+            "0.47": 0,
+            "1": 0,
+            "2.2": 0,
+            "4.7": 0,
+            "10": 0,
+            "22": 0,
+            "48": 0,
+            "100": 0,
+            "220": 0,
+            "480": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_active_requests": {
+      "type": "gauge",
+      "description": "Number of requests currently being handled by the frontend, from HTTP handler entry to response completion",
+      "unit": "requests",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "model": "zai-org/GLM-5.2-FP8"
+          },
+          "stats": {
+            "avg": 116.37607269056032,
+            "min": 0.0,
+            "max": 137.0,
+            "std": 12.23975196663782,
+            "p1": 97.0,
+            "p5": 98.0,
+            "p10": 98.0,
+            "p25": 108.0,
+            "p50": 116.0,
+            "p75": 126.0,
+            "p90": 134.0,
+            "p95": 137.0,
+            "p99": 137.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_cached_tokens": {
+      "type": "histogram",
+      "description": "Number of cached tokens (prefix cache hits) per request",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "model": "zai-org/GLM-5.2-FP8"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0": 0,
+            "100": 0,
+            "210": 0,
+            "430": 0,
+            "870": 0,
+            "1800": 0,
+            "3600": 0,
+            "7400": 0,
+            "15000": 0,
+            "31000": 0,
+            "63000": 0,
+            "130000": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_detokenize_token_count": {
+      "type": "counter",
+      "description": "Total tokens detokenized",
+      "unit": "count",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "stats": {
+            "total": 10798936.0,
+            "rate": 16357.457452529114
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_detokenize_total_us": {
+      "type": "counter",
+      "description": "Cumulative detokenization time (microseconds)",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "stats": {
+            "total": 25669577.0,
+            "rate": 38882.44301122999
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_disconnected_clients": {
+      "type": "gauge",
+      "description": "Number of disconnected clients",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "stats": {
+            "avg": 15.048965169106513,
+            "min": 15.0,
+            "max": 112.0,
+            "std": 2.1793626140070517,
+            "p1": 15.0,
+            "p5": 15.0,
+            "p10": 15.0,
+            "p25": 15.0,
+            "p50": 15.0,
+            "p75": 15.0,
+            "p90": 15.0,
+            "p95": 15.0,
+            "p99": 15.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_event_loop_delay_seconds": {
+      "type": "histogram",
+      "description": "Event loop delay canary: drift from 10ms sleep (seconds)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "stats": {
+            "count": 59705,
+            "sum": 63.12580345796698,
+            "avg": 0.0010572950918343016,
+            "count_rate": 90.43687241069405,
+            "sum_rate": 0.09561846132067178,
+            "p1_estimate": 0.0001438330832791294,
+            "p5_estimate": 0.0006689342266388479,
+            "p10_estimate": 0.0010703018037578002,
+            "p25_estimate": 0.0010805641945015858,
+            "p50_estimate": 0.001097668179074562,
+            "p75_estimate": 0.0011147721636475382,
+            "p90_estimate": 0.001125034554391324,
+            "p95_estimate": 0.0011284553513059192,
+            "p99_estimate": 0.0011311919888375955
+          },
+          "buckets": {
+            "0": 0,
+            "0.001": 4548,
+            "0.005": 59698,
+            "0.01": 59701,
+            "0.025": 59704,
+            "0.05": 59705,
+            "0.1": 59705,
+            "0.25": 59705,
+            "0.5": 59705,
+            "1": 59705,
+            "+Inf": 59705
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_event_loop_stall": {
+      "type": "counter",
+      "description": "Number of event loop stalls (delay > 5ms)",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "stats": {
+            "total": 7.0,
+            "rate": 0.010603100358007845
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_inflight_requests": {
+      "type": "gauge",
+      "description": "Number of inflight requests",
+      "unit": "requests",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "model": "zai-org/GLM-5.2-FP8"
+          },
+          "stats": {
+            "avg": 116.37607269056032,
+            "min": 0.0,
+            "max": 137.0,
+            "std": 12.23975196663782,
+            "p1": 97.0,
+            "p5": 98.0,
+            "p10": 98.0,
+            "p25": 108.0,
+            "p50": 116.0,
+            "p75": 126.0,
+            "p90": 134.0,
+            "p95": 137.0,
+            "p99": 137.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_input_sequence_tokens": {
+      "type": "histogram",
+      "description": "Input sequence length in tokens",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "model": "zai-org/GLM-5.2-FP8"
+          },
+          "stats": {
+            "count": 49,
+            "sum": 321830.0,
+            "avg": 6567.959183673469,
+            "count_rate": 0.0742217025060549,
+            "sum_rate": 487.4851126025235,
+            "p1_estimate": 870.0,
+            "p5_estimate": 870.0,
+            "p10_estimate": 870.0,
+            "p25_estimate": 1134.2813738925056,
+            "p50_estimate": 3951.5107578607267,
+            "p75_estimate": 8266.062712981158,
+            "p90_estimate": 15293.683349438246,
+            "p95_estimate": 20735.083413857854,
+            "p99_estimate": 34759.74436333742
+          },
+          "buckets": {
+            "0": 0,
+            "100": 0,
+            "210": 0,
+            "430": 0,
+            "870": 0,
+            "1800": 18,
+            "3600": 18,
+            "7400": 30,
+            "15000": 41,
+            "31000": 47,
+            "63000": 49,
+            "130000": 49,
+            "+Inf": 49
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_inter_token_latency_seconds": {
+      "type": "histogram",
+      "description": "Inter-token latency in seconds",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "model": "zai-org/GLM-5.2-FP8"
+          },
+          "stats": {
+            "count": 27831,
+            "sum": 2456.5047399919986,
+            "avg": 0.08826505479472525,
+            "count_rate": 42.15641229481662,
+            "sum_rate": 3.720938041151018,
+            "p1_estimate": 0.03264586387308161,
+            "p5_estimate": 0.03319630646266766,
+            "p10_estimate": 0.033884359699650216,
+            "p25_estimate": 0.03594851941059789,
+            "p50_estimate": 0.03938878559551067,
+            "p75_estimate": 0.04282905178042347,
+            "p90_estimate": 0.043411430261798424,
+            "p95_estimate": 0.04355970405441864,
+            "p99_estimate": 2.545210485326962
+          },
+          "buckets": {
+            "0": 0,
+            "0.0019": 0,
+            "0.0035": 0,
+            "0.0067": 0,
+            "0.013": 2,
+            "0.024": 2,
+            "0.045": 27070,
+            "0.084": 27083,
+            "0.16": 27174,
+            "0.3": 27184,
+            "0.56": 27285,
+            "1.1": 27294,
+            "2": 27373,
+            "+Inf": 27831
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_lora_churn_loads_total": {
+      "type": "gauge",
+      "description": "Total LoRA loads (new placements) this tick",
+      "unit": "count",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_lora_churn_unloads_total": {
+      "type": "gauge",
+      "description": "Total LoRA unloads (removed placements) this tick",
+      "unit": "count",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_lora_overflow_count": {
+      "type": "gauge",
+      "description": "MCF solver overflow count (unplaceable replicas)",
+      "unit": "count",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_model_cancellation": {
+      "type": "counter",
+      "description": "Total number of request cancellations",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "endpoint": "chat_completions",
+            "model": "zai-org/GLM-5.2-FP8",
+            "request_type": "stream"
+          },
+          "stats": {
+            "total": 97.0,
+            "rate": 0.14692867638953727
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_model_context_length": {
+      "type": "gauge",
+      "description": "Maximum context length in tokens for a worker serving the model",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "model": "zai-org/GLM-5.2-FP8"
+          },
+          "stats": {
+            "avg": 131072.0,
+            "min": 131072.0,
+            "max": 131072.0,
+            "std": 0.0,
+            "p1": 131072.0,
+            "p5": 131072.0,
+            "p10": 131072.0,
+            "p25": 131072.0,
+            "p50": 131072.0,
+            "p75": 131072.0,
+            "p90": 131072.0,
+            "p95": 131072.0,
+            "p99": 131072.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_model_kv_cache_block_size": {
+      "type": "gauge",
+      "description": "KV cache block size in tokens for a worker serving the model",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "model": "zai-org/GLM-5.2-FP8"
+          },
+          "stats": {
+            "avg": 64.0,
+            "min": 64.0,
+            "max": 64.0,
+            "std": 0.0,
+            "p1": 64.0,
+            "p5": 64.0,
+            "p10": 64.0,
+            "p25": 64.0,
+            "p50": 64.0,
+            "p75": 64.0,
+            "p90": 64.0,
+            "p95": 64.0,
+            "p99": 64.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_model_max_num_batched_tokens": {
+      "type": "gauge",
+      "description": "Maximum number of batched tokens for a worker serving the model",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "model": "zai-org/GLM-5.2-FP8"
+          },
+          "stats": {
+            "avg": 8192.0,
+            "min": 8192.0,
+            "max": 8192.0,
+            "std": 0.0,
+            "p1": 8192.0,
+            "p5": 8192.0,
+            "p10": 8192.0,
+            "p25": 8192.0,
+            "p50": 8192.0,
+            "p75": 8192.0,
+            "p90": 8192.0,
+            "p95": 8192.0,
+            "p99": 8192.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_model_max_num_seqs": {
+      "type": "gauge",
+      "description": "Maximum number of sequences for a worker serving the model",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "model": "zai-org/GLM-5.2-FP8"
+          },
+          "stats": {
+            "avg": 16.0,
+            "min": 16.0,
+            "max": 16.0,
+            "std": 0.0,
+            "p1": 16.0,
+            "p5": 16.0,
+            "p10": 16.0,
+            "p25": 16.0,
+            "p50": 16.0,
+            "p75": 16.0,
+            "p90": 16.0,
+            "p95": 16.0,
+            "p99": 16.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_model_migration_limit": {
+      "type": "gauge",
+      "description": "Maximum number of request migrations allowed for the model",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "model": "zai-org/GLM-5.2-FP8"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_model_total_kv_blocks": {
+      "type": "gauge",
+      "description": "Total KV cache blocks available for a worker serving the model",
+      "unit": "blocks",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "model": "zai-org/GLM-5.2-FP8"
+          },
+          "stats": {
+            "avg": 3533.0,
+            "min": 3533.0,
+            "max": 3533.0,
+            "std": 0.0,
+            "p1": 3533.0,
+            "p5": 3533.0,
+            "p10": 3533.0,
+            "p25": 3533.0,
+            "p50": 3533.0,
+            "p75": 3533.0,
+            "p90": 3533.0,
+            "p95": 3533.0,
+            "p99": 3533.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_output_sequence_tokens": {
+      "type": "histogram",
+      "description": "Output sequence length in tokens",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "model": "zai-org/GLM-5.2-FP8"
+          },
+          "stats": {
+            "count": 49,
+            "sum": 27907.0,
+            "avg": 569.530612244898,
+            "count_rate": 0.0742217025060549,
+            "sum_rate": 42.27153167013213,
+            "p1_estimate": 46.99709822913333,
+            "p5_estimate": 210.0,
+            "p10_estimate": 210.0,
+            "p25_estimate": 263.7063321720325,
+            "p50_estimate": 430.0,
+            "p75_estimate": 880.0,
+            "p90_estimate": 1136.074322794952,
+            "p95_estimate": 1274.0743227949515,
+            "p99_estimate": 1384.4743227949516
+          },
+          "buckets": {
+            "0": 0,
+            "100": 2,
+            "210": 2,
+            "430": 20,
+            "880": 33,
+            "1800": 49,
+            "3700": 49,
+            "7600": 49,
+            "16000": 49,
+            "32000": 49,
+            "+Inf": 49
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_output_tokens": {
+      "type": "counter",
+      "description": "Total number of output tokens generated (updates in real-time)",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "model": "zai-org/GLM-5.2-FP8"
+          },
+          "stats": {
+            "total": 27880.0,
+            "rate": 42.23063399732267
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_queued_requests": {
+      "type": "gauge",
+      "description": "Number of requests in HTTP processing queue",
+      "unit": "requests",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "model": "zai-org/GLM-5.2-FP8"
+          },
+          "stats": {
+            "avg": 112.65522463402323,
+            "min": 0.0,
+            "max": 137.0,
+            "std": 12.373552734981681,
+            "p1": 94.0,
+            "p5": 95.0,
+            "p10": 96.0,
+            "p25": 101.0,
+            "p50": 112.0,
+            "p75": 124.0,
+            "p90": 131.0,
+            "p95": 134.0,
+            "p99": 136.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_request_duration_seconds": {
+      "type": "histogram",
+      "description": "Duration of LLM requests",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "model": "zai-org/GLM-5.2-FP8"
+          },
+          "stats": {
+            "count": 142,
+            "sum": 76841.465305258,
+            "avg": 541.1370796144929,
+            "count_rate": 0.215091464405302,
+            "sum_rate": 116.39396689828978,
+            "p1_estimate": 19.190023616982984,
+            "p5_estimate": 64.44058578724245,
+            "p10_estimate": 131.17135647986743,
+            "p25_estimate": 510.0,
+            "p50_estimate": 602.2863148982121,
+            "p75_estimate": 696.5788540333419,
+            "p90_estimate": 753.1543775144198,
+            "p95_estimate": 772.0128853414458,
+            "p99_estimate": 787.0996916030666
+          },
+          "buckets": {
+            "0": 0,
+            "2": 0,
+            "4": 0,
+            "8": 0,
+            "16": 1,
+            "32": 3,
+            "64": 8,
+            "130": 15,
+            "260": 24,
+            "510": 36,
+            "+Inf": 142
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_requests": {
+      "type": "counter",
+      "description": "Total number of LLM requests processed",
+      "unit": "requests",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "endpoint": "chat_completions",
+            "error_type": "",
+            "model": "zai-org/GLM-5.2-FP8",
+            "request_type": "stream",
+            "status": "success"
+          },
+          "stats": {
+            "total": 45.0,
+            "rate": 0.06816278801576471
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "endpoint": "chat_completions",
+            "error_type": "cancelled",
+            "model": "zai-org/GLM-5.2-FP8",
+            "request_type": "stream",
+            "status": "error"
+          },
+          "stats": {
+            "total": 97.0,
+            "rate": 0.14692867638953727
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_requests_started": {
+      "type": "counter",
+      "description": "Total number of LLM requests accepted by the frontend handler",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "endpoint": "chat_completions",
+            "model": "zai-org/GLM-5.2-FP8",
+            "request_type": "stream"
+          },
+          "stats": {
+            "total": 142.0,
+            "rate": 0.215091464405302
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_stage_duration_seconds": {
+      "type": "histogram",
+      "description": "Pipeline stage duration (seconds)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "stage": "preprocess"
+          },
+          "stats": {
+            "count": 142,
+            "sum": 6.779799151999999,
+            "avg": 0.04774506445070422,
+            "count_rate": 0.215091464405302,
+            "sum_rate": 0.010269555830827495,
+            "p1_estimate": 0.0010541867790904418,
+            "p5_estimate": 0.0018287145999682768,
+            "p10_estimate": 0.0028011283930717257,
+            "p25_estimate": 0.006577713224058623,
+            "p50_estimate": 0.01979150173095466,
+            "p75_estimate": 0.058887927695131695,
+            "p90_estimate": 0.1,
+            "p95_estimate": 0.22842192611087672,
+            "p99_estimate": 0.34122192611087715
+          },
+          "buckets": {
+            "0.0001": 0,
+            "0.0005": 0,
+            "0.001": 0,
+            "0.005": 29,
+            "0.01": 45,
+            "0.05": 100,
+            "0.1": 122,
+            "0.5": 142,
+            "1": 142,
+            "2.5": 142,
+            "5": 142,
+            "+Inf": 142
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "stage": "route"
+          },
+          "stats": {
+            "count": 142,
+            "sum": 0.0014459230000000004,
+            "avg": 0.000010182556338028172,
+            "count_rate": 0.215091464405302,
+            "sum_rate": 2.1901809541359686e-6,
+            "p1_estimate": 4.461965593431704e-6,
+            "p5_estimate": 4.9289525929906e-6,
+            "p10_estimate": 5.512686342439218e-6,
+            "p25_estimate": 7.263887590785075e-6,
+            "p50_estimate": 0.000010182556338028172,
+            "p75_estimate": 0.000013101225085271269,
+            "p90_estimate": 0.000014852426333617126,
+            "p95_estimate": 0.000015436160083065743,
+            "p99_estimate": 0.00001590314708262464
+          },
+          "buckets": {
+            "0.0001": 142,
+            "0.0005": 142,
+            "0.001": 142,
+            "0.005": 142,
+            "0.01": 142,
+            "0.05": 142,
+            "0.1": 142,
+            "0.5": 142,
+            "1": 142,
+            "2.5": 142,
+            "5": 142,
+            "+Inf": 142
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "stage": "transport_roundtrip"
+          },
+          "stats": {
+            "count": 49,
+            "sum": 13183.792747055995,
+            "avg": 269.0569948378775,
+            "count_rate": 0.0742217025060549,
+            "sum_rate": 19.96986822803009,
+            "p1_estimate": 2.927984193199114,
+            "p5_estimate": 5.0,
+            "p10_estimate": 27.508950025996526,
+            "p25_estimate": 117.54475012998257,
+            "p50_estimate": 267.60441696995935,
+            "p75_estimate": 417.66408380993613,
+            "p90_estimate": 507.6998839139222,
+            "p95_estimate": 537.7118172819174,
+            "p99_estimate": 561.7213639763138
+          },
+          "buckets": {
+            "0.0001": 0,
+            "0.0005": 0,
+            "0.001": 0,
+            "0.005": 0,
+            "0.01": 0,
+            "0.05": 0,
+            "0.1": 0,
+            "0.5": 0,
+            "1": 0,
+            "2.5": 1,
+            "5": 3,
+            "+Inf": 49
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_stage_requests": {
+      "type": "gauge",
+      "description": "Number of requests currently in the given pipeline stage",
+      "unit": "requests",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "phase": "",
+            "stage": "preprocess"
+          },
+          "stats": {
+            "avg": 0.009086320040383645,
+            "min": 0.0,
+            "max": 11.0,
+            "std": 0.275090844718827,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_template_seconds": {
+      "type": "histogram",
+      "description": "Template application time in preprocessor (seconds)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "stats": {
+            "count": 142,
+            "sum": 0.02140955299999999,
+            "avg": 0.00015077149999999994,
+            "count_rate": 0.215091464405302,
+            "sum_rate": 0.000032429662725583976,
+            "p1_estimate": 0.000016588621880469027,
+            "p5_estimate": 0.000044811690786445584,
+            "p10_estimate": 0.00005,
+            "p25_estimate": 0.0000646203642249821,
+            "p50_estimate": 0.00009609986465217359,
+            "p75_estimate": 0.00020439621214014998,
+            "p90_estimate": 0.00034232427016807484,
+            "p95_estimate": 0.00038830028951071635,
+            "p99_estimate": 0.0005760061327849073
+          },
+          "buckets": {
+            "0.00001": 0,
+            "0.00005": 8,
+            "0.0001": 71,
+            "0.0005": 137,
+            "0.001": 142,
+            "0.005": 142,
+            "0.01": 142,
+            "0.05": 142,
+            "+Inf": 142
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_time_to_first_token_seconds": {
+      "type": "histogram",
+      "description": "Time to first token in seconds",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "model": "zai-org/GLM-5.2-FP8"
+          },
+          "stats": {
+            "count": 49,
+            "sum": 13184.410150389002,
+            "avg": 269.069594905898,
+            "count_rate": 0.0742217025060549,
+            "sum_rate": 19.970803426530267,
+            "p1_estimate": 3.2201274419539514,
+            "p5_estimate": 11.409670440468439,
+            "p10_estimate": 30.765559859423924,
+            "p25_estimate": 82.36328462792149,
+            "p50_estimate": 215.24841554421883,
+            "p75_estimate": 452.9074459690293,
+            "p90_estimate": 551.6169783640889,
+            "p95_estimate": 605.3297121371553,
+            "p99_estimate": 648.2998991556087
+          },
+          "buckets": {
+            "0": 0,
+            "0.0022": 0,
+            "0.0047": 0,
+            "0.01": 0,
+            "0.022": 0,
+            "0.047": 0,
+            "0.1": 0,
+            "0.22": 0,
+            "0.47": 0,
+            "1": 0,
+            "2.2": 1,
+            "4.7": 1,
+            "10": 3,
+            "22": 4,
+            "48": 8,
+            "100": 15,
+            "220": 26,
+            "480": 40,
+            "+Inf": 49
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_tokenize_seconds": {
+      "type": "histogram",
+      "description": "Tokenization time in preprocessor (seconds)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "stats": {
+            "count": 142,
+            "sum": 6.756949445999998,
+            "avg": 0.047584151028169,
+            "count_rate": 0.215091464405302,
+            "sum_rate": 0.010234944727131927,
+            "p1_estimate": 0.0010553621174376826,
+            "p5_estimate": 0.0018315812788639863,
+            "p10_estimate": 0.0028039950719674347,
+            "p25_estimate": 0.0064607990389449555,
+            "p50_estimate": 0.01926949978899229,
+            "p75_estimate": 0.058959594667524415,
+            "p90_estimate": 0.1,
+            "p95_estimate": 0.22803988584150636,
+            "p99_estimate": 0.34083988584150676
+          },
+          "buckets": {
+            "0.0001": 0,
+            "0.0005": 0,
+            "0.001": 0,
+            "0.005": 29,
+            "0.01": 46,
+            "0.05": 100,
+            "0.1": 122,
+            "0.5": 142,
+            "1": 142,
+            "+Inf": 142
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_tokenizer_cache_hits": {
+      "type": "counter",
+      "description": "Cumulative L1 tokenizer prefix-cache hits",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_tokenizer_cache_misses": {
+      "type": "counter",
+      "description": "Cumulative L1 tokenizer prefix-cache misses",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_tokenizer_latency_ms": {
+      "type": "histogram",
+      "description": "Tokenizer latency in milliseconds",
+      "unit": "milliseconds",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "operation": "detokenize"
+          },
+          "stats": {
+            "count": 49,
+            "sum": 0.11569547387268753,
+            "avg": 0.0023611321198507658,
+            "count_rate": 0.0742217025060549,
+            "sum_rate": 0.00017524724577705432,
+            "p1_estimate": 0.0023611321198507658,
+            "p5_estimate": 0.0023611321198507658,
+            "p10_estimate": 0.0023611321198507658,
+            "p25_estimate": 0.0023611321198507658,
+            "p50_estimate": 0.0023611321198507658,
+            "p75_estimate": 0.0023611321198507658,
+            "p90_estimate": 0.0023611321198507658,
+            "p95_estimate": 0.0023611321198507658,
+            "p99_estimate": 0.0023611321198507658
+          },
+          "buckets": {
+            "0.5": 49,
+            "1": 49,
+            "2": 49,
+            "4": 49,
+            "8": 49,
+            "16": 49,
+            "32": 49,
+            "64": 49,
+            "128": 49,
+            "256": 49,
+            "512": 49,
+            "+Inf": 49
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "operation": "tokenize"
+          },
+          "stats": {
+            "count": 49,
+            "sum": 588.838806,
+            "avg": 12.017118489795918,
+            "count_rate": 0.0742217025060549,
+            "sum_rate": 0.8919309935296444,
+            "p1_estimate": 1.125638736592025,
+            "p5_estimate": 1.356571632592031,
+            "p10_estimate": 1.629015712592036,
+            "p25_estimate": 2.574914413143057,
+            "p50_estimate": 7.885307809770698,
+            "p75_estimate": 15.687248904902702,
+            "p90_estimate": 27.32359484044449,
+            "p95_estimate": 30.813367736444487,
+            "p99_estimate": 58.602861764714454
+          },
+          "buckets": {
+            "0.5": 0,
+            "1": 0,
+            "2": 10,
+            "4": 18,
+            "8": 25,
+            "16": 37,
+            "32": 47,
+            "64": 49,
+            "128": 49,
+            "256": 49,
+            "512": 49,
+            "+Inf": 49
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_worker_last_input_sequence_tokens": {
+      "type": "gauge",
+      "description": "Last observed input sequence tokens per worker",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "dp_rank": "none",
+            "worker_id": "2372705692854451",
+            "worker_type": "decode"
+          },
+          "stats": {
+            "avg": 7533.769813225644,
+            "min": 1030.0,
+            "max": 32774.0,
+            "std": 6520.411680279138,
+            "p1": 1030.0,
+            "p5": 1030.0,
+            "p10": 1030.0,
+            "p25": 1030.0,
+            "p50": 8198.0,
+            "p75": 8198.0,
+            "p90": 16390.0,
+            "p95": 16390.0,
+            "p99": 32774.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_worker_last_inter_token_latency_seconds": {
+      "type": "gauge",
+      "description": "Last observed inter-token latency per worker (seconds)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "dp_rank": "none",
+            "worker_id": "2372705692854451",
+            "worker_type": "decode"
+          },
+          "stats": {
+            "avg": 1.1461558135426553,
+            "min": 0.033207452,
+            "max": 4.570296271,
+            "std": 1.2663059562646113,
+            "p1": 0.0369029038,
+            "p5": 0.037941221,
+            "p10": 0.038488148,
+            "p25": 0.039248427,
+            "p50": 0.04053842,
+            "p75": 2.600801829,
+            "p90": 2.732647154,
+            "p95": 2.823365633,
+            "p99": 3.004817896000003
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_worker_last_time_to_first_token_seconds": {
+      "type": "gauge",
+      "description": "Last observed time to first token per worker (seconds)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "dp_rank": "none",
+            "worker_id": "2372705692854451",
+            "worker_type": "decode"
+          },
+          "stats": {
+            "avg": 314.7115789684583,
+            "min": 1.553109243,
+            "max": 657.486050183,
+            "std": 187.4943266235007,
+            "p1": 4.799057622,
+            "p5": 26.527233614,
+            "p10": 60.56965788,
+            "p25": 153.054568402,
+            "p50": 278.47485894,
+            "p75": 485.371759,
+            "p90": 589.338286961,
+            "p95": 598.748102971,
+            "p99": 652.220769072
+          }
+        }
+      ]
+    },
+    "dynamo_request_plane_inflight_requests": {
+      "type": "gauge",
+      "description": "Currently in-flight requests at AddressedPushRouter",
+      "unit": "requests",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "stats": {
+            "avg": 116.36698637051994,
+            "min": 0.0,
+            "max": 137.0,
+            "std": 12.24885484048813,
+            "p1": 97.0,
+            "p5": 98.0,
+            "p10": 98.0,
+            "p25": 108.0,
+            "p50": 116.0,
+            "p75": 126.0,
+            "p90": 134.0,
+            "p95": 137.0,
+            "p99": 137.0
+          }
+        }
+      ]
+    },
+    "dynamo_request_plane_queue_seconds": {
+      "type": "histogram",
+      "description": "Time from generate() entry to send_request() (seconds)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "stats": {
+            "count": 142,
+            "sum": 0.053335048000000024,
+            "avg": 0.00037559892957746496,
+            "count_rate": 0.215091464405302,
+            "sum_rate": 0.00008078812379188083,
+            "p1_estimate": 1.002310326519294e-6,
+            "p5_estimate": 0.000014118589396286738,
+            "p10_estimate": 0.000030513938233496043,
+            "p25_estimate": 0.00007969998474512396,
+            "p50_estimate": 0.00019015756225687882,
+            "p75_estimate": 0.0003887491115526535,
+            "p90_estimate": 0.0009874070966723978,
+            "p95_estimate": 0.0015049620728433731,
+            "p99_estimate": 0.0030089620728433767
+          },
+          "buckets": {
+            "0.0001": 43,
+            "0.0005": 114,
+            "0.001": 127,
+            "0.005": 142,
+            "0.01": 142,
+            "0.05": 142,
+            "0.1": 142,
+            "0.5": 142,
+            "1": 142,
+            "+Inf": 142
+          }
+        }
+      ]
+    },
+    "dynamo_request_plane_roundtrip_ttft_seconds": {
+      "type": "histogram",
+      "description": "Time from send_request() to first response item (seconds)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "stats": {
+            "count": 49,
+            "sum": 13183.786326776002,
+            "avg": 269.05686381175514,
+            "count_rate": 0.0742217025060549,
+            "sum_rate": 19.969858503048222,
+            "p1_estimate": 2.927922980730723,
+            "p5_estimate": 5.0,
+            "p10_estimate": 27.508939104852182,
+            "p25_estimate": 117.54469552426087,
+            "p50_estimate": 267.6042895566087,
+            "p75_estimate": 417.66388358895654,
+            "p90_estimate": 507.6996400083653,
+            "p95_estimate": 537.7115588148347,
+            "p99_estimate": 561.7210938600105
+          },
+          "buckets": {
+            "0.001": 0,
+            "0.005": 0,
+            "0.01": 0,
+            "0.025": 0,
+            "0.05": 0,
+            "0.1": 0,
+            "0.25": 0,
+            "0.5": 0,
+            "1": 0,
+            "2.5": 1,
+            "5": 3,
+            "+Inf": 49
+          }
+        }
+      ]
+    },
+    "dynamo_request_plane_send_seconds": {
+      "type": "histogram",
+      "description": "Time for send_request() to complete (seconds)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "stats": {
+            "count": 142,
+            "sum": 1.5603424399999997,
+            "avg": 0.01098832704225352,
+            "count_rate": 0.215091464405302,
+            "sum_rate": 0.00236349535488269,
+            "p1_estimate": 0.0001638182526271498,
+            "p5_estimate": 0.00020333254988608518,
+            "p10_estimate": 0.0002527254214597544,
+            "p25_estimate": 0.0005,
+            "p50_estimate": 0.0027110518050203845,
+            "p75_estimate": 0.012565063504749296,
+            "p90_estimate": 0.038201427141112944,
+            "p95_estimate": 0.05,
+            "p99_estimate": 0.07489296179217629
+          },
+          "buckets": {
+            "0.0001": 0,
+            "0.0005": 33,
+            "0.001": 50,
+            "0.005": 86,
+            "0.01": 99,
+            "0.05": 132,
+            "0.1": 142,
+            "0.5": 142,
+            "1": 142,
+            "+Inf": 142
+          }
+        }
+      ]
+    },
+    "dynamo_router_overhead_block_hashing_ms": {
+      "type": "histogram",
+      "description": "Time spent computing block hashes in milliseconds",
+      "unit": "milliseconds",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "router_id": "1774436734316588"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0.001": 0,
+            "0.002": 0,
+            "0.004": 0,
+            "0.008": 0,
+            "0.016": 0,
+            "0.032": 0,
+            "0.064": 0,
+            "0.128": 0,
+            "0.256": 0,
+            "0.512": 0,
+            "1.024": 0,
+            "2.048": 0,
+            "4.096": 0,
+            "8.192": 0,
+            "16.384": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_router_overhead_indexer_find_matches_ms": {
+      "type": "histogram",
+      "description": "Time spent in indexer find_matches in milliseconds",
+      "unit": "milliseconds",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "router_id": "1774436734316588"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0.01": 0,
+            "0.03": 0,
+            "0.09": 0,
+            "0.27": 0,
+            "0.81": 0,
+            "2.43": 0,
+            "7.290000000000001": 0,
+            "21.870000000000005": 0,
+            "65.61000000000001": 0,
+            "196.83000000000004": 0,
+            "590.4900000000001": 0,
+            "1771.4700000000003": 0,
+            "5314.410000000001": 0,
+            "15943.230000000003": 0,
+            "47829.69000000001": 0,
+            "143489.07000000004": 0,
+            "430467.2100000001": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_router_overhead_scheduling_ms": {
+      "type": "histogram",
+      "description": "Time spent in scheduler worker selection in milliseconds",
+      "unit": "milliseconds",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "router_id": "1774436734316588"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0.01": 0,
+            "0.03": 0,
+            "0.09": 0,
+            "0.27": 0,
+            "0.81": 0,
+            "2.43": 0,
+            "7.290000000000001": 0,
+            "21.870000000000005": 0,
+            "65.61000000000001": 0,
+            "196.83000000000004": 0,
+            "590.4900000000001": 0,
+            "1771.4700000000003": 0,
+            "5314.410000000001": 0,
+            "15943.230000000003": 0,
+            "47829.69000000001": 0,
+            "143489.07000000004": 0,
+            "430467.2100000001": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_router_overhead_seq_hashing_ms": {
+      "type": "histogram",
+      "description": "Time spent computing sequence hashes in milliseconds",
+      "unit": "milliseconds",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "router_id": "1774436734316588"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0.001": 0,
+            "0.002": 0,
+            "0.004": 0,
+            "0.008": 0,
+            "0.016": 0,
+            "0.032": 0,
+            "0.064": 0,
+            "0.128": 0,
+            "0.256": 0,
+            "0.512": 0,
+            "1.024": 0,
+            "2.048": 0,
+            "4.096": 0,
+            "8.192": 0,
+            "16.384": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_router_overhead_shared_cache_query_ms": {
+      "type": "histogram",
+      "description": "Time spent querying the shared KV cache in milliseconds",
+      "unit": "milliseconds",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "router_id": "1774436734316588"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0.01": 0,
+            "0.03": 0,
+            "0.09": 0,
+            "0.27": 0,
+            "0.81": 0,
+            "2.43": 0,
+            "7.290000000000001": 0,
+            "21.870000000000005": 0,
+            "65.61000000000001": 0,
+            "196.83000000000004": 0,
+            "590.4900000000001": 0,
+            "1771.4700000000003": 0,
+            "5314.410000000001": 0,
+            "15943.230000000003": 0,
+            "47829.69000000001": 0,
+            "143489.07000000004": 0,
+            "430467.2100000001": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_router_overhead_total_ms": {
+      "type": "histogram",
+      "description": "Total routing overhead per request in milliseconds",
+      "unit": "milliseconds",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "router_id": "1774436734316588"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0.01": 0,
+            "0.03": 0,
+            "0.09": 0,
+            "0.27": 0,
+            "0.81": 0,
+            "2.43": 0,
+            "7.290000000000001": 0,
+            "21.870000000000005": 0,
+            "65.61000000000001": 0,
+            "196.83000000000004": 0,
+            "590.4900000000001": 0,
+            "1771.4700000000003": 0,
+            "5314.410000000001": 0,
+            "15943.230000000003": 0,
+            "47829.69000000001": 0,
+            "143489.07000000004": 0,
+            "430467.2100000001": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_router_shared_cache_errors": {
+      "type": "counter",
+      "description": "Total shared cache query errors",
+      "unit": "errors",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "router_id": "1774436734316588"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_alive_tasks": {
+      "type": "gauge",
+      "description": "Number of alive tasks in the runtime",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "stats": {
+            "avg": 622.7137809187279,
+            "min": 354.0,
+            "max": 709.0,
+            "std": 52.88487932770117,
+            "p1": 534.0,
+            "p5": 543.0,
+            "p10": 543.0,
+            "p25": 583.0,
+            "p50": 625.0,
+            "p75": 665.0,
+            "p90": 697.0,
+            "p95": 709.0,
+            "p99": 709.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_blocking_idle_threads": {
+      "type": "gauge",
+      "description": "Number of idle blocking threads",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_blocking_queue_depth": {
+      "type": "gauge",
+      "description": "Number of tasks in the blocking thread pool queue",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_blocking_threads": {
+      "type": "gauge",
+      "description": "Number of blocking threads",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_budget_forced_yield": {
+      "type": "counter",
+      "description": "Number of times tasks were forced to yield after exhausting budget",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_global_queue_depth": {
+      "type": "gauge",
+      "description": "Number of tasks in the runtime global queue",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_worker_busy_ratio": {
+      "type": "gauge",
+      "description": "Worker busy ratio (0-1) as integer mill ratio; >950 = saturated",
+      "unit": "ratio",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "0"
+          },
+          "stats": {
+            "avg": 41.60171630489652,
+            "min": 2.0,
+            "max": 1000.0,
+            "std": 76.79682217411543,
+            "p1": 4.0,
+            "p5": 7.0,
+            "p10": 15.0,
+            "p25": 26.0,
+            "p50": 35.0,
+            "p75": 42.0,
+            "p90": 62.0,
+            "p95": 69.0,
+            "p99": 98.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "1"
+          },
+          "stats": {
+            "avg": 999.409389197375,
+            "min": 610.0,
+            "max": 1000.0,
+            "std": 15.16923030882205,
+            "p1": 1000.0,
+            "p5": 1000.0,
+            "p10": 1000.0,
+            "p25": 1000.0,
+            "p50": 1000.0,
+            "p75": 1000.0,
+            "p90": 1000.0,
+            "p95": 1000.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "10"
+          },
+          "stats": {
+            "avg": 997.9040888440181,
+            "min": 9.0,
+            "max": 1000.0,
+            "std": 41.44418040368898,
+            "p1": 1000.0,
+            "p5": 1000.0,
+            "p10": 1000.0,
+            "p25": 1000.0,
+            "p50": 1000.0,
+            "p75": 1000.0,
+            "p90": 1000.0,
+            "p95": 1000.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "11"
+          },
+          "stats": {
+            "avg": 63.27309439676931,
+            "min": 3.0,
+            "max": 1000.0,
+            "std": 159.2183864184746,
+            "p1": 3.0,
+            "p5": 8.0,
+            "p10": 17.0,
+            "p25": 26.0,
+            "p50": 35.0,
+            "p75": 46.0,
+            "p90": 56.0,
+            "p95": 85.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "12"
+          },
+          "stats": {
+            "avg": 46.62089853609288,
+            "min": 2.0,
+            "max": 1000.0,
+            "std": 90.97386208814392,
+            "p1": 4.0,
+            "p5": 18.0,
+            "p10": 22.0,
+            "p25": 32.0,
+            "p50": 35.0,
+            "p75": 40.0,
+            "p90": 64.0,
+            "p95": 68.0,
+            "p99": 329.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "13"
+          },
+          "stats": {
+            "avg": 118.41342756183745,
+            "min": 103.0,
+            "max": 406.0,
+            "std": 11.217960050309095,
+            "p1": 118.0,
+            "p5": 118.0,
+            "p10": 118.0,
+            "p25": 118.0,
+            "p50": 118.0,
+            "p75": 118.0,
+            "p90": 118.0,
+            "p95": 118.0,
+            "p99": 118.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "14"
+          },
+          "stats": {
+            "avg": 1000.0,
+            "min": 1000.0,
+            "max": 1000.0,
+            "std": 0.0,
+            "p1": 1000.0,
+            "p5": 1000.0,
+            "p10": 1000.0,
+            "p25": 1000.0,
+            "p50": 1000.0,
+            "p75": 1000.0,
+            "p90": 1000.0,
+            "p95": 1000.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "15"
+          },
+          "stats": {
+            "avg": 999.0262493690055,
+            "min": 357.0,
+            "max": 1000.0,
+            "std": 25.00978227839121,
+            "p1": 1000.0,
+            "p5": 1000.0,
+            "p10": 1000.0,
+            "p25": 1000.0,
+            "p50": 1000.0,
+            "p75": 1000.0,
+            "p90": 1000.0,
+            "p95": 1000.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "2"
+          },
+          "stats": {
+            "avg": 156.81524482584553,
+            "min": 35.0,
+            "max": 157.0,
+            "std": 4.745246404298179,
+            "p1": 157.0,
+            "p5": 157.0,
+            "p10": 157.0,
+            "p25": 157.0,
+            "p50": 157.0,
+            "p75": 157.0,
+            "p90": 157.0,
+            "p95": 157.0,
+            "p99": 157.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "3"
+          },
+          "stats": {
+            "avg": 997.0181726400808,
+            "min": 7.0,
+            "max": 1000.0,
+            "std": 54.11482995541532,
+            "p1": 1000.0,
+            "p5": 1000.0,
+            "p10": 1000.0,
+            "p25": 1000.0,
+            "p50": 1000.0,
+            "p75": 1000.0,
+            "p90": 1000.0,
+            "p95": 1000.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "4"
+          },
+          "stats": {
+            "avg": 333.81423523472995,
+            "min": 2.0,
+            "max": 1000.0,
+            "std": 444.7163842762266,
+            "p1": 5.0,
+            "p5": 13.0,
+            "p10": 21.0,
+            "p25": 32.0,
+            "p50": 44.0,
+            "p75": 1000.0,
+            "p90": 1000.0,
+            "p95": 1000.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "5"
+          },
+          "stats": {
+            "avg": 998.4962140333165,
+            "min": 7.0,
+            "max": 1000.0,
+            "std": 38.62319409400075,
+            "p1": 1000.0,
+            "p5": 1000.0,
+            "p10": 1000.0,
+            "p25": 1000.0,
+            "p50": 1000.0,
+            "p75": 1000.0,
+            "p90": 1000.0,
+            "p95": 1000.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "6"
+          },
+          "stats": {
+            "avg": 91.92579505300354,
+            "min": 2.0,
+            "max": 1000.0,
+            "std": 224.8190069922609,
+            "p1": 3.0,
+            "p5": 8.0,
+            "p10": 15.0,
+            "p25": 25.0,
+            "p50": 34.0,
+            "p75": 46.0,
+            "p90": 81.0,
+            "p95": 1000.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "7"
+          },
+          "stats": {
+            "avg": 32.71226653205452,
+            "min": 2.0,
+            "max": 282.0,
+            "std": 15.310984898010533,
+            "p1": 6.0,
+            "p5": 16.0,
+            "p10": 24.0,
+            "p25": 26.0,
+            "p50": 29.0,
+            "p75": 36.0,
+            "p90": 44.0,
+            "p95": 59.0,
+            "p99": 72.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "8"
+          },
+          "stats": {
+            "avg": 1000.0,
+            "min": 1000.0,
+            "max": 1000.0,
+            "std": 0.0,
+            "p1": 1000.0,
+            "p5": 1000.0,
+            "p10": 1000.0,
+            "p25": 1000.0,
+            "p50": 1000.0,
+            "p75": 1000.0,
+            "p90": 1000.0,
+            "p95": 1000.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "9"
+          },
+          "stats": {
+            "avg": 322.5446744068652,
+            "min": 321.0,
+            "max": 1000.0,
+            "std": 29.53545460877429,
+            "p1": 321.0,
+            "p5": 321.0,
+            "p10": 321.0,
+            "p25": 321.0,
+            "p50": 321.0,
+            "p75": 321.0,
+            "p90": 321.0,
+            "p95": 321.0,
+            "p99": 321.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_worker_local_queue_depth": {
+      "type": "gauge",
+      "description": "Number of tasks in worker local queue",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "0"
+          },
+          "stats": {
+            "avg": 0.008076728924785462,
+            "min": 0.0,
+            "max": 4.0,
+            "std": 0.1618559846476625,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "1"
+          },
+          "stats": {
+            "avg": 0.019687026754164564,
+            "min": 0.0,
+            "max": 13.0,
+            "std": 0.5056410102940682,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "10"
+          },
+          "stats": {
+            "avg": 0.00757193336698637,
+            "min": 0.0,
+            "max": 5.0,
+            "std": 0.1944773116515647,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "11"
+          },
+          "stats": {
+            "avg": 0.006057546693589096,
+            "min": 0.0,
+            "max": 4.0,
+            "std": 0.15558184932125166,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "12"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "13"
+          },
+          "stats": {
+            "avg": 0.00757193336698637,
+            "min": 0.0,
+            "max": 5.0,
+            "std": 0.1944773116515647,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "14"
+          },
+          "stats": {
+            "avg": 0.001514386673397274,
+            "min": 0.0,
+            "max": 1.0,
+            "std": 0.038895462330312915,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "15"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "2"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "3"
+          },
+          "stats": {
+            "avg": 0.001514386673397274,
+            "min": 0.0,
+            "max": 1.0,
+            "std": 0.038895462330312915,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "4"
+          },
+          "stats": {
+            "avg": 0.009591115598182737,
+            "min": 0.0,
+            "max": 5.0,
+            "std": 0.19951680115025291,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "5"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "6"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "7"
+          },
+          "stats": {
+            "avg": 0.009086320040383645,
+            "min": 0.0,
+            "max": 5.0,
+            "std": 0.19827086645415495,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "8"
+          },
+          "stats": {
+            "avg": 0.01817264008076729,
+            "min": 0.0,
+            "max": 12.0,
+            "std": 0.4667455479637551,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "9"
+          },
+          "stats": {
+            "avg": 0.006057546693589096,
+            "min": 0.0,
+            "max": 4.0,
+            "std": 0.15558184932125166,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_worker_mean_poll_time_ns": {
+      "type": "gauge",
+      "description": "Worker mean task poll time (nanoseconds)",
+      "unit": "nanoseconds",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "0"
+          },
+          "stats": {
+            "avg": 150549.09742554266,
+            "min": 2601.0,
+            "max": 22060858.0,
+            "std": 1503382.0721007795,
+            "p1": 4111.0,
+            "p5": 7686.0,
+            "p10": 15561.0,
+            "p25": 26602.0,
+            "p50": 35022.0,
+            "p75": 42664.0,
+            "p90": 62391.0,
+            "p95": 69379.0,
+            "p99": 98474.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "1"
+          },
+          "stats": {
+            "avg": 3125745.0782433115,
+            "min": 610440.0,
+            "max": 3129560.0,
+            "std": 97982.33706553791,
+            "p1": 3129560.0,
+            "p5": 3129560.0,
+            "p10": 3129560.0,
+            "p25": 3129560.0,
+            "p50": 3129560.0,
+            "p75": 3129560.0,
+            "p90": 3129560.0,
+            "p95": 3129560.0,
+            "p99": 3129560.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "10"
+          },
+          "stats": {
+            "avg": 3833689.8571428573,
+            "min": 9200.0,
+            "max": 3844399.0,
+            "std": 195042.10064620952,
+            "p1": 3844399.0,
+            "p5": 3844399.0,
+            "p10": 3844399.0,
+            "p25": 3844399.0,
+            "p50": 3844399.0,
+            "p75": 3844399.0,
+            "p90": 3844399.0,
+            "p95": 3844399.0,
+            "p99": 3844399.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "11"
+          },
+          "stats": {
+            "avg": 309912.53205451794,
+            "min": 3075.0,
+            "max": 10930689.0,
+            "std": 1693102.6429250832,
+            "p1": 3896.0,
+            "p5": 8381.0,
+            "p10": 17143.0,
+            "p25": 26724.0,
+            "p50": 35241.0,
+            "p75": 46860.0,
+            "p90": 56710.0,
+            "p95": 85009.0,
+            "p99": 10930689.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "12"
+          },
+          "stats": {
+            "avg": 53928.249369005556,
+            "min": 2503.0,
+            "max": 2080394.0,
+            "std": 167293.202828053,
+            "p1": 4266.0,
+            "p5": 18307.0,
+            "p10": 22675.0,
+            "p25": 32265.0,
+            "p50": 35404.0,
+            "p75": 40464.0,
+            "p90": 64854.0,
+            "p95": 68397.0,
+            "p99": 329393.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "13"
+          },
+          "stats": {
+            "avg": 118519.3301362948,
+            "min": 103538.0,
+            "max": 406268.0,
+            "std": 11223.40310501327,
+            "p1": 118105.0,
+            "p5": 118105.0,
+            "p10": 118105.0,
+            "p25": 118105.0,
+            "p50": 118105.0,
+            "p75": 118105.0,
+            "p90": 118105.0,
+            "p95": 118105.0,
+            "p99": 118105.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "14"
+          },
+          "stats": {
+            "avg": 4003923.68753155,
+            "min": 1216310.0,
+            "max": 4445690.0,
+            "std": 109919.43697852327,
+            "p1": 4007487.0,
+            "p5": 4007487.0,
+            "p10": 4007487.0,
+            "p25": 4007487.0,
+            "p50": 4007487.0,
+            "p75": 4007487.0,
+            "p90": 4007487.0,
+            "p95": 4007487.0,
+            "p99": 4007487.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "15"
+          },
+          "stats": {
+            "avg": 2282440.0393740535,
+            "min": 357872.0,
+            "max": 2285359.0,
+            "std": 74970.49800066787,
+            "p1": 2285359.0,
+            "p5": 2285359.0,
+            "p10": 2285359.0,
+            "p25": 2285359.0,
+            "p50": 2285359.0,
+            "p75": 2285359.0,
+            "p90": 2285359.0,
+            "p95": 2285359.0,
+            "p99": 2285359.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "2"
+          },
+          "stats": {
+            "avg": 157002.2882382635,
+            "min": 35875.0,
+            "max": 157186.0,
+            "std": 4718.447430752592,
+            "p1": 157186.0,
+            "p5": 157186.0,
+            "p10": 157186.0,
+            "p25": 157186.0,
+            "p50": 157186.0,
+            "p75": 157186.0,
+            "p90": 157186.0,
+            "p95": 157186.0,
+            "p99": 157186.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "3"
+          },
+          "stats": {
+            "avg": 7348748.228167593,
+            "min": 7421.0,
+            "max": 7371025.0,
+            "std": 404268.70086979645,
+            "p1": 7371025.0,
+            "p5": 7371025.0,
+            "p10": 7371025.0,
+            "p25": 7371025.0,
+            "p50": 7371025.0,
+            "p75": 7371025.0,
+            "p90": 7371025.0,
+            "p95": 7371025.0,
+            "p99": 7371025.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "4"
+          },
+          "stats": {
+            "avg": 1719486.9409389198,
+            "min": 2567.0,
+            "max": 5499065.0,
+            "std": 2521775.1328165284,
+            "p1": 5286.0,
+            "p5": 13978.0,
+            "p10": 21330.0,
+            "p25": 32125.0,
+            "p50": 44679.0,
+            "p75": 5499065.0,
+            "p90": 5499065.0,
+            "p95": 5499065.0,
+            "p99": 5499065.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "5"
+          },
+          "stats": {
+            "avg": 6588282.938414942,
+            "min": 7419.0,
+            "max": 6606716.0,
+            "std": 335705.911503129,
+            "p1": 6606716.0,
+            "p5": 6606716.0,
+            "p10": 6606716.0,
+            "p25": 6606716.0,
+            "p50": 6606716.0,
+            "p75": 6606716.0,
+            "p90": 6606716.0,
+            "p95": 6606716.0,
+            "p99": 6606716.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "6"
+          },
+          "stats": {
+            "avg": 330624.5451792024,
+            "min": 2745.0,
+            "max": 14324385.0,
+            "std": 1460389.0786753104,
+            "p1": 3771.0,
+            "p5": 8135.0,
+            "p10": 15504.0,
+            "p25": 25124.0,
+            "p50": 34852.0,
+            "p75": 46817.0,
+            "p90": 81035.0,
+            "p95": 1549995.0,
+            "p99": 7666758.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "7"
+          },
+          "stats": {
+            "avg": 33246.20848056537,
+            "min": 2282.0,
+            "max": 282359.0,
+            "std": 15278.335511252286,
+            "p1": 6443.0,
+            "p5": 16875.0,
+            "p10": 24207.0,
+            "p25": 26806.0,
+            "p50": 29345.0,
+            "p75": 36565.0,
+            "p90": 44028.0,
+            "p95": 59264.0,
+            "p99": 72922.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "8"
+          },
+          "stats": {
+            "avg": 1007770.7455830389,
+            "min": 1007387.0,
+            "max": 1260787.0,
+            "std": 9856.110154501293,
+            "p1": 1007387.0,
+            "p5": 1007387.0,
+            "p10": 1007387.0,
+            "p25": 1007387.0,
+            "p50": 1007387.0,
+            "p75": 1007387.0,
+            "p90": 1007387.0,
+            "p95": 1007387.0,
+            "p99": 1007387.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "9"
+          },
+          "stats": {
+            "avg": 326719.1009591116,
+            "min": 321351.0,
+            "max": 3524509.0,
+            "std": 125274.65705598572,
+            "p1": 321351.0,
+            "p5": 321351.0,
+            "p10": 321351.0,
+            "p25": 321351.0,
+            "p50": 321351.0,
+            "p75": 321351.0,
+            "p90": 321351.0,
+            "p95": 321351.0,
+            "p99": 321351.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_worker_overflow_count": {
+      "type": "counter",
+      "description": "Total number of times worker local queue overflowed",
+      "unit": "count",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "0"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "1"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "10"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "11"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "12"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "13"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "14"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "15"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "2"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "3"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "4"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "5"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "6"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "7"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "8"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "9"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_worker_park_count": {
+      "type": "counter",
+      "description": "Total number of times worker has parked",
+      "unit": "count",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "0"
+          },
+          "stats": {
+            "total": 33688.0,
+            "rate": 51.028177837224035
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "1"
+          },
+          "stats": {
+            "total": 90.0,
+            "rate": 0.13632557603152942
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "10"
+          },
+          "stats": {
+            "total": 148.0,
+            "rate": 0.22417983614073728
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "11"
+          },
+          "stats": {
+            "total": 34734.0,
+            "rate": 52.61258397643493
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "12"
+          },
+          "stats": {
+            "total": 21607.0,
+            "rate": 32.72874134792507
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "13"
+          },
+          "stats": {
+            "total": 182.0,
+            "rate": 0.2756806093082039
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "14"
+          },
+          "stats": {
+            "total": 163.0,
+            "rate": 0.24690076547932552
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "15"
+          },
+          "stats": {
+            "total": 321.0,
+            "rate": 0.4862278878457883
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "2"
+          },
+          "stats": {
+            "total": 175.0,
+            "rate": 0.2650775089501961
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "3"
+          },
+          "stats": {
+            "total": 140.0,
+            "rate": 0.21206200716015688
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "4"
+          },
+          "stats": {
+            "total": 21290.0,
+            "rate": 32.24857237456957
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "5"
+          },
+          "stats": {
+            "total": 116.0,
+            "rate": 0.1757085202184157
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "6"
+          },
+          "stats": {
+            "total": 36580.0,
+            "rate": 55.40877301370385
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "7"
+          },
+          "stats": {
+            "total": 17841.0,
+            "rate": 27.02427335531685
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "8"
+          },
+          "stats": {
+            "total": 131.0,
+            "rate": 0.19842944955700395
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "9"
+          },
+          "stats": {
+            "total": 158.0,
+            "rate": 0.23932712236646278
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_worker_steal_count": {
+      "type": "counter",
+      "description": "Total number of tasks stolen by worker",
+      "unit": "count",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "0"
+          },
+          "stats": {
+            "total": 633.0,
+            "rate": 0.9588232180884236
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "1"
+          },
+          "stats": {
+            "total": 57.0,
+            "rate": 0.0863395314866353
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "10"
+          },
+          "stats": {
+            "total": 79.0,
+            "rate": 0.11966356118323139
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "11"
+          },
+          "stats": {
+            "total": 739.0,
+            "rate": 1.1193844520811138
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "12"
+          },
+          "stats": {
+            "total": 685.0,
+            "rate": 1.0375891064621963
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "13"
+          },
+          "stats": {
+            "total": 49.0,
+            "rate": 0.0742217025060549
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "14"
+          },
+          "stats": {
+            "total": 68.0,
+            "rate": 0.10300154633493334
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "15"
+          },
+          "stats": {
+            "total": 50.0,
+            "rate": 0.07573643112862746
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "2"
+          },
+          "stats": {
+            "total": 67.0,
+            "rate": 0.1014868177123608
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "3"
+          },
+          "stats": {
+            "total": 69.0,
+            "rate": 0.1045162749575059
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "4"
+          },
+          "stats": {
+            "total": 486.0,
+            "rate": 0.7361581105702589
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "5"
+          },
+          "stats": {
+            "total": 32.0,
+            "rate": 0.048471315922321574
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "6"
+          },
+          "stats": {
+            "total": 671.0,
+            "rate": 1.0163829057461804
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "7"
+          },
+          "stats": {
+            "total": 419.0,
+            "rate": 0.6346712928578981
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "8"
+          },
+          "stats": {
+            "total": 80.0,
+            "rate": 0.12117828980580393
+          }
+        },
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "labels": {
+            "worker": "9"
+          },
+          "stats": {
+            "total": 44.0,
+            "rate": 0.06664805939319217
+          }
+        }
+      ]
+    },
+    "dynamo_transport_tcp_bytes_received": {
+      "type": "counter",
+      "description": "Total bytes received by TCP request client",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_transport_tcp_bytes_sent": {
+      "type": "counter",
+      "description": "Total bytes sent by TCP request client",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "stats": {
+            "total": 16733776.0,
+            "rate": 25347.12947091758
+          }
+        }
+      ]
+    },
+    "dynamo_transport_tcp_errors": {
+      "type": "counter",
+      "description": "Total TCP request errors (send failure or timeout)",
+      "unit": "errors",
+      "series": [
+        {
+          "endpoint_url": "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000/metrics",
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        }
+      ]
+    }
+  },
+  "input_config": {
+    "models": {
+      "items": [
+        {
+          "name": "zai-org/GLM-5.2-FP8"
+        }
+      ]
+    },
+    "endpoint": {
+      "urls": [
+        "http://glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000"
+      ],
+      "type": "chat",
+      "timeout": 3600.0,
+      "streaming": true,
+      "extra": {
+        "ignore_eos": true,
+        "temperature": 0.0,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      }
+    },
+    "datasets": [
+      {
+        "name": "main",
+        "type": "synthetic",
+        "entries": 4096,
+        "random_seed": 42,
+        "prompts": {
+          "isl": {
+            "mean": 550.0
+          },
+          "sequence_distribution": [
+            {
+              "isl": {
+                "mean": 1024.0,
+                "stddev": 0.0
+              },
+              "osl": {
+                "mean": 256.0,
+                "stddev": 0.0
+              },
+              "probability": 20.0
+            },
+            {
+              "isl": {
+                "mean": 4096.0,
+                "stddev": 0.0
+              },
+              "osl": {
+                "mean": 512.0,
+                "stddev": 0.0
+              },
+              "probability": 10.0
+            },
+            {
+              "isl": {
+                "mean": 8192.0,
+                "stddev": 0.0
+              },
+              "osl": {
+                "mean": 1024.0,
+                "stddev": 0.0
+              },
+              "probability": 20.0
+            },
+            {
+              "isl": {
+                "mean": 16384.0,
+                "stddev": 0.0
+              },
+              "osl": {
+                "mean": 1024.0,
+                "stddev": 0.0
+              },
+              "probability": 20.0
+            },
+            {
+              "isl": {
+                "mean": 32768.0,
+                "stddev": 0.0
+              },
+              "osl": {
+                "mean": 1024.0,
+                "stddev": 0.0
+              },
+              "probability": 15.0
+            },
+            {
+              "isl": {
+                "mean": 65536.0,
+                "stddev": 0.0
+              },
+              "osl": {
+                "mean": 1024.0,
+                "stddev": 0.0
+              },
+              "probability": 5.0
+            },
+            {
+              "isl": {
+                "mean": 98304.0,
+                "stddev": 0.0
+              },
+              "osl": {
+                "mean": 1024.0,
+                "stddev": 0.0
+              },
+              "probability": 5.0
+            },
+            {
+              "isl": {
+                "mean": 126976.0,
+                "stddev": 0.0
+              },
+              "osl": {
+                "mean": 1024.0,
+                "stddev": 0.0
+              },
+              "probability": 5.0
+            }
+          ]
+        }
+      }
+    ],
+    "phases": [
+      {
+        "name": "warmup",
+        "type": "concurrency",
+        "exclude_from_results": true,
+        "requests": 16,
+        "concurrency": 512
+      },
+      {
+        "name": "profiling",
+        "type": "concurrency",
+        "duration": 60.0,
+        "concurrency": 512,
+        "grace_period": 600.0
+      }
+    ],
+    "artifacts": {
+      "dir": "/perf-cache/aiperf/glm52-fp8-vllm-agg-tp16-final/tp1-4p4d/isolated/baseline-glm-5.2/mixed-1c30f44f3d78/c512",
+      "records": [
+        "jsonl"
+      ],
+      "auto_plot": false,
+      "plot_required": false
+    },
+    "tokenizer": {
+      "name": "/opt/models/hub/models--zai-org--GLM-5.2-FP8/snapshots/ba978f7d347eaf65d22f1a86833408afdb953541"
+    },
+    "gpu_telemetry": {
+      "enabled": true
+    },
+    "server_metrics": {
+      "enabled": true,
+      "urls": [],
+      "formats": [
+        "json",
+        "csv",
+        "jsonl"
+      ]
+    },
+    "otel": {},
+    "mlflow": {},
+    "runtime": {
+      "ui": "simple"
+    }
+  }
+}
