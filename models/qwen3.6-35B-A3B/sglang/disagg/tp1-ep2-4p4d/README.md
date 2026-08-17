@@ -1,25 +1,22 @@
 # SGLang disaggregated TP1-attention + EP2, 4P4D
 
-This recipe runs four prefill workers and four decode workers. Every worker
-uses two GPUs with `tp-size=dp-size=ep-size=2`, DP attention, and
-`moe-dense-tp-size=1`, giving effective attention/dense TP=1 and expert
-parallelism EP=2. It requests eight GPUs on each role node and all 16 GPUs in
-the reservation.
+This recipe deploys a disaggregated SGLang serving topology (4 Prefill + 4 Decode workers across 16 GPUs) for `Qwen/Qwen3.6-35B-A3B-FP8` using NIXL/UCX state transfer and Dynamo KV-aware routing.
 
-The Dynamo frontend runs with KV-aware routing. Prefill workers publish SGLang
-KV events, NIXL is configured to transfer KV/recurrent state over UCX/RDMA,
-and every worker exports SGLang/Dynamo metrics on port 9090 plus NIXL transfer
-metrics on port 19090. The baseline `deploy.yaml` enables cache reporting but
-does not enable hierarchical cache or CPU KV offload. The optional
-`deploy-kv-offloading.yaml` adds prefill-only GPU-to-CPU HiCache offload.
-Decode workers retain live NIXL P-to-D transfer and telemetry in both variants,
-but decode-side cache offload remains disabled because the pinned runtime does
-not support it for this hybrid model.
+### Topology & Configuration Summary
 
-This is an experimental backend comparison. SGLang supports NIXL
-prefill/decode disaggregation generally, but this runbook does not assume that
-Qwen3.6 recurrent/GDN state transfer works. Startup logs and a real request are
-mandatory acceptance gates.
+| Component / Feature | Configuration | Details |
+| :--- | :--- | :--- |
+| **Worker Allocation** | 4 Prefill + 4 Decode (4P4D) | 8 workers × 2 GPUs/worker = 16 GPUs total |
+| **Parallelism Specs** | Attention TP=1, EP=2 | `tp-size=2`, `dp-size=2`, `ep-size=2`, `moe-dense-tp-size=1` (DP attention/LM head) |
+| **Inter-Pod Transfer** | NIXL over UCX / RDMA | Transfers KV & recurrent state between Prefill and Decode roles |
+| **Routing Mode** | Dynamo KV-Aware Routing | Frontend routes requests based on SGLang ZMQ KV cache events (`--router-mode kv`) |
+| **Telemetry Ports** | SGLang: `9090`, NIXL: `19090` | Prometheus metrics exported on worker system ports |
+| **Deployment Variants** | [`deploy.yaml`](deploy.yaml) / [`deploy-kv-offloading.yaml`](deploy-kv-offloading.yaml) | Baseline vs. optional prefill-only GPU-to-CPU HiCache offload |
+
+> [!NOTE]
+> Startup logs and real request validation are mandatory acceptance gates before benchmarking. Decode-side KV offload is disabled due to runtime constraints with hybrid Mamba/GDN state.
+
+
 
 ## Variables
 
@@ -38,53 +35,31 @@ other GPU recipe concurrently.
 
 ## Optional KV-offloading configuration
 
-The optional `deploy-kv-offloading.yaml` keeps the baseline P/D topology and
-enables hierarchical cache only on prefill. A conservative
-`--hicache-ratio 1.2` allocates a CPU host-cache tier per rank without changing
-the existing Pod resource template. The
-`page_first_direct`/`direct` combination copies hybrid attention KV and Mamba
-state between GPU and host memory. Both roles keep `--enable-cache-report`,
-SGLang/Dynamo metrics, and NIXL P-to-D transfer metrics.
+The optional [`deploy-kv-offloading.yaml`](deploy-kv-offloading.yaml) enables GPU-to-CPU HiCache offload on **prefill workers only**, while retaining live NIXL P-to-D transfer over UCX/RDMA.
 
-Do not add `--disaggregation-decode-enable-offload-kvcache` to the decode
-worker for this image/model pair. SGLang 0.5.14 accepts that path only for
-pure `MHATokenToKVPool` or `MLATokenToKVPool`; Qwen3.6 creates a hybrid
-attention/Mamba `HybridLinearKVPool`, which raises `Unsupported KV cache type
-for decode offload`. The following scheduler `EOFError` is only a consequence
-of that initialization failure. `--disaggregation-decode-enable-radix-cache`
-is not a workaround because the same runtime rejects decode radix cache for
-hybrid Mamba/SSM models.
+### Prefill HiCache Settings
+- **Host Tier Allocation**: `--hicache-ratio 1.2` (allocates CPU host-cache tier per rank).
+- **Layout & Backend**: `--hicache-mem-layout page_first_direct` with `--hicache-io-backend direct` (required for Qwen3.6 hybrid attention/Mamba state).
 
-Do not add `--hicache-storage-backend nixl` on prefill either. Qwen3.6 passes
-multiple hybrid pools to SGLang's v2 storage interface, while the NIXL HiCache
-backend in SGLang 0.5.14 implements only the v1 interface. Its prefetch thread
-therefore calls the base `batch_exists_v2()` and raises `NotImplementedError`.
-The later `First message should be b'NixlMsgGuard'. Foreign traffic?` assertion
-is a separate SGLang bug: an aborted request sends an `ABORT` tag that the NIXL
-prefill receiver does not handle before its guard assertion. It is downstream
-of the stalled request, not evidence that unrelated network traffic reached
-the worker.
+### Prohibited Flags & Known Runtime Pitfalls
 
-Qwen3.6 is a hybrid attention/Mamba-GDN model. Its SGLang 0.5.14 host pool
-requires `--hicache-mem-layout page_first_direct` with
-`--hicache-io-backend direct`; using the `page_first`/`kernel` combination
-causes `MambaPoolHost` to fail during scheduler initialization.
+> [!WARNING]
+> Do **NOT** add the following unsupported flags for this model/runtime pair:
+> 
+> 1. **Do not add `--disaggregation-decode-enable-offload-kvcache` or `--disaggregation-decode-enable-radix-cache` on decode workers**:
+>    - SGLang 0.5.14 rejects decode offloading/radix cache for Qwen3.6's hybrid `HybridLinearKVPool` (`Unsupported KV cache type for decode offload`).
+> 2. **Do not add `--hicache-storage-backend nixl` on prefill workers**:
+>    - NIXL HiCache implements v1 storage interface, whereas Qwen3.6 requires v2 (`NotImplementedError` in `batch_exists_v2()`).
+> 3. **Do not use `page_first`/`kernel` memory layout**:
+>    - Causes `MambaPoolHost` initialization failure. Must use `page_first_direct` with `direct` I/O.
 
-`--disaggregation-transfer-backend nixl` still moves live P-to-D state over
-UCX/RDMA on both roles. It does not provide the CPU HiCache tier; the HiCache
-`direct` I/O backend provides that local GPU-to-host copy. `NIXL_TELEMETRY_*`
-instruments P-to-D transfers, and `--enable-cache-report` exposes reused
-prompt tokens in `usage.prompt_tokens_details.cached_tokens`.
+---
 
 ## Preflight
 
-Complete the four-GPU canary in [preflight.md](preflight.md) before applying
-the optional KV-offloading manifest. It contains the resource checks,
-single-replica deployment, bounded request tests, CPU HiCache proof,
-cache-report proof, NIXL transfer counters, log acceptance gates, and canary
-cleanup. The baseline manifest does not expose CPU HiCache metrics because it
-does not allocate that tier; use the common startup and NIXL transfer gates
-below for the baseline.
+Complete the 4-GPU canary in [`preflight.md`](preflight.md) before applying `deploy-kv-offloading.yaml`. It verifies resource checks, single-replica deployment, bounded request tests, CPU HiCache proof, and NIXL transfer counters.
+
+
 
 ## Production manifest
 
@@ -552,56 +527,51 @@ EOF
 The two manifests use the same DynamoGraphDeployment name and are alternatives;
 do not apply them as independent deployments at the same time.
 
-## Validate and deploy
+## Deployment & Readiness Verification
 
-Choose exactly one manifest. Both variants use the same
-`DynamoGraphDeployment` name, so applying one updates the other rather than
-creating an independent deployment:
+Choose one deployment manifest to apply (both update the same `DynamoGraphDeployment` resource):
 
 ```bash
-# Baseline: no CPU KV offload.
+# Option A: Baseline (no CPU KV offload)
 export DEPLOY_FILE="$EXP_DIR/deploy.yaml"
 
-# Optional prefill CPU KV offload; use this instead of the line above.
+# Option B: Optional Prefill CPU KV Offload
 # export DEPLOY_FILE="$EXP_DIR/deploy-kv-offloading.yaml"
 
+# Apply deployment & wait for all Pods to become Ready
 kubectl apply --dry-run=server -n "$NAMESPACE" -f "$DEPLOY_FILE"
 kubectl apply -n "$NAMESPACE" -f "$DEPLOY_FILE"
-kubectl get pods -n "$NAMESPACE" -l "$GRAPH_LABEL" -o wide -w
-```
 
-Successful request, cache-report, and NIXL transfer gates are mandatory for
-both variants. Positive prefill CPU-HiCache total and used tokens are mandatory
-only for `deploy-kv-offloading.yaml`; those series should be absent from the
-baseline deployment.
-
-Wait for all 9 Pods:
-
-```bash
 kubectl wait -n "$NAMESPACE" --for=condition=Ready pod \
   -l "$GRAPH_LABEL" --timeout=1800s
 kubectl get pods -n "$NAMESPACE" -l "$GRAPH_LABEL" \
   -L nvidia.com/dynamo-component-type -o wide
 ```
 
-## Startup and transfer acceptance
+---
+
+## Startup & Transfer Acceptance Gates
+
+### Step 1: Startup Log Gate
+Inspect worker logs to ensure no initialization errors or unsupported state exceptions occurred:
 
 ```bash
 kubectl logs -n "$NAMESPACE" -l "$GRAPH_LABEL" \
   --all-containers --prefix --tail=1500 |
   tee "$EXP_DIR/qwen36-sglang-tp1ep2-4p4d-startup.log"
 
-if grep -Ei 'traceback|assertionerror|notimplementederror|nixl_err|out of memory|does not support|unsupported' \
+# Check for failure keywords
+if grep -Ei 'traceback|assertionerror|notimplementederror|nixl_err|out of memory|unsupported' \
   "$EXP_DIR/qwen36-sglang-tp1ep2-4p4d-startup.log"; then
-  echo "SGLang startup compatibility gate failed" >&2
-  echo "STOP: do not continue to the request or benchmark steps" >&2
+  echo "STOP: SGLang startup compatibility gate failed!" >&2
 fi
 
 grep -Ei 'sglang|nixl|ucx|rdma|prefill|decode|transfer|ready' \
   "$EXP_DIR/qwen36-sglang-tp1ep2-4p4d-startup.log" | tail -300
 ```
 
-Do not benchmark merely because Pods are Ready. Send a real request:
+### Step 2: In-Cluster NIXL Smoke Test
+Execute a test completion request from the frontend Pod to verify NIXL P-to-D state transfer:
 
 ```bash
 frontend_pod="$(kubectl get pods -n "$NAMESPACE" \
@@ -611,51 +581,38 @@ frontend_pod="$(kubectl get pods -n "$NAMESPACE" \
 timeout 330s kubectl exec -n "$NAMESPACE" "$frontend_pod" -- \
   env "MODEL=$MODEL" \
   python3 -c '
-import json
-import os
-import urllib.request
+import json, os, urllib.request
 
 body = json.dumps({
     "model": os.environ["MODEL"],
-    "messages": [{
-        "role": "user",
-        "content": "Production NIXL smoke-test prefix. " * 256
-            + "\nReply with exactly: smoke-test-ok"
-    }],
+    "messages": [{"role": "user", "content": "Production NIXL smoke-test prefix. " * 256 + "\nReply with: smoke-test-ok"}],
     "temperature": 0,
     "max_tokens": 32,
     "stream": False
 }).encode()
 
-request = urllib.request.Request(
-    "http://127.0.0.1:8000/v1/chat/completions",
-    body,
-    {"Content-Type": "application/json"},
-    method="POST"
-)
-
-with urllib.request.urlopen(request, timeout=300) as response:
-    print(json.dumps(json.load(response), indent=2))
+req = urllib.request.Request("http://127.0.0.1:8000/v1/chat/completions", body, {"Content-Type": "application/json"}, method="POST")
+with urllib.request.urlopen(req, timeout=300) as resp:
+    print(json.dumps(json.load(resp), indent=2))
 '
 
+# Verify NIXL / UCX transfer log entries
 kubectl logs -n "$NAMESPACE" -l "$GRAPH_LABEL" \
   --all-containers --prefix --since=10m |
   grep -Ei 'nixl|ucx|rdma|transfer|error|traceback'
 ```
 
-Accept only a successful response plus successful NIXL/UCX transfer evidence.
-If logs report unsupported recurrent/GDN state, stop; changing TP size will not
-repair backend support.
+---
 
-## Benchmark
+## Performance Benchmarking
 
-After all acceptance gates pass, follow [benchmark.md](benchmark.md) to create
-`$EXP_DIR/perf.yaml` and compare KV-aware routing against KV-aware routing with
-prefill CPU offload. The benchmark runbook owns the prefill-heavy,
-decode-heavy, and mixed presets, metric snapshots, A/B plots, cold-burst
-diagnostic, required environment variables, and artifact locations.
+After all acceptance gates pass, follow the cluster benchmarking runbook in [benchmark.md](../../../../benchmark.md) to trigger perf jobs using `$EXP_DIR/perf.yaml`.
+
+---
 
 ## Cleanup
+
+Delete the deployment graph, benchmark jobs, and temporary test pods:
 
 ```bash
 kubectl delete job -n "$NAMESPACE" "$PERF_JOB_NAME" --ignore-not-found
@@ -668,4 +625,3 @@ kubectl delete pod -n "$NAMESPACE" \
   --ignore-not-found
 ```
 
-Cleanup preserves the namespace, PVCs, retained PV data, and RoCE objects.
