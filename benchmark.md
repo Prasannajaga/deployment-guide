@@ -1,620 +1,508 @@
-# Real-world benchmarking for NVIDIA Dynamo
+# Kubernetes-Native Benchmarking Guide for NVIDIA Dynamo
 
-This guide benchmarks the bare-metal Dynamo deployment created in
-[`setup.md`](setup.md). It assumes:
+This guide provides structured performance benchmarking for NVIDIA Dynamo deployments using Kubernetes Jobs and [NVIDIA AIPerf](https://docs.nvidia.com/aiperf/reference/command-line-options) (pinned to **`0.10.0`**).
 
-- Dynamo `v1.3.0` and `nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.3.0`.
-- Frontend: `http://10.18.96.143:8090` on `gpu05`.
-- Model: `meta-llama/Llama-3.1-8B-Instruct`.
-- One vLLM replica on each of `gpu05` and `gpu06`, discovered through etcd.
-- Eight H100 GPUs per replica. Change the values below if the deployed
-  topology, model, or frontend port differs.
+Benchmarks are executed via standard `perf.yaml` Job manifests, dynamically configured using `kubectl set env --local` and stored in the `/perf-cache` PVC.
 
-The primary tool is
-[NVIDIA AIPerf](https://docs.nvidia.com/aiperf/reference/command-line-options).
-Dynamo v1.3.0 pins AIPerf `0.10.0`. Keep that version fixed while comparing
-deployments.
+---
 
-## 1. Decide what success means
+## 1. Environment Setup & Benchmark Manifest (`perf.yaml`)
 
-Do not optimize only for maximum requests per second. Define service-level
-objectives (SLOs) before testing. Example starting targets are:
-
-| Metric | Example SLO | Meaning |
-| --- | ---: | --- |
-| Error rate | `< 0.1%` | Transport and HTTP/model errors |
-| P95 TTFT | `< 1,000 ms` | Time from request submission to first token |
-| P95 ITL | `< 50 ms` | Delay between streamed output tokens |
-| P95 request latency | Product-specific | End-to-end completion time |
-| Goodput | Maximize | Requests/second satisfying all SLOs |
-
-Replace the example latency limits with requirements from the actual product.
-Report P50, P95, and P99. Do not trust P99 from a run with only a few dozen
-completed requests; collect at least hundreds, preferably thousands, for a
-production tail-latency result.
-
-## 2. Use a separate benchmark client
-
-For credible results, run AIPerf from a third CPU machine on the same private
-network. The load generator must not share CPU, memory, disk, or GPUs with the
-Dynamo frontend or workers.
-
-Running AIPerf on `gpu05` is acceptable for a smoke test, but it can compete
-with the frontend and understate capacity. Never benchmark through an SSH
-tunnel, public Internet path, VPN, or Kubernetes port-forward when measuring
-server capacity.
-
-Verify connectivity from the benchmark client:
+Run these commands from a Kubernetes administrator host. Set shared variables for your deployment target:
 
 ```bash
-ping -c 4 10.18.96.143
-curl -fsS http://10.18.96.143:8090/health
-curl -fsS http://10.18.96.143:8090/v1/models
+export NAMESPACE=qwen32-bench
+export SHARED_ROOT="/ephemeral/shared"
+export EXP_DIR="${SHARED_ROOT}/dynamo-benchmarks"
+export DEPLOYMENT=glm52-fp8-vllm-agg-tp16
+export GRAPH_LABEL="nvidia.com/dynamo-graph-deployment-name=${DEPLOYMENT}"
+export MODEL="zai-org/GLM-5.2-FP8"
+export TOKENIZER="/opt/models/hub/models--zai-org--GLM-5.2-FP8/snapshots/ba978f7d347eaf65d22f1a86833408afdb953541"
+
+mkdir -p "$EXP_DIR"
 ```
 
-Keep port `8090` private. If the benchmark client cannot reach it, update the
-private firewall/security group rather than exposing the unauthenticated API
-publicly.
+### Create the Reusable Benchmark Job Template
 
-## 3. Install the pinned benchmark client
-
-On the dedicated benchmark client:
+Generate `$EXP_DIR/perf.yaml` on the administrator host:
 
 ```bash
-python3 -m venv .venv-aiperf
-source .venv-aiperf/bin/activate
-python -m pip install --upgrade pip
-python -m pip install 'aiperf==0.10.0'
-aiperf --version
-aiperf profile --help
+tee "$EXP_DIR/perf.yaml" >/dev/null <<'EOF'
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: glm52-fp8-vllm-agg-tp16-perf
+spec:
+  backoffLimit: 0
+  completions: 1
+  parallelism: 1
+  activeDeadlineSeconds: 14400
+  template:
+    metadata:
+      labels:
+        app: glm52-fp8-vllm-agg-tp16-perf
+    spec:
+      restartPolicy: Never
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+        - key: nvidia.com/gpu
+          operator: Equal
+          value: "true"
+          effect: NoSchedule
+      containers:
+        - name: perf
+          image: python:3.12-slim
+          imagePullPolicy: IfNotPresent
+          workingDir: /workspace
+          command:
+            - /bin/bash
+            - -lc
+          args:
+            - |
+              set -euo pipefail
+
+              apt-get update
+              apt-get install -y --no-install-recommends build-essential curl jq procps
+              rm -rf /var/lib/apt/lists/*
+              python -m pip install --no-cache-dir "aiperf==0.10.0"
+
+              aiperf --version || true
+              python --version
+
+              prefix_args=()
+              length_args=()
+              exact_output_args=()
+
+              case "$WORKLOAD_MODE" in
+                fixed)
+                  case "$PREFIX_MODE" in
+                    isolated)
+                      prompt_tokens="$ISL"
+                      ;;
+                    shared)
+                      prefix_tokens=$((ISL * PREFIX_REUSE_PERCENT / 100))
+                      prompt_tokens=$((ISL - prefix_tokens))
+                      if [ "$prefix_tokens" -lt 1 ] || [ "$prompt_tokens" -lt 1 ]; then
+                        echo "PREFIX_REUSE_PERCENT must leave positive shared and unique lengths" >&2
+                        exit 2
+                      fi
+                      prefix_args=(
+                        --prefix-prompt-pool-size "$PREFIX_GROUPS"
+                        --prefix-prompt-length "$prefix_tokens"
+                      )
+                      ;;
+                    *)
+                      echo "PREFIX_MODE must be isolated or shared" >&2
+                      exit 2
+                      ;;
+                  esac
+                  length_args=(
+                    --isl "$prompt_tokens"
+                    --isl-stddev 0
+                    --osl "$OSL"
+                    --osl-stddev 0
+                  )
+                  exact_output_args=(
+                    --extra-inputs "max_tokens:$OSL"
+                    --extra-inputs "min_tokens:$OSL"
+                  )
+                  run_shape="isl-${ISL}_osl-${OSL}"
+                  ;;
+                mixed)
+                  if [ "$PREFIX_MODE" != isolated ]; then
+                    echo "WORKLOAD_MODE=mixed requires PREFIX_MODE=isolated" >&2
+                    exit 2
+                  fi
+                  python - "$SEQUENCE_DISTRIBUTION" <<'PY'
+import sys
+
+raw = sys.argv[1]
+if not raw:
+    raise SystemExit("SEQUENCE_DISTRIBUTION must not be empty")
+
+total = 0
+for entry in raw.split(";"):
+    try:
+        pair, weight_text = entry.split(":", 1)
+        isl_text, osl_text = pair.split(",", 1)
+        isl = int(isl_text)
+        osl = int(osl_text)
+        weight = int(weight_text)
+    except ValueError as exc:
+        raise SystemExit(
+            f"Invalid sequence-distribution entry: {entry!r}"
+        ) from exc
+    if isl < 1 or osl < 1 or weight < 1:
+        raise SystemExit(
+            f"ISL, OSL, and weight must be positive: {entry!r}"
+        )
+    total += weight
+
+if total != 100:
+    raise SystemExit(
+        f"Sequence-distribution weights must total 100, got {total}"
+    )
+print(f"Validated mixed sequence distribution: {raw}")
+PY
+                  aiperf profile --help |
+                    grep -F -- '--sequence-distribution' >/dev/null || {
+                      echo "Installed AIPerf lacks --sequence-distribution" >&2
+                      exit 2
+                    }
+                  length_args=(
+                    --sequence-distribution "$SEQUENCE_DISTRIBUTION"
+                  )
+                  distribution_id="$(
+                    printf '%s' "$SEQUENCE_DISTRIBUTION" |
+                      sha256sum |
+                      cut -c1-12
+                  )"
+                  run_shape="mixed-${distribution_id}"
+                  ;;
+                *)
+                  echo "WORKLOAD_MODE must be fixed or mixed" >&2
+                  exit 2
+                  ;;
+              esac
+
+              endpoint_url="${ENDPOINT%/}"
+              case "$endpoint_url" in
+                http://*|https://*) ;;
+                *) endpoint_url="http://${endpoint_url}" ;;
+              esac
+
+              echo "Waiting for ${TARGET_MODEL} at ${endpoint_url}/v1/models"
+              attempt=1
+              until models_json="$(curl -fsS --max-time 10 "${endpoint_url}/v1/models")" &&
+                printf '%s' "$models_json" | jq -e --arg model "$TARGET_MODEL" \
+                  '.data[]? | select(.id == $model)' >/dev/null; do
+                if [ "$attempt" -ge 540 ]; then
+                  echo "Model readiness timed out after 45 minutes" >&2
+                  exit 1
+                fi
+                attempt=$((attempt + 1))
+                sleep 5
+              done
+              printf '%s' "$models_json" | jq .
+
+              test -e "$TOKENIZER" || {
+                echo "Tokenizer path does not exist: $TOKENIZER" >&2
+                exit 1
+              }
+
+              mkdir -p "$ARTIFACT_ROOT" "$HF_HOME" /perf-cache/tmp
+              export TMPDIR=/perf-cache/tmp
+              run_root="${ARTIFACT_ROOT}/${TOPOLOGY_NAME}/${PREFIX_MODE}/${WORKLOAD_NAME}/${run_shape}"
+              mkdir -p "$run_root"
+              status_file="${run_root}/matrix-status.tsv"
+
+              printf '%s\n' "$models_json" > "${run_root}/models.json"
+              curl -fsS "${endpoint_url}/metrics" > "${run_root}/frontend-metrics-before.prom" || true
+              jq -n \
+                --arg topology "$TOPOLOGY_NAME" \
+                --arg workload "$WORKLOAD_NAME" \
+                --arg workload_mode "$WORKLOAD_MODE" \
+                --arg prefix_mode "$PREFIX_MODE" \
+                --arg sequence_distribution "$SEQUENCE_DISTRIBUTION" \
+                --arg model "$TARGET_MODEL" \
+                --arg tokenizer "$TOKENIZER" \
+                --arg endpoint "$endpoint_url" \
+                --arg concurrencies "$CONCURRENCIES" \
+                --argjson isl "$ISL" \
+                --argjson osl "$OSL" \
+                --argjson duration "$BENCHMARK_DURATION" \
+                --argjson warmup "$WARMUP_REQUESTS" \
+                --argjson seed "$RANDOM_SEED" \
+                --argjson request_timeout "$REQUEST_TIMEOUT" \
+                --argjson prefix_groups "$PREFIX_GROUPS" \
+                --argjson prefix_reuse_percent "$PREFIX_REUSE_PERCENT" \
+                '{topology:$topology, workload:$workload,
+                  workload_mode:$workload_mode, prefix_mode:$prefix_mode,
+                  sequence_distribution:$sequence_distribution,
+                  model:$model, tokenizer:$tokenizer, endpoint:$endpoint,
+                  isl:(if $workload_mode == "fixed" then $isl else null end),
+                  osl:(if $workload_mode == "fixed" then $osl else null end),
+                  concurrencies:$concurrencies,
+                  benchmark_duration_seconds:$duration, warmup_requests:$warmup,
+                  random_seed:$seed, request_timeout_seconds:$request_timeout,
+                  prefix_groups:$prefix_groups,
+                  target_prefix_token_percent:$prefix_reuse_percent,
+                  aiperf:"0.10.0", dynamo:"1.3.0", backend:"vllm"}' \
+                > "${run_root}/input-config.json"
+              printf 'concurrency\tstatus\tfinished_utc\n' > "$status_file"
+
+              server_metric_args=()
+              if [ -n "$SERVER_METRICS_URLS" ]; then
+                read -r -a metric_urls <<< "$SERVER_METRICS_URLS"
+                server_metric_args=(--server-metrics "${metric_urls[@]}")
+              fi
+
+              failures=0
+              for concurrency in $CONCURRENCIES; do
+                artifact_dir="${run_root}/c${concurrency}"
+                if [ -e "${artifact_dir}/profile_export_raw.jsonl" ]; then
+                  echo "Refusing to overwrite existing raw artifacts: $artifact_dir" >&2
+                  exit 1
+                fi
+                mkdir -p "$artifact_dir"
+
+                if ! curl -fsS --max-time 10 "${endpoint_url}/v1/models" |
+                  jq -e --arg model "$TARGET_MODEL" \
+                    '.data[]? | select(.id == $model)' >/dev/null; then
+                  echo "Expected model disappeared before concurrency $concurrency" >&2
+                  exit 1
+                fi
+
+                echo "Starting workload=$WORKLOAD_NAME mode=$WORKLOAD_MODE prefix=$PREFIX_MODE shape=$run_shape concurrency=$concurrency"
+                if aiperf profile \
+                  --model "$TARGET_MODEL" \
+                  --tokenizer "$TOKENIZER" \
+                  --url "$endpoint_url" \
+                  --endpoint-type chat \
+                  --streaming \
+                  --concurrency "$concurrency" \
+                  --benchmark-duration "$BENCHMARK_DURATION" \
+                  --benchmark-grace-period "$GRACE_PERIOD" \
+                  --warmup-request-count "$WARMUP_REQUESTS" \
+                  --request-timeout-seconds "$REQUEST_TIMEOUT" \
+                  "${length_args[@]}" \
+                  "${exact_output_args[@]}" \
+                  --extra-inputs ignore_eos:true \
+                  --extra-inputs temperature:0.0 \
+                  --num-dataset-entries "$NUM_DATASET_ENTRIES" \
+                  --random-seed "$RANDOM_SEED" \
+                  --server-metrics-formats json csv jsonl \
+                  "${prefix_args[@]}" \
+                  "${server_metric_args[@]}" \
+                  --ui simple \
+                  --artifact-dir "$artifact_dir"; then
+                  status=PASS
+                else
+                  status=FAIL
+                  failures=$((failures + 1))
+                fi
+                printf '%s\t%s\t%s\n' "$concurrency" "$status" \
+                  "$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$status_file"
+              done
+
+              curl -fsS "${endpoint_url}/metrics" > "${run_root}/frontend-metrics-after.prom" || true
+              echo "Benchmark artifacts: $run_root"
+              [ "$failures" -eq 0 ]
+          env:
+            - name: TARGET_MODEL
+              value: zai-org/GLM-5.2-FP8
+            - name: TOKENIZER
+              value: /opt/models/hub/models--zai-org--GLM-5.2-FP8/snapshots/ba978f7d347eaf65d22f1a86833408afdb953541
+            - name: ENDPOINT
+              value: glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000
+            - name: ISL
+              value: "8000"
+            - name: OSL
+              value: "1024"
+            - name: WORKLOAD_MODE
+              value: fixed
+            - name: SEQUENCE_DISTRIBUTION
+              value: "1024,256:20;4096,512:10;8192,1024:20;16384,1024:20;32768,1024:15;65536,1024:5;98304,1024:5;126976,1024:5"
+            - name: CONCURRENCIES
+              value: "1 2 4 8 16 32 64 128"
+            - name: BENCHMARK_DURATION
+              value: "180"
+            - name: WARMUP_REQUESTS
+              value: "32"
+            - name: RANDOM_SEED
+              value: "42"
+            - name: ARTIFACT_ROOT
+              value: /perf-cache/aiperf/glm52-fp8-vllm-agg-tp16
+            - name: TOPOLOGY_NAME
+              value: agg-tp16
+            - name: WORKLOAD_NAME
+              value: balanced
+            - name: PREFIX_MODE
+              value: isolated
+            - name: REQUEST_TIMEOUT
+              value: "3600"
+            - name: PREFIX_GROUPS
+              value: "8"
+            - name: PREFIX_REUSE_PERCENT
+              value: "75"
+            - name: NUM_DATASET_ENTRIES
+              value: "4096"
+            - name: GRACE_PERIOD
+              value: "600"
+            - name: SERVER_METRICS_URLS
+              value: ""
+            - name: AIPERF_HTTP_CONNECTION_LIMIT
+              value: "512"
+            - name: HF_HOME
+              value: /perf-cache/hf-aiperf-cache
+            - name: PYTHONUNBUFFERED
+              value: "1"
+          resources:
+            requests:
+              cpu: "4"
+              memory: 8Gi
+              ephemeral-storage: 4Gi
+            limits:
+              cpu: "16"
+              memory: 32Gi
+              ephemeral-storage: 16Gi
+          volumeMounts:
+            - name: perf-cache
+              mountPath: /perf-cache
+            - name: model-cache
+              mountPath: /opt/models
+              readOnly: true
+      volumes:
+        - name: perf-cache
+          persistentVolumeClaim:
+            claimName: perf-cache
+        - name: model-cache
+          persistentVolumeClaim:
+            claimName: model-cache
+EOF
 ```
 
-The Dynamo runtime image also contains AIPerf, but using the lightweight
-virtual environment avoids downloading a large GPU runtime image onto a CPU
-load-generator machine.
+---
 
-The benchmark HTTP request does not require Hugging Face access. Synthetic
-prompt generation does: AIPerf loads the model tokenizer locally so it can
-create exact token lengths and calculate token-based metrics. Because Llama
-3.1 is gated, authenticate the AIPerf process or give it a local tokenizer
-directory.
+## 2. Deploying Benchmark Jobs
 
-If AIPerf is running on `gpu05` and the shared login from `setup.md` is already
-present, reuse the credential **path** without printing or exporting its value:
+Use `kubectl set env --local` to dynamically configure variables on the local `$EXP_DIR/perf.yaml` manifest, then pipe to `kubectl create`.
+
+### Resolve Target Service & Job Name First
 
 ```bash
-export HF_HOME=/ephemeral/shared/huggingface
-export HF_TOKEN_PATH=/ephemeral/shared/huggingface/token
+# 1. Resolve active frontend Service endpoint
+export FRONTEND_SERVICE="$(
+  kubectl get services -n "$NAMESPACE" -l "$GRAPH_LABEL" -o json |
+    jq -r '.items[] | select(any(.spec.ports[]?; .port == 8000)) | .metadata.name' |
+    head -n 1
+)"
+test -n "$FRONTEND_SERVICE"
+export FRONTEND_ENDPOINT="${FRONTEND_SERVICE}.${NAMESPACE}.svc.cluster.local:8000"
 
-test -r "$HF_TOKEN_PATH" \
-  && echo "Hugging Face token file is readable"
+# 2. Extract Job Name from manifest
+export PERF_JOB_NAME="$(
+  kubectl create --dry-run=client --validate=false \
+    -f "$EXP_DIR/perf.yaml" \
+    -o jsonpath='{.metadata.name}'
+)"
+test -n "$PERF_JOB_NAME"
 
-hf auth whoami
+# 3. Remove existing Job before launch
+kubectl delete job -n "$NAMESPACE" "$PERF_JOB_NAME" \
+  --ignore-not-found --wait=true
 ```
 
-`export` is a shell built-in: use `export ...` directly, never `sudo export`.
-Run `aiperf` as the same user, not with `sudo`, so it inherits these variables
-and the active virtual environment.
+---
 
-If the readability test fails, inspect only metadata:
+### Workload Launch CLI Commands
+
+#### Real-World Mixed Workload Benchmark
 
 ```bash
-id
-sudo stat -c 'path=%n uid=%u gid=%g mode=%a' \
-  /ephemeral/shared/huggingface \
-  /ephemeral/shared/huggingface/token
+kubectl set env --local -f "$EXP_DIR/perf.yaml" -o yaml \
+  ENDPOINT="$FRONTEND_ENDPOINT" \
+  WORKLOAD_MODE=mixed \
+  WORKLOAD_NAME=baseline-glm-5.2 \
+  SEQUENCE_DISTRIBUTION='1024,256:20;4096,512:10;8192,1024:20;16384,1024:20;32768,1024:15;65536,1024:5;98304,1024:5;126976,1024:5' \
+  PREFIX_MODE=isolated \
+  CONCURRENCIES='128 256 512 1024' \
+  BENCHMARK_DURATION=60 \
+  WARMUP_REQUESTS=16 \
+  ARTIFACT_ROOT="/perf-cache/aiperf/glm52-fp8-vllm-agg-tp16" |
+  kubectl create -n "$NAMESPACE" -f -
 ```
 
-Prefer a per-user access-control list (ACL). It preserves the existing owner
-used by the Dynamo containers and does not make the credential world-readable:
+#### Fixed Input/Output Concurrency Saturation Sweep
 
 ```bash
-sudo setfacl -m "u:$(id -un):rx" /ephemeral/shared/huggingface
-sudo setfacl -m "u:$(id -un):r" /ephemeral/shared/huggingface/token
-
-test -r "$HF_TOKEN_PATH" \
-  && echo "Hugging Face token file is readable"
+kubectl set env --local -f "$EXP_DIR/perf.yaml" -o yaml \
+  ENDPOINT="$FRONTEND_ENDPOINT" \
+  WORKLOAD_MODE=fixed \
+  WORKLOAD_NAME=fixed-concurrency-sweep \
+  ISL=2000 \
+  OSL=256 \
+  PREFIX_MODE=isolated \
+  CONCURRENCIES='1 2 4 8 16 32 64 128 256 512' \
+  BENCHMARK_DURATION=180 \
+  WARMUP_REQUESTS=32 \
+  ARTIFACT_ROOT="/perf-cache/aiperf/fixed-sweep" |
+  kubectl create -n "$NAMESPACE" -f -
 ```
 
-If `setfacl` is unavailable, and `id -u` confirms that the host user is UID
-`1000` like the Dynamo runtime, use this fallback:
+#### Shared Prefix Context Reuse Benchmark
 
 ```bash
-test "$(id -u)" -eq 1000 \
-  || { echo "Current user is not UID 1000; do not change token ownership" >&2; exit 1; }
-
-sudo chown "$(id -u):$(id -g)" /ephemeral/shared/huggingface/token
-sudo chmod 600 /ephemeral/shared/huggingface/token
+kubectl set env --local -f "$EXP_DIR/perf.yaml" -o yaml \
+  ENDPOINT="$FRONTEND_ENDPOINT" \
+  WORKLOAD_MODE=fixed \
+  WORKLOAD_NAME=prefix-reuse-test \
+  ISL=8000 \
+  OSL=512 \
+  PREFIX_MODE=shared \
+  PREFIX_GROUPS=8 \
+  PREFIX_REUSE_PERCENT=75 \
+  CONCURRENCIES='16 32 64 128 256' \
+  BENCHMARK_DURATION=180 \
+  WARMUP_REQUESTS=32 \
+  ARTIFACT_ROOT="/perf-cache/aiperf/prefix-reuse" |
+  kubectl create -n "$NAMESPACE" -f -
 ```
 
-Never use `chmod 644`, `chmod 777`, or print the file to diagnose access.
+---
 
-On a dedicated benchmark client without the shared cache, choose one option:
+## 3. Monitoring Benchmark Execution
 
-1. Run `hf auth login` interactively using the authorized Hugging Face account.
-   Do not put the token in a command argument or shell-history entry.
-2. Securely provision only the non-secret tokenizer files and set
-   `BENCH_TOKENIZER=/path/to/local/tokenizer`. Do not copy the token.
-
-`--use-server-token-count` does not fix synthetic tests because AIPerf still
-needs a tokenizer to generate the synthetic prompts. `--tokenizer builtin` is
-acceptable for an API connectivity smoke test, but it uses a different
-tokenization scheme and must not be used for Llama capacity comparisons.
-
-Never copy SSH keys or store credentials in this repository or benchmark
-artifacts.
-
-## 4. Record an immutable test manifest
-
-Use a new result directory for every deployment or configuration. On the
-benchmark client:
+Follow and verify the running Job in real time:
 
 ```bash
-export BENCH_URL=http://10.18.96.143:8090
-export MODEL=meta-llama/Llama-3.1-8B-Instruct
-unset AIPERF_TOKENIZER
-export BENCH_TOKENIZER="${BENCH_TOKENIZER:-$MODEL}"
-export TOPOLOGY=two-replicas-tp8
-export RUN_ID="$(date -u +%Y%m%dT%H%M%SZ)"
-export BENCH_RESULT_BASE="${BENCH_RESULT_BASE:-$PWD/dynamo-benchmarks}"
-export RESULT_ROOT="${BENCH_RESULT_BASE}/${RUN_ID}-${TOPOLOGY}"
+# 1. Inspect Job status & worker Pod placement
+kubectl get job -n "$NAMESPACE" "$PERF_JOB_NAME"
+kubectl get pods -n "$NAMESPACE" -l "app=$PERF_JOB_NAME" -o wide
 
-mkdir -p "$RESULT_ROOT"
+# 2. Tail live AIPerf benchmark logs
+kubectl logs -n "$NAMESPACE" -f "job/$PERF_JOB_NAME"
 
-printf '%s\n' \
-  "run_id=$RUN_ID" \
-  "model=$MODEL" \
-  "tokenizer=$BENCH_TOKENIZER" \
-  "url=$BENCH_URL" \
-  "topology=$TOPOLOGY" \
-  "aiperf=$(aiperf --version 2>&1 | head -n 1)" \
-  > "$RESULT_ROOT/manifest.txt"
+# 3. Wait for Job completion condition (timeout set to 4 hours)
+kubectl wait -n "$NAMESPACE" --for=condition=Complete \
+  "job/$PERF_JOB_NAME" --timeout=14400s
+
+# 4. Monitor target model Pod health during testing
+kubectl get pods -n "$NAMESPACE" -l "$GRAPH_LABEL"
 ```
 
-On both GPU nodes, record the non-secret software and hardware state. Save the
-output alongside the benchmark results:
+---
+
+## 4. Cleaning Up Benchmark Jobs
+
+Delete completed or failed benchmark Jobs to free cluster resources and allow new runs:
 
 ```bash
-hostname
-date -u --iso-8601=seconds
-nvidia-smi --query-gpu=name,driver_version,memory.total,pstate,clocks.sm,power.limit --format=csv
-git -C /ephemeral/shared/dynamo rev-parse HEAD
-sudo docker image inspect nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.3.0 \
-  --format 'image={{.RepoDigests}} id={{.Id}}'
+# Delete specific benchmark Job and wait for pod termination
+kubectl delete job -n "$NAMESPACE" "$PERF_JOB_NAME" \
+  --ignore-not-found --wait=true
+
+# Confirm no leftover perf pods remain
+kubectl get pods -n "$NAMESPACE" -l "app=$PERF_JOB_NAME"
 ```
 
-Also record all performance-affecting settings manually in `manifest.txt`:
+---
 
-- Number of replicas and GPUs per replica.
-- Tensor, pipeline, and data-parallel sizes.
-- Model dtype or quantization.
-- `--gpu-memory-utilization`, `--max-model-len`, `--max-num-seqs`, and
-  `--max-num-batched-tokens` if explicitly set.
-- Routing mode and whether prefix caching or KV offloading is enabled.
-- Any changes to clocks, power limits, network interface, or RDMA settings.
+## 5. Artifact Output & Results Retrieval
 
-Do not dump the complete container environment because it may contain
-credentials. Record only known non-secret performance settings.
-
-## 5. Confirm that the deployment is ready
-
-On `gpu05`:
-
-```bash
-curl -fsS http://127.0.0.1:8090/health
-curl -fsS http://127.0.0.1:8090/v1/models
-sudo docker ps --filter name=dynamo-frontend
-sudo docker logs --tail 100 dynamo-frontend
-```
-
-On each GPU node:
-
-```bash
-sudo docker ps --filter name=dynamo-replica
-sudo docker logs --tail 100 dynamo-replica
-nvidia-smi
-```
-
-Both replicas must be registered and stable before the test. There must be no
-model-download errors, container restarts, NCCL errors, or unrelated GPU
-processes.
-
-## 6. Run a streamed smoke benchmark
-
-On the benchmark client:
-
-```bash
-aiperf profile \
-  --model "$MODEL" \
-  --tokenizer "$BENCH_TOKENIZER" \
-  --url "$BENCH_URL" \
-  --endpoint-type chat \
-  --streaming \
-  --concurrency 1 \
-  --request-count 10 \
-  --warmup-request-count 2 \
-  --synthetic-input-tokens-mean 128 \
-  --synthetic-input-tokens-stddev 0 \
-  --output-tokens-mean 32 \
-  --output-tokens-stddev 0 \
-  --extra-inputs max_tokens:32 \
-  --extra-inputs min_tokens:32 \
-  --extra-inputs ignore_eos:true \
-  --extra-inputs temperature:0.0 \
-  --random-seed 42 \
-  --artifact-dir "$RESULT_ROOT/smoke"
-```
-
-Continue only if all measured requests succeed and AIPerf reports TTFT, ITL,
-request latency, request throughput, and output-token throughput.
-
-Streaming must stay enabled. Without streaming, TTFT and ITL cannot represent
-the experience of a chat user.
-
-## 7. Establish a single-request latency baseline
-
-This measures the unloaded latency floor. It is not a capacity result.
-
-```bash
-aiperf profile \
-  --model "$MODEL" \
-  --tokenizer "$BENCH_TOKENIZER" \
-  --url "$BENCH_URL" \
-  --endpoint-type chat \
-  --streaming \
-  --concurrency 1 \
-  --request-count 100 \
-  --warmup-request-count 5 \
-  --synthetic-input-tokens-mean 2000 \
-  --synthetic-input-tokens-stddev 0 \
-  --output-tokens-mean 256 \
-  --output-tokens-stddev 0 \
-  --extra-inputs max_tokens:256 \
-  --extra-inputs min_tokens:256 \
-  --extra-inputs ignore_eos:true \
-  --extra-inputs temperature:0.0 \
-  --random-seed 42 \
-  --goodput 'time_to_first_token:1000 inter_token_latency:50' \
-  --artifact-dir "$RESULT_ROOT/fixed-i2000-o256/c1"
-```
-
-For configuration comparisons, keep prompt tokens, generated tokens, random
-seed, sampling parameters, and AIPerf version identical. Forcing exactly 256
-output tokens prevents early end-of-sequence responses from making one run
-look artificially faster.
-
-## 8. Find the concurrency saturation point
-
-A concurrency test is closed-loop: AIPerf maintains a target number of
-in-flight requests. `--concurrency 100` therefore represents 100 simultaneous
-requests, not 100 human users who occasionally send prompts.
-
-Run a three-minute discovery sweep:
-
-```bash
-for CONCURRENCY in 1 2 4 8 16 32 64 100 128; do
-  aiperf profile \
-    --model "$MODEL" \
-    --tokenizer "$BENCH_TOKENIZER" \
-    --url "$BENCH_URL" \
-    --endpoint-type chat \
-    --streaming \
-    --concurrency "$CONCURRENCY" \
-    --benchmark-duration 180 \
-    --benchmark-grace-period 60 \
-    --warmup-duration 30 \
-    --synthetic-input-tokens-mean 2000 \
-    --synthetic-input-tokens-stddev 0 \
-    --output-tokens-mean 256 \
-    --output-tokens-stddev 0 \
-    --extra-inputs max_tokens:256 \
-    --extra-inputs min_tokens:256 \
-    --extra-inputs ignore_eos:true \
-    --extra-inputs temperature:0.0 \
-    --random-seed 42 \
-    --goodput 'time_to_first_token:1000 inter_token_latency:50' \
-    --artifact-dir "$RESULT_ROOT/fixed-i2000-o256/c${CONCURRENCY}"
-done
-```
-
-The saturation point is where one or more of the following begins:
-
-- Completed request throughput stops increasing materially.
-- P95/P99 TTFT rises sharply.
-- ITL exceeds the product SLO.
-- Goodput falls even while raw throughput rises.
-- Requests queue, time out, or fail.
-- vLLM reports KV-cache preemption or recomputation.
-
-Do not assume the highest concurrency is best. Production capacity is the
-highest load that still meets error-rate and latency SLOs.
-
-## 9. Test an open-loop production arrival rate
-
-Human traffic is normally open-loop: new requests arrive independently of
-whether earlier ones finished. A concurrency-only test can hide queue buildup.
-Use a request-rate sweep to discover the sustainable arrival rate.
-
-```bash
-for REQUEST_RATE in 1 2 4 8 16 24 32 48 64; do
-  aiperf profile \
-    --model "$MODEL" \
-    --tokenizer "$BENCH_TOKENIZER" \
-    --url "$BENCH_URL" \
-    --endpoint-type chat \
-    --streaming \
-    --request-rate "$REQUEST_RATE" \
-    --benchmark-duration 300 \
-    --benchmark-grace-period 120 \
-    --warmup-duration 30 \
-    --synthetic-input-tokens-mean 2000 \
-    --synthetic-input-tokens-stddev 0 \
-    --output-tokens-mean 256 \
-    --output-tokens-stddev 0 \
-    --extra-inputs max_tokens:256 \
-    --extra-inputs min_tokens:256 \
-    --extra-inputs ignore_eos:true \
-    --extra-inputs temperature:0.0 \
-    --random-seed 42 \
-    --goodput 'time_to_first_token:1000 inter_token_latency:50' \
-    --artifact-dir "$RESULT_ROOT/rate-i2000-o256/rps${REQUEST_RATE}"
-done
-```
-
-Adjust the rate list after the first sweep so that several points lie below
-saturation, several surround it, and one or two exceed it. Stop an overload
-run if pending work grows without recovering or the client machine itself
-becomes saturated.
-
-## 10. Run a mixed real-world sequence-length workload
-
-Fixed input/output lengths make A/B comparisons clean, but production traffic
-is heterogeneous. This example represents short chat, medium chat/RAG, coding,
-and long-context requests:
+All results are automatically persisted to the `/perf-cache` PVC under the specified `ARTIFACT_ROOT`:
 
 ```text
-50%:  512 input,   128 output tokens
-30%: 2048 input,   256 output tokens
-15%: 8192 input,   512 output tokens
- 5%: 32768 input,  256 output tokens
+/perf-cache/aiperf/<ARTIFACT_ROOT>/<TOPOLOGY_NAME>/<PREFIX_MODE>/<WORKLOAD_NAME>/<RUN_SHAPE>/
+├── input-config.json
+├── matrix-status.tsv
+├── models.json
+├── frontend-metrics-before.prom
+├── frontend-metrics-after.prom
+└── c<concurrency>/
+    ├── profile_export_aiperf.json
+    ├── profile_export_aiperf.csv
+    └── profile_export_raw.jsonl
 ```
-
-Run it at a concurrency below the saturation point discovered in step 8:
-
-```bash
-export MIXED_CONCURRENCY=64
-
-aiperf profile \
-  --model "$MODEL" \
-  --tokenizer "$BENCH_TOKENIZER" \
-  --url "$BENCH_URL" \
-  --endpoint-type chat \
-  --streaming \
-  --concurrency "$MIXED_CONCURRENCY" \
-  --benchmark-duration 600 \
-  --benchmark-grace-period 180 \
-  --warmup-duration 60 \
-  --sequence-distribution '512,128:50;2048,256:30;8192,512:15;32768,256:5' \
-  --extra-inputs ignore_eos:true \
-  --extra-inputs temperature:0.0 \
-  --random-seed 42 \
-  --goodput 'time_to_first_token:1000 inter_token_latency:50' \
-  --artifact-dir "$RESULT_ROOT/mixed/c${MIXED_CONCURRENCY}"
-```
-
-Replace this distribution with production measurements when available. The
-input sequence length must include the full conversation history sent on each
-request, not just the user's newest message.
-
-## 11. Benchmark multi-turn conversations or a production trace
-
-Independent synthetic prompts do not measure conversation growth, prefix
-reuse, or user think time. AIPerf can run a public multi-turn dataset:
-
-```bash
-aiperf profile \
-  --model "$MODEL" \
-  --tokenizer "$BENCH_TOKENIZER" \
-  --url "$BENCH_URL" \
-  --endpoint-type chat \
-  --streaming \
-  --public-dataset sharegpt \
-  --num-sessions 100 \
-  --concurrency 20 \
-  --random-seed 42 \
-  --artifact-dir "$RESULT_ROOT/multiturn-sharegpt"
-```
-
-The public dataset may require Internet access on the benchmark client. A
-sanitized production trace is more representative. After converting it to an
-AIPerf-supported trace format, preserve its recorded arrival times:
-
-```bash
-export TRACE_FILE=/path/to/sanitized-production-trace.jsonl
-
-aiperf profile \
-  --model "$MODEL" \
-  --tokenizer "$BENCH_TOKENIZER" \
-  --url "$BENCH_URL" \
-  --endpoint-type chat \
-  --streaming \
-  --input-file "$TRACE_FILE" \
-  --fixed-schedule \
-  --random-seed 42 \
-  --artifact-dir "$RESULT_ROOT/production-trace"
-```
-
-Remove personal data, credentials, private source code, access tokens, and
-customer content before creating or sharing a trace. Never store a raw
-production trace in this repository.
-
-## 12. Run the explicit 100-concurrent-request test
-
-After the discovery sweeps, run a longer test for the stated 100-concurrent
-request target:
-
-```bash
-aiperf profile \
-  --model "$MODEL" \
-  --tokenizer "$BENCH_TOKENIZER" \
-  --url "$BENCH_URL" \
-  --endpoint-type chat \
-  --streaming \
-  --concurrency 100 \
-  --benchmark-duration 900 \
-  --benchmark-grace-period 180 \
-  --warmup-duration 60 \
-  --synthetic-input-tokens-mean 2000 \
-  --synthetic-input-tokens-stddev 500 \
-  --output-tokens-mean 256 \
-  --output-tokens-stddev 64 \
-  --extra-inputs temperature:0.0 \
-  --random-seed 42 \
-  --goodput 'time_to_first_token:1000 inter_token_latency:50' \
-  --artifact-dir "$RESULT_ROOT/production-c100"
-```
-
-This variable-length test intentionally does not force `min_tokens` or
-`ignore_eos`; it models natural early stopping. Keep the deterministic test in
-step 8 as the apples-to-apples capacity comparison.
-
-## 13. Monitor both replicas during every load test
-
-In separate terminals on both `gpu05` and `gpu06`:
-
-```bash
-watch -n 1 nvidia-smi
-```
-
-```bash
-sudo docker logs -f dynamo-replica
-```
-
-On `gpu05`, also follow the router:
-
-```bash
-sudo docker logs -f dynamo-frontend
-```
-
-Check for:
-
-- Both nodes showing GPU activity. If only one node is busy, do not report the
-  result as a two-replica benchmark.
-- Stable GPU clocks, temperature, and power without thermal throttling.
-- Growing request queues or timeouts.
-- KV-cache preemption/recomputation warnings.
-- NCCL, TCP request-plane, or container-restart errors.
-- CPU saturation on the benchmark client or frontend node.
-
-If workers were launched with `DYN_SYSTEM_PORT=8081`, inspect their actual
-Prometheus metric names on each node:
-
-```bash
-curl -fsS http://127.0.0.1:8081/metrics \
-  | grep -Ei 'vllm:|dynamo_.*(request|queue|cache|token|latency)'
-```
-
-The system port is disabled unless explicitly configured. Client-side AIPerf
-results remain the source of truth for end-to-end latency. Server metrics
-explain why a result changed.
-
-## 14. Generate plots and retain raw results
-
-```bash
-aiperf plot "$RESULT_ROOT/fixed-i2000-o256"
-aiperf plot "$RESULT_ROOT/rate-i2000-o256"
-aiperf plot "$RESULT_ROOT"
-```
-
-Each AIPerf artifact directory normally contains:
-
-- `profile_export_aiperf.json`: structured summary metrics.
-- `profile_export.jsonl`: per-request raw results.
-- `profile_export_aiperf.csv`: summary in CSV form.
-
-Retain raw per-request output so percentiles and error classifications can be
-audited later. Do not keep only screenshots or averaged numbers.
-
-## 15. Determine production capacity
-
-For each workload, create a table containing:
-
-| Offered load | Completed RPS | Output tok/s | P50/P95/P99 TTFT | P50/P95/P99 ITL | P95 latency | Goodput | Errors |
-| ---: | ---: | ---: | --- | --- | ---: | ---: | ---: |
-
-Choose the production operating point as the highest load where:
-
-1. Error rate remains below the target.
-2. P95 and P99 latency remain inside their SLOs.
-3. Goodput still increases with offered load.
-4. Queue depth remains bounded and drains after a burst.
-5. No replica, GPU, network link, frontend CPU, or benchmark client is an
-   accidental bottleneck.
-
-Keep capacity headroom for bursts and failures. A service that meets SLOs only
-at 100% steady-state utilization has no safe production capacity.
-
-## 16. Repeat before comparing topologies
-
-Run each final benchmark at least three times and report the median plus the
-range. Use the same:
-
-- Model and model revision.
-- Container image digest.
-- AIPerf version and random seed.
-- Input/output distribution and sampling settings.
-- Benchmark-client machine and network path.
-- Warmup, duration, and SLO thresholds.
-- GPU clocks, power limits, and other tenants.
-
-When comparing the current `2 × TP=8` deployment against `16 × TP=1`, change
-only the topology. Report:
-
-- Aggregate output tokens/second.
-- Output tokens/second/GPU.
-- Goodput/GPU.
-- P95/P99 TTFT and ITL.
-- Error and preemption rates.
-
-For an 8B model, this comparison is more useful than the raw memory percentage
-shown by `nvidia-smi`.
-
-## 17. Soak and burst tests
-
-After selecting a capacity point:
-
-- Run a 30-60 minute steady-state soak at approximately 70-80% of sustainable
-  request rate.
-- Run short bursts at 120-150% of sustainable rate, then verify that queues
-  drain and latency returns to baseline.
-- Confirm GPU memory is stable and containers do not restart.
-- Repeat with one long-context-heavy workload because KV-cache pressure may be
-  the limiting resource even when compute is not saturated.
-
-Do not introduce worker termination or other failure injection until the
-steady-state benchmark is repeatable. Failure testing is a separate exercise
-and should be performed only in a disposable deployment.
-
-## 18. Common benchmarking mistakes
-
-- Benchmarking from the frontend/GPU node and measuring the load generator.
-- Reporting a single request or only average latency.
-- Comparing different token counts or allowing uncontrolled early EOS.
-- Calling 100 sequential requests "100 users."
-- Ignoring warmup, model compilation, cache state, or thermal state.
-- Increasing concurrency after throughput has plateaued and calling the larger
-  queue "higher capacity."
-- Looking only at `nvidia-smi` memory allocation instead of KV-cache occupancy,
-  queueing, goodput, and errors.
-- Comparing two topologies with different model revisions, quantization, or
-  client paths.
-- Exposing the unauthenticated frontend publicly for convenience.
-- Saving credentials or unsanitized prompts in benchmark artifacts.
-
-## References
-
-- [NVIDIA Dynamo benchmarking guide](https://docs.nvidia.com/dynamo/latest/user-guides/benchmarking)
-- [NVIDIA AIPerf command-line reference](https://docs.nvidia.com/aiperf/reference/command-line-options)
-- [NVIDIA AIPerf server metrics](https://docs.nvidia.com/aiperf/server-metrics/server-metrics-collection)
-- [NVIDIA Dynamo vLLM observability](https://docs.nvidia.com/dynamo/backends/v-llm/observability)
-- [vLLM metrics](https://docs.vllm.ai/en/stable/design/metrics.html)

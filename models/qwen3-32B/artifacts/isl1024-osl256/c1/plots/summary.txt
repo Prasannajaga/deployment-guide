@@ -1,0 +1,8 @@
+AIPerf Plot Export Summary
+==================================================
+
+Generated 1 plots:
+
+  - ttft_vs_throughput.png
+
+Output directory: models/qwen3-32B/benchmarks/isl1024-osl256/c1/plots

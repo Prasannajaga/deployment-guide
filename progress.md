@@ -700,7 +700,7 @@ not described as a successful deployment unless retained smoke-test or
 benchmark artifacts prove that the model served requests.
 
 | Model / topology | GPU layout | Status after this work |
-|---|---:|---|
+| --- | ---: | --- |
 | Qwen3.6 SGLang P/D TP1 4P4D | 4 prefill × 1 GPU + 4 decode × 1 GPU = 8 | Deployed and benchmarked; all seven concurrency points passed |
 | Qwen3.6 SGLang P/D TP2 2P2D | 2 prefill × 2 GPUs + 2 decode × 2 GPUs = 8 | Deployed and benchmarked; all seven concurrency points passed |
 | DeepSeek-V4-Flash-FP8 SGLang aggregate | 4 replicas × TP=4 = 16 | H100 capacity probe prepared and attempted; no retained acceptance artifact, so not marked validated |
@@ -829,7 +829,7 @@ ISL 32,768 / OSL 256:   5%
 Headline retained results are:
 
 | Concurrency | TP1 output tok/s | TP2 output tok/s | TP1 median TTFT | TP2 median TTFT | TP1 median ITL | TP2 median ITL |
-|---:|---:|---:|---:|---:|---:|---:|
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | 1 | 214.60 | 247.77 | 138.55 ms | 146.35 ms | 4.05 ms | 3.51 ms |
 | 4 | 819.60 | 931.42 | 134.55 ms | 143.76 ms | 4.21 ms | 3.73 ms |
 | 8 | 1,529.92 | 1,634.64 | 134.40 ms | 144.98 ms | 4.56 ms | 4.30 ms |
@@ -932,7 +932,6 @@ with the workload and telemetry procedure in
    restarting OOM workers.
 5. Keep the vLLM Qwen3.6 results unpublished until the hybrid GDN/NIXL gate
    proves recurrent-state transfer end to end.
-
 
 ### Qwen3.6 TP1-attention + EP2 prefill-heavy CPU-offload test
 
