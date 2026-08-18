@@ -18,18 +18,18 @@ This repository tracks LLM deployment experiments, setup runbooks, and benchmark
 
 ## What we deployed
 
-| Name | Model | Engine | Status | GPUs Used | Topology | Recipe Link |
-| :--- | :--- | :--- | :---: | :---: | :--- | :--- |
-| **Llama-3.1-8B-Instruct** | Llama-3.1-8B | vLLM | Working | 16 | Cross-node TP=16 | [`models/llama-8B`](models/llama-8B/setup.md) |
-| **Qwen3-32B FP8 Aggregated** | Qwen3-32B-FP8 | vLLM / SGLang | Working | 16 | 8 aggregated workers × TP=2; four workers per node when all GPUs are allocated | [vLLM](models/qwen3-32B/vllm/agg-routing/README.md) / [SGLang](models/qwen3-32B/sglang/agg-routing/README.md) |
-| **Qwen3-32B FP8 Disaggregated Baseline** | Qwen3-32B-FP8 | vLLM | Working | 16 | 6 prefill × TP=2 + 2 decode × TP=2; default routing | [`models/qwen3-32B/vllm/disagg-routing`](models/qwen3-32B/vllm/disagg-routing/README.md) |
-| **Qwen3-32B FP8 Disaggregated Baseline** | Qwen3-32B-FP8 | SGLang | Working | 8 | 2 prefill × TP=2 + 1 decode × TP=4; default routing | [`models/qwen3-32B/sglang/disagg-routing`](models/qwen3-32B/sglang/disagg-routing/README.md) |
-| **Qwen3-32B FP8 KV-Aware Disaggregated** | Qwen3-32B-FP8 | vLLM / SGLang | Working | 16 | 6 prefill × TP=2 + 2 decode × TP=2; Dynamo KV-aware routing | [vLLM](models/qwen3-32B/vllm/disagg-routing-kv-aware/README.md) / [SGLang](models/qwen3-32B/sglang/disagg-routing-kv-aware/README.md) |
-| **Qwen3.6-35B-A3B FP8 Aggregated** | Qwen3.6-35B-A3B | SGLang | Working | 2–16 | 1–8 aggregated workers × TP=2 with KEDA; maximum requires all 16 GPUs | [`models/qwen3.6-35B-A3B/sglang/agg-autoscaling`](models/qwen3.6-35B-A3B/sglang/agg-autoscaling/README.md) |
-| **Qwen3.6-35B-A3B FP8 Disaggregated** | Qwen3.6-35B-A3B | SGLang | Working | 16 | 4 prefill + 4 decode, 2 GPUs per worker; `tp-size=2`, `dp-size=2`, `ep-size=2`, DP attention with effective TP=1, with prefill CPU KV offload | [`models/qwen3.6-35B-A3B/sglang/disagg/tp1-ep2-4p4d`](models/qwen3.6-35B-A3B/sglang/disagg/tp1-ep2-4p4d/README.md) |
-| **Qwen3-235B-A22B FP8** | Qwen3-235B-A22B | SGLang | Working | 16 | 4 aggregated workers × TP=4 | [`models/qwen3-235B-A22B/sglang/agg`](models/qwen3-235B-A22B/sglang/agg/README.md) |
-| **GLM-5.2-FP8** | GLM-5.2-FP8 | vLLM | Working | 16 | 1 two-node replica, TP=16 | [`models/glm-5.2-fp8`](models/glm-5.2-fp8/vllm/agg/README.md) |
-| **DeepSeek-V4-Flash FP8** | DeepSeek-V4-Flash | SGLang | Experimental | 16 | 2 aggregated workers × TP=8 | [`models/deepseek-v4-flash-fp8`](models/deepseek-v4-flash-fp8/sglang/agg/README.md) |
+| Name | Engine | Status | GPUs | Topology | Recipe Link |
+| :--- | :--- | :---: | :---: | :--- | :--- |
+| **Llama-3.1-8B-Instruct** | vLLM | Working | 16 | Cross-node TP=16 | [Recipe](models/llama-8B/setup.md) |
+| **Qwen3-32B FP8 Aggregated** | vLLM / SGLang | Working | 16 | 8 aggregated workers × TP=2 (4 per node) | [vLLM](models/qwen3-32B/vllm/agg-routing/README.md) / [SGLang](models/qwen3-32B/sglang/agg-routing/README.md) |
+| **Qwen3-32B FP8 Disaggregated (vLLM)** | vLLM | Working | 16 | 6 prefill × TP=2 + 2 decode × TP=2 | [Recipe](models/qwen3-32B/vllm/disagg-routing/README.md) |
+| **Qwen3-32B FP8 Disaggregated (SGLang)** | SGLang | Working | 8 | 2 prefill × TP=2 + 1 decode × TP=4 | [Recipe](models/qwen3-32B/sglang/disagg-routing/README.md) |
+| **Qwen3-32B FP8 KV-Aware Disaggregated** | vLLM / SGLang | Working | 16 | 6 prefill × TP=2 + 2 decode × TP=2 (KV-aware) | [vLLM](models/qwen3-32B/vllm/disagg-routing-kv-aware/README.md) / [SGLang](models/qwen3-32B/sglang/disagg-routing-kv-aware/README.md) |
+| **Qwen3.6-35B-A3B FP8 Aggregated** | SGLang | Working | 2–16 | 1–8 aggregated workers × TP=2 (KEDA autoscaling) | [Recipe](models/qwen3.6-35B-A3B/sglang/agg-autoscaling/README.md) |
+| **Qwen3.6-35B-A3B FP8 Disaggregated** | SGLang | Working | 16 | 4P+4D, TP=2, DP=2, EP=2 (CPU KV offload) | [Recipe](models/qwen3.6-35B-A3B/sglang/disagg/tp1-ep2-4p4d/README.md) |
+| **Qwen3-235B-A22B FP8** | SGLang | Working | 16 | 4 aggregated workers × TP=4 | [Recipe](models/qwen3-235B-A22B/sglang/agg/README.md) |
+| **GLM-5.2-FP8** | vLLM | Working | 16 | 1 two-node replica, TP=16 | [Recipe](models/glm-5.2-fp8/vllm/agg/README.md) |
+| **DeepSeek-V4-Flash FP8** | SGLang | Experimental | 16 | 2 aggregated workers × TP=8 | [Recipe](models/deepseek-v4-flash-fp8/sglang/agg/README.md) |
 
 ---
 

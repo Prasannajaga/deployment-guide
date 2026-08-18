@@ -257,24 +257,143 @@ kubectl port-forward -n "$MONITOR_NAMESPACE" \
 Open `http://127.0.0.1:3000` and authenticate with the cluster's existing SSO
 or Grafana administrator credentials. Do not expose Grafana on `0.0.0.0`.
 
-Create a dashboard named **NIXL KV Transfer**, set the time range to **Last 15
-minutes**, and set refresh to **5s**. Create dashboard variables named
-`namespace` and `deployment`, or replace those variables with literal values
-in the queries below.
+Create a dashboard named **NIXL KV Transfer**, set the time range to **Last 15 minutes**, and set refresh to **5s**. Define dashboard variables `$namespace` and `$deployment` (or substitute literal string values in the queries below).
 
-| Panel | PromQL | Suggested display |
-| --- | --- | --- |
-| Transmitted bytes | `sum by (pod) (agent_tx_bytes_total{namespace="$namespace",pod=~"$deployment.*"})` | Time series, bytes IEC |
-| Transmit throughput | `sum by (pod) (rate(agent_tx_bytes_total{namespace="$namespace",pod=~"$deployment.*"}[1m]))` | Time series, bytes/sec IEC |
-| Transfer request rate | `sum by (pod) (rate(agent_tx_requests_num_total{namespace="$namespace",pod=~"$deployment.*"}[1m]))` | Time series, requests/sec |
-| Average transfer time | `sum by (pod) (rate(agent_xfer_time_total{namespace="$namespace",pod=~"$deployment.*"}[5m])) / clamp_min(sum by (pod) (rate(agent_tx_requests_num_total{namespace="$namespace",pod=~"$deployment.*"}[5m])), 1)` | Time series, microseconds |
-| NIXL errors | `sum by (pod) (agent_errors_total{namespace="$namespace",pod=~"$deployment.*"})` | Stat; threshold above zero |
-| Host KV used | `sum by (pod) (sglang:hicache_host_used_tokens{namespace="$namespace",pod=~"$deployment.*"})` | Time series, tokens |
-| Host KV capacity | `sum by (pod) (sglang:hicache_host_total_tokens{namespace="$namespace",pod=~"$deployment.*"})` | Stat, tokens |
-| Host KV utilization | `100 * sum by (pod) (sglang:hicache_host_used_tokens{namespace="$namespace",pod=~"$deployment.*"}) / clamp_min(sum by (pod) (sglang:hicache_host_total_tokens{namespace="$namespace",pod=~"$deployment.*"}), 1)` | Gauge, percent 0-100 |
+### NIXL Telemetry Panels
 
-The HiCache panels apply only to SGLang workers configured for CPU KV
-offload. They may be empty for vLLM or non-offload deployments.
+#### 1. Transmitted Bytes
+* **Display Type**: Time series (Bytes IEC)
+* **Purpose**: Tracks cumulative KV-cache data transferred over RoCE v2 per worker pod.
+
+```promql
+sum by (pod) (
+  agent_tx_bytes_total{
+    namespace="$namespace",
+    pod=~"$deployment.*"
+  }
+)
+```
+
+#### 2. Transmit Throughput
+* **Display Type**: Time series (Bytes/sec IEC)
+* **Purpose**: Measures real-time transfer bandwidth across workers during prefill-to-decode handovers.
+
+```promql
+sum by (pod) (
+  rate(
+    agent_tx_bytes_total{
+      namespace="$namespace",
+      pod=~"$deployment.*"
+    }[1m]
+  )
+)
+```
+
+#### 3. Transfer Request Rate
+* **Display Type**: Time series (Requests/sec)
+* **Purpose**: Monitors NIXL KV transfer request frequency across disaggregated worker pods.
+
+```promql
+sum by (pod) (
+  rate(
+    agent_tx_requests_num_total{
+      namespace="$namespace",
+      pod=~"$deployment.*"
+    }[1m]
+  )
+)
+```
+
+#### 4. Average Transfer Time
+* **Display Type**: Time series (Microseconds / Milliseconds)
+* **Purpose**: Calculates average RDMA latency per transfer call by dividing total transfer time by request volume.
+
+```promql
+sum by (pod) (
+  rate(
+    agent_xfer_time_total{
+      namespace="$namespace",
+      pod=~"$deployment.*"
+    }[5m]
+  )
+) / clamp_min(
+  sum by (pod) (
+    rate(
+      agent_tx_requests_num_total{
+        namespace="$namespace",
+        pod=~"$deployment.*"
+      }[5m]
+    )
+  ),
+  1
+)
+```
+
+#### 5. NIXL Errors
+* **Display Type**: Stat (Threshold > 0)
+* **Purpose**: Displays cumulative RDMA/UCX transfer errors; alerts if error counts rise above zero.
+
+```promql
+sum by (pod) (
+  agent_errors_total{
+    namespace="$namespace",
+    pod=~"$deployment.*"
+  }
+)
+```
+
+---
+
+### CPU HiCache Offload Panels (SGLang)
+
+> **Note**: HiCache metrics apply specifically to SGLang workers configured with CPU KV offloading. These panels will return no data for vLLM or non-offload deployments.
+
+#### 6. Host KV Used Tokens
+* **Display Type**: Time series (Tokens)
+* **Purpose**: Tracks the total number of KV-cache tokens offloaded into host CPU RAM over time.
+
+```promql
+sum by (pod) (
+  sglang:hicache_host_used_tokens{
+    namespace="$namespace",
+    pod=~"$deployment.*"
+  }
+)
+```
+
+#### 7. Host KV Capacity
+* **Display Type**: Stat (Tokens)
+* **Purpose**: Displays total host CPU RAM token pool capacity allocated per worker pod.
+
+```promql
+sum by (pod) (
+  sglang:hicache_host_total_tokens{
+    namespace="$namespace",
+    pod=~"$deployment.*"
+  }
+)
+```
+
+#### 8. Host KV Utilization
+* **Display Type**: Gauge (Percent 0–100%)
+* **Purpose**: Measures the percentage of CPU RAM token capacity currently in use.
+
+```promql
+100 * sum by (pod) (
+  sglang:hicache_host_used_tokens{
+    namespace="$namespace",
+    pod=~"$deployment.*"
+  }
+) / clamp_min(
+  sum by (pod) (
+    sglang:hicache_host_total_tokens{
+      namespace="$namespace",
+      pod=~"$deployment.*"
+    }
+  ),
+  1
+)
+```
 
 ## 6. Acceptance and troubleshooting
 
