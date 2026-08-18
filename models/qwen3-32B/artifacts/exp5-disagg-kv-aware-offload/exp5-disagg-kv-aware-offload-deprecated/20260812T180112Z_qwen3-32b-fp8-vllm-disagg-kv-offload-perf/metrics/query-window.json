@@ -1,6 +1,0 @@
-{
-  "prometheus_url": "http://127.0.0.1:19095",
-  "step": "5s",
-  "start_epoch": 1786557672,
-  "end_epoch": 1786561245
-}

@@ -97,14 +97,6 @@ spec:
                   fieldPath: status.podIP
             - name: VLLM_NIXL_SIDE_CHANNEL_PORT
               value: "5600"
-            - name: NIXL_TELEMETRY_ENABLE
-              value: "y"
-            - name: NIXL_TELEMETRY_EXPORTER
-              value: prometheus
-            - name: NIXL_TELEMETRY_MULTIPROC_DIR
-              value: /dev/shm/nixl-telemetry
-            - name: NIXL_TELEMETRY_PROMETHEUS_PORT
-              value: "19090"
             - name: UCX_TLS
               value: rc_x,rc,cuda_copy,cuda_ipc
             - name: UCX_NET_DEVICES
@@ -120,8 +112,6 @@ spec:
               containerPort: 9090
             - name: nixl-side
               containerPort: 5600
-            - name: nixl-metrics
-              containerPort: 19090
       resources: &worker-resources
         requests:
           gpu: "2"
@@ -177,6 +167,4 @@ spec:
               containerPort: 9090
             - name: nixl-side
               containerPort: 5600
-            - name: nixl-metrics
-              containerPort: 19090
       resources: *worker-resources

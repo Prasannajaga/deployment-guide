@@ -1,0 +1,14 @@
+[
+  {
+    "node": "inst-1onle-devrel-rdma-pool",
+    "prefill_replicas": 2,
+    "decode_replicas": 2,
+    "gpu_count": 8
+  },
+  {
+    "node": "inst-g9dwj-devrel-rdma-pool",
+    "prefill_replicas": 2,
+    "decode_replicas": 2,
+    "gpu_count": 8
+  }
+]

@@ -1,0 +1,1144 @@
+Open-file limit: 1024
+Process limit: unlimited
+Hit:1 http://deb.debian.org/debian trixie InRelease
+Get:2 http://deb.debian.org/debian trixie-updates InRelease [47.3 kB]
+Get:3 http://deb.debian.org/debian-security trixie-security InRelease [43.4 kB]
+Get:4 http://deb.debian.org/debian trixie/main amd64 Packages [9673 kB]
+Get:5 http://deb.debian.org/debian trixie-updates/main amd64 Packages [4412 B]
+Get:6 http://deb.debian.org/debian-security trixie-security/main amd64 Packages [237 kB]
+Fetched 10.0 MB in 1s (11.7 MB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+ca-certificates is already the newest version (20250419).
+The following additional packages will be installed:
+  binutils binutils-common binutils-x86-64-linux-gnu bzip2 cpp cpp-14
+  cpp-14-x86-64-linux-gnu cpp-x86-64-linux-gnu dpkg-dev g++ g++-14
+  g++-14-x86-64-linux-gnu g++-x86-64-linux-gnu gcc gcc-14
+  gcc-14-x86-64-linux-gnu gcc-x86-64-linux-gnu libasan8 libatomic1 libbinutils
+  libbrotli1 libc-dev-bin libc6-dev libcc1-0 libcom-err2 libcrypt-dev
+  libctf-nobfd0 libctf0 libcurl4t64 libdpkg-perl libgcc-14-dev
+  libgdbm-compat4t64 libgnutls30t64 libgomp1 libgprofng0 libgssapi-krb5-2
+  libhwasan0 libidn2-0 libisl23 libitm1 libjansson4 libjq1 libk5crypto3
+  libkeyutils1 libkrb5-3 libkrb5support0 libldap2 liblsan0 libmpc3 libmpfr6
+  libnghttp2-14 libnghttp3-9 libonig5 libp11-kit0 libperl5.40 libpsl5t64
+  libquadmath0 librtmp1 libsasl2-2 libsasl2-modules-db libsframe1 libssh2-1t64
+  libstdc++-14-dev libtasn1-6 libtsan2 libubsan1 libunistring5 linux-libc-dev
+  make patch perl perl-modules-5.40 rpcsvc-proto xz-utils
+Suggested packages:
+  binutils-doc gprofng-gui binutils-gold bzip2-doc cpp-doc gcc-14-locales
+  cpp-14-doc debian-keyring debian-tag2upload-keyring g++-multilib
+  g++-14-multilib gcc-14-doc gcc-multilib manpages-dev autoconf automake
+  libtool flex bison gdb gcc-doc gcc-14-multilib gdb-x86-64-linux-gnu
+  libc-devtools glibc-doc sq | sqop | rsop | gosop | pgpainless-cli | gpg-sq
+  | gnupg sensible-utils git bzr gnutls-bin krb5-doc krb5-user
+  libstdc++-14-doc make-doc ed diffutils-doc perl-doc
+  libterm-readline-gnu-perl | libterm-readline-perl-perl
+  libtap-harness-archive-perl
+Recommended packages:
+  bash-completion fakeroot sq | sqop | rsop | gosop | pgpainless-cli | gpg-sq
+  | gnupg libalgorithm-merge-perl manpages manpages-dev libfile-fcntllock-perl
+  liblocale-gettext-perl krb5-locales libldap-common publicsuffix
+  libsasl2-modules
+The following NEW packages will be installed:
+  binutils binutils-common binutils-x86-64-linux-gnu build-essential bzip2 cpp
+  cpp-14 cpp-14-x86-64-linux-gnu cpp-x86-64-linux-gnu curl dpkg-dev g++ g++-14
+  g++-14-x86-64-linux-gnu g++-x86-64-linux-gnu gcc gcc-14
+  gcc-14-x86-64-linux-gnu gcc-x86-64-linux-gnu jq libasan8 libatomic1
+  libbinutils libbrotli1 libc-dev-bin libc6-dev libcc1-0 libcom-err2
+  libcrypt-dev libctf-nobfd0 libctf0 libcurl4t64 libdpkg-perl libgcc-14-dev
+  libgdbm-compat4t64 libgnutls30t64 libgomp1 libgprofng0 libgssapi-krb5-2
+  libhwasan0 libidn2-0 libisl23 libitm1 libjansson4 libjq1 libk5crypto3
+  libkeyutils1 libkrb5-3 libkrb5support0 libldap2 liblsan0 libmpc3 libmpfr6
+  libnghttp2-14 libnghttp3-9 libonig5 libp11-kit0 libperl5.40 libpsl5t64
+  libquadmath0 librtmp1 libsasl2-2 libsasl2-modules-db libsframe1 libssh2-1t64
+  libstdc++-14-dev libtasn1-6 libtsan2 libubsan1 libunistring5 linux-libc-dev
+  make patch perl perl-modules-5.40 rpcsvc-proto xz-utils
+0 upgraded, 77 newly installed, 0 to remove and 0 not upgraded.
+Need to get 87.9 MB of archives.
+After this operation, 352 MB of additional disk space will be used.
+Get:1 http://deb.debian.org/debian trixie/main amd64 bzip2 amd64 1.0.8-6 [40.5 kB]
+Get:2 http://deb.debian.org/debian trixie/main amd64 perl-modules-5.40 all 5.40.1-6 [3019 kB]
+Get:3 http://deb.debian.org/debian trixie/main amd64 libgdbm-compat4t64 amd64 1.24-2 [50.3 kB]
+Get:4 http://deb.debian.org/debian trixie/main amd64 libperl5.40 amd64 5.40.1-6 [4341 kB]
+Get:5 http://deb.debian.org/debian trixie/main amd64 perl amd64 5.40.1-6 [267 kB]
+Get:6 http://deb.debian.org/debian trixie/main amd64 xz-utils amd64 5.8.1-1+deb13u1 [659 kB]
+Get:7 http://deb.debian.org/debian trixie/main amd64 libsframe1 amd64 2.44-3 [78.4 kB]
+Get:8 http://deb.debian.org/debian trixie/main amd64 binutils-common amd64 2.44-3 [2509 kB]
+Get:9 http://deb.debian.org/debian trixie/main amd64 libbinutils amd64 2.44-3 [534 kB]
+Get:10 http://deb.debian.org/debian trixie/main amd64 libgprofng0 amd64 2.44-3 [808 kB]
+Get:11 http://deb.debian.org/debian trixie/main amd64 libctf-nobfd0 amd64 2.44-3 [156 kB]
+Get:12 http://deb.debian.org/debian trixie/main amd64 libctf0 amd64 2.44-3 [88.6 kB]
+Get:13 http://deb.debian.org/debian trixie/main amd64 libjansson4 amd64 2.14-2+b3 [39.8 kB]
+Get:14 http://deb.debian.org/debian trixie/main amd64 binutils-x86-64-linux-gnu amd64 2.44-3 [1014 kB]
+Get:15 http://deb.debian.org/debian trixie/main amd64 binutils amd64 2.44-3 [265 kB]
+Get:16 http://deb.debian.org/debian trixie/main amd64 libc-dev-bin amd64 2.41-12+deb13u3 [59.8 kB]
+Get:17 http://deb.debian.org/debian-security trixie-security/main amd64 linux-libc-dev all 6.12.101-1 [2901 kB]
+Get:18 http://deb.debian.org/debian trixie/main amd64 libcrypt-dev amd64 1:4.4.38-1 [119 kB]
+Get:19 http://deb.debian.org/debian trixie/main amd64 rpcsvc-proto amd64 1.4.3-1 [63.3 kB]
+Get:20 http://deb.debian.org/debian trixie/main amd64 libc6-dev amd64 2.41-12+deb13u3 [1992 kB]
+Get:21 http://deb.debian.org/debian trixie/main amd64 libisl23 amd64 0.27-1 [659 kB]
+Get:22 http://deb.debian.org/debian trixie/main amd64 libmpfr6 amd64 4.2.2-1 [729 kB]
+Get:23 http://deb.debian.org/debian trixie/main amd64 libmpc3 amd64 1.3.1-1+b3 [52.2 kB]
+Get:24 http://deb.debian.org/debian trixie/main amd64 cpp-14-x86-64-linux-gnu amd64 14.2.0-19 [11.0 MB]
+Get:25 http://deb.debian.org/debian trixie/main amd64 cpp-14 amd64 14.2.0-19 [1280 B]
+Get:26 http://deb.debian.org/debian trixie/main amd64 cpp-x86-64-linux-gnu amd64 4:14.2.0-1 [4840 B]
+Get:27 http://deb.debian.org/debian trixie/main amd64 cpp amd64 4:14.2.0-1 [1568 B]
+Get:28 http://deb.debian.org/debian trixie/main amd64 libcc1-0 amd64 14.2.0-19 [42.8 kB]
+Get:29 http://deb.debian.org/debian trixie/main amd64 libgomp1 amd64 14.2.0-19 [137 kB]
+Get:30 http://deb.debian.org/debian trixie/main amd64 libitm1 amd64 14.2.0-19 [26.0 kB]
+Get:31 http://deb.debian.org/debian trixie/main amd64 libatomic1 amd64 14.2.0-19 [9308 B]
+Get:32 http://deb.debian.org/debian trixie/main amd64 libasan8 amd64 14.2.0-19 [2725 kB]
+Get:33 http://deb.debian.org/debian trixie/main amd64 liblsan0 amd64 14.2.0-19 [1204 kB]
+Get:34 http://deb.debian.org/debian trixie/main amd64 libtsan2 amd64 14.2.0-19 [2460 kB]
+Get:35 http://deb.debian.org/debian trixie/main amd64 libubsan1 amd64 14.2.0-19 [1074 kB]
+Get:36 http://deb.debian.org/debian trixie/main amd64 libhwasan0 amd64 14.2.0-19 [1488 kB]
+Get:37 http://deb.debian.org/debian trixie/main amd64 libquadmath0 amd64 14.2.0-19 [145 kB]
+Get:38 http://deb.debian.org/debian trixie/main amd64 libgcc-14-dev amd64 14.2.0-19 [2672 kB]
+Get:39 http://deb.debian.org/debian trixie/main amd64 gcc-14-x86-64-linux-gnu amd64 14.2.0-19 [21.4 MB]
+Get:40 http://deb.debian.org/debian trixie/main amd64 gcc-14 amd64 14.2.0-19 [540 kB]
+Get:41 http://deb.debian.org/debian trixie/main amd64 gcc-x86-64-linux-gnu amd64 4:14.2.0-1 [1436 B]
+Get:42 http://deb.debian.org/debian trixie/main amd64 gcc amd64 4:14.2.0-1 [5136 B]
+Get:43 http://deb.debian.org/debian trixie/main amd64 libstdc++-14-dev amd64 14.2.0-19 [2376 kB]
+Get:44 http://deb.debian.org/debian trixie/main amd64 g++-14-x86-64-linux-gnu amd64 14.2.0-19 [12.1 MB]
+Get:45 http://deb.debian.org/debian trixie/main amd64 g++-14 amd64 14.2.0-19 [22.5 kB]
+Get:46 http://deb.debian.org/debian trixie/main amd64 g++-x86-64-linux-gnu amd64 4:14.2.0-1 [1200 B]
+Get:47 http://deb.debian.org/debian trixie/main amd64 g++ amd64 4:14.2.0-1 [1344 B]
+Get:48 http://deb.debian.org/debian trixie/main amd64 make amd64 4.4.1-2 [463 kB]
+Get:49 http://deb.debian.org/debian trixie/main amd64 libdpkg-perl all 1.22.22 [651 kB]
+Get:50 http://deb.debian.org/debian trixie/main amd64 patch amd64 2.8-2 [134 kB]
+Get:51 http://deb.debian.org/debian trixie/main amd64 dpkg-dev all 1.22.22 [1337 kB]
+Get:52 http://deb.debian.org/debian trixie/main amd64 build-essential amd64 12.12 [4624 B]
+Get:53 http://deb.debian.org/debian trixie/main amd64 libbrotli1 amd64 1.1.0-2+b7 [307 kB]
+Get:54 http://deb.debian.org/debian trixie/main amd64 libkrb5support0 amd64 1.21.3-5+deb13u1 [33.1 kB]
+Get:55 http://deb.debian.org/debian trixie/main amd64 libcom-err2 amd64 1.47.2-3+b11 [25.0 kB]
+Get:56 http://deb.debian.org/debian trixie/main amd64 libk5crypto3 amd64 1.21.3-5+deb13u1 [81.2 kB]
+Get:57 http://deb.debian.org/debian trixie/main amd64 libkeyutils1 amd64 1.6.3-6 [9456 B]
+Get:58 http://deb.debian.org/debian trixie/main amd64 libkrb5-3 amd64 1.21.3-5+deb13u1 [326 kB]
+Get:59 http://deb.debian.org/debian trixie/main amd64 libgssapi-krb5-2 amd64 1.21.3-5+deb13u1 [138 kB]
+Get:60 http://deb.debian.org/debian trixie/main amd64 libunistring5 amd64 1.3-2 [477 kB]
+Get:61 http://deb.debian.org/debian trixie/main amd64 libidn2-0 amd64 2.3.8-2 [109 kB]
+Get:62 http://deb.debian.org/debian trixie/main amd64 libsasl2-modules-db amd64 2.1.28+dfsg1-9 [19.8 kB]
+Get:63 http://deb.debian.org/debian trixie/main amd64 libsasl2-2 amd64 2.1.28+dfsg1-9 [57.5 kB]
+Get:64 http://deb.debian.org/debian trixie/main amd64 libldap2 amd64 2.6.10+dfsg-1 [194 kB]
+Get:65 http://deb.debian.org/debian trixie/main amd64 libnghttp2-14 amd64 1.64.0-1.1+deb13u1 [76.2 kB]
+Get:66 http://deb.debian.org/debian trixie/main amd64 libnghttp3-9 amd64 1.8.0-1 [67.7 kB]
+Get:67 http://deb.debian.org/debian trixie/main amd64 libpsl5t64 amd64 0.21.2-1.1+b1 [57.2 kB]
+Get:68 http://deb.debian.org/debian trixie/main amd64 libp11-kit0 amd64 0.25.5-3 [425 kB]
+Get:69 http://deb.debian.org/debian trixie/main amd64 libtasn1-6 amd64 4.20.0-2+deb13u1 [50.1 kB]
+Get:70 http://deb.debian.org/debian trixie/main amd64 libgnutls30t64 amd64 3.8.9-3+deb13u4 [1469 kB]
+Get:71 http://deb.debian.org/debian trixie/main amd64 librtmp1 amd64 2.4+20151223.gitfa8646d.1-2+b5 [58.8 kB]
+Get:72 http://deb.debian.org/debian trixie/main amd64 libssh2-1t64 amd64 1.11.1-1+deb13u1 [245 kB]
+Get:73 http://deb.debian.org/debian trixie/main amd64 libcurl4t64 amd64 8.14.1-2+deb13u4 [392 kB]
+Get:74 http://deb.debian.org/debian trixie/main amd64 curl amd64 8.14.1-2+deb13u4 [270 kB]
+Get:75 http://deb.debian.org/debian trixie/main amd64 libonig5 amd64 6.9.9-1+b1 [189 kB]
+Get:76 http://deb.debian.org/debian-security trixie-security/main amd64 libjq1 amd64 1.7.1-6+deb13u3 [168 kB]
+Get:77 http://deb.debian.org/debian-security trixie-security/main amd64 jq amd64 1.7.1-6+deb13u3 [78.8 kB]
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC entries checked: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.40.1 /usr/local/share/perl/5.40.1 /usr/lib/x86_64-linux-gnu/perl5/5.40 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.40 /usr/share/perl/5.40 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 8, <STDIN> line 77.)
+debconf: falling back to frontend: Teletype
+debconf: unable to initialize frontend: Teletype
+debconf: (This frontend requires a controlling tty.)
+debconf: falling back to frontend: Noninteractive
+Fetched 87.9 MB in 0s (262 MB/s)
+Selecting previously unselected package bzip2.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 5645 files and directories currently installed.)
+Preparing to unpack .../00-bzip2_1.0.8-6_amd64.deb ...
+Unpacking bzip2 (1.0.8-6) ...
+Selecting previously unselected package perl-modules-5.40.
+Preparing to unpack .../01-perl-modules-5.40_5.40.1-6_all.deb ...
+Unpacking perl-modules-5.40 (5.40.1-6) ...
+Selecting previously unselected package libgdbm-compat4t64:amd64.
+Preparing to unpack .../02-libgdbm-compat4t64_1.24-2_amd64.deb ...
+Unpacking libgdbm-compat4t64:amd64 (1.24-2) ...
+Selecting previously unselected package libperl5.40:amd64.
+Preparing to unpack .../03-libperl5.40_5.40.1-6_amd64.deb ...
+Unpacking libperl5.40:amd64 (5.40.1-6) ...
+Selecting previously unselected package perl.
+Preparing to unpack .../04-perl_5.40.1-6_amd64.deb ...
+Unpacking perl (5.40.1-6) ...
+Selecting previously unselected package xz-utils.
+Preparing to unpack .../05-xz-utils_5.8.1-1+deb13u1_amd64.deb ...
+Unpacking xz-utils (5.8.1-1+deb13u1) ...
+Selecting previously unselected package libsframe1:amd64.
+Preparing to unpack .../06-libsframe1_2.44-3_amd64.deb ...
+Unpacking libsframe1:amd64 (2.44-3) ...
+Selecting previously unselected package binutils-common:amd64.
+Preparing to unpack .../07-binutils-common_2.44-3_amd64.deb ...
+Unpacking binutils-common:amd64 (2.44-3) ...
+Selecting previously unselected package libbinutils:amd64.
+Preparing to unpack .../08-libbinutils_2.44-3_amd64.deb ...
+Unpacking libbinutils:amd64 (2.44-3) ...
+Selecting previously unselected package libgprofng0:amd64.
+Preparing to unpack .../09-libgprofng0_2.44-3_amd64.deb ...
+Unpacking libgprofng0:amd64 (2.44-3) ...
+Selecting previously unselected package libctf-nobfd0:amd64.
+Preparing to unpack .../10-libctf-nobfd0_2.44-3_amd64.deb ...
+Unpacking libctf-nobfd0:amd64 (2.44-3) ...
+Selecting previously unselected package libctf0:amd64.
+Preparing to unpack .../11-libctf0_2.44-3_amd64.deb ...
+Unpacking libctf0:amd64 (2.44-3) ...
+Selecting previously unselected package libjansson4:amd64.
+Preparing to unpack .../12-libjansson4_2.14-2+b3_amd64.deb ...
+Unpacking libjansson4:amd64 (2.14-2+b3) ...
+Selecting previously unselected package binutils-x86-64-linux-gnu.
+Preparing to unpack .../13-binutils-x86-64-linux-gnu_2.44-3_amd64.deb ...
+Unpacking binutils-x86-64-linux-gnu (2.44-3) ...
+Selecting previously unselected package binutils.
+Preparing to unpack .../14-binutils_2.44-3_amd64.deb ...
+Unpacking binutils (2.44-3) ...
+Selecting previously unselected package libc-dev-bin.
+Preparing to unpack .../15-libc-dev-bin_2.41-12+deb13u3_amd64.deb ...
+Unpacking libc-dev-bin (2.41-12+deb13u3) ...
+Selecting previously unselected package linux-libc-dev.
+Preparing to unpack .../16-linux-libc-dev_6.12.101-1_all.deb ...
+Unpacking linux-libc-dev (6.12.101-1) ...
+Selecting previously unselected package libcrypt-dev:amd64.
+Preparing to unpack .../17-libcrypt-dev_1%3a4.4.38-1_amd64.deb ...
+Unpacking libcrypt-dev:amd64 (1:4.4.38-1) ...
+Selecting previously unselected package rpcsvc-proto.
+Preparing to unpack .../18-rpcsvc-proto_1.4.3-1_amd64.deb ...
+Unpacking rpcsvc-proto (1.4.3-1) ...
+Selecting previously unselected package libc6-dev:amd64.
+Preparing to unpack .../19-libc6-dev_2.41-12+deb13u3_amd64.deb ...
+Unpacking libc6-dev:amd64 (2.41-12+deb13u3) ...
+Selecting previously unselected package libisl23:amd64.
+Preparing to unpack .../20-libisl23_0.27-1_amd64.deb ...
+Unpacking libisl23:amd64 (0.27-1) ...
+Selecting previously unselected package libmpfr6:amd64.
+Preparing to unpack .../21-libmpfr6_4.2.2-1_amd64.deb ...
+Unpacking libmpfr6:amd64 (4.2.2-1) ...
+Selecting previously unselected package libmpc3:amd64.
+Preparing to unpack .../22-libmpc3_1.3.1-1+b3_amd64.deb ...
+Unpacking libmpc3:amd64 (1.3.1-1+b3) ...
+Selecting previously unselected package cpp-14-x86-64-linux-gnu.
+Preparing to unpack .../23-cpp-14-x86-64-linux-gnu_14.2.0-19_amd64.deb ...
+Unpacking cpp-14-x86-64-linux-gnu (14.2.0-19) ...
+Selecting previously unselected package cpp-14.
+Preparing to unpack .../24-cpp-14_14.2.0-19_amd64.deb ...
+Unpacking cpp-14 (14.2.0-19) ...
+Selecting previously unselected package cpp-x86-64-linux-gnu.
+Preparing to unpack .../25-cpp-x86-64-linux-gnu_4%3a14.2.0-1_amd64.deb ...
+Unpacking cpp-x86-64-linux-gnu (4:14.2.0-1) ...
+Selecting previously unselected package cpp.
+Preparing to unpack .../26-cpp_4%3a14.2.0-1_amd64.deb ...
+Unpacking cpp (4:14.2.0-1) ...
+Selecting previously unselected package libcc1-0:amd64.
+Preparing to unpack .../27-libcc1-0_14.2.0-19_amd64.deb ...
+Unpacking libcc1-0:amd64 (14.2.0-19) ...
+Selecting previously unselected package libgomp1:amd64.
+Preparing to unpack .../28-libgomp1_14.2.0-19_amd64.deb ...
+Unpacking libgomp1:amd64 (14.2.0-19) ...
+Selecting previously unselected package libitm1:amd64.
+Preparing to unpack .../29-libitm1_14.2.0-19_amd64.deb ...
+Unpacking libitm1:amd64 (14.2.0-19) ...
+Selecting previously unselected package libatomic1:amd64.
+Preparing to unpack .../30-libatomic1_14.2.0-19_amd64.deb ...
+Unpacking libatomic1:amd64 (14.2.0-19) ...
+Selecting previously unselected package libasan8:amd64.
+Preparing to unpack .../31-libasan8_14.2.0-19_amd64.deb ...
+Unpacking libasan8:amd64 (14.2.0-19) ...
+Selecting previously unselected package liblsan0:amd64.
+Preparing to unpack .../32-liblsan0_14.2.0-19_amd64.deb ...
+Unpacking liblsan0:amd64 (14.2.0-19) ...
+Selecting previously unselected package libtsan2:amd64.
+Preparing to unpack .../33-libtsan2_14.2.0-19_amd64.deb ...
+Unpacking libtsan2:amd64 (14.2.0-19) ...
+Selecting previously unselected package libubsan1:amd64.
+Preparing to unpack .../34-libubsan1_14.2.0-19_amd64.deb ...
+Unpacking libubsan1:amd64 (14.2.0-19) ...
+Selecting previously unselected package libhwasan0:amd64.
+Preparing to unpack .../35-libhwasan0_14.2.0-19_amd64.deb ...
+Unpacking libhwasan0:amd64 (14.2.0-19) ...
+Selecting previously unselected package libquadmath0:amd64.
+Preparing to unpack .../36-libquadmath0_14.2.0-19_amd64.deb ...
+Unpacking libquadmath0:amd64 (14.2.0-19) ...
+Selecting previously unselected package libgcc-14-dev:amd64.
+Preparing to unpack .../37-libgcc-14-dev_14.2.0-19_amd64.deb ...
+Unpacking libgcc-14-dev:amd64 (14.2.0-19) ...
+Selecting previously unselected package gcc-14-x86-64-linux-gnu.
+Preparing to unpack .../38-gcc-14-x86-64-linux-gnu_14.2.0-19_amd64.deb ...
+Unpacking gcc-14-x86-64-linux-gnu (14.2.0-19) ...
+Selecting previously unselected package gcc-14.
+Preparing to unpack .../39-gcc-14_14.2.0-19_amd64.deb ...
+Unpacking gcc-14 (14.2.0-19) ...
+Selecting previously unselected package gcc-x86-64-linux-gnu.
+Preparing to unpack .../40-gcc-x86-64-linux-gnu_4%3a14.2.0-1_amd64.deb ...
+Unpacking gcc-x86-64-linux-gnu (4:14.2.0-1) ...
+Selecting previously unselected package gcc.
+Preparing to unpack .../41-gcc_4%3a14.2.0-1_amd64.deb ...
+Unpacking gcc (4:14.2.0-1) ...
+Selecting previously unselected package libstdc++-14-dev:amd64.
+Preparing to unpack .../42-libstdc++-14-dev_14.2.0-19_amd64.deb ...
+Unpacking libstdc++-14-dev:amd64 (14.2.0-19) ...
+Selecting previously unselected package g++-14-x86-64-linux-gnu.
+Preparing to unpack .../43-g++-14-x86-64-linux-gnu_14.2.0-19_amd64.deb ...
+Unpacking g++-14-x86-64-linux-gnu (14.2.0-19) ...
+Selecting previously unselected package g++-14.
+Preparing to unpack .../44-g++-14_14.2.0-19_amd64.deb ...
+Unpacking g++-14 (14.2.0-19) ...
+Selecting previously unselected package g++-x86-64-linux-gnu.
+Preparing to unpack .../45-g++-x86-64-linux-gnu_4%3a14.2.0-1_amd64.deb ...
+Unpacking g++-x86-64-linux-gnu (4:14.2.0-1) ...
+Selecting previously unselected package g++.
+Preparing to unpack .../46-g++_4%3a14.2.0-1_amd64.deb ...
+Unpacking g++ (4:14.2.0-1) ...
+Selecting previously unselected package make.
+Preparing to unpack .../47-make_4.4.1-2_amd64.deb ...
+Unpacking make (4.4.1-2) ...
+Selecting previously unselected package libdpkg-perl.
+Preparing to unpack .../48-libdpkg-perl_1.22.22_all.deb ...
+Unpacking libdpkg-perl (1.22.22) ...
+Selecting previously unselected package patch.
+Preparing to unpack .../49-patch_2.8-2_amd64.deb ...
+Unpacking patch (2.8-2) ...
+Selecting previously unselected package dpkg-dev.
+Preparing to unpack .../50-dpkg-dev_1.22.22_all.deb ...
+Unpacking dpkg-dev (1.22.22) ...
+Selecting previously unselected package build-essential.
+Preparing to unpack .../51-build-essential_12.12_amd64.deb ...
+Unpacking build-essential (12.12) ...
+Selecting previously unselected package libbrotli1:amd64.
+Preparing to unpack .../52-libbrotli1_1.1.0-2+b7_amd64.deb ...
+Unpacking libbrotli1:amd64 (1.1.0-2+b7) ...
+Selecting previously unselected package libkrb5support0:amd64.
+Preparing to unpack .../53-libkrb5support0_1.21.3-5+deb13u1_amd64.deb ...
+Unpacking libkrb5support0:amd64 (1.21.3-5+deb13u1) ...
+Selecting previously unselected package libcom-err2:amd64.
+Preparing to unpack .../54-libcom-err2_1.47.2-3+b11_amd64.deb ...
+Unpacking libcom-err2:amd64 (1.47.2-3+b11) ...
+Selecting previously unselected package libk5crypto3:amd64.
+Preparing to unpack .../55-libk5crypto3_1.21.3-5+deb13u1_amd64.deb ...
+Unpacking libk5crypto3:amd64 (1.21.3-5+deb13u1) ...
+Selecting previously unselected package libkeyutils1:amd64.
+Preparing to unpack .../56-libkeyutils1_1.6.3-6_amd64.deb ...
+Unpacking libkeyutils1:amd64 (1.6.3-6) ...
+Selecting previously unselected package libkrb5-3:amd64.
+Preparing to unpack .../57-libkrb5-3_1.21.3-5+deb13u1_amd64.deb ...
+Unpacking libkrb5-3:amd64 (1.21.3-5+deb13u1) ...
+Selecting previously unselected package libgssapi-krb5-2:amd64.
+Preparing to unpack .../58-libgssapi-krb5-2_1.21.3-5+deb13u1_amd64.deb ...
+Unpacking libgssapi-krb5-2:amd64 (1.21.3-5+deb13u1) ...
+Selecting previously unselected package libunistring5:amd64.
+Preparing to unpack .../59-libunistring5_1.3-2_amd64.deb ...
+Unpacking libunistring5:amd64 (1.3-2) ...
+Selecting previously unselected package libidn2-0:amd64.
+Preparing to unpack .../60-libidn2-0_2.3.8-2_amd64.deb ...
+Unpacking libidn2-0:amd64 (2.3.8-2) ...
+Selecting previously unselected package libsasl2-modules-db:amd64.
+Preparing to unpack .../61-libsasl2-modules-db_2.1.28+dfsg1-9_amd64.deb ...
+Unpacking libsasl2-modules-db:amd64 (2.1.28+dfsg1-9) ...
+Selecting previously unselected package libsasl2-2:amd64.
+Preparing to unpack .../62-libsasl2-2_2.1.28+dfsg1-9_amd64.deb ...
+Unpacking libsasl2-2:amd64 (2.1.28+dfsg1-9) ...
+Selecting previously unselected package libldap2:amd64.
+Preparing to unpack .../63-libldap2_2.6.10+dfsg-1_amd64.deb ...
+Unpacking libldap2:amd64 (2.6.10+dfsg-1) ...
+Selecting previously unselected package libnghttp2-14:amd64.
+Preparing to unpack .../64-libnghttp2-14_1.64.0-1.1+deb13u1_amd64.deb ...
+Unpacking libnghttp2-14:amd64 (1.64.0-1.1+deb13u1) ...
+Selecting previously unselected package libnghttp3-9:amd64.
+Preparing to unpack .../65-libnghttp3-9_1.8.0-1_amd64.deb ...
+Unpacking libnghttp3-9:amd64 (1.8.0-1) ...
+Selecting previously unselected package libpsl5t64:amd64.
+Preparing to unpack .../66-libpsl5t64_0.21.2-1.1+b1_amd64.deb ...
+Unpacking libpsl5t64:amd64 (0.21.2-1.1+b1) ...
+Selecting previously unselected package libp11-kit0:amd64.
+Preparing to unpack .../67-libp11-kit0_0.25.5-3_amd64.deb ...
+Unpacking libp11-kit0:amd64 (0.25.5-3) ...
+Selecting previously unselected package libtasn1-6:amd64.
+Preparing to unpack .../68-libtasn1-6_4.20.0-2+deb13u1_amd64.deb ...
+Unpacking libtasn1-6:amd64 (4.20.0-2+deb13u1) ...
+Selecting previously unselected package libgnutls30t64:amd64.
+Preparing to unpack .../69-libgnutls30t64_3.8.9-3+deb13u4_amd64.deb ...
+Unpacking libgnutls30t64:amd64 (3.8.9-3+deb13u4) ...
+Selecting previously unselected package librtmp1:amd64.
+Preparing to unpack .../70-librtmp1_2.4+20151223.gitfa8646d.1-2+b5_amd64.deb ...
+Unpacking librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2+b5) ...
+Selecting previously unselected package libssh2-1t64:amd64.
+Preparing to unpack .../71-libssh2-1t64_1.11.1-1+deb13u1_amd64.deb ...
+Unpacking libssh2-1t64:amd64 (1.11.1-1+deb13u1) ...
+Selecting previously unselected package libcurl4t64:amd64.
+Preparing to unpack .../72-libcurl4t64_8.14.1-2+deb13u4_amd64.deb ...
+Unpacking libcurl4t64:amd64 (8.14.1-2+deb13u4) ...
+Selecting previously unselected package curl.
+Preparing to unpack .../73-curl_8.14.1-2+deb13u4_amd64.deb ...
+Unpacking curl (8.14.1-2+deb13u4) ...
+Selecting previously unselected package libonig5:amd64.
+Preparing to unpack .../74-libonig5_6.9.9-1+b1_amd64.deb ...
+Unpacking libonig5:amd64 (6.9.9-1+b1) ...
+Selecting previously unselected package libjq1:amd64.
+Preparing to unpack .../75-libjq1_1.7.1-6+deb13u3_amd64.deb ...
+Unpacking libjq1:amd64 (1.7.1-6+deb13u3) ...
+Selecting previously unselected package jq.
+Preparing to unpack .../76-jq_1.7.1-6+deb13u3_amd64.deb ...
+Unpacking jq (1.7.1-6+deb13u3) ...
+Setting up libkeyutils1:amd64 (1.6.3-6) ...
+Setting up libgdbm-compat4t64:amd64 (1.24-2) ...
+Setting up libbrotli1:amd64 (1.1.0-2+b7) ...
+Setting up binutils-common:amd64 (2.44-3) ...
+Setting up libnghttp2-14:amd64 (1.64.0-1.1+deb13u1) ...
+Setting up linux-libc-dev (6.12.101-1) ...
+Setting up libctf-nobfd0:amd64 (2.44-3) ...
+Setting up libcom-err2:amd64 (1.47.2-3+b11) ...
+Setting up libgomp1:amd64 (14.2.0-19) ...
+Setting up bzip2 (1.0.8-6) ...
+Setting up libsframe1:amd64 (2.44-3) ...
+Setting up libjansson4:amd64 (2.14-2+b3) ...
+Setting up libkrb5support0:amd64 (1.21.3-5+deb13u1) ...
+Setting up libsasl2-modules-db:amd64 (2.1.28+dfsg1-9) ...
+Setting up rpcsvc-proto (1.4.3-1) ...
+Setting up make (4.4.1-2) ...
+Setting up libmpfr6:amd64 (4.2.2-1) ...
+Setting up xz-utils (5.8.1-1+deb13u1) ...
+update-alternatives: using /usr/bin/xz to provide /usr/bin/lzma (lzma) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/lzma.1.gz because associated file /usr/share/man/man1/xz.1.gz (of link group lzma) doesn't exist
+update-alternatives: warning: skip creation of /usr/share/man/man1/unlzma.1.gz because associated file /usr/share/man/man1/unxz.1.gz (of link group lzma) doesn't exist
+update-alternatives: warning: skip creation of /usr/share/man/man1/lzcat.1.gz because associated file /usr/share/man/man1/xzcat.1.gz (of link group lzma) doesn't exist
+update-alternatives: warning: skip creation of /usr/share/man/man1/lzmore.1.gz because associated file /usr/share/man/man1/xzmore.1.gz (of link group lzma) doesn't exist
+update-alternatives: warning: skip creation of /usr/share/man/man1/lzless.1.gz because associated file /usr/share/man/man1/xzless.1.gz (of link group lzma) doesn't exist
+update-alternatives: warning: skip creation of /usr/share/man/man1/lzdiff.1.gz because associated file /usr/share/man/man1/xzdiff.1.gz (of link group lzma) doesn't exist
+update-alternatives: warning: skip creation of /usr/share/man/man1/lzcmp.1.gz because associated file /usr/share/man/man1/xzcmp.1.gz (of link group lzma) doesn't exist
+update-alternatives: warning: skip creation of /usr/share/man/man1/lzgrep.1.gz because associated file /usr/share/man/man1/xzgrep.1.gz (of link group lzma) doesn't exist
+update-alternatives: warning: skip creation of /usr/share/man/man1/lzegrep.1.gz because associated file /usr/share/man/man1/xzegrep.1.gz (of link group lzma) doesn't exist
+update-alternatives: warning: skip creation of /usr/share/man/man1/lzfgrep.1.gz because associated file /usr/share/man/man1/xzfgrep.1.gz (of link group lzma) doesn't exist
+Setting up libquadmath0:amd64 (14.2.0-19) ...
+Setting up libp11-kit0:amd64 (0.25.5-3) ...
+Setting up libunistring5:amd64 (1.3-2) ...
+Setting up libmpc3:amd64 (1.3.1-1+b3) ...
+Setting up libatomic1:amd64 (14.2.0-19) ...
+Setting up patch (2.8-2) ...
+Setting up libk5crypto3:amd64 (1.21.3-5+deb13u1) ...
+Setting up libsasl2-2:amd64 (2.1.28+dfsg1-9) ...
+Setting up libnghttp3-9:amd64 (1.8.0-1) ...
+Setting up libubsan1:amd64 (14.2.0-19) ...
+Setting up perl-modules-5.40 (5.40.1-6) ...
+Setting up libhwasan0:amd64 (14.2.0-19) ...
+Setting up libcrypt-dev:amd64 (1:4.4.38-1) ...
+Setting up libasan8:amd64 (14.2.0-19) ...
+Setting up libtasn1-6:amd64 (4.20.0-2+deb13u1) ...
+Setting up libkrb5-3:amd64 (1.21.3-5+deb13u1) ...
+Setting up libssh2-1t64:amd64 (1.11.1-1+deb13u1) ...
+Setting up libtsan2:amd64 (14.2.0-19) ...
+Setting up libbinutils:amd64 (2.44-3) ...
+Setting up libisl23:amd64 (0.27-1) ...
+Setting up libc-dev-bin (2.41-12+deb13u3) ...
+Setting up libcc1-0:amd64 (14.2.0-19) ...
+Setting up libldap2:amd64 (2.6.10+dfsg-1) ...
+Setting up libonig5:amd64 (6.9.9-1+b1) ...
+Setting up liblsan0:amd64 (14.2.0-19) ...
+Setting up libitm1:amd64 (14.2.0-19) ...
+Setting up libctf0:amd64 (2.44-3) ...
+Setting up libjq1:amd64 (1.7.1-6+deb13u3) ...
+Setting up libidn2-0:amd64 (2.3.8-2) ...
+Setting up libperl5.40:amd64 (5.40.1-6) ...
+Setting up perl (5.40.1-6) ...
+Setting up libgprofng0:amd64 (2.44-3) ...
+Setting up libgssapi-krb5-2:amd64 (1.21.3-5+deb13u1) ...
+Setting up cpp-14-x86-64-linux-gnu (14.2.0-19) ...
+Setting up libdpkg-perl (1.22.22) ...
+Setting up cpp-14 (14.2.0-19) ...
+Setting up jq (1.7.1-6+deb13u3) ...
+Setting up libc6-dev:amd64 (2.41-12+deb13u3) ...
+Setting up libgcc-14-dev:amd64 (14.2.0-19) ...
+Setting up libstdc++-14-dev:amd64 (14.2.0-19) ...
+Setting up binutils-x86-64-linux-gnu (2.44-3) ...
+Setting up cpp-x86-64-linux-gnu (4:14.2.0-1) ...
+Setting up libgnutls30t64:amd64 (3.8.9-3+deb13u4) ...
+Setting up libpsl5t64:amd64 (0.21.2-1.1+b1) ...
+Setting up binutils (2.44-3) ...
+Setting up dpkg-dev (1.22.22) ...
+Setting up librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2+b5) ...
+Setting up cpp (4:14.2.0-1) ...
+Setting up gcc-14-x86-64-linux-gnu (14.2.0-19) ...
+Setting up gcc-x86-64-linux-gnu (4:14.2.0-1) ...
+Setting up libcurl4t64:amd64 (8.14.1-2+deb13u4) ...
+Setting up gcc-14 (14.2.0-19) ...
+Setting up g++-14-x86-64-linux-gnu (14.2.0-19) ...
+Setting up g++-x86-64-linux-gnu (4:14.2.0-1) ...
+Setting up curl (8.14.1-2+deb13u4) ...
+Setting up g++-14 (14.2.0-19) ...
+Setting up gcc (4:14.2.0-1) ...
+Setting up g++ (4:14.2.0-1) ...
+update-alternatives: using /usr/bin/g++ to provide /usr/bin/c++ (c++) in auto mode
+Setting up build-essential (12.12) ...
+Processing triggers for libc-bin (2.41-12+deb13u3) ...
+Collecting aiperf==0.10.0
+  Downloading aiperf-0.10.0-py3-none-any.whl.metadata (20 kB)
+Collecting aiofiles~=24.1.0 (from aiperf==0.10.0)
+  Downloading aiofiles-24.1.0-py3-none-any.whl.metadata (10 kB)
+Collecting aiohttp~=3.13.3 (from aiperf==0.10.0)
+  Downloading aiohttp-3.13.5-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (8.1 kB)
+Collecting crick~=0.0.8 (from aiperf==0.10.0)
+  Downloading crick-0.0.8-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (1.1 kB)
+Collecting cyclopts<5,>=4 (from aiperf==0.10.0)
+  Downloading cyclopts-4.22.5-py3-none-any.whl.metadata (12 kB)
+Collecting dash-bootstrap-components~=2.0.0 (from aiperf==0.10.0)
+  Downloading dash_bootstrap_components-2.0.4-py3-none-any.whl.metadata (18 kB)
+Collecting dash~=3.1.0 (from aiperf==0.10.0)
+  Downloading dash-3.1.1-py3-none-any.whl.metadata (10 kB)
+Collecting datasets>=3.0 (from aiperf==0.10.0)
+  Downloading datasets-5.0.1-py3-none-any.whl.metadata (23 kB)
+Collecting fastapi<1,>=0.115 (from aiperf==0.10.0)
+  Downloading fastapi-0.141.1-py3-none-any.whl.metadata (27 kB)
+Collecting ffmpeg-python~=0.2.0 (from aiperf==0.10.0)
+  Downloading ffmpeg_python-0.2.0-py3-none-any.whl.metadata (1.7 kB)
+Collecting huggingface-hub<2.0,>=0.34.0 (from aiperf==0.10.0)
+  Downloading huggingface_hub-1.27.0-py3-none-any.whl.metadata (16 kB)
+Collecting jinja2~=3.1.5 (from aiperf==0.10.0)
+  Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+Collecting jmespath~=1.0.1 (from aiperf==0.10.0)
+  Downloading jmespath-1.0.1-py3-none-any.whl.metadata (7.6 kB)
+Collecting kaleido~=1.2.0 (from aiperf==0.10.0)
+  Downloading kaleido-1.2.0-py3-none-any.whl.metadata (5.6 kB)
+Collecting matplotlib>=3.10.0 (from aiperf==0.10.0)
+  Downloading matplotlib-3.11.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (80 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 80.3/80.3 kB 103.3 MB/s eta 0:00:00
+Collecting msgspec<1.0.0,>=0.19.0 (from aiperf==0.10.0)
+  Downloading msgspec-0.21.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (5.8 kB)
+Collecting numpy<3,>=1.26.4 (from aiperf==0.10.0)
+  Downloading numpy-2.4.6-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (6.6 kB)
+Collecting nvidia-ml-py (from aiperf==0.10.0)
+  Downloading nvidia_ml_py-13.610.43-py3-none-any.whl.metadata (9.7 kB)
+Collecting optuna>=3.6 (from aiperf==0.10.0)
+  Downloading optuna-4.9.0-py3-none-any.whl.metadata (15 kB)
+Collecting orjson~=3.11.7 (from aiperf==0.10.0)
+  Downloading orjson-3.11.9-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (41 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 42.0/42.0 kB 329.5 MB/s eta 0:00:00
+Collecting pandas~=2.3.3 (from aiperf==0.10.0)
+  Downloading pandas-2.3.3-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (91 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 91.2/91.2 kB 383.3 MB/s eta 0:00:00
+Collecting pillow~=12.2.0 (from aiperf==0.10.0)
+  Downloading pillow-12.2.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (8.8 kB)
+Collecting plotly~=6.4.0 (from aiperf==0.10.0)
+  Downloading plotly-6.4.0-py3-none-any.whl.metadata (8.5 kB)
+Collecting prometheus-client~=0.23.1 (from aiperf==0.10.0)
+  Downloading prometheus_client-0.23.1-py3-none-any.whl.metadata (1.9 kB)
+Collecting protobuf>=4 (from aiperf==0.10.0)
+  Downloading protobuf-7.35.1-cp310-abi3-manylinux2014_x86_64.whl.metadata (595 bytes)
+Collecting psutil~=7.0.0 (from aiperf==0.10.0)
+  Downloading psutil-7.0.0-cp36-abi3-manylinux_2_12_x86_64.manylinux2010_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (22 kB)
+Collecting pyarrow>=18.0.0 (from aiperf==0.10.0)
+  Downloading pyarrow-25.0.1-cp311-cp311-manylinux_2_28_x86_64.whl.metadata (3.0 kB)
+Collecting pydantic-settings<3.0.0,>=2.10.0 (from aiperf==0.10.0)
+  Downloading pydantic_settings-2.15.0-py3-none-any.whl.metadata (3.9 kB)
+Collecting pydantic<3.0.0,>=2.10.0 (from aiperf==0.10.0)
+  Downloading pydantic-2.13.4-py3-none-any.whl.metadata (109 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 109.4/109.4 kB 441.8 MB/s eta 0:00:00
+Collecting pyzmq~=26.4.0 (from aiperf==0.10.0)
+  Downloading pyzmq-26.4.0-cp311-cp311-manylinux_2_28_x86_64.whl.metadata (6.0 kB)
+Collecting rich~=14.1.0 (from aiperf==0.10.0)
+  Downloading rich-14.1.0-py3-none-any.whl.metadata (18 kB)
+Collecting ruamel-yaml~=0.18.12 (from aiperf==0.10.0)
+  Downloading ruamel_yaml-0.18.17-py3-none-any.whl.metadata (27 kB)
+Collecting scipy>=1.13.0 (from aiperf==0.10.0)
+  Downloading scipy-1.17.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 62.1/62.1 kB 395.0 MB/s eta 0:00:00
+Collecting seaborn~=0.13.2 (from aiperf==0.10.0)
+  Downloading seaborn-0.13.2-py3-none-any.whl.metadata (5.4 kB)
+Collecting sentencepiece>=0.2.0 (from aiperf==0.10.0)
+  Downloading sentencepiece-0.2.2-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (33 kB)
+Collecting setproctitle~=1.3.6 (from aiperf==0.10.0)
+  Downloading setproctitle-1.3.7-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (10 kB)
+Collecting soundfile~=0.13.1 (from aiperf==0.10.0)
+  Downloading soundfile-0.13.1-py2.py3-none-manylinux_2_28_x86_64.whl.metadata (16 kB)
+Collecting starlette-compress>=1.0.1 (from aiperf==0.10.0)
+  Downloading starlette_compress-1.8.0-py3-none-any.whl.metadata (5.9 kB)
+Collecting textual~=5.3.0 (from aiperf==0.10.0)
+  Downloading textual-5.3.0-py3-none-any.whl.metadata (9.1 kB)
+Collecting tiktoken<1,>=0.7.0 (from aiperf==0.10.0)
+  Downloading tiktoken-0.13.0-cp311-cp311-manylinux_2_28_x86_64.whl.metadata (6.7 kB)
+Collecting tqdm>=4.67.1 (from aiperf==0.10.0)
+  Downloading tqdm-4.70.0-py3-none-any.whl.metadata (57 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 57.3/57.3 kB 398.9 MB/s eta 0:00:00
+Collecting transformers>=4.56.0 (from aiperf==0.10.0)
+  Downloading transformers-5.15.0-py3-none-any.whl.metadata (32 kB)
+Collecting uvicorn<1,>=0.34 (from uvicorn[standard]<1,>=0.34->aiperf==0.10.0)
+  Downloading uvicorn-0.52.1-py3-none-any.whl.metadata (6.6 kB)
+Collecting uvloop>=0.22.1 (from aiperf==0.10.0)
+  Downloading uvloop-0.22.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (4.9 kB)
+Collecting zstandard>=0.25.0 (from aiperf==0.10.0)
+  Downloading zstandard-0.25.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (3.3 kB)
+Collecting aiohappyeyeballs>=2.5.0 (from aiohttp~=3.13.3->aiperf==0.10.0)
+  Downloading aiohappyeyeballs-2.7.1-py3-none-any.whl.metadata (5.9 kB)
+Collecting aiosignal>=1.4.0 (from aiohttp~=3.13.3->aiperf==0.10.0)
+  Downloading aiosignal-1.4.0-py3-none-any.whl.metadata (3.7 kB)
+Collecting attrs>=17.3.0 (from aiohttp~=3.13.3->aiperf==0.10.0)
+  Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+Collecting frozenlist>=1.1.1 (from aiohttp~=3.13.3->aiperf==0.10.0)
+  Downloading frozenlist-1.8.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (20 kB)
+Collecting multidict<7.0,>=4.5 (from aiohttp~=3.13.3->aiperf==0.10.0)
+  Downloading multidict-6.7.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (5.3 kB)
+Collecting propcache>=0.2.0 (from aiohttp~=3.13.3->aiperf==0.10.0)
+  Downloading propcache-0.5.2-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (16 kB)
+Collecting yarl<2.0,>=1.17.0 (from aiohttp~=3.13.3->aiperf==0.10.0)
+  Downloading yarl-1.24.5-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (103 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 104.0/104.0 kB 414.7 MB/s eta 0:00:00
+Collecting docstring-parser<4.0,>=0.15 (from cyclopts<5,>=4->aiperf==0.10.0)
+  Downloading docstring_parser-0.18.0-py3-none-any.whl.metadata (3.5 kB)
+Collecting rich-rst<3.0.0,>=1.3.1 (from cyclopts<5,>=4->aiperf==0.10.0)
+  Downloading rich_rst-2.1.0-py3-none-any.whl.metadata (4.7 kB)
+Collecting Flask<3.2,>=1.0.4 (from dash~=3.1.0->aiperf==0.10.0)
+  Downloading flask-3.1.3-py3-none-any.whl.metadata (3.2 kB)
+Collecting Werkzeug<3.2 (from dash~=3.1.0->aiperf==0.10.0)
+  Downloading werkzeug-3.1.8-py3-none-any.whl.metadata (4.0 kB)
+Collecting importlib-metadata (from dash~=3.1.0->aiperf==0.10.0)
+  Downloading importlib_metadata-9.0.0-py3-none-any.whl.metadata (4.5 kB)
+Collecting typing-extensions>=4.1.1 (from dash~=3.1.0->aiperf==0.10.0)
+  Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting requests (from dash~=3.1.0->aiperf==0.10.0)
+  Downloading requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+Collecting retrying (from dash~=3.1.0->aiperf==0.10.0)
+  Downloading retrying-1.4.2-py3-none-any.whl.metadata (5.5 kB)
+Collecting nest-asyncio (from dash~=3.1.0->aiperf==0.10.0)
+  Downloading nest_asyncio-1.6.0-py3-none-any.whl.metadata (2.8 kB)
+Requirement already satisfied: setuptools in /usr/local/lib/python3.11/site-packages (from dash~=3.1.0->aiperf==0.10.0) (79.0.1)
+Collecting filelock (from datasets>=3.0->aiperf==0.10.0)
+  Downloading filelock-3.32.2-py3-none-any.whl.metadata (2.0 kB)
+Collecting dill<0.4.2,>=0.3.0 (from datasets>=3.0->aiperf==0.10.0)
+  Downloading dill-0.4.1-py3-none-any.whl.metadata (10 kB)
+Collecting httpx<1.0.0 (from datasets>=3.0->aiperf==0.10.0)
+  Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+Collecting xxhash (from datasets>=3.0->aiperf==0.10.0)
+  Downloading xxhash-4.0.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (17 kB)
+Collecting multiprocess<0.70.20 (from datasets>=3.0->aiperf==0.10.0)
+  Downloading multiprocess-0.70.19-py311-none-any.whl.metadata (7.5 kB)
+Collecting fsspec<=2026.6.0,>=2023.1.0 (from fsspec[http]<=2026.6.0,>=2023.1.0->datasets>=3.0->aiperf==0.10.0)
+  Downloading fsspec-2026.6.0-py3-none-any.whl.metadata (10 kB)
+Requirement already satisfied: packaging in /usr/local/lib/python3.11/site-packages (from datasets>=3.0->aiperf==0.10.0) (26.3)
+Collecting pyyaml>=5.1 (from datasets>=3.0->aiperf==0.10.0)
+  Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+Collecting starlette>=0.46.0 (from fastapi<1,>=0.115->aiperf==0.10.0)
+  Downloading starlette-1.6.0-py3-none-any.whl.metadata (6.4 kB)
+Collecting typing-inspection>=0.4.2 (from fastapi<1,>=0.115->aiperf==0.10.0)
+  Downloading typing_inspection-0.4.4-py3-none-any.whl.metadata (2.6 kB)
+Collecting annotated-doc>=0.0.2 (from fastapi<1,>=0.115->aiperf==0.10.0)
+  Downloading annotated_doc-0.0.5-py3-none-any.whl.metadata (6.5 kB)
+Collecting future (from ffmpeg-python~=0.2.0->aiperf==0.10.0)
+  Downloading future-1.0.0-py3-none-any.whl.metadata (4.0 kB)
+Collecting click<9.0.0,>=8.4.2 (from huggingface-hub<2.0,>=0.34.0->aiperf==0.10.0)
+  Downloading click-8.4.2-py3-none-any.whl.metadata (2.6 kB)
+Collecting hf-xet<2.0.0,>=1.5.2 (from huggingface-hub<2.0,>=0.34.0->aiperf==0.10.0)
+  Downloading hf_xet-1.6.0-cp38-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (4.9 kB)
+Collecting MarkupSafe>=2.0 (from jinja2~=3.1.5->aiperf==0.10.0)
+  Downloading markupsafe-3.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.7 kB)
+Collecting choreographer>=1.1.1 (from kaleido~=1.2.0->aiperf==0.10.0)
+  Downloading choreographer-1.3.0-py3-none-any.whl.metadata (6.9 kB)
+Collecting logistro>=1.0.8 (from kaleido~=1.2.0->aiperf==0.10.0)
+  Downloading logistro-2.0.1-py3-none-any.whl.metadata (3.9 kB)
+Collecting pytest-timeout>=2.4.0 (from kaleido~=1.2.0->aiperf==0.10.0)
+  Downloading pytest_timeout-2.4.0-py3-none-any.whl.metadata (20 kB)
+Collecting contourpy>=1.0.1 (from matplotlib>=3.10.0->aiperf==0.10.0)
+  Downloading contourpy-1.3.3-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (5.5 kB)
+Collecting cycler>=0.10 (from matplotlib>=3.10.0->aiperf==0.10.0)
+  Downloading cycler-0.12.1-py3-none-any.whl.metadata (3.8 kB)
+Collecting fonttools>=4.28.2 (from matplotlib>=3.10.0->aiperf==0.10.0)
+  Downloading fonttools-4.63.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (118 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 118.7/118.7 kB 428.9 MB/s eta 0:00:00
+Collecting kiwisolver>=1.3.1 (from matplotlib>=3.10.0->aiperf==0.10.0)
+  Downloading kiwisolver-1.5.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (5.1 kB)
+Collecting pyparsing>=3 (from matplotlib>=3.10.0->aiperf==0.10.0)
+  Downloading pyparsing-3.3.2-py3-none-any.whl.metadata (5.8 kB)
+Collecting python-dateutil>=2.7 (from matplotlib>=3.10.0->aiperf==0.10.0)
+  Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+Collecting alembic>=1.5.0 (from optuna>=3.6->aiperf==0.10.0)
+  Downloading alembic-1.19.1-py3-none-any.whl.metadata (7.3 kB)
+Collecting colorlog (from optuna>=3.6->aiperf==0.10.0)
+  Downloading colorlog-6.12.0-py3-none-any.whl.metadata (11 kB)
+Collecting sqlalchemy>=1.4.2 (from optuna>=3.6->aiperf==0.10.0)
+  Downloading sqlalchemy-2.0.52-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (9.6 kB)
+Collecting pytz>=2020.1 (from pandas~=2.3.3->aiperf==0.10.0)
+  Downloading pytz-2026.3.post1-py2.py3-none-any.whl.metadata (22 kB)
+Collecting tzdata>=2022.7 (from pandas~=2.3.3->aiperf==0.10.0)
+  Downloading tzdata-2026.3-py2.py3-none-any.whl.metadata (1.4 kB)
+Collecting narwhals>=1.15.1 (from plotly~=6.4.0->aiperf==0.10.0)
+  Downloading narwhals-2.24.0-py3-none-any.whl.metadata (15 kB)
+Collecting annotated-types>=0.6.0 (from pydantic<3.0.0,>=2.10.0->aiperf==0.10.0)
+  Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+Collecting pydantic-core==2.46.4 (from pydantic<3.0.0,>=2.10.0->aiperf==0.10.0)
+  Downloading pydantic_core-2.46.4-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.6 kB)
+Collecting python-dotenv>=0.21.0 (from pydantic-settings<3.0.0,>=2.10.0->aiperf==0.10.0)
+  Downloading python_dotenv-1.2.2-py3-none-any.whl.metadata (27 kB)
+Collecting markdown-it-py>=2.2.0 (from rich~=14.1.0->aiperf==0.10.0)
+  Downloading markdown_it_py-4.2.0-py3-none-any.whl.metadata (7.4 kB)
+Collecting pygments<3.0.0,>=2.13.0 (from rich~=14.1.0->aiperf==0.10.0)
+  Downloading pygments-2.20.0-py3-none-any.whl.metadata (2.5 kB)
+Collecting ruamel.yaml.clib>=0.2.15 (from ruamel-yaml~=0.18.12->aiperf==0.10.0)
+  Downloading ruamel_yaml_clib-0.2.15-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (3.5 kB)
+Collecting cffi>=1.0 (from soundfile~=0.13.1->aiperf==0.10.0)
+  Downloading cffi-2.1.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.5 kB)
+Collecting brotli>=1 (from starlette-compress>=1.0.1->aiperf==0.10.0)
+  Downloading brotli-1.2.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (6.1 kB)
+Collecting platformdirs<5,>=3.6.0 (from textual~=5.3.0->aiperf==0.10.0)
+  Downloading platformdirs-4.11.2-py3-none-any.whl.metadata (5.5 kB)
+Collecting regex (from tiktoken<1,>=0.7.0->aiperf==0.10.0)
+  Downloading regex-2026.7.19-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (40 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 40.5/40.5 kB 352.0 MB/s eta 0:00:00
+Collecting tokenizers<=0.23.0,>=0.22.0 (from transformers>=4.56.0->aiperf==0.10.0)
+  Downloading tokenizers-0.22.2-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (7.3 kB)
+Collecting typer (from transformers>=4.56.0->aiperf==0.10.0)
+  Downloading typer-0.27.1-py3-none-any.whl.metadata (16 kB)
+Collecting safetensors>=0.8.0 (from transformers>=4.56.0->aiperf==0.10.0)
+  Downloading safetensors-0.8.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.2 kB)
+Collecting h11>=0.8 (from uvicorn<1,>=0.34->uvicorn[standard]<1,>=0.34->aiperf==0.10.0)
+  Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+Collecting httptools>=0.8.0 (from uvicorn[standard]<1,>=0.34->aiperf==0.10.0)
+  Downloading httptools-0.8.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (3.5 kB)
+Collecting watchfiles>=0.20 (from uvicorn[standard]<1,>=0.34->aiperf==0.10.0)
+  Downloading watchfiles-1.2.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.9 kB)
+Collecting websockets>=13.0 (from uvicorn[standard]<1,>=0.34->aiperf==0.10.0)
+  Downloading websockets-17.0.1-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (6.3 kB)
+Collecting Mako (from alembic>=1.5.0->optuna>=3.6->aiperf==0.10.0)
+  Downloading mako-1.4.1-py3-none-any.whl.metadata (2.9 kB)
+Collecting pycparser (from cffi>=1.0->soundfile~=0.13.1->aiperf==0.10.0)
+  Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+Collecting simplejson>=3.19.3 (from choreographer>=1.1.1->kaleido~=1.2.0->aiperf==0.10.0)
+  Downloading simplejson-4.1.1-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (3.8 kB)
+Collecting blinker>=1.9.0 (from Flask<3.2,>=1.0.4->dash~=3.1.0->aiperf==0.10.0)
+  Downloading blinker-1.9.0-py3-none-any.whl.metadata (1.6 kB)
+Collecting itsdangerous>=2.2.0 (from Flask<3.2,>=1.0.4->dash~=3.1.0->aiperf==0.10.0)
+  Downloading itsdangerous-2.2.0-py3-none-any.whl.metadata (1.9 kB)
+Collecting anyio (from httpx<1.0.0->datasets>=3.0->aiperf==0.10.0)
+  Downloading anyio-4.14.2-py3-none-any.whl.metadata (4.6 kB)
+Collecting certifi (from httpx<1.0.0->datasets>=3.0->aiperf==0.10.0)
+  Downloading certifi-2026.7.22-py3-none-any.whl.metadata (2.5 kB)
+Collecting httpcore==1.* (from httpx<1.0.0->datasets>=3.0->aiperf==0.10.0)
+  Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+Collecting idna (from httpx<1.0.0->datasets>=3.0->aiperf==0.10.0)
+  Downloading idna-3.18-py3-none-any.whl.metadata (6.1 kB)
+Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich~=14.1.0->aiperf==0.10.0)
+  Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+Collecting linkify-it-py<3,>=1 (from markdown-it-py[linkify,plugins]>=2.1.0->textual~=5.3.0->aiperf==0.10.0)
+  Downloading linkify_it_py-2.1.0-py3-none-any.whl.metadata (8.5 kB)
+Collecting mdit-py-plugins>=0.5.0 (from markdown-it-py[linkify,plugins]>=2.1.0->textual~=5.3.0->aiperf==0.10.0)
+  Downloading mdit_py_plugins-0.6.1-py3-none-any.whl.metadata (2.9 kB)
+Collecting pytest>=7.0.0 (from pytest-timeout>=2.4.0->kaleido~=1.2.0->aiperf==0.10.0)
+  Downloading pytest-9.1.1-py3-none-any.whl.metadata (7.6 kB)
+Collecting six>=1.5 (from python-dateutil>=2.7->matplotlib>=3.10.0->aiperf==0.10.0)
+  Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+Collecting charset_normalizer<4,>=2 (from requests->dash~=3.1.0->aiperf==0.10.0)
+  Downloading charset_normalizer-3.5.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (44 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 44.1/44.1 kB 357.3 MB/s eta 0:00:00
+Collecting urllib3<3,>=1.26 (from requests->dash~=3.1.0->aiperf==0.10.0)
+  Downloading urllib3-2.7.0-py3-none-any.whl.metadata (6.9 kB)
+Collecting greenlet>=1 (from sqlalchemy>=1.4.2->optuna>=3.6->aiperf==0.10.0)
+  Downloading greenlet-3.5.5-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (3.8 kB)
+Collecting zipp>=3.20 (from importlib-metadata->dash~=3.1.0->aiperf==0.10.0)
+  Downloading zipp-4.1.0-py3-none-any.whl.metadata (3.6 kB)
+Collecting shellingham>=1.3.0 (from typer->transformers>=4.56.0->aiperf==0.10.0)
+  Downloading shellingham-1.5.4-py2.py3-none-any.whl.metadata (3.5 kB)
+Collecting uc-micro-py (from linkify-it-py<3,>=1->markdown-it-py[linkify,plugins]>=2.1.0->textual~=5.3.0->aiperf==0.10.0)
+  Downloading uc_micro_py-2.0.0-py3-none-any.whl.metadata (2.2 kB)
+Collecting iniconfig>=1.0.1 (from pytest>=7.0.0->pytest-timeout>=2.4.0->kaleido~=1.2.0->aiperf==0.10.0)
+  Downloading iniconfig-2.3.0-py3-none-any.whl.metadata (2.5 kB)
+Collecting pluggy<2,>=1.5 (from pytest>=7.0.0->pytest-timeout>=2.4.0->kaleido~=1.2.0->aiperf==0.10.0)
+  Downloading pluggy-1.6.0-py3-none-any.whl.metadata (4.8 kB)
+Downloading aiperf-0.10.0-py3-none-any.whl (4.4 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.4/4.4 MB 236.8 MB/s eta 0:00:00
+Downloading aiofiles-24.1.0-py3-none-any.whl (15 kB)
+Downloading aiohttp-3.13.5-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (1.8 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.8/1.8 MB 327.6 MB/s eta 0:00:00
+Downloading crick-0.0.8-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.8 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.8/1.8 MB 478.4 MB/s eta 0:00:00
+Downloading cyclopts-4.22.5-py3-none-any.whl (234 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 234.6/234.6 kB 453.8 MB/s eta 0:00:00
+Downloading dash-3.1.1-py3-none-any.whl (7.9 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 7.9/7.9 MB 221.7 MB/s eta 0:00:00
+Downloading dash_bootstrap_components-2.0.4-py3-none-any.whl (204 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 204.0/204.0 kB 460.9 MB/s eta 0:00:00
+Downloading datasets-5.0.1-py3-none-any.whl (559 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 559.1/559.1 kB 458.6 MB/s eta 0:00:00
+Downloading fastapi-0.141.1-py3-none-any.whl (131 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 132.0/132.0 kB 420.4 MB/s eta 0:00:00
+Downloading ffmpeg_python-0.2.0-py3-none-any.whl (25 kB)
+Downloading huggingface_hub-1.27.0-py3-none-any.whl (784 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 784.9/784.9 kB 452.1 MB/s eta 0:00:00
+Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 134.9/134.9 kB 432.7 MB/s eta 0:00:00
+Downloading jmespath-1.0.1-py3-none-any.whl (20 kB)
+Downloading kaleido-1.2.0-py3-none-any.whl (68 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 69.0/69.0 kB 388.9 MB/s eta 0:00:00
+Downloading matplotlib-3.11.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (10.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.0/10.0 MB 301.3 MB/s eta 0:00:00
+Downloading msgspec-0.21.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (219 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 219.9/219.9 kB 457.5 MB/s eta 0:00:00
+Downloading numpy-2.4.6-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.9 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.9/16.9 MB 473.7 MB/s eta 0:00:00
+Downloading optuna-4.9.0-py3-none-any.whl (425 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 425.6/425.6 kB 467.8 MB/s eta 0:00:00
+Downloading orjson-3.11.9-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (133 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 134.0/134.0 kB 90.2 MB/s eta 0:00:00
+Downloading pandas-2.3.3-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (12.8 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12.8/12.8 MB 308.4 MB/s eta 0:00:00
+Downloading pillow-12.2.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (7.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 7.1/7.1 MB 234.2 MB/s eta 0:00:00
+Downloading plotly-6.4.0-py3-none-any.whl (9.9 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 9.9/9.9 MB 283.8 MB/s eta 0:00:00
+Downloading prometheus_client-0.23.1-py3-none-any.whl (61 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 61.1/61.1 kB 398.4 MB/s eta 0:00:00
+Downloading protobuf-7.35.1-cp310-abi3-manylinux2014_x86_64.whl (327 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 327.1/327.1 kB 455.6 MB/s eta 0:00:00
+Downloading psutil-7.0.0-cp36-abi3-manylinux_2_12_x86_64.manylinux2010_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (277 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 278.0/278.0 kB 449.8 MB/s eta 0:00:00
+Downloading pyarrow-25.0.1-cp311-cp311-manylinux_2_28_x86_64.whl (50.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 50.1/50.1 MB 528.7 MB/s eta 0:00:00
+Downloading pydantic-2.13.4-py3-none-any.whl (472 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 472.3/472.3 kB 472.6 MB/s eta 0:00:00
+Downloading pydantic_core-2.46.4-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 459.4 MB/s eta 0:00:00
+Downloading pydantic_settings-2.15.0-py3-none-any.whl (69 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 69.4/69.4 kB 398.9 MB/s eta 0:00:00
+Downloading pyzmq-26.4.0-cp311-cp311-manylinux_2_28_x86_64.whl (862 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 862.4/862.4 kB 483.8 MB/s eta 0:00:00
+Downloading rich-14.1.0-py3-none-any.whl (243 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 243.4/243.4 kB 231.0 MB/s eta 0:00:00
+Downloading ruamel_yaml-0.18.17-py3-none-any.whl (121 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 121.6/121.6 kB 443.9 MB/s eta 0:00:00
+Downloading scipy-1.17.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (35.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.3/35.3 MB 511.4 MB/s eta 0:00:00
+Downloading seaborn-0.13.2-py3-none-any.whl (294 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 294.9/294.9 kB 187.8 MB/s eta 0:00:00
+Downloading sentencepiece-0.2.2-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (1.4 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.4/1.4 MB 407.2 MB/s eta 0:00:00
+Downloading setproctitle-1.3.7-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (32 kB)
+Downloading soundfile-0.13.1-py2.py3-none-manylinux_2_28_x86_64.whl (1.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 482.6 MB/s eta 0:00:00
+Downloading starlette_compress-1.8.0-py3-none-any.whl (14 kB)
+Downloading textual-5.3.0-py3-none-any.whl (702 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 702.7/702.7 kB 490.8 MB/s eta 0:00:00
+Downloading tiktoken-0.13.0-cp311-cp311-manylinux_2_28_x86_64.whl (1.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.1/1.1 MB 315.4 MB/s eta 0:00:00
+Downloading tqdm-4.70.0-py3-none-any.whl (80 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 80.2/80.2 kB 426.4 MB/s eta 0:00:00
+Downloading transformers-5.15.0-py3-none-any.whl (11.7 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 11.7/11.7 MB 258.7 MB/s eta 0:00:00
+Downloading uvicorn-0.52.1-py3-none-any.whl (79 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 79.9/79.9 kB 401.5 MB/s eta 0:00:00
+Downloading uvloop-0.22.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (3.8 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.8/3.8 MB 450.7 MB/s eta 0:00:00
+Downloading zstandard-0.25.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (5.6 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.6/5.6 MB 452.2 MB/s eta 0:00:00
+Downloading nvidia_ml_py-13.610.43-py3-none-any.whl (53 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 53.2/53.2 kB 370.5 MB/s eta 0:00:00
+Downloading aiohappyeyeballs-2.7.1-py3-none-any.whl (15 kB)
+Downloading aiosignal-1.4.0-py3-none-any.whl (7.5 kB)
+Downloading alembic-1.19.1-py3-none-any.whl (265 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 265.9/265.9 kB 226.9 MB/s eta 0:00:00
+Downloading annotated_doc-0.0.5-py3-none-any.whl (5.3 kB)
+Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
+Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 67.5/67.5 kB 386.2 MB/s eta 0:00:00
+Downloading brotli-1.2.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (1.4 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.4/1.4 MB 489.2 MB/s eta 0:00:00
+Downloading cffi-2.1.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (217 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 217.8/217.8 kB 466.8 MB/s eta 0:00:00
+Downloading choreographer-1.3.0-py3-none-any.whl (52 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 52.6/52.6 kB 369.8 MB/s eta 0:00:00
+Downloading click-8.4.2-py3-none-any.whl (119 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 119.2/119.2 kB 425.7 MB/s eta 0:00:00
+Downloading contourpy-1.3.3-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (355 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 355.2/355.2 kB 200.5 MB/s eta 0:00:00
+Downloading cycler-0.12.1-py3-none-any.whl (8.3 kB)
+Downloading dill-0.4.1-py3-none-any.whl (120 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 120.0/120.0 kB 426.1 MB/s eta 0:00:00
+Downloading docstring_parser-0.18.0-py3-none-any.whl (22 kB)
+Downloading filelock-3.32.2-py3-none-any.whl (98 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 98.8/98.8 kB 407.5 MB/s eta 0:00:00
+Downloading flask-3.1.3-py3-none-any.whl (103 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 103.4/103.4 kB 415.7 MB/s eta 0:00:00
+Downloading fonttools-4.63.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (5.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.1/5.1 MB 314.3 MB/s eta 0:00:00
+Downloading frozenlist-1.8.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (231 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 231.1/231.1 kB 460.0 MB/s eta 0:00:00
+Downloading fsspec-2026.6.0-py3-none-any.whl (203 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 203.9/203.9 kB 455.6 MB/s eta 0:00:00
+Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+Downloading hf_xet-1.6.0-cp38-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (4.5 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.5/4.5 MB 475.5 MB/s eta 0:00:00
+Downloading httptools-0.8.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (464 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 464.7/464.7 kB 471.7 MB/s eta 0:00:00
+Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.5/73.5 kB 382.9 MB/s eta 0:00:00
+Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.8/78.8 kB 410.1 MB/s eta 0:00:00
+Downloading kiwisolver-1.5.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (1.4 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.4/1.4 MB 357.1 MB/s eta 0:00:00
+Downloading logistro-2.0.1-py3-none-any.whl (8.6 kB)
+Downloading markdown_it_py-4.2.0-py3-none-any.whl (91 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 91.7/91.7 kB 427.3 MB/s eta 0:00:00
+Downloading markupsafe-3.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (22 kB)
+Downloading multidict-6.7.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (246 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 246.3/246.3 kB 449.4 MB/s eta 0:00:00
+Downloading multiprocess-0.70.19-py311-none-any.whl (144 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 144.5/144.5 kB 439.6 MB/s eta 0:00:00
+Downloading narwhals-2.24.0-py3-none-any.whl (461 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 461.0/461.0 kB 258.7 MB/s eta 0:00:00
+Downloading platformdirs-4.11.2-py3-none-any.whl (23 kB)
+Downloading propcache-0.5.2-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (58 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 58.9/58.9 kB 398.8 MB/s eta 0:00:00
+Downloading pygments-2.20.0-py3-none-any.whl (1.2 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 488.3 MB/s eta 0:00:00
+Downloading pyparsing-3.3.2-py3-none-any.whl (122 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 122.8/122.8 kB 438.4 MB/s eta 0:00:00
+Downloading pytest_timeout-2.4.0-py3-none-any.whl (14 kB)
+Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 229.9/229.9 kB 455.9 MB/s eta 0:00:00
+Downloading python_dotenv-1.2.2-py3-none-any.whl (22 kB)
+Downloading pytz-2026.3.post1-py2.py3-none-any.whl (508 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 508.3/508.3 kB 470.6 MB/s eta 0:00:00
+Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (806 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 806.6/806.6 kB 485.2 MB/s eta 0:00:00
+Downloading regex-2026.7.19-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (801 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 801.4/801.4 kB 307.9 MB/s eta 0:00:00
+Downloading requests-2.34.2-py3-none-any.whl (73 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.1/73.1 kB 400.6 MB/s eta 0:00:00
+Downloading rich_rst-2.1.0-py3-none-any.whl (272 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 273.0/273.0 kB 312.2 MB/s eta 0:00:00
+Downloading ruamel_yaml_clib-0.2.15-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (777 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 777.6/777.6 kB 357.9 MB/s eta 0:00:00
+Downloading safetensors-0.8.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (516 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 516.0/516.0 kB 195.3 MB/s eta 0:00:00
+Downloading sqlalchemy-2.0.52-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (3.4 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.4/3.4 MB 259.7 MB/s eta 0:00:00
+Downloading starlette-1.6.0-py3-none-any.whl (75 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 76.0/76.0 kB 410.0 MB/s eta 0:00:00
+Downloading tokenizers-0.22.2-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (3.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.3/3.3 MB 370.3 MB/s eta 0:00:00
+Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 45.6/45.6 kB 357.2 MB/s eta 0:00:00
+Downloading typing_inspection-0.4.4-py3-none-any.whl (14 kB)
+Downloading tzdata-2026.3-py2.py3-none-any.whl (348 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 348.2/348.2 kB 460.4 MB/s eta 0:00:00
+Downloading watchfiles-1.2.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (456 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 456.9/456.9 kB 470.9 MB/s eta 0:00:00
+Downloading websockets-17.0.1-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (219 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 219.9/219.9 kB 186.9 MB/s eta 0:00:00
+Downloading werkzeug-3.1.8-py3-none-any.whl (226 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 226.5/226.5 kB 459.0 MB/s eta 0:00:00
+Downloading yarl-1.24.5-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (111 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 111.9/111.9 kB 430.0 MB/s eta 0:00:00
+Downloading colorlog-6.12.0-py3-none-any.whl (12 kB)
+Downloading future-1.0.0-py3-none-any.whl (491 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 491.3/491.3 kB 185.6 MB/s eta 0:00:00
+Downloading importlib_metadata-9.0.0-py3-none-any.whl (27 kB)
+Downloading nest_asyncio-1.6.0-py3-none-any.whl (5.2 kB)
+Downloading retrying-1.4.2-py3-none-any.whl (10 kB)
+Downloading typer-0.27.1-py3-none-any.whl (122 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 122.9/122.9 kB 416.3 MB/s eta 0:00:00
+Downloading xxhash-4.0.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (260 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 260.6/260.6 kB 475.8 MB/s eta 0:00:00
+Downloading anyio-4.14.2-py3-none-any.whl (125 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 125.8/125.8 kB 447.4 MB/s eta 0:00:00
+Downloading blinker-1.9.0-py3-none-any.whl (8.5 kB)
+Downloading certifi-2026.7.22-py3-none-any.whl (136 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 137.0/137.0 kB 444.0 MB/s eta 0:00:00
+Downloading charset_normalizer-3.5.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (261 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 261.8/261.8 kB 472.3 MB/s eta 0:00:00
+Downloading greenlet-3.5.5-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (624 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 624.6/624.6 kB 474.6 MB/s eta 0:00:00
+Downloading idna-3.18-py3-none-any.whl (65 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 65.5/65.5 kB 394.4 MB/s eta 0:00:00
+Downloading itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+Downloading linkify_it_py-2.1.0-py3-none-any.whl (19 kB)
+Downloading mdit_py_plugins-0.6.1-py3-none-any.whl (66 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 66.7/66.7 kB 392.9 MB/s eta 0:00:00
+Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+Downloading pytest-9.1.1-py3-none-any.whl (386 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 386.5/386.5 kB 476.5 MB/s eta 0:00:00
+Downloading shellingham-1.5.4-py2.py3-none-any.whl (9.8 kB)
+Downloading simplejson-4.1.1-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (180 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 180.9/180.9 kB 168.0 MB/s eta 0:00:00
+Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+Downloading urllib3-2.7.0-py3-none-any.whl (131 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 131.1/131.1 kB 434.6 MB/s eta 0:00:00
+Downloading zipp-4.1.0-py3-none-any.whl (10 kB)
+Downloading mako-1.4.1-py3-none-any.whl (80 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 80.0/80.0 kB 418.1 MB/s eta 0:00:00
+Downloading pycparser-3.0-py3-none-any.whl (48 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 48.2/48.2 kB 363.9 MB/s eta 0:00:00
+Downloading iniconfig-2.3.0-py3-none-any.whl (7.5 kB)
+Downloading pluggy-1.6.0-py3-none-any.whl (20 kB)
+Downloading uc_micro_py-2.0.0-py3-none-any.whl (6.4 kB)
+Installing collected packages: pytz, nvidia-ml-py, brotli, zstandard, zipp, xxhash, websockets, uvloop, urllib3, uc-micro-py, tzdata, typing-extensions, tqdm, six, simplejson, shellingham, setproctitle, sentencepiece, safetensors, ruamel.yaml.clib, retrying, regex, pyzmq, pyyaml, python-dotenv, pyparsing, pygments, pycparser, pyarrow, psutil, protobuf, propcache, prometheus-client, pluggy, platformdirs, pillow, orjson, numpy, nest-asyncio, narwhals, multidict, msgspec, mdurl, MarkupSafe, logistro, kiwisolver, jmespath, itsdangerous, iniconfig, idna, httptools, hf-xet, h11, greenlet, future, fsspec, frozenlist, fonttools, filelock, docstring-parser, dill, cycler, crick, colorlog, click, charset_normalizer, certifi, blinker, attrs, annotated-types, annotated-doc, aiohappyeyeballs, aiofiles, yarl, Werkzeug, uvicorn, typing-inspection, sqlalchemy, scipy, ruamel-yaml, requests, python-dateutil, pytest, pydantic-core, plotly, multiprocess, markdown-it-py, Mako, linkify-it-py, jinja2, importlib-metadata, httpcore, ffmpeg-python, contourpy, choreographer, cffi, anyio, aiosignal, watchfiles, tiktoken, starlette, soundfile, rich, pytest-timeout, pydantic, pandas, mdit-py-plugins, matplotlib, httpx, Flask, alembic, aiohttp, typer, starlette-compress, seaborn, rich-rst, pydantic-settings, optuna, kaleido, huggingface-hub, fastapi, dash, tokenizers, textual, datasets, dash-bootstrap-components, cyclopts, transformers, aiperf
+Successfully installed Flask-3.1.3 Mako-1.4.1 MarkupSafe-3.0.3 Werkzeug-3.1.8 aiofiles-24.1.0 aiohappyeyeballs-2.7.1 aiohttp-3.13.5 aiosignal-1.4.0 aiperf-0.10.0 alembic-1.19.1 annotated-doc-0.0.5 annotated-types-0.8.0 anyio-4.14.2 attrs-26.1.0 blinker-1.9.0 brotli-1.2.0 certifi-2026.7.22 cffi-2.1.1 charset_normalizer-3.5.0 choreographer-1.3.0 click-8.4.2 colorlog-6.12.0 contourpy-1.3.3 crick-0.0.8 cycler-0.12.1 cyclopts-4.22.5 dash-3.1.1 dash-bootstrap-components-2.0.4 datasets-5.0.1 dill-0.4.1 docstring-parser-0.18.0 fastapi-0.141.1 ffmpeg-python-0.2.0 filelock-3.32.2 fonttools-4.63.0 frozenlist-1.8.0 fsspec-2026.6.0 future-1.0.0 greenlet-3.5.5 h11-0.16.0 hf-xet-1.6.0 httpcore-1.0.9 httptools-0.8.0 httpx-0.28.1 huggingface-hub-1.27.0 idna-3.18 importlib-metadata-9.0.0 iniconfig-2.3.0 itsdangerous-2.2.0 jinja2-3.1.6 jmespath-1.0.1 kaleido-1.2.0 kiwisolver-1.5.0 linkify-it-py-2.1.0 logistro-2.0.1 markdown-it-py-4.2.0 matplotlib-3.11.1 mdit-py-plugins-0.6.1 mdurl-0.1.2 msgspec-0.21.1 multidict-6.7.1 multiprocess-0.70.19 narwhals-2.24.0 nest-asyncio-1.6.0 numpy-2.4.6 nvidia-ml-py-13.610.43 optuna-4.9.0 orjson-3.11.9 pandas-2.3.3 pillow-12.2.0 platformdirs-4.11.2 plotly-6.4.0 pluggy-1.6.0 prometheus-client-0.23.1 propcache-0.5.2 protobuf-7.35.1 psutil-7.0.0 pyarrow-25.0.1 pycparser-3.0 pydantic-2.13.4 pydantic-core-2.46.4 pydantic-settings-2.15.0 pygments-2.20.0 pyparsing-3.3.2 pytest-9.1.1 pytest-timeout-2.4.0 python-dateutil-2.9.0.post0 python-dotenv-1.2.2 pytz-2026.3.post1 pyyaml-6.0.3 pyzmq-26.4.0 regex-2026.7.19 requests-2.34.2 retrying-1.4.2 rich-14.1.0 rich-rst-2.1.0 ruamel-yaml-0.18.17 ruamel.yaml.clib-0.2.15 safetensors-0.8.0 scipy-1.17.1 seaborn-0.13.2 sentencepiece-0.2.2 setproctitle-1.3.7 shellingham-1.5.4 simplejson-4.1.1 six-1.17.0 soundfile-0.13.1 sqlalchemy-2.0.52 starlette-1.6.0 starlette-compress-1.8.0 textual-5.3.0 tiktoken-0.13.0 tokenizers-0.22.2 tqdm-4.70.0 transformers-5.15.0 typer-0.27.1 typing-extensions-4.16.0 typing-inspection-0.4.4 tzdata-2026.3 uc-micro-py-2.0.0 urllib3-2.7.0 uvicorn-0.52.1 uvloop-0.22.1 watchfiles-1.2.0 websockets-17.0.1 xxhash-4.0.0 yarl-1.24.5 zipp-4.1.0 zstandard-0.25.0
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+
+[notice] A new release of pip is available: 24.0 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+Waiting for Qwen/Qwen3-32B-FP8 at http://qwen3-32b-fp8-vllm-disagg-kv-offload-frontend:8000/v1/models
+AIPERF_TOKENIZER_OK tokens=7
+WARNING: filtered 574 requests that exceed max context 40960
+Starting Mooncake fixed-schedule replay
+Original requests: 12031
+Effective requests: 11457
+Trace SHA256: 32e7c8976c7a0b1536cc6b361faf5c87582e9b17b27566fbccf623d25f53115d
+18:01:13.418 INFO     Starting AIPerf System (_single_run.py:64)
+18:01:13.731 INFO     GPU telemetry disabled via --no-gpu-telemetry (system_controller.py:253)
+18:01:13.740 INFO     Registered Worker Manager (id: 'worker_manager') (system_controller.py:387)
+18:01:13.740 INFO     Registered Dataset Manager (id: 'dataset_manager') (system_controller.py:387)
+18:01:13.765 INFO     Server Metrics: Discovered 1 endpoints: ['http://qwen3-32b-fp8-vllm-disagg-kv-offload-frontend:8000/metrics'] (manager.py:74)
+18:01:13.768 INFO     Telemetry streaming is disabled (set --otel-url and/or --mlflow-tracking-uri to enable) (otel_metrics_results_processor.py:128)
+18:01:13.769 INFO     OTel metrics streamer is disabled and will not be used: Telemetry streaming is disabled (set --otel-url and/or --mlflow-tracking-uri to enable) (records_manager.py:206)
+18:01:13.769 INFO     Record metrics export enabled: /perf-cache/artifacts/exp5-disagg-kv-aware-offload/20260812T180112Z_qwen3-32b-fp8-vllm-disagg-kv-offload-perf/aiperf/profile_export.jsonl (record_export_results_processor.py:58)
+18:01:13.954 INFO     Registered Records Manager (id: 'records_manager') (system_controller.py:387)
+18:01:13.954 INFO     Registered Timing Manager (id: 'timing_manager') (system_controller.py:387)
+18:01:13.955 INFO     Registered Server Metrics Manager (id: 'server_metrics_manager') (system_controller.py:387)
+18:01:13.979 INFO     Registered Record Processor (id: 'record_processor_777f2629') (system_controller.py:387)
+18:01:14.044 INFO     Registered Worker (id: 'worker_b6dc153b') (system_controller.py:387)
+18:01:14.046 INFO     Registered Record Processor (id: 'record_processor_76021cca') (system_controller.py:387)
+18:01:14.047 INFO     Registered Record Processor (id: 'record_processor_a5631f4d') (system_controller.py:387)
+18:01:14.052 INFO     Registered Worker (id: 'worker_94046c84') (system_controller.py:387)
+18:01:14.052 INFO     Registered Record Processor (id: 'record_processor_eab1247a') (system_controller.py:387)
+18:01:14.056 INFO     Registered Record Processor (id: 'record_processor_1bb733cc') (system_controller.py:387)
+18:01:14.058 INFO     Registered Worker (id: 'worker_71fa6fcc') (system_controller.py:387)
+18:01:14.063 INFO     Registered Worker (id: 'worker_e6840a1c') (system_controller.py:387)
+18:01:14.066 INFO     Registered Worker (id: 'worker_fecdd3c0') (system_controller.py:387)
+18:01:14.071 INFO     Registered Worker (id: 'worker_246d817e') (system_controller.py:387)
+18:01:14.071 INFO     Registered Worker (id: 'worker_2642b9d1') (system_controller.py:387)
+18:01:14.074 INFO     Registered Worker (id: 'worker_ff77a8a2') (system_controller.py:387)
+18:01:14.076 INFO     Registered Worker (id: 'worker_79de62f0') (system_controller.py:387)
+18:01:14.079 INFO     Registered Worker (id: 'worker_5f97be89') (system_controller.py:387)
+18:01:14.083 INFO     Registered Record Processor (id: 'record_processor_e0b0a89d') (system_controller.py:387)
+18:01:14.087 INFO     Registered Worker (id: 'worker_6dd65b42') (system_controller.py:387)
+18:01:14.090 INFO     Registered Worker (id: 'worker_2945265e') (system_controller.py:387)
+18:01:14.091 INFO     Registered Worker (id: 'worker_9a8d40c5') (system_controller.py:387)
+18:01:14.130 INFO     Registered Worker (id: 'worker_078fc7cc') (system_controller.py:387)
+18:01:14.141 INFO     Registered Record Processor (id: 'record_processor_920ac827') (system_controller.py:387)
+18:01:14.142 INFO     Registered Record Processor (id: 'record_processor_19c158ed') (system_controller.py:387)
+18:01:14.217 INFO     Registered Worker (id: 'worker_c8a447f8') (system_controller.py:387)
+18:01:14.221 INFO     Registered Worker (id: 'worker_612ced3e') (system_controller.py:387)
+18:01:14.234 INFO     Registered Worker (id: 'worker_68d5e379') (system_controller.py:387)
+18:01:14.234 INFO     Registered Worker (id: 'worker_4f709da2') (system_controller.py:387)
+18:01:14.234 INFO     AIPerf System is CONFIGURING (system_controller.py:276)
+18:01:14.234 INFO     Configuring all services to start profiling (system_controller.py:289)
+18:01:14.234 INFO     Waiting for dataset to be configured before configuring timing (manager.py:122)
+18:01:14.234 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
+18:01:14.234 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
+18:01:14.234 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
+18:01:14.234 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
+18:01:14.235 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
+18:01:14.235 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
+18:01:14.235 INFO     Configuring tokenizer(s) for dataset manager (dataset_manager.py:139)
+18:01:14.235 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
+18:01:14.235 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
+18:01:14.236 INFO     Registered Worker (id: 'worker_b791471f') (system_controller.py:387)
+18:01:14.239 INFO     Registered Worker (id: 'worker_5441998b') (system_controller.py:387)
+18:01:14.241 INFO     Server Metrics: Capturing baseline metrics... (manager.py:156)
+18:01:14.244 INFO     Registered Worker (id: 'worker_81c38cb4') (system_controller.py:387)
+18:01:14.245 INFO     Registered Worker (id: 'worker_82d5f5ab') (system_controller.py:387)
+18:01:14.247 INFO     Registered Worker (id: 'worker_34738c69') (system_controller.py:387)
+18:01:14.250 INFO     Registered Worker (id: 'worker_b1dca6e2') (system_controller.py:387)
+18:01:14.251 INFO     Registered Worker (id: 'worker_66130ed7') (system_controller.py:387)
+18:01:14.253 INFO     Registered Worker (id: 'worker_aa9ed213') (system_controller.py:387)
+18:01:14.258 INFO     Registered Worker (id: 'worker_131ad870') (system_controller.py:387)
+18:01:14.267 INFO     Registered Worker (id: 'worker_e573d41c') (system_controller.py:387)
+18:01:14.272 INFO     Server metrics enabled - 1/1 endpoint(s) reachable. (system_controller.py:527)
+18:01:14.282 INFO     Registered Worker (id: 'worker_c84a02b6') (system_controller.py:387)
+18:01:14.318 INFO     Registered Worker (id: 'worker_f97543be') (system_controller.py:387)
+18:01:14.321 INFO     Registered Worker (id: 'worker_850c1e08') (system_controller.py:387)
+18:01:14.347 INFO     Registered Worker (id: 'worker_381d19df') (system_controller.py:387)
+18:01:15.497 INFO     Tokenizer(s) configured in 1.26 seconds (dataset_manager.py:143)
+18:01:15.498 INFO     Configuring dataset for dataset_manager (dataset_manager.py:149)
+18:01:15.925 INFO     Using explicit dataset format: mooncake_trace (custom.py:60)
+18:01:27.941 INFO     Memory-mapped backing store initialized (streaming to /perf-cache/tmp/aiperf_mmap_f30ca28e6838/dataset.dat) (memory_map_utils.py:141)
+18:01:29.543 INFO     Data file finalized: 11457 conversations, 449.01 MB (memory_map_utils.py:245)
+18:01:29.547 INFO     Index file created: /perf-cache/tmp/aiperf_mmap_f30ca28e6838/index.dat (memory_map_utils.py:252)
+18:01:29.547 INFO     Backing store finalized: client_type=DatasetClientStoreType.MEMORY_MAP data_file_path=PosixPath('/perf-cache/tmp/aiperf_mmap_f30ca28e6838/dataset.dat') index_file_path=PosixPath('/perf-cache/tmp/aiperf_mmap_f30ca28e6838/index.dat') conversation_count=11457 total_size_bytes=470820307 compressed_data_file_path=None compressed_index_file_path=None compressed_size_bytes=0 (dataset_manager.py:479)
+18:01:29.722 INFO     sampling strategy: sequential, unique conversations: 11457, unique turn count: 11457 (dataset_manager.py:497)
+18:01:29.750 INFO     Generating inputs.json file at /perf-cache/artifacts/exp5-disagg-kv-aware-offload/20260812T180112Z_qwen3-32b-fp8-vllm-disagg-kv-offload-perf/aiperf/inputs.json (dataset_manager.py:337)
+18:01:29.862 INFO     Initialized 1 phase(s): ['Profiling'] (phase_orchestrator.py:165)
+18:01:29.871 WARNING  Received command response for service we were not expecting: worker_f97543be. Ignoring. (command_handler_mixin.py:356)
+18:01:29.872 WARNING  Received command response for service we were not expecting: worker_b791471f. Ignoring. (command_handler_mixin.py:356)
+18:01:29.873 WARNING  Received command response for service we were not expecting: worker_66130ed7. Ignoring. (command_handler_mixin.py:356)
+18:01:29.878 WARNING  Received command response for service we were not expecting: worker_5441998b. Ignoring. (command_handler_mixin.py:356)
+18:01:29.878 WARNING  Received command response for service we were not expecting: worker_850c1e08. Ignoring. (command_handler_mixin.py:356)
+18:01:29.941 WARNING  Received command response for service we were not expecting: worker_c84a02b6. Ignoring. (command_handler_mixin.py:356)
+18:01:29.943 WARNING  Received command response for service we were not expecting: worker_131ad870. Ignoring. (command_handler_mixin.py:356)
+18:01:29.944 WARNING  Received command response for service we were not expecting: worker_82d5f5ab. Ignoring. (command_handler_mixin.py:356)
+18:01:29.944 WARNING  Received command response for service we were not expecting: worker_81c38cb4. Ignoring. (command_handler_mixin.py:356)
+18:01:29.945 WARNING  Received command response for service we were not expecting: worker_e573d41c. Ignoring. (command_handler_mixin.py:356)
+18:01:29.998 WARNING  Received command response for service we were not expecting: worker_aa9ed213. Ignoring. (command_handler_mixin.py:356)
+18:01:31.039 INFO     inputs.json file generated in 1.29 seconds (dataset_manager.py:356)
+18:01:31.230 INFO     Dataset client initialized and freed 11457 conversations from memory (dataset_manager.py:185)
+18:01:31.231 INFO     Dataset configured in 15.73 seconds (dataset_manager.py:156)
+18:01:31.231 INFO     All services configured in 17.00 seconds (system_controller.py:300)
+18:01:31.231 INFO     AIPerf System is CONFIGURED (system_controller.py:278)
+18:01:31.232 INFO     Server Metrics: Started 1 collector(s) successfully (manager.py:220)
+18:01:31.234 INFO     All services started profiling successfully (system_controller.py:322)
+18:01:31.235 INFO     AIPerf System is PROFILING (system_controller.py:280)
+18:01:31.271 INFO     Built schedule with 11457 timestamps, zero_ms=0, auto_offset=True (fixed_schedule.py:119)
+18:01:31.272 NOTICE   Phase profiling started | target: 11,457 requests, 11,457 sessions (runner.py:369)
+18:01:31.272 INFO     Credit phase start: profiling (records_manager.py:518)
+Profiling: 0/11,457 |[32m          [0m|   0% [00:00<?]Profiling: 0/11,457 |[32m          [0m|   0% [00:00<?]                                               Profiling: 123/11,457 |[32m          [0m|   1% [00:50<1:16:47]Profiling: 123/11,457 |[32m          [0m|   1% [00:50<1:16:47]Profiling: 240/11,457 |[32m▏         [0m|   2% [01:36<1:14:33]Profiling: 240/11,457 |[32m▏         [0m|   2% [01:36<1:14:33]Profiling: 356/11,457 |[32m▎         [0m|   3% [02:20<1:12:10]Profiling: 356/11,457 |[32m▎         [0m|   3% [02:20<1:12:10]Profiling: 472/11,457 |[32m▍         [0m|   4% [02:54<1:04:28]Profiling: 472/11,457 |[32m▍         [0m|   4% [02:54<1:04:28]Profiling: 591/11,457 |[32m▌         [0m|   5% [03:36<1:03:50]Profiling: 591/11,457 |[32m▌         [0m|   5% [03:36<1:03:50]Profiling: 715/11,457 |[32m▌         [0m|   6% [04:20<1:03:15]Profiling: 715/11,457 |[32m▌         [0m|   6% [04:20<1:03:15]Profiling: 835/11,457 |[32m▋         [0m|   7% [04:58<1:00:25]Profiling: 835/11,457 |[32m▋         [0m|   7% [04:58<1:00:25]Profiling: 954/11,457 |[32m▊         [0m|   8% [05:42<1:01:19]Profiling: 954/11,457 |[32m▊         [0m|   8% [05:42<1:01:19]Profiling: 1,071/11,457 |[32m▉         [0m|   9% [06:32<1:04:45]Profiling: 1,071/11,457 |[32m▉         [0m|   9% [06:32<1:04:45]Profiling: 1,190/11,457 |[32m█         [0m|  10% [07:22<1:06:27]Profiling: 1,190/11,457 |[32m█         [0m|  10% [07:22<1:06:27]Profiling: 1,306/11,457 |[32m█▏        [0m|  11% [08:02<1:03:29]Profiling: 1,306/11,457 |[32m█▏        [0m|  11% [08:02<1:03:29]Profiling: 1,427/11,457 |[32m█▏        [0m|  12% [08:50<1:03:50]Profiling: 1,427/11,457 |[32m█▏        [0m|  12% [08:50<1:03:50]Profiling: 1,550/11,457 |[32m█▎        [0m|  14% [09:38<1:03:29]Profiling: 1,550/11,457 |[32m█▎        [0m|  14% [09:38<1:03:29]Profiling: 1,674/11,457 |[32m█▍        [0m|  15% [10:16<58:46]  Profiling: 1,674/11,457 |[32m█▍        [0m|  15% [10:16<58:46]Profiling: 1,802/11,457 |[32m█▌        [0m|  16% [10:54<54:48]Profiling: 1,802/11,457 |[32m█▌        [0m|  16% [10:54<54:48]Profiling: 1,920/11,457 |[32m█▋        [0m|  17% [11:30<52:29]Profiling: 1,920/11,457 |[32m█▋        [0m|  17% [11:30<52:29]Profiling: 2,037/11,457 |[32m█▊        [0m|  18% [12:10<52:22]Profiling: 2,037/11,457 |[32m█▊        [0m|  18% [12:10<52:22]Profiling: 2,158/11,457 |[32m█▉        [0m|  19% [12:52<52:20]Profiling: 2,158/11,457 |[32m█▉        [0m|  19% [12:52<52:20]Profiling: 2,278/11,457 |[32m█▉        [0m|  20% [13:32<51:27]Profiling: 2,278/11,457 |[32m█▉        [0m|  20% [13:32<51:27]Profiling: 2,394/11,457 |[32m██        [0m|  21% [14:10<50:25]Profiling: 2,394/11,457 |[32m██        [0m|  21% [14:10<50:25]Profiling: 2,514/11,457 |[32m██▏       [0m|  22% [14:54<51:14]Profiling: 2,514/11,457 |[32m██▏       [0m|  22% [14:54<51:14]Profiling: 2,629/11,457 |[32m██▎       [0m|  23% [15:30<49:15]Profiling: 2,629/11,457 |[32m██▎       [0m|  23% [15:30<49:15]Profiling: 2,744/11,457 |[32m██▍       [0m|  24% [16:12<49:55]Profiling: 2,744/11,457 |[32m██▍       [0m|  24% [16:12<49:55]Profiling: 2,864/11,457 |[32m██▍       [0m|  25% [16:52<48:46]Profiling: 2,864/11,457 |[32m██▍       [0m|  25% [16:52<48:46]Profiling: 2,983/11,457 |[32m██▌       [0m|  26% [17:38<50:04]Profiling: 2,983/11,457 |[32m██▌       [0m|  26% [17:38<50:04]Profiling: 3,101/11,457 |[32m██▋       [0m|  27% [18:24<50:50]Profiling: 3,101/11,457 |[32m██▋       [0m|  27% [18:24<50:50]Profiling: 3,221/11,457 |[32m██▊       [0m|  28% [19:00<47:24]Profiling: 3,221/11,457 |[32m██▊       [0m|  28% [19:00<47:24]Profiling: 3,336/11,457 |[32m██▉       [0m|  29% [19:34<44:46]Profiling: 3,336/11,457 |[32m██▉       [0m|  29% [19:34<44:46]Profiling: 3,452/11,457 |[32m███       [0m|  30% [20:14<44:41]Profiling: 3,452/11,457 |[32m███       [0m|  30% [20:14<44:41]Profiling: 3,573/11,457 |[32m███       [0m|  31% [20:50<42:30]Profiling: 3,573/11,457 |[32m███       [0m|  31% [20:50<42:30]Profiling: 3,693/11,457 |[32m███▏      [0m|  32% [21:22<39:37]Profiling: 3,693/11,457 |[32m███▏      [0m|  32% [21:22<39:37]Profiling: 3,811/11,457 |[32m███▎      [0m|  33% [21:58<38:59]Profiling: 3,811/11,457 |[32m███▎      [0m|  33% [21:58<38:59]Profiling: 3,928/11,457 |[32m███▍      [0m|  34% [22:36<39:05]Profiling: 3,928/11,457 |[32m███▍      [0m|  34% [22:36<39:05]Profiling: 4,045/11,457 |[32m███▌      [0m|  35% [23:08<37:05]Profiling: 4,045/11,457 |[32m███▌      [0m|  35% [23:08<37:05]Profiling: 4,166/11,457 |[32m███▋      [0m|  36% [23:48<37:36]Profiling: 4,166/11,457 |[32m███▋      [0m|  36% [23:48<37:36]Profiling: 4,286/11,457 |[32m███▋      [0m|  37% [24:22<36:02]Profiling: 4,286/11,457 |[32m███▋      [0m|  37% [24:22<36:02]Profiling: 4,403/11,457 |[32m███▊      [0m|  38% [25:04<37:27]Profiling: 4,403/11,457 |[32m███▊      [0m|  38% [25:04<37:27]Profiling: 4,519/11,457 |[32m███▉      [0m|  39% [25:34<34:47]Profiling: 4,519/11,457 |[32m███▉      [0m|  39% [25:34<34:47]Profiling: 4,637/11,457 |[32m████      [0m|  40% [26:10<34:20]Profiling: 4,637/11,457 |[32m████      [0m|  40% [26:10<34:20]Profiling: 4,752/11,457 |[32m████▏     [0m|  41% [26:48<34:42]Profiling: 4,752/11,457 |[32m████▏     [0m|  41% [26:48<34:42]Profiling: 4,870/11,457 |[32m████▎     [0m|  43% [27:24<33:54]Profiling: 4,870/11,457 |[32m████▎     [0m|  43% [27:24<33:54]Profiling: 4,990/11,457 |[32m████▎     [0m|  44% [27:58<32:27]Profiling: 4,990/11,457 |[32m████▎     [0m|  44% [27:58<32:27]Profiling: 5,107/11,457 |[32m████▍     [0m|  45% [28:36<32:36]Profiling: 5,107/11,457 |[32m████▍     [0m|  45% [28:36<32:36]Profiling: 5,223/11,457 |[32m████▌     [0m|  46% [29:10<31:33]Profiling: 5,223/11,457 |[32m████▌     [0m|  46% [29:10<31:33]Profiling: 5,340/11,457 |[32m████▋     [0m|  47% [29:46<31:05]Profiling: 5,340/11,457 |[32m████▋     [0m|  47% [29:46<31:05]Profiling: 5,459/11,457 |[32m████▊     [0m|  48% [30:18<29:23]Profiling: 5,459/11,457 |[32m████▊     [0m|  48% [30:18<29:23]Profiling: 5,575/11,457 |[32m████▊     [0m|  49% [30:50<28:17]Profiling: 5,575/11,457 |[32m████▊     [0m|  49% [30:50<28:17]Profiling: 5,692/11,457 |[32m████▉     [0m|  50% [31:28<28:46]Profiling: 5,692/11,457 |[32m████▉     [0m|  50% [31:28<28:46]Profiling: 5,808/11,457 |[32m█████     [0m|  51% [32:04<28:30]Profiling: 5,808/11,457 |[32m█████     [0m|  51% [32:04<28:30]Profiling: 5,927/11,457 |[32m█████▏    [0m|  52% [32:46<29:18]Profiling: 5,927/11,457 |[32m█████▏    [0m|  52% [32:46<29:18]Profiling: 6,046/11,457 |[32m█████▎    [0m|  53% [33:20<27:47]Profiling: 6,046/11,457 |[32m█████▎    [0m|  53% [33:20<27:47]Profiling: 6,164/11,457 |[32m█████▍    [0m|  54% [34:00<28:00]Profiling: 6,164/11,457 |[32m█████▍    [0m|  54% [34:00<28:00]Profiling: 6,285/11,457 |[32m█████▍    [0m|  55% [34:30<25:32]Profiling: 6,285/11,457 |[32m█████▍    [0m|  55% [34:30<25:32]Profiling: 6,405/11,457 |[32m█████▌    [0m|  56% [35:04<24:37]Profiling: 6,405/11,457 |[32m█████▌    [0m|  56% [35:04<24:37]Profiling: 6,528/11,457 |[32m█████▋    [0m|  57% [35:40<24:01]Profiling: 6,528/11,457 |[32m█████▋    [0m|  57% [35:40<24:01]Profiling: 6,647/11,457 |[32m█████▊    [0m|  58% [36:18<24:05]Profiling: 6,647/11,457 |[32m█████▊    [0m|  58% [36:18<24:05]Profiling: 6,763/11,457 |[32m█████▉    [0m|  59% [36:50<22:56]Profiling: 6,763/11,457 |[32m█████▉    [0m|  59% [36:50<22:56]Profiling: 6,878/11,457 |[32m██████    [0m|  60% [37:22<22:02]Profiling: 6,878/11,457 |[32m██████    [0m|  60% [37:22<22:02]Profiling: 7,002/11,457 |[32m██████    [0m|  61% [38:02<22:13]Profiling: 7,002/11,457 |[32m██████    [0m|  61% [38:02<22:13]Profiling: 7,119/11,457 |[32m██████▏   [0m|  62% [38:30<20:21]Profiling: 7,119/11,457 |[32m██████▏   [0m|  62% [38:30<20:21]Profiling: 7,235/11,457 |[32m██████▎   [0m|  63% [39:04<20:03]Profiling: 7,235/11,457 |[32m██████▎   [0m|  63% [39:04<20:03]Profiling: 7,359/11,457 |[32m██████▍   [0m|  64% [39:40<19:34]Profiling: 7,359/11,457 |[32m██████▍   [0m|  64% [39:40<19:34]Profiling: 7,477/11,457 |[32m██████▌   [0m|  65% [40:10<18:22]Profiling: 7,477/11,457 |[32m██████▌   [0m|  65% [40:10<18:22]Profiling: 7,596/11,457 |[32m██████▋   [0m|  66% [40:44<17:59]Profiling: 7,596/11,457 |[32m██████▋   [0m|  66% [40:44<17:59]Profiling: 7,716/11,457 |[32m██████▋   [0m|  67% [41:22<18:07]Profiling: 7,716/11,457 |[32m██████▋   [0m|  67% [41:22<18:07]Profiling: 7,837/11,457 |[32m██████▊   [0m|  68% [41:52<16:45]Profiling: 7,837/11,457 |[32m██████▊   [0m|  68% [41:52<16:45]Profiling: 7,954/11,457 |[32m██████▉   [0m|  69% [42:22<15:51]Profiling: 7,954/11,457 |[32m██████▉   [0m|  69% [42:22<15:51]Profiling: 8,069/11,457 |[32m███████   [0m|  70% [43:02<16:35]Profiling: 8,069/11,457 |[32m███████   [0m|  70% [43:02<16:35]Profiling: 8,184/11,457 |[32m███████▏  [0m|  71% [43:40<16:37]Profiling: 8,184/11,457 |[32m███████▏  [0m|  71% [43:40<16:37]Profiling: 8,299/11,457 |[32m███████▏  [0m|  72% [44:06<14:48]Profiling: 8,299/11,457 |[32m███████▏  [0m|  72% [44:06<14:48]Profiling: 8,416/11,457 |[32m███████▎  [0m|  73% [44:40<14:24]Profiling: 8,416/11,457 |[32m███████▎  [0m|  73% [44:40<14:24]Profiling: 8,534/11,457 |[32m███████▍  [0m|  74% [45:16<14:09]Profiling: 8,534/11,457 |[32m███████▍  [0m|  74% [45:16<14:09]Profiling: 8,649/11,457 |[32m███████▌  [0m|  75% [45:48<13:25]Profiling: 8,649/11,457 |[32m███████▌  [0m|  75% [45:48<13:25]Profiling: 8,768/11,457 |[32m███████▋  [0m|  77% [46:20<12:36]Profiling: 8,768/11,457 |[32m███████▋  [0m|  77% [46:20<12:36]Profiling: 8,883/11,457 |[32m███████▊  [0m|  78% [46:58<12:41]Profiling: 8,883/11,457 |[32m███████▊  [0m|  78% [46:58<12:41]Profiling: 9,004/11,457 |[32m███████▊  [0m|  79% [47:26<11:17]Profiling: 9,004/11,457 |[32m███████▊  [0m|  79% [47:26<11:17]Profiling: 9,122/11,457 |[32m███████▉  [0m|  80% [48:04<11:16]Profiling: 9,122/11,457 |[32m███████▉  [0m|  80% [48:04<11:16]Profiling: 9,240/11,457 |[32m████████  [0m|  81% [48:38<10:41]Profiling: 9,240/11,457 |[32m████████  [0m|  81% [48:38<10:41]Profiling: 9,360/11,457 |[32m████████▏ [0m|  82% [49:08<09:41]Profiling: 9,360/11,457 |[32m████████▏ [0m|  82% [49:08<09:41]Profiling: 9,476/11,457 |[32m████████▎ [0m|  83% [49:42<09:18]Profiling: 9,476/11,457 |[32m████████▎ [0m|  83% [49:42<09:18]Profiling: 9,597/11,457 |[32m████████▍ [0m|  84% [50:16<08:44]Profiling: 9,597/11,457 |[32m████████▍ [0m|  84% [50:16<08:44]Profiling: 9,712/11,457 |[32m████████▍ [0m|  85% [50:48<08:09]Profiling: 9,712/11,457 |[32m████████▍ [0m|  85% [50:48<08:09]Profiling: 9,831/11,457 |[32m████████▌ [0m|  86% [51:24<07:47]Profiling: 9,831/11,457 |[32m████████▌ [0m|  86% [51:24<07:47]Profiling: 9,956/11,457 |[32m████████▋ [0m|  87% [51:52<06:41]Profiling: 9,956/11,457 |[32m████████▋ [0m|  87% [51:52<06:41]Profiling: 10,079/11,457 |[32m████████▊ [0m|  88% [52:28<06:19]Profiling: 10,079/11,457 |[32m████████▊ [0m|  88% [52:28<06:19]Profiling: 10,199/11,457 |[32m████████▉ [0m|  89% [53:00<05:43]Profiling: 10,199/11,457 |[32m████████▉ [0m|  89% [53:00<05:43]Profiling: 10,314/11,457 |[32m█████████ [0m|  90% [53:34<05:19]Profiling: 10,314/11,457 |[32m█████████ [0m|  90% [53:34<05:19]Profiling: 10,433/11,457 |[32m█████████ [0m|  91% [54:08<04:48]Profiling: 10,433/11,457 |[32m█████████ [0m|  91% [54:08<04:48]Profiling: 10,553/11,457 |[32m█████████▏[0m|  92% [54:46<04:23]Profiling: 10,553/11,457 |[32m█████████▏[0m|  92% [54:46<04:23]Profiling: 10,670/11,457 |[32m█████████▎[0m|  93% [55:18<03:45]Profiling: 10,670/11,457 |[32m█████████▎[0m|  93% [55:18<03:45]18:57:25.711 WARNING  Event loop for worker_2945265e is taking too long to run. Overhead: 32.18ms (event_loop_monitor.py:89)
+Profiling: 10,787/11,457 |[32m█████████▍[0m|  94% [55:54<03:16]Profiling: 10,787/11,457 |[32m█████████▍[0m|  94% [55:54<03:16]Profiling: 10,903/11,457 |[32m█████████▌[0m|  95% [56:22<02:33]Profiling: 10,903/11,457 |[32m█████████▌[0m|  95% [56:22<02:33]Profiling: 11,020/11,457 |[32m█████████▌[0m|  96% [56:58<02:05]Profiling: 11,020/11,457 |[32m█████████▌[0m|  96% [56:58<02:05]Profiling: 11,140/11,457 |[32m█████████▋[0m|  97% [57:34<01:32]Profiling: 11,140/11,457 |[32m█████████▋[0m|  97% [57:34<01:32]Profiling: 11,256/11,457 |[32m█████████▊[0m|  98% [58:04<00:56]Profiling: 11,256/11,457 |[32m█████████▊[0m|  98% [58:04<00:56]Profiling: 11,371/11,457 |[32m█████████▉[0m|  99% [58:40<00:24]Profiling: 11,371/11,457 |[32m█████████▉[0m|  99% [58:40<00:24]19:00:28.270 NOTICE   Phase profiling sending complete | sent=11,457, completed=11,428, in_flight=29 | sessions: sent=11,457, completed=11,428 (runner.py:608)
+19:00:28.271 INFO     Sent 11,457 requests. Waiting for all to complete... (records_manager.py:534)
+19:00:42.092 NOTICE   Phase profiling complete | completed=11,457, cancelled=0, errors=0 | sessions: completed=11,457, cancelled=0 | elapsed=3550.82s (runner.py:686)
+19:00:42.092 NOTICE   All credits completed (phase_orchestrator.py:180)
+19:00:42.093 INFO     Received CREDIT_PHASE_COMPLETE message, Phase complete: PhaseRecordsStats(phase=CreditPhase.PROFILING, start_ns=1786557691271930674, sent_end_ns=1786561228270118331, requests_end_ns=1786561242092496382, total_expected_requests=11457, expected_duration_sec=None, expected_num_sessions=None, expected_grace_period_sec=None, final_requests_sent=None, final_requests_completed=11457, final_requests_cancelled=0, final_request_errors=0, final_sent_sessions=None, final_completed_sessions=None, final_cancelled_sessions=None, timeout_triggered=False, grace_period_timeout_triggered=False, was_cancelled=False, records_end_ns=None, success_records=11456, error_records=0) (records_manager.py:560)
+19:00:42.093 INFO     Received credits complete from 'timing_manager' (system_controller.py:422)
+19:00:42.093 NOTICE   All requests have completed, please wait for the results to be processed (currently 11,456 of 11,457 records processed)... (records_manager.py:565)
+19:00:42.093 INFO     All credits complete, please wait for the results to be processed... (records_manager.py:589)
+Processing Records: 0/11,457 |[34m          [0m|   0% [00:00<?]19:00:42.099 INFO     Processed 11457 valid requests and 0 errors (11457 total). (records_manager.py:296)
+19:00:42.099 INFO     Received all records, processing now... (records_manager.py:302)
+19:00:42.100 INFO     Server Metrics: Profiling complete, capturing final metrics... (manager.py:250)
+19:00:42.101 INFO     Waiting 2.0s for server metrics flush period... (records_manager.py:352)
+Processing Records: 11,457/11,457 |[34m██████████[0m| 100% [00:00<00:00]Processing Records: 11,457/11,457 |[34m██████████[0m| 100% [00:00<00:00]19:00:44.091 INFO     Processing records results... (records_manager.py:777)
+19:00:44.112 INFO     Waiting for server metrics results... (system_controller.py:779)
+19:00:44.493 INFO     _finalize_and_process_results completed (records_manager.py:359)
+19:00:44.512 INFO     All results received, initiating shutdown (system_controller.py:774)
+19:00:45.125 INFO     Exporting all records (exporter_manager.py:62)
+19:00:45.257 INFO     Exporting console data (exporter_manager.py:134)
+
+
+                                                  NVIDIA AIPerf | LLM Metrics                                                   
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┓
+┃                                        Metric ┃       avg ┃    min ┃       max ┃       p99 ┃       p90 ┃      p50 ┃      std ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━┩
+│                      Time to First Token (ms) │  2,615.67 │  55.74 │ 58,960.15 │ 27,626.71 │  5,207.55 │   931.75 │ 5,315.25 │
+│                     Time to Second Token (ms) │     19.12 │   0.00 │  1,027.98 │    136.57 │     43.98 │    10.94 │    35.90 │
+│               Time to First Output Token (ms) │  2,615.67 │  55.74 │ 58,960.15 │ 27,626.71 │  5,207.55 │   931.75 │ 5,315.25 │
+│                          Request Latency (ms) │  6,375.22 │  63.18 │ 62,966.27 │ 32,843.71 │ 11,560.36 │ 5,128.15 │ 6,054.14 │
+│                      Inter Token Latency (ms) │     11.20 │   0.00 │    281.72 │     16.15 │     12.60 │    10.94 │     3.60 │
+│              Output Token Throughput Per User │     91.36 │   3.55 │    354.43 │    123.29 │    102.38 │    91.45 │    12.15 │
+│                             (tokens/sec/user) │           │        │           │           │           │          │          │
+│ E2E Output Token Throughput (tokens/sec/user) │     60.93 │   0.02 │    136.23 │    102.16 │     91.79 │    67.93 │    27.82 │
+│               Output Sequence Length (tokens) │    338.99 │   1.00 │  2,000.00 │  1,046.32 │    594.00 │   348.00 │   240.72 │
+│                Input Sequence Length (tokens) │  9,284.36 │ 899.00 │ 40,914.00 │ 36,443.00 │ 22,301.60 │ 6,399.00 │ 8,694.18 │
+│          Output Token Throughput (tokens/sec) │  1,093.78 │    N/A │       N/A │       N/A │       N/A │      N/A │      N/A │
+│             Request Throughput (requests/sec) │      3.23 │    N/A │       N/A │       N/A │       N/A │      N/A │      N/A │
+│                        Goodput (requests/sec) │      2.36 │    N/A │       N/A │       N/A │       N/A │      N/A │      N/A │
+│                      Request Count (requests) │ 11,457.00 │    N/A │       N/A │       N/A │       N/A │      N/A │      N/A │
+└───────────────────────────────────────────────┴───────────┴────────┴───────────┴───────────┴───────────┴──────────┴──────────┘
+                                              NVIDIA AIPerf | LLM Metrics: Usage                                               
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┓
+┃                                  Metric ┃            avg ┃    min ┃       max ┃       p99 ┃       p90 ┃      p50 ┃      std ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━┩
+│            Usage Prompt Tokens (tokens) │       9,284.36 │ 899.00 │ 40,914.00 │ 36,443.00 │ 22,301.60 │ 6,399.00 │ 8,694.18 │
+│ Usage Prompt Cache Read Tokens (tokens) │         643.78 │ 512.00 │ 34,304.00 │  4,096.00 │    512.00 │   512.00 │ 1,462.08 │
+│        Usage Completion Tokens (tokens) │         338.99 │   1.00 │  2,000.00 │  1,046.32 │    594.00 │   348.00 │   240.72 │
+│             Usage Total Tokens (tokens) │       9,623.34 │ 903.00 │ 40,946.00 │ 36,740.72 │ 22,703.40 │ 6,742.00 │ 8,712.39 │
+│      Total Usage Prompt Tokens (tokens) │ 106,370,860.00 │    N/A │       N/A │       N/A │       N/A │      N/A │      N/A │
+│    Total Usage Prompt Cache Read Tokens │   7,373,184.00 │    N/A │       N/A │       N/A │       N/A │      N/A │      N/A │
+│                                (tokens) │                │        │           │           │           │          │          │
+│       Overall Usage Prompt Cache Read % │           6.93 │    N/A │       N/A │       N/A │       N/A │      N/A │      N/A │
+│                                     (%) │                │        │           │           │           │          │          │
+│  Total Usage Completion Tokens (tokens) │   3,883,798.00 │    N/A │       N/A │       N/A │       N/A │      N/A │      N/A │
+│       Total Usage Total Tokens (tokens) │ 110,254,658.00 │    N/A │       N/A │       N/A │       N/A │      N/A │      N/A │
+└─────────────────────────────────────────┴────────────────┴────────┴───────────┴───────────┴───────────┴──────────┴──────────┘
+
+CLI Command: aiperf profile --model 'Qwen/Qwen3-32B-FP8' --tokenizer 'Qwen/Qwen3-32B-FP8' --tokenizer-revision 'aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df' --input-file 
+'/perf-cache/traces/conversation_trace.maxctx40960.jsonl' --custom-dataset-type 'mooncake_trace' --fixed-schedule --url 'http://qwen3-32b-fp8-vllm-disagg-kv-offload-frontend:8000' --streaming 
+--extra-inputs 'ignore_eos:true' --use-server-token-count --no-gpu-telemetry --artifact-dir 
+'/perf-cache/artifacts/exp5-disagg-kv-aware-offload/20260812T180112Z_qwen3-32b-fp8-vllm-disagg-kv-offload-perf/aiperf' --goodput 'time_to_first_token:2000 inter_token_latency:25' --ui 'simple'
+Benchmark Duration: 3550.79 sec
+CSV Export: /perf-cache/artifacts/exp5-disagg-kv-aware-offload/20260812T180112Z_qwen3-32b-fp8-vllm-disagg-kv-offload-perf/aiperf/profile_export_aiperf.csv
+JSON Export: /perf-cache/artifacts/exp5-disagg-kv-aware-offload/20260812T180112Z_qwen3-32b-fp8-vllm-disagg-kv-offload-perf/aiperf/profile_export_aiperf.json
+Server Metrics CSV Export: /perf-cache/artifacts/exp5-disagg-kv-aware-offload/20260812T180112Z_qwen3-32b-fp8-vllm-disagg-kv-offload-perf/aiperf/server_metrics_export.csv
+Server Metrics JSON Export: /perf-cache/artifacts/exp5-disagg-kv-aware-offload/20260812T180112Z_qwen3-32b-fp8-vllm-disagg-kv-offload-perf/aiperf/server_metrics_export.json
+Log File: /perf-cache/artifacts/exp5-disagg-kv-aware-offload/20260812T180112Z_qwen3-32b-fp8-vllm-disagg-kv-offload-perf/aiperf/logs/aiperf.log
+
+Run artifacts: /perf-cache/artifacts/exp5-disagg-kv-aware-offload/20260812T180112Z_qwen3-32b-fp8-vllm-disagg-kv-offload-perf

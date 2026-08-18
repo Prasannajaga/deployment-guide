@@ -1,0 +1,373 @@
+11:00:29.493 INFO     Starting AIPerf System (_single_run.py:64)
+11:00:29.799 INFO     Registered Dataset Manager (id: 'dataset_manager') (system_controller.py:387)
+11:00:29.800 INFO     Registered Worker Manager (id: 'worker_manager') (system_controller.py:387)
+11:00:29.818 INFO     GPU telemetry export enabled: /perf-cache/artifacts/exp2-disagg-round-robin/20260812T110028Z_qwen3-32b-fp8-vllm-disagg-perf/aiperf/gpu_telemetry_export.jsonl (jsonl_writer.py:56)
+11:00:29.825 INFO     Server Metrics: Discovered 1 endpoints: ['http://qwen3-32b-fp8-vllm-disagg-frontend:8000/metrics'] (manager.py:74)
+11:00:29.827 INFO     Telemetry streaming is disabled (set --otel-url and/or --mlflow-tracking-uri to enable) (otel_metrics_results_processor.py:128)
+11:00:29.827 INFO     OTel metrics streamer is disabled and will not be used: Telemetry streaming is disabled (set --otel-url and/or --mlflow-tracking-uri to enable) (records_manager.py:206)
+11:00:29.828 INFO     Record metrics export enabled: /perf-cache/artifacts/exp2-disagg-round-robin/20260812T110028Z_qwen3-32b-fp8-vllm-disagg-perf/aiperf/profile_export.jsonl (record_export_results_processor.py:58)
+11:00:30.023 INFO     Registered Gpu Telemetry Manager (id: 'gpu_telemetry_manager') (system_controller.py:387)
+11:00:30.023 INFO     Registered Records Manager (id: 'records_manager') (system_controller.py:387)
+11:00:30.023 INFO     Registered Server Metrics Manager (id: 'server_metrics_manager') (system_controller.py:387)
+11:00:30.023 INFO     Registered Timing Manager (id: 'timing_manager') (system_controller.py:387)
+11:00:30.097 INFO     Registered Record Processor (id: 'record_processor_ffdd44db') (system_controller.py:387)
+11:00:30.100 INFO     Registered Record Processor (id: 'record_processor_4c106557') (system_controller.py:387)
+11:00:30.104 INFO     Registered Record Processor (id: 'record_processor_32a851f1') (system_controller.py:387)
+11:00:30.105 INFO     Registered Record Processor (id: 'record_processor_50ed6939') (system_controller.py:387)
+11:00:30.110 INFO     Registered Record Processor (id: 'record_processor_94776439') (system_controller.py:387)
+11:00:30.111 INFO     Registered Record Processor (id: 'record_processor_6962d606') (system_controller.py:387)
+11:00:30.111 INFO     Registered Record Processor (id: 'record_processor_bab1190f') (system_controller.py:387)
+11:00:30.112 INFO     Registered Worker (id: 'worker_00eaa866') (system_controller.py:387)
+11:00:30.113 INFO     Registered Worker (id: 'worker_f7da38e1') (system_controller.py:387)
+11:00:30.114 INFO     Registered Worker (id: 'worker_43d0c3ab') (system_controller.py:387)
+11:00:30.116 INFO     Registered Worker (id: 'worker_80229a5d') (system_controller.py:387)
+11:00:30.117 INFO     Registered Worker (id: 'worker_7ab46843') (system_controller.py:387)
+11:00:30.119 INFO     Registered Worker (id: 'worker_550e1938') (system_controller.py:387)
+11:00:30.122 INFO     Registered Worker (id: 'worker_131dfdff') (system_controller.py:387)
+11:00:30.122 INFO     Registered Worker (id: 'worker_1c2a9a92') (system_controller.py:387)
+11:00:30.162 INFO     Registered Worker (id: 'worker_f4c4b619') (system_controller.py:387)
+11:00:30.162 INFO     Registered Worker (id: 'worker_25043fe9') (system_controller.py:387)
+11:00:30.162 INFO     Registered Worker (id: 'worker_a6ff3fec') (system_controller.py:387)
+11:00:30.171 INFO     Registered Worker (id: 'worker_0a92a82f') (system_controller.py:387)
+11:00:30.183 INFO     Registered Worker (id: 'worker_cdc25820') (system_controller.py:387)
+11:00:30.265 INFO     Registered Worker (id: 'worker_5531fd5d') (system_controller.py:387)
+11:00:30.266 INFO     Registered Record Processor (id: 'record_processor_cbe43aee') (system_controller.py:387)
+11:00:30.266 INFO     Registered Worker (id: 'worker_ad955dab') (system_controller.py:387)
+11:00:30.269 INFO     Registered Worker (id: 'worker_1782fe77') (system_controller.py:387)
+11:00:30.273 INFO     Registered Worker (id: 'worker_44949a18') (system_controller.py:387)
+11:00:30.279 INFO     Registered Worker (id: 'worker_7c98712e') (system_controller.py:387)
+11:00:30.281 INFO     Registered Worker (id: 'worker_2bdd703b') (system_controller.py:387)
+11:00:30.285 INFO     Registered Worker (id: 'worker_78955372') (system_controller.py:387)
+11:00:30.287 INFO     Registered Worker (id: 'worker_0c9aa212') (system_controller.py:387)
+11:00:30.289 INFO     Registered Worker (id: 'worker_64374572') (system_controller.py:387)
+11:00:30.295 INFO     AIPerf System is CONFIGURING (system_controller.py:276)
+11:00:30.295 INFO     Configuring all services to start profiling (system_controller.py:289)
+11:00:30.295 INFO     Waiting for dataset to be configured before configuring timing (manager.py:122)
+11:00:30.295 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
+11:00:30.295 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
+11:00:30.295 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
+11:00:30.295 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
+11:00:30.295 INFO     Configuring tokenizer(s) for dataset manager (dataset_manager.py:139)
+11:00:30.295 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
+11:00:30.296 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
+11:00:30.296 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
+11:00:30.296 INFO     Tokenization is disabled for this endpoint, skipping tokenizer configuration (inference_result_parser.py:69)
+11:00:30.301 INFO     Server Metrics: Capturing baseline metrics... (manager.py:156)
+11:00:30.305 INFO     Registered Worker (id: 'worker_e6ead5ff') (system_controller.py:387)
+11:00:30.313 WARNING  GPU Telemetry: http://localhost:9400/metrics is not reachable (manager.py:243)
+11:00:30.314 WARNING  GPU Telemetry: http://localhost:9401/metrics is not reachable (manager.py:243)
+11:00:30.314 INFO     DCGM telemetry skipped: no DCGM endpoints reachable (system_controller.py:501)
+11:00:30.316 INFO     Registered Worker (id: 'worker_c598251b') (system_controller.py:387)
+11:00:30.317 INFO     Registered Worker (id: 'worker_8bfabc50') (system_controller.py:387)
+11:00:30.317 INFO     Registered Worker (id: 'worker_7a00b0f1') (system_controller.py:387)
+11:00:30.321 INFO     Registered Worker (id: 'worker_daae7bbb') (system_controller.py:387)
+11:00:30.321 INFO     Registered Worker (id: 'worker_d09a76a6') (system_controller.py:387)
+11:00:30.323 INFO     Registered Worker (id: 'worker_d2ac29c2') (system_controller.py:387)
+11:00:30.329 INFO     Registered Worker (id: 'worker_23128220') (system_controller.py:387)
+11:00:30.329 INFO     Registered Worker (id: 'worker_a5fffb97') (system_controller.py:387)
+11:00:30.334 INFO     Server metrics enabled - 1/1 endpoint(s) reachable. (system_controller.py:527)
+11:00:30.367 INFO     Registered Worker (id: 'worker_a591ba0c') (system_controller.py:387)
+11:00:31.574 INFO     Tokenizer(s) configured in 1.28 seconds (dataset_manager.py:143)
+11:00:31.574 INFO     Configuring dataset for dataset_manager (dataset_manager.py:149)
+11:00:32.002 INFO     Using explicit dataset format: mooncake_trace (custom.py:60)
+11:00:44.119 INFO     Memory-mapped backing store initialized (streaming to /perf-cache/tmp/aiperf_mmap_a023d98e9bd8/dataset.dat) (memory_map_utils.py:141)
+11:00:45.989 INFO     Data file finalized: 11457 conversations, 448.84 MB (memory_map_utils.py:245)
+11:00:45.993 INFO     Index file created: /perf-cache/tmp/aiperf_mmap_a023d98e9bd8/index.dat (memory_map_utils.py:252)
+11:00:45.994 INFO     Backing store finalized: client_type=DatasetClientStoreType.MEMORY_MAP data_file_path=PosixPath('/perf-cache/tmp/aiperf_mmap_a023d98e9bd8/dataset.dat') index_file_path=PosixPath('/perf-cache/tmp/aiperf_mmap_a023d98e9bd8/index.dat') conversation_count=11457 total_size_bytes=470638287 compressed_data_file_path=None compressed_index_file_path=None compressed_size_bytes=0 (dataset_manager.py:479)
+11:00:46.186 INFO     sampling strategy: sequential, unique conversations: 11457, unique turn count: 11457 (dataset_manager.py:497)
+11:00:46.214 INFO     Generating inputs.json file at /perf-cache/artifacts/exp2-disagg-round-robin/20260812T110028Z_qwen3-32b-fp8-vllm-disagg-perf/aiperf/inputs.json (dataset_manager.py:337)
+11:00:46.313 INFO     Initialized 1 phase(s): ['Profiling'] (phase_orchestrator.py:165)
+11:00:46.399 WARNING  Received command response for service we were not expecting: worker_a591ba0c. Ignoring. (command_handler_mixin.py:356)
+11:00:46.399 WARNING  Received command response for service we were not expecting: worker_a5fffb97. Ignoring. (command_handler_mixin.py:356)
+11:00:46.399 WARNING  Received command response for service we were not expecting: worker_e6ead5ff. Ignoring. (command_handler_mixin.py:356)
+11:00:46.400 WARNING  Received command response for service we were not expecting: worker_daae7bbb. Ignoring. (command_handler_mixin.py:356)
+11:00:46.400 WARNING  Received command response for service we were not expecting: worker_7a00b0f1. Ignoring. (command_handler_mixin.py:356)
+11:00:46.400 WARNING  Received command response for service we were not expecting: worker_c598251b. Ignoring. (command_handler_mixin.py:356)
+11:00:46.400 WARNING  Received command response for service we were not expecting: worker_8bfabc50. Ignoring. (command_handler_mixin.py:356)
+11:00:46.401 WARNING  Received command response for service we were not expecting: worker_d09a76a6. Ignoring. (command_handler_mixin.py:356)
+11:00:46.401 WARNING  Received command response for service we were not expecting: worker_d2ac29c2. Ignoring. (command_handler_mixin.py:356)
+11:00:46.401 WARNING  Received command response for service we were not expecting: worker_23128220. Ignoring. (command_handler_mixin.py:356)
+11:00:47.520 INFO     inputs.json file generated in 1.31 seconds (dataset_manager.py:356)
+11:00:47.737 INFO     Dataset client initialized and freed 11457 conversations from memory (dataset_manager.py:185)
+11:00:47.737 INFO     Dataset configured in 16.16 seconds (dataset_manager.py:156)
+11:00:47.738 INFO     All services configured in 17.44 seconds (system_controller.py:300)
+11:00:47.738 INFO     AIPerf System is CONFIGURED (system_controller.py:278)
+11:00:47.739 INFO     Server Metrics: Started 1 collector(s) successfully (manager.py:220)
+11:00:47.741 INFO     All services started profiling successfully (system_controller.py:322)
+11:00:47.741 INFO     AIPerf System is PROFILING (system_controller.py:280)
+11:00:47.779 INFO     Built schedule with 11457 timestamps, zero_ms=0, auto_offset=True (fixed_schedule.py:119)
+11:00:47.779 NOTICE   Phase profiling started | target: 11,457 requests, 11,457 sessions (runner.py:369)
+11:00:47.779 INFO     Credit phase start: profiling (records_manager.py:518)
+
+Profiling: 0/11,457 |[32m          [0m|   0% [00:00<?]
+Profiling: 0/11,457 |[32m          [0m|   0% [00:00<?]
+                                               
+
+Profiling: 117/11,457 |[32m          [0m|   1% [00:56<1:30:27]
+Profiling: 117/11,457 |[32m          [0m|   1% [00:56<1:30:27]
+Profiling: 236/11,457 |[32m▏         [0m|   2% [01:44<1:21:10]
+Profiling: 236/11,457 |[32m▏         [0m|   2% [01:44<1:21:10]
+Profiling: 356/11,457 |[32m▎         [0m|   3% [02:30<1:15:59]
+Profiling: 356/11,457 |[32m▎         [0m|   3% [02:30<1:15:59]
+Profiling: 473/11,457 |[32m▍         [0m|   4% [03:06<1:07:49]
+Profiling: 473/11,457 |[32m▍         [0m|   4% [03:06<1:07:49]
+Profiling: 596/11,457 |[32m▌         [0m|   5% [03:46<1:04:02]
+Profiling: 596/11,457 |[32m▌         [0m|   5% [03:46<1:04:02]
+Profiling: 713/11,457 |[32m▌         [0m|   6% [04:24<1:01:36]
+Profiling: 713/11,457 |[32m▌         [0m|   6% [04:24<1:01:36]
+Profiling: 830/11,457 |[32m▋         [0m|   7% [05:06<1:01:47]
+Profiling: 830/11,457 |[32m▋         [0m|   7% [05:06<1:01:47]
+Profiling: 947/11,457 |[32m▊         [0m|   8% [05:54<1:04:31]
+Profiling: 947/11,457 |[32m▊         [0m|   8% [05:54<1:04:31]
+Profiling: 1,062/11,457 |[32m▉         [0m|   9% [06:38<1:04:34]
+Profiling: 1,062/11,457 |[32m▉         [0m|   9% [06:38<1:04:34]
+Profiling: 1,182/11,457 |[32m█         [0m|  10% [07:24<1:04:24]
+Profiling: 1,182/11,457 |[32m█         [0m|  10% [07:24<1:04:24]
+Profiling: 1,298/11,457 |[32m█▏        [0m|  11% [08:10<1:04:43]
+Profiling: 1,298/11,457 |[32m█▏        [0m|  11% [08:10<1:04:43]
+Profiling: 1,413/11,457 |[32m█▏        [0m|  12% [08:54<1:04:00]
+Profiling: 1,413/11,457 |[32m█▏        [0m|  12% [08:54<1:04:00]
+Profiling: 1,530/11,457 |[32m█▎        [0m|  13% [09:42<1:04:40]
+Profiling: 1,530/11,457 |[32m█▎        [0m|  13% [09:42<1:04:40]
+Profiling: 1,649/11,457 |[32m█▍        [0m|  14% [10:26<1:02:50]
+Profiling: 1,649/11,457 |[32m█▍        [0m|  14% [10:26<1:02:50]
+Profiling: 1,766/11,457 |[32m█▌        [0m|  15% [11:02<58:22]  
+Profiling: 1,766/11,457 |[32m█▌        [0m|  15% [11:02<58:22]
+Profiling: 1,885/11,457 |[32m█▋        [0m|  16% [11:40<55:36]
+Profiling: 1,885/11,457 |[32m█▋        [0m|  16% [11:40<55:36]
+Profiling: 2,003/11,457 |[32m█▋        [0m|  17% [12:24<56:04]
+Profiling: 2,003/11,457 |[32m█▋        [0m|  17% [12:24<56:04]
+Profiling: 2,119/11,457 |[32m█▊        [0m|  18% [13:08<56:28]
+Profiling: 2,119/11,457 |[32m█▊        [0m|  18% [13:08<56:28]
+Profiling: 2,236/11,457 |[32m█▉        [0m|  20% [13:46<54:00]
+Profiling: 2,236/11,457 |[32m█▉        [0m|  20% [13:46<54:00]
+Profiling: 2,356/11,457 |[32m██        [0m|  21% [14:34<55:33]
+Profiling: 2,356/11,457 |[32m██        [0m|  21% [14:34<55:33]
+Profiling: 2,471/11,457 |[32m██▏       [0m|  22% [15:12<53:16]
+Profiling: 2,471/11,457 |[32m██▏       [0m|  22% [15:12<53:16]
+Profiling: 2,591/11,457 |[32m██▎       [0m|  23% [15:58<53:48]
+Profiling: 2,591/11,457 |[32m██▎       [0m|  23% [15:58<53:48]
+Profiling: 2,707/11,457 |[32m██▎       [0m|  24% [16:40<53:01]
+Profiling: 2,707/11,457 |[32m██▎       [0m|  24% [16:40<53:01]
+Profiling: 2,822/11,457 |[32m██▍       [0m|  25% [17:26<53:52]
+Profiling: 2,822/11,457 |[32m██▍       [0m|  25% [17:26<53:52]
+Profiling: 2,938/11,457 |[32m██▌       [0m|  26% [18:14<54:49]
+Profiling: 2,938/11,457 |[32m██▌       [0m|  26% [18:14<54:49]
+Profiling: 3,053/11,457 |[32m██▋       [0m|  27% [18:58<53:56]
+Profiling: 3,053/11,457 |[32m██▋       [0m|  27% [18:58<53:56]
+Profiling: 3,169/11,457 |[32m██▊       [0m|  28% [19:38<51:31]
+Profiling: 3,169/11,457 |[32m██▊       [0m|  28% [19:38<51:31]
+Profiling: 3,289/11,457 |[32m██▊       [0m|  29% [20:20<49:49]
+Profiling: 3,289/11,457 |[32m██▊       [0m|  29% [20:20<49:49]
+Profiling: 3,405/11,457 |[32m██▉       [0m|  30% [20:58<47:34]
+Profiling: 3,405/11,457 |[32m██▉       [0m|  30% [20:58<47:34]
+Profiling: 3,520/11,457 |[32m███       [0m|  31% [21:36<45:57]
+Profiling: 3,520/11,457 |[32m███       [0m|  31% [21:36<45:57]
+Profiling: 3,640/11,457 |[32m███▏      [0m|  32% [22:14<44:02]
+Profiling: 3,640/11,457 |[32m███▏      [0m|  32% [22:14<44:02]
+Profiling: 3,761/11,457 |[32m███▎      [0m|  33% [22:56<43:42]
+Profiling: 3,761/11,457 |[32m███▎      [0m|  33% [22:56<43:42]
+Profiling: 3,879/11,457 |[32m███▍      [0m|  34% [23:42<44:53]
+Profiling: 3,879/11,457 |[32m███▍      [0m|  34% [23:42<44:53]
+Profiling: 3,996/11,457 |[32m███▍      [0m|  35% [24:22<43:42]
+Profiling: 3,996/11,457 |[32m███▍      [0m|  35% [24:22<43:42]
+Profiling: 4,111/11,457 |[32m███▌      [0m|  36% [25:02<42:54]
+Profiling: 4,111/11,457 |[32m███▌      [0m|  36% [25:02<42:54]
+Profiling: 4,231/11,457 |[32m███▋      [0m|  37% [25:40<40:57]
+Profiling: 4,231/11,457 |[32m███▋      [0m|  37% [25:40<40:57]
+Profiling: 4,353/11,457 |[32m███▊      [0m|  38% [26:24<41:01]
+Profiling: 4,353/11,457 |[32m███▊      [0m|  38% [26:24<41:01]
+Profiling: 4,471/11,457 |[32m███▉      [0m|  39% [27:00<38:54]
+Profiling: 4,471/11,457 |[32m███▉      [0m|  39% [27:00<38:54]
+Profiling: 4,592/11,457 |[32m████      [0m|  40% [27:38<37:32]
+Profiling: 4,592/11,457 |[32m████      [0m|  40% [27:38<37:32]
+Profiling: 4,709/11,457 |[32m████      [0m|  41% [28:10<35:04]
+Profiling: 4,709/11,457 |[32m████      [0m|  41% [28:10<35:04]
+Profiling: 4,828/11,457 |[32m████▏     [0m|  42% [28:44<33:35]
+Profiling: 4,828/11,457 |[32m████▏     [0m|  42% [28:44<33:35]
+Profiling: 4,945/11,457 |[32m████▎     [0m|  43% [29:26<34:46]
+Profiling: 4,945/11,457 |[32m████▎     [0m|  43% [29:26<34:46]
+Profiling: 5,062/11,457 |[32m████▍     [0m|  44% [30:02<33:44]
+Profiling: 5,062/11,457 |[32m████▍     [0m|  44% [30:02<33:44]
+Profiling: 5,178/11,457 |[32m████▌     [0m|  45% [30:46<35:04]
+Profiling: 5,178/11,457 |[32m████▌     [0m|  45% [30:46<35:04]
+Profiling: 5,297/11,457 |[32m████▌     [0m|  46% [31:18<32:21]
+Profiling: 5,297/11,457 |[32m████▌     [0m|  46% [31:18<32:21]
+Profiling: 5,417/11,457 |[32m████▋     [0m|  47% [31:50<30:14]
+Profiling: 5,417/11,457 |[32m████▋     [0m|  47% [31:50<30:14]
+Profiling: 5,533/11,457 |[32m████▊     [0m|  48% [32:28<30:27]
+Profiling: 5,533/11,457 |[32m████▊     [0m|  48% [32:28<30:27]
+Profiling: 5,652/11,457 |[32m████▉     [0m|  49% [33:08<30:39]
+Profiling: 5,652/11,457 |[32m████▉     [0m|  49% [33:08<30:39]
+Profiling: 5,769/11,457 |[32m█████     [0m|  50% [33:48<30:44]
+Profiling: 5,769/11,457 |[32m█████     [0m|  50% [33:48<30:44]
+Profiling: 5,887/11,457 |[32m█████▏    [0m|  51% [34:22<29:05]
+Profiling: 5,887/11,457 |[32m█████▏    [0m|  51% [34:22<29:05]
+Profiling: 6,002/11,457 |[32m█████▏    [0m|  52% [34:56<28:01]
+Profiling: 6,002/11,457 |[32m█████▏    [0m|  52% [34:56<28:01]
+Profiling: 6,120/11,457 |[32m█████▎    [0m|  53% [35:34<27:47]
+Profiling: 6,120/11,457 |[32m█████▎    [0m|  53% [35:34<27:47]
+Profiling: 6,235/11,457 |[32m█████▍    [0m|  54% [36:10<27:12]
+Profiling: 6,235/11,457 |[32m█████▍    [0m|  54% [36:10<27:12]
+Profiling: 6,352/11,457 |[32m█████▌    [0m|  55% [36:52<27:47]
+Profiling: 6,352/11,457 |[32m█████▌    [0m|  55% [36:52<27:47]
+Profiling: 6,469/11,457 |[32m█████▋    [0m|  56% [37:34<27:57]
+Profiling: 6,469/11,457 |[32m█████▋    [0m|  56% [37:34<27:57]
+Profiling: 6,587/11,457 |[32m█████▋    [0m|  57% [38:12<26:56]
+Profiling: 6,587/11,457 |[32m█████▋    [0m|  57% [38:12<26:56]
+Profiling: 6,704/11,457 |[32m█████▊    [0m|  59% [38:56<27:20]
+Profiling: 6,704/11,457 |[32m█████▊    [0m|  59% [38:56<27:20]
+Profiling: 6,821/11,457 |[32m█████▉    [0m|  60% [39:38<26:59]
+Profiling: 6,821/11,457 |[32m█████▉    [0m|  60% [39:38<26:59]
+Profiling: 6,941/11,457 |[32m██████    [0m|  61% [40:24<27:04]
+Profiling: 6,941/11,457 |[32m██████    [0m|  61% [40:24<27:04]
+Profiling: 7,059/11,457 |[32m██████▏   [0m|  62% [41:08<26:39]
+Profiling: 7,059/11,457 |[32m██████▏   [0m|  62% [41:08<26:39]
+Profiling: 7,175/11,457 |[32m██████▎   [0m|  63% [41:50<25:55]
+Profiling: 7,175/11,457 |[32m██████▎   [0m|  63% [41:50<25:55]
+Profiling: 7,292/11,457 |[32m██████▎   [0m|  64% [42:32<25:07]
+Profiling: 7,292/11,457 |[32m██████▎   [0m|  64% [42:32<25:07]
+Profiling: 7,408/11,457 |[32m██████▍   [0m|  65% [43:10<23:44]
+Profiling: 7,408/11,457 |[32m██████▍   [0m|  65% [43:10<23:44]
+Profiling: 7,529/11,457 |[32m██████▌   [0m|  66% [43:48<22:16]
+Profiling: 7,529/11,457 |[32m██████▌   [0m|  66% [43:48<22:16]
+Profiling: 7,644/11,457 |[32m██████▋   [0m|  67% [44:26<21:26]
+Profiling: 7,644/11,457 |[32m██████▋   [0m|  67% [44:26<21:26]
+Profiling: 7,761/11,457 |[32m██████▊   [0m|  68% [45:00<19:55]
+Profiling: 7,761/11,457 |[32m██████▊   [0m|  68% [45:00<19:55]
+Profiling: 7,878/11,457 |[32m██████▉   [0m|  69% [45:44<20:13]
+Profiling: 7,878/11,457 |[32m██████▉   [0m|  69% [45:44<20:13]
+Profiling: 7,994/11,457 |[32m██████▉   [0m|  70% [46:16<18:29]
+Profiling: 7,994/11,457 |[32m██████▉   [0m|  70% [46:16<18:29]
+Profiling: 8,112/11,457 |[32m███████   [0m|  71% [46:52<17:36]
+Profiling: 8,112/11,457 |[32m███████   [0m|  71% [46:52<17:36]
+Profiling: 8,231/11,457 |[32m███████▏  [0m|  72% [47:30<17:02]
+Profiling: 8,231/11,457 |[32m███████▏  [0m|  72% [47:30<17:02]
+Profiling: 8,354/11,457 |[32m███████▎  [0m|  73% [48:04<15:44]
+Profiling: 8,354/11,457 |[32m███████▎  [0m|  73% [48:04<15:44]
+Profiling: 8,472/11,457 |[32m███████▍  [0m|  74% [48:46<15:54]
+Profiling: 8,472/11,457 |[32m███████▍  [0m|  74% [48:46<15:54]
+Profiling: 8,589/11,457 |[32m███████▍  [0m|  75% [49:28<15:50]
+Profiling: 8,589/11,457 |[32m███████▍  [0m|  75% [49:28<15:50]
+Profiling: 8,711/11,457 |[32m███████▌  [0m|  76% [50:04<14:39]
+Profiling: 8,711/11,457 |[32m███████▌  [0m|  76% [50:04<14:39]
+Profiling: 8,833/11,457 |[32m███████▋  [0m|  77% [50:36<13:14]
+Profiling: 8,833/11,457 |[32m███████▋  [0m|  77% [50:36<13:14]
+Profiling: 8,948/11,457 |[32m███████▊  [0m|  78% [51:12<12:46]
+Profiling: 8,948/11,457 |[32m███████▊  [0m|  78% [51:12<12:46]
+Profiling: 9,068/11,457 |[32m███████▉  [0m|  79% [51:58<13:06]
+Profiling: 9,068/11,457 |[32m███████▉  [0m|  79% [51:58<13:06]
+Profiling: 9,191/11,457 |[32m████████  [0m|  80% [52:40<12:34]
+Profiling: 9,191/11,457 |[32m████████  [0m|  80% [52:40<12:34]
+Profiling: 9,307/11,457 |[32m████████  [0m|  81% [53:16<11:41]
+Profiling: 9,307/11,457 |[32m████████  [0m|  81% [53:16<11:41]
+Profiling: 9,425/11,457 |[32m████████▏ [0m|  82% [53:54<11:00]
+Profiling: 9,425/11,457 |[32m████████▏ [0m|  82% [53:54<11:00]
+Profiling: 9,543/11,457 |[32m████████▎ [0m|  83% [54:26<09:51]
+Profiling: 9,543/11,457 |[32m████████▎ [0m|  83% [54:26<09:51]
+Profiling: 9,662/11,457 |[32m████████▍ [0m|  84% [54:58<08:52]
+Profiling: 9,662/11,457 |[32m████████▍ [0m|  84% [54:58<08:52]
+Profiling: 9,785/11,457 |[32m████████▌ [0m|  85% [55:40<08:39]
+Profiling: 9,785/11,457 |[32m████████▌ [0m|  85% [55:40<08:39]
+Profiling: 9,905/11,457 |[32m████████▋ [0m|  86% [56:20<08:12]
+Profiling: 9,905/11,457 |[32m████████▋ [0m|  86% [56:20<08:12]
+Profiling: 10,022/11,457 |[32m████████▋ [0m|  87% [56:58<07:38]
+Profiling: 10,022/11,457 |[32m████████▋ [0m|  87% [56:58<07:38]
+Profiling: 10,141/11,457 |[32m████████▊ [0m|  89% [57:44<07:27]
+Profiling: 10,141/11,457 |[32m████████▊ [0m|  89% [57:44<07:27]
+Profiling: 10,267/11,457 |[32m████████▉ [0m|  90% [58:18<06:18]
+Profiling: 10,267/11,457 |[32m████████▉ [0m|  90% [58:18<06:18]
+Profiling: 10,386/11,457 |[32m█████████ [0m|  91% [58:52<05:30]
+Profiling: 10,386/11,457 |[32m█████████ [0m|  91% [58:52<05:30]11:59:44.779 NOTICE   Phase profiling sending complete | sent=11,457, completed=10,402, in_flight=1,055 | sessions: sent=11,457, completed=10,402 (runner.py:608)
+11:59:44.780 INFO     Sent 11,457 requests. Waiting for all to complete... (records_manager.py:534)
+
+Profiling: 10,509/11,457 |[32m█████████▏[0m|  92% [59:38<05:11]
+Profiling: 10,509/11,457 |[32m█████████▏[0m|  92% [59:38<05:11]
+Profiling: 10,624/11,457 |[32m█████████▎[0m|  93% [1:00:16<04:34]
+Profiling: 10,624/11,457 |[32m█████████▎[0m|  93% [1:00:16<04:34]
+Profiling: 10,739/11,457 |[32m█████████▎[0m|  94% [1:00:56<04:00]
+Profiling: 10,739/11,457 |[32m█████████▎[0m|  94% [1:00:56<04:00]
+Profiling: 10,858/11,457 |[32m█████████▍[0m|  95% [1:01:30<03:11]
+Profiling: 10,858/11,457 |[32m█████████▍[0m|  95% [1:01:30<03:11]
+Profiling: 10,980/11,457 |[32m█████████▌[0m|  96% [1:02:08<02:31]
+Profiling: 10,980/11,457 |[32m█████████▌[0m|  96% [1:02:08<02:31]
+Profiling: 11,099/11,457 |[32m█████████▋[0m|  97% [1:03:00<02:06]
+Profiling: 11,099/11,457 |[32m█████████▋[0m|  97% [1:03:00<02:06]12:04:16.567 WARNING  Event loop for worker_1c2a9a92 is taking too long to run. Overhead: 25.31ms (event_loop_monitor.py:89)
+
+Profiling: 11,215/11,457 |[32m█████████▊[0m|  98% [1:03:54<01:33]
+Profiling: 11,215/11,457 |[32m█████████▊[0m|  98% [1:03:54<01:33]
+Profiling: 11,331/11,457 |[32m█████████▉[0m|  99% [1:05:22<01:02]
+Profiling: 11,331/11,457 |[32m█████████▉[0m|  99% [1:05:22<01:02]
+Profiling: 11,447/11,457 |[32m█████████▉[0m| 100% [1:06:32<00:05]
+Profiling: 11,447/11,457 |[32m█████████▉[0m| 100% [1:06:32<00:05]12:07:32.290 NOTICE   Phase profiling complete | completed=11,457, cancelled=0, errors=0 | sessions: completed=11,457, cancelled=0 | elapsed=4004.51s (runner.py:686)
+12:07:32.290 NOTICE   All credits completed (phase_orchestrator.py:180)
+12:07:32.290 INFO     Received CREDIT_PHASE_COMPLETE message, Phase complete: PhaseRecordsStats(phase=CreditPhase.PROFILING, start_ns=1786532447779155533, sent_end_ns=1786535984778975278, requests_end_ns=1786536452289925799, total_expected_requests=11457, expected_duration_sec=None, expected_num_sessions=None, expected_grace_period_sec=None, final_requests_sent=None, final_requests_completed=11457, final_requests_cancelled=0, final_request_errors=0, final_sent_sessions=None, final_completed_sessions=None, final_cancelled_sessions=None, timeout_triggered=False, grace_period_timeout_triggered=False, was_cancelled=False, records_end_ns=None, success_records=11456, error_records=0) (records_manager.py:560)
+12:07:32.290 INFO     Received credits complete from 'timing_manager' (system_controller.py:422)
+12:07:32.290 NOTICE   All requests have completed, please wait for the results to be processed (currently 11,456 of 11,457 records processed)... (records_manager.py:565)
+12:07:32.291 INFO     All credits complete, please wait for the results to be processed... (records_manager.py:589)
+
+Processing Records: 0/11,457 |[34m          [0m|   0% [00:00<?]12:07:32.303 INFO     Processed 11457 valid requests and 0 errors (11457 total). (records_manager.py:296)
+12:07:32.303 INFO     Received all records, processing now... (records_manager.py:302)
+12:07:32.304 INFO     Server Metrics: Profiling complete, capturing final metrics... (manager.py:250)
+12:07:32.305 INFO     Waiting 2.0s for server metrics flush period... (records_manager.py:352)
+
+Processing Records: 11,457/11,457 |[34m██████████[0m| 100% [00:00<00:00]
+Processing Records: 11,457/11,457 |[34m██████████[0m| 100% [00:00<00:00]12:07:34.291 INFO     Processing records results... (records_manager.py:777)
+12:07:34.311 INFO     Waiting for server metrics results... (system_controller.py:779)
+12:07:34.311 INFO     Waiting for server metrics results... (system_controller.py:779)
+12:07:34.628 INFO     _finalize_and_process_results completed (records_manager.py:359)
+12:07:34.647 INFO     All results received, initiating shutdown (system_controller.py:774)
+12:07:35.260 INFO     Exporting all records (exporter_manager.py:62)
+12:07:35.390 INFO     Exporting console data (exporter_manager.py:134)
+
+
+                                                      NVIDIA AIPerf | LLM Metrics                                                       
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┓
+┃                                        Metric ┃        avg ┃    min ┃        max ┃        p99 ┃        p90 ┃        p50 ┃        std ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━┩
+│                      Time to First Token (ms) │ 132,951.06 │  56.72 │ 532,679.95 │ 455,143.73 │ 322,109.79 │ 104,072.16 │ 131,774.32 │
+│                     Time to Second Token (ms) │      51.14 │   1.21 │   2,883.22 │      98.22 │      90.13 │      21.90 │      67.64 │
+│               Time to First Output Token (ms) │ 132,951.06 │  56.72 │ 532,679.95 │ 455,143.73 │ 322,109.79 │ 104,072.16 │ 131,774.32 │
+│                          Request Latency (ms) │ 149,470.58 │  93.62 │ 592,598.36 │ 487,716.37 │ 352,319.07 │ 117,993.81 │ 139,193.30 │
+│                      Inter Token Latency (ms) │      49.44 │   9.16 │     304.37 │      94.79 │      89.23 │      21.61 │      36.82 │
+│              Output Token Throughput Per User │      44.25 │   3.29 │     109.18 │      98.00 │      86.40 │      46.27 │      33.24 │
+│                             (tokens/sec/user) │            │        │            │            │            │            │            │
+│ E2E Output Token Throughput (tokens/sec/user) │      17.34 │   0.00 │     106.94 │      88.04 │      67.07 │       2.66 │      26.54 │
+│               Output Sequence Length (tokens) │     338.99 │   1.00 │   2,000.00 │   1,046.32 │     594.00 │     348.00 │     240.72 │
+│                Input Sequence Length (tokens) │   9,284.36 │ 899.00 │  40,914.00 │  36,442.56 │  22,301.60 │   6,399.00 │   8,694.18 │
+│          Output Token Throughput (tokens/sec) │     969.86 │    N/A │        N/A │        N/A │        N/A │        N/A │        N/A │
+│             Request Throughput (requests/sec) │       2.86 │    N/A │        N/A │        N/A │        N/A │        N/A │        N/A │
+│                        Goodput (requests/sec) │       0.60 │    N/A │        N/A │        N/A │        N/A │        N/A │        N/A │
+│                      Request Count (requests) │  11,457.00 │    N/A │        N/A │        N/A │        N/A │        N/A │        N/A │
+└───────────────────────────────────────────────┴────────────┴────────┴────────────┴────────────┴────────────┴────────────┴────────────┘
+                                              NVIDIA AIPerf | LLM Metrics: Usage                                               
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┓
+┃                                  Metric ┃            avg ┃    min ┃       max ┃       p99 ┃       p90 ┃      p50 ┃      std ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━┩
+│            Usage Prompt Tokens (tokens) │       9,284.36 │ 899.00 │ 40,914.00 │ 36,442.56 │ 22,301.60 │ 6,399.00 │ 8,694.18 │
+│ Usage Prompt Cache Read Tokens (tokens) │         701.77 │ 512.00 │ 39,424.00 │  7,168.00 │    512.00 │   512.00 │ 1,649.79 │
+│        Usage Completion Tokens (tokens) │         338.99 │   1.00 │  2,000.00 │  1,046.32 │    594.00 │   348.00 │   240.72 │
+│             Usage Total Tokens (tokens) │       9,623.35 │ 903.00 │ 40,946.00 │ 36,740.72 │ 22,703.40 │ 6,741.00 │ 8,712.39 │
+│      Total Usage Prompt Tokens (tokens) │ 106,370,875.00 │    N/A │       N/A │       N/A │       N/A │      N/A │      N/A │
+│    Total Usage Prompt Cache Read Tokens │   8,035,968.00 │    N/A │       N/A │       N/A │       N/A │      N/A │      N/A │
+│                                (tokens) │                │        │           │           │           │          │          │
+│       Overall Usage Prompt Cache Read % │           7.55 │    N/A │       N/A │       N/A │       N/A │      N/A │      N/A │
+│                                     (%) │                │        │           │           │           │          │          │
+│  Total Usage Completion Tokens (tokens) │   3,883,798.00 │    N/A │       N/A │       N/A │       N/A │      N/A │      N/A │
+│       Total Usage Total Tokens (tokens) │ 110,254,673.00 │    N/A │       N/A │       N/A │       N/A │      N/A │      N/A │
+└─────────────────────────────────────────┴────────────────┴────────┴───────────┴───────────┴───────────┴──────────┴──────────┘
+
+
+No GPU telemetry data collected during the benchmarking run.
+
+CLI Command: aiperf profile --model 'Qwen/Qwen3-32B-FP8' --tokenizer 'Qwen/Qwen3-32B-FP8' --tokenizer-revision 'aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df' --input-file 
+'/perf-cache/traces/conversation_trace.maxctx40960.jsonl' --custom-dataset-type 'mooncake_trace' --fixed-schedule --url 'http://qwen3-32b-fp8-vllm-disagg-frontend:8000' --streaming --extra-inputs 
+'ignore_eos:true' --use-server-token-count --artifact-dir '/perf-cache/artifacts/exp2-disagg-round-robin/20260812T110028Z_qwen3-32b-fp8-vllm-disagg-perf/aiperf' --goodput 'time_to_first_token:2000 
+inter_token_latency:25' --ui 'simple'
+Benchmark Duration: 4004.48 sec
+CSV Export: /perf-cache/artifacts/exp2-disagg-round-robin/20260812T110028Z_qwen3-32b-fp8-vllm-disagg-perf/aiperf/profile_export_aiperf.csv
+JSON Export: /perf-cache/artifacts/exp2-disagg-round-robin/20260812T110028Z_qwen3-32b-fp8-vllm-disagg-perf/aiperf/profile_export_aiperf.json
+Server Metrics CSV Export: /perf-cache/artifacts/exp2-disagg-round-robin/20260812T110028Z_qwen3-32b-fp8-vllm-disagg-perf/aiperf/server_metrics_export.csv
+Server Metrics JSON Export: /perf-cache/artifacts/exp2-disagg-round-robin/20260812T110028Z_qwen3-32b-fp8-vllm-disagg-perf/aiperf/server_metrics_export.json
+Log File: /perf-cache/artifacts/exp2-disagg-round-robin/20260812T110028Z_qwen3-32b-fp8-vllm-disagg-perf/aiperf/logs/aiperf.log
+

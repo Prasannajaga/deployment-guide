@@ -1,5 +1,7 @@
 # Qwen3-32B benchmark artifacts
 
+The experiment directories at this level contain the runs used by the current analysis. Earlier and failed runs are preserved under [`deprecated/`](./deprecated/).
+
 ## Includes
 
 - benchmark job configuration, description, and logs

@@ -1,5 +1,10 @@
 # NVIDIA Dynamo Experiments Deployment & Operation Guide
 
+> [!NOTE]
+> This guide describes the older unnumbered experiment configurations retained
+> under `models/qwen3-32B/experiments/vllm/deprecated/`. Use the numbered 01–05 vLLM
+> recipes for the current comparable experiment matrix.
+
 This reference provides exact export variables, launch commands, pod monitoring, and cleanup procedures for all vLLM experiments on the 16x H100 cluster (`gpu05` and `gpu06`).
 
 ---
@@ -8,9 +13,9 @@ This reference provides exact export variables, launch commands, pod monitoring,
 
 | Category | Experiment Name | Model | Topology | GPU Allocation | Key Manifest Path |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Aggregated** | `qwen3-32b-fp8-vllm-agg-tp2` | Qwen3-32B-FP8 | 8 Workers x TP=2 | 16 GPUs (8x `gpu05`, 8x `gpu06`) | `models/qwen3-32B/experiments/vllm/agg-routing/deploy.yaml` |
-| **Disaggregated baseline (non-KV-aware)** | `qwen3-32b-fp8-vllm-disagg` | Qwen3-32B-FP8 | 6 Prefill (TP=2) + 2 Decode (TP=2) | 16 GPUs (12x Prefill, 4x Decode) | `models/qwen3-32B/experiments/vllm/disagg-routing/deploy.yaml` |
-| **Disaggregated (KV-Aware)** | `qwen3-32b-fp8-vllm-disagg-kv-aware` | Qwen3-32B-FP8 | 6 Prefill (TP=2) + 2 Decode (TP=2) | 16 GPUs (12x Prefill, 4x Decode) | `models/qwen3-32B/experiments/vllm/disagg-routing-kv-aware/deploy.yaml` |
+| **Aggregated** | `qwen3-32b-fp8-vllm-agg-tp2` | Qwen3-32B-FP8 | 8 Workers x TP=2 | 16 GPUs (8x `gpu05`, 8x `gpu06`) | `models/qwen3-32B/experiments/vllm/deprecated/agg-routing/deploy.yaml` |
+| **Disaggregated baseline (non-KV-aware)** | `qwen3-32b-fp8-vllm-disagg` | Qwen3-32B-FP8 | 6 Prefill (TP=2) + 2 Decode (TP=2) | 16 GPUs (12x Prefill, 4x Decode) | `models/qwen3-32B/experiments/vllm/deprecated/disagg-routing/deploy.yaml` |
+| **Disaggregated (KV-Aware)** | `qwen3-32b-fp8-vllm-disagg-kv-aware` | Qwen3-32B-FP8 | 6 Prefill (TP=2) + 2 Decode (TP=2) | 16 GPUs (12x Prefill, 4x Decode) | `models/qwen3-32B/experiments/vllm/deprecated/disagg-routing-kv-aware/deploy.yaml` |
 
 ---
 
@@ -38,7 +43,7 @@ kubectl get ippool "$ROCE_POOL" -n "$NETOP_NAMESPACE"
 
 Do not deploy unless `model-cache` is `Bound`, all 16 GPUs and the required
 `rdma/ib` resources are available, and the RoCE objects are ready. Use the
-[pod-native RoCE runbook](models/qwen3-32B/experiments/vllm/disagg-routing-kv-aware/pod-native-roce.md)
+[pod-native RoCE runbook](models/qwen3-32B/experiments/vllm/deprecated/disagg-routing-kv-aware/pod-native-roce.md)
 to create or diagnose the secondary network.
 
 ---
@@ -49,7 +54,7 @@ to create or diagnose the secondary network.
 
 ```bash
 export NAMESPACE=qwen32-bench
-export EXP_DIR=/ephemeral/shared/qwen3-32b/experiments/vllm/agg-routing
+export EXP_DIR=/ephemeral/shared/qwen3-32b/experiments/vllm/deprecated/agg-routing
 export DEPLOYMENT=qwen3-32b-fp8-vllm-agg-tp2
 export GRAPH_LABEL="nvidia.com/dynamo-graph-deployment-name=${DEPLOYMENT}"
 ```
@@ -84,7 +89,7 @@ kubectl delete pods -l "$GRAPH_LABEL" -n "$NAMESPACE" \
 
 ```bash
 export NAMESPACE=qwen32-bench
-export EXP_DIR=/ephemeral/shared/qwen3-32b/experiments/vllm/disagg-routing
+export EXP_DIR=/ephemeral/shared/qwen3-32b/experiments/vllm/deprecated/disagg-routing
 export DEPLOYMENT=qwen3-32b-fp8-vllm-disagg
 export GRAPH_LABEL="nvidia.com/dynamo-graph-deployment-name=${DEPLOYMENT}"
 ```
@@ -124,7 +129,7 @@ kubectl delete pods -l "$GRAPH_LABEL" -n "$NAMESPACE" \
 
 ```bash
 export NAMESPACE=qwen32-bench
-export EXP_DIR=/ephemeral/shared/qwen3-32b/experiments/vllm/disagg-routing-kv-aware
+export EXP_DIR=/ephemeral/shared/qwen3-32b/experiments/vllm/deprecated/disagg-routing-kv-aware
 export DEPLOYMENT=qwen3-32b-fp8-vllm-disagg-kv-aware
 export GRAPH_LABEL="nvidia.com/dynamo-graph-deployment-name=${DEPLOYMENT}"
 ```
