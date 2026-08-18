@@ -27,7 +27,7 @@ This repository tracks LLM deployment experiments, setup runbooks, and benchmark
 | **Qwen3-32B FP8 Disaggregated** | Qwen3-32B-FP8 | vLLM / SGLang | Working | 6 prefill × TP=2 + 2 decode × TP=2 (KV-aware routing) | [`models/qwen3-32B/vllm/disagg-routing`](models/qwen3-32B/vllm/disagg-routing/README.md) |
 | **Qwen3.6-35B-A3B FP8 Aggregated** | Qwen3.6-35B-A3B | SGLang | Working | Aggregated TP=2, KEDA autoscaling 1–8 workers | [`models/qwen3.6-35B-A3B/sglang/agg-autoscaling`](models/qwen3.6-35B-A3B/sglang/agg-autoscaling/README.md) |
 | **Qwen3.6-35B-A3B FP8 Disaggregated** | Qwen3.6-35B-A3B | SGLang | Working | 4 prefill × TP=1 + 4 decode × TP=1 (EP=2, NIXL state transfer) | [`models/qwen3.6-35B-A3B/sglang/disagg/tp1-ep2-4p4d`](models/qwen3.6-35B-A3B/sglang/disagg/tp1-ep2-4p4d/README.md) |
-| **Qwen3-235B-A22B FP8** | Qwen3-235B-A22B | SGLang | Working | 4 aggregated workers × TP=4 | [`models/qwen3-235B-A22B`](models/qwen3-235B-A22B/sglang/agg/deploy.yaml) |
+| **Qwen3-235B-A22B FP8** | Qwen3-235B-A22B | SGLang | Working | 4 aggregated workers × TP=4 | [`models/qwen3-235B-A22B/sglang/agg`](models/qwen3-235B-A22B/sglang/agg/README.md) |
 | **GLM-5.2-FP8** | GLM-5.2-FP8 | vLLM | Working | 1 two-node replica, TP=16 | [`models/glm-5.2-fp8`](models/glm-5.2-fp8/vllm/agg/README.md) |
 | **DeepSeek-V4-Flash FP8** | DeepSeek-V4-Flash | SGLang | Experimental | 4 aggregated workers × TP=4 | [`models/deepseek-v4-flash-fp8`](models/deepseek-v4-flash-fp8/sglang/agg/README.md) |
 
