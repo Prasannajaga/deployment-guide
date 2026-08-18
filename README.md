@@ -4,7 +4,7 @@ This repository tracks LLM deployment experiments, setup runbooks, and benchmark
 
 > **PS**: I was running an LLM inference series on X that ended up gaining a lot of traction. After posting to ask if anyone could volunteer cluster access, the team at Lambda reached out and gave us access to a 16x H100 cluster for a week which was crazy! We did a ton of speedrunning here.
 >
-> Starting with a plain Ubuntu server, we set up all the K8s adapters and environment prerequisites from scratch for our experimentation.
+> Starting with a plain Ubuntu server, we set up all the K8s adapters and environment prerequisites from scratch for our experimentation
 
 ## Cluster Overview & Environment Specifications
 
@@ -18,9 +18,9 @@ This repository tracks LLM deployment experiments, setup runbooks, and benchmark
 
 ---
 
-## Available Model Experiments & Recipes
+## What we deployed
 
-| Experiment / Recipe Name | Model | Engine | Status | Topology | Recipe Link |
+| Name | Model | Engine | Status | Topology | Recipe Link |
 | :--- | :--- | :--- | :---: | :--- | :--- |
 | **Llama-3.1-8B-Instruct** | Llama-3.1-8B | vLLM | Working | Cross-node TP=16 | [`models/llama-8B`](models/llama-8B/setup.md) |
 | **Qwen3-32B FP8 Aggregated** | Qwen3-32B-FP8 | vLLM / SGLang | Working | 8 aggregated workers × TP=2 (with/without CPU KV offload) | [`models/qwen3-32B/vllm/agg-routing`](models/qwen3-32B/vllm/agg-routing/README.md) |
@@ -32,6 +32,16 @@ This repository tracks LLM deployment experiments, setup runbooks, and benchmark
 | **DeepSeek-V4-Flash FP8** | DeepSeek-V4-Flash | SGLang | Experimental | 4 aggregated workers × TP=4 | [`models/deepseek-v4-flash-fp8`](models/deepseek-v4-flash-fp8/sglang/agg/README.md) |
 
 ---
+
+## What we benchmarked
+
+> **Blog Series Incoming**: Detailed technical write-ups and benchmark deep-dives for these experiments are coming soon!
+
+* **Aggregated vs. Disaggregated Scaling**: Decoupled Prefill & Decode (P/D) vs. aggregated serving across vLLM and SGLang.
+* **KV-Aware Routing & CPU Offloading**: Evaluated prompt prefix caching vs. CPU KV offloading under high concurrency.
+* **Parallelism Bottlenecks (TP / DP / EP)**: Analyzed cross-node network stalls (TP=16 across nodes) vs. EP/DP scalability.
+* **Event-Driven Autoscaling (KEDA)**: Dynamic pod scaling (1–8 workers) based on queue depth and GPU load metrics.
+* **NIXL RDMA Latency Profiling**: Measured KV transfer latency growth over RoCE v2 as context length scales.
 
 ## Repository Structure
 
