@@ -53,6 +53,44 @@ We only had one week of access to this 16x H100 cluster, so I'm incredibly glad 
 
 We are currently processing and extracting all raw AIPerf benchmark artifacts, DCGM GPU utilization metrics, and Grafana performance dashboards. We'll be updating this section with full visual plots and benchmark graphs shortly!
 
+# The results
+
+### 1. Baseline KV-Aware vs. KV-Aware + Offloading
+
+We found that offloading really helps with improving overall performance it also handles significantly higher prefill KV transfer throughput (GB/s) than the baseline.
+
+For the setup below, we ran CPU offloading with a HiCache ratio of 1.2 and up to 3.10 million tokens across 4 replicas (with each replica holding up to 3.10 million tokens). We tried with the `write_back` policy, which is much more efficient at handling CPU offloading than naive `write_through`.
+
+We benchmarked this on sequence distribution `1024,256:35;4096,512:30;8192,1024:20;16384,512:10;32768,256:5` with a concurrency sweep of `8 16 32 64 96 128` and offloading GPU pressure to the CPU allows the GPU to focus more on compute intensive work instead of worrying about memory pressure, so it's clear that offloading helps you improve your throughput & overall performance!
+
+You can see the results below:
+
+![baseline kvaware & KV-offload Grafana dashboard](assets/baseline-vs-offloading.svg)
+
+### 2. Non-Parallelism (TP=1, 4P+4D) vs. Parallelism (TP=2, 2P+2D) on 8 GPUs
+
+We found a really interesting take on Tensor Parallelism (`TP=1` vs. `TP=2`) when analyzing the AIPerf benchmark exports across concurrencies 1 to 128:
+
+* **Low Concurrency (`c1`–`c8`) TP=2 wins on ITL**: at low loads, TP=2 performs better because splitting matrix operations across 2 GPUs speeds up per-token decode generation. At `c1`, TP=2 hits an ITL of **3.52ms** and **247.8 tok/s** throughput compared to TP=1 at **4.11ms** and **214.6 tok/s**.
+* **The Tipping Point (`c16`)**: right around concurrency 16, TP=1 starts winning on prefill latency (TTFT of **228.7ms** vs **317.1ms** for TP=2), even though TP=2 still holds a tiny edge in total output throughput (**2,709.5 tok/s** vs **2,573.5 tok/s**).
+* **High Concurrency (`c32`–`c128`) — TP=1 completely dominates**: under heavy load, TP=1 (4P+4D) scales way better because having 4 independent prefill workers avoids queuing delays and gets rid of inter-GPU All-Reduce communication overhead. By concurrency 128, TP=1 delivers **5x faster TTFT** (**604.5ms** vs **3,024.6ms**) and **31% higher overall throughput** (**9,435.7 tok/s** vs **7,201.8 tok/s**)!
+
+So the trade-off is clear: `TP=2` gives lower streaming latency for individual requests under light load, but `TP=1 (4P+4D)` is far superior for high-concurrency throughput & prefill responsiveness! If your model fits on a single GPU and has enough room for KV cache, consider deploying it with `TP=1` to unlock significantly higher overall throughput!
+
+You can see the benchmark comparison below:
+
+![non-parallelism & parallelism ](assets/non-parallelism-vs-parallelism.svg)
+
+### 3. Event-Driven Autoscaling using KEDA
+
+We tried baseline event-driven autoscaling with KEDA on the **Qwen3.6-35B-A3B FP8** model (aggregated SGLang workers, TP=2), triggering scale-out based on the `dynamo_frontend_active_requests` metric (target threshold of 16 active requests per worker).
+
+In our Grafana dashboard below, you can clearly see the classic startup gap during scale-out `HPA Desired` spikes first as load rises, `HPA Current` follows as KEDA requests new pods, and `Ready Pods` catches up once the engine finishes initializing even with a shared model-cache across nodes to avoid downloading weights from scratch, the SGLang engine still took its own time to load and warm up.
+
+While we ran out of time to test separate autoscaling for disaggregated Prefill/Decode workers during our 1-week cluster window, the aggregated setup showed great event-driven scaling behavior!
+
+![KEDA autoscaling dashboard](assets/keda-autscaling.svg)
+
 ## Repository Structure
 
 ```text
