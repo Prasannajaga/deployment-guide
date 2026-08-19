@@ -88,3 +88,5 @@ models/qwen3-235B-A22B
 **/inputs.json
 **/input*.json
 main.txt
+*.tar
+resumt.txt
