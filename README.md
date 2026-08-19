@@ -81,7 +81,20 @@ You can see the benchmark comparison below:
 
 ![non-parallelism & parallelism ](assets/non-parallelism-vs-parallelism.svg)
 
-### 3. Event-Driven Autoscaling using KEDA
+### 3. NIXL KV Transfer Profiling & HiCache Offloading
+
+We ran a 1,500-second prefill-heavy experiment sweep across concurrencies 1–32 (300s per point, 16 warmup requests per point) on **Qwen3.6-35B-A3B FP8** deployed across 16 H100 GPUs (4P+4D disaggregated, `DP=2`, `EP=2`). Each request used a 32K context window with OSL 256 and **75% prefix reuse** (64 prefix groups) to stress KV locality and host-cache offloading.
+
+* **KV Locality Routing**: Dynamo dynamically routed full requests to prefill workers based on prompt prefix affinity, running `DP=2` & `EP=2` across 2 GPU ranks per worker.
+* **NIXL RDMA Transfer Latency & Throughput**: Each prefill worker transferred **~1 TB cumulative KV & recurrent state** to decoders at **~1.5 GB/s** upload bandwidth, keeping cross-node P-to-D transfer latencies **under 60 ms** with zero RDMA errors across 16 GPUs.
+* **CPU HiCache Sizing (`--hicache-ratio 1.2`)**: SGLang provisioned CPU host KV capacity per rank at `1.2 × GPU capacity` (~120K CPU tokens per rank for a 100K GPU pool).
+* **Cache Saturation & CPU Load**: CPU usage peaked at **99%** as the `write_through` policy continuously streamed GPU KV pages into host RAM, pushing host cache utilization to **95%** (`hicache_host_used_tokens` / `total_tokens`).
+
+> **HiCache Policy Takeaway**: Be cautious when using `--hicache-write-policy write_through`. Unless you explicitly need to stream every generated KV page into host memory, it causes heavy CPU churn and unnecessary host-page evictions. For most production workloads, safer and far more performant choices are `write_back` (delays host writes until GPU cache eviction) or `write_selective`.
+
+![NIXL KV transfer profiling](assets/NIXL-profiling.svg)
+
+### 4. Event-Driven Autoscaling using KEDA
 
 We tried baseline event-driven autoscaling with KEDA on the **Qwen3.6-35B-A3B FP8** model (aggregated SGLang workers, TP=2), triggering scale-out based on the `dynamo_frontend_active_requests` metric (target threshold of 16 active requests per worker).
 
