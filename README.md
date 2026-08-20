@@ -21,11 +21,11 @@ This repository tracks LLM deployment experiments, setup runbooks, and benchmark
 | Name | Engine | Status | GPUs | Topology | Recipe Link |
 | :--- | :--- | :---: | :---: | :--- | :--- |
 | **Llama-3.1-8B-Instruct** | vLLM | Working | 16 | Cross-node TP=16 | [Recipe](models/llama-8B/setup.md) |
-| **Qwen3-32B FP8 Aggregated** | vLLM | Working | 16 | 8 workers × TP=2 | [Recipe](models/qwen3-32B/vllm/01-agg-routing/README.md) |
-| **Qwen3-32B FP8 Disaggregated (6P2D)** | vLLM | Working | 16 | 6 prefill × TP=2 + 2 decode × TP=2 | [Recipe](models/qwen3-32B/vllm/02-disagg-routing/README.md) |
-| **Qwen3-32B FP8 Disaggregated (4P4D)** | vLLM | Working | 16 | 4 prefill × TP=2 + 4 decode × TP=2 | [Recipe](models/qwen3-32B/vllm/03-disagg-routing-4p4d/README.md) |
-| **Qwen3-32B FP8 KV-Aware Disaggregated** | vLLM | Working | 16 | 4 prefill × TP=2 + 4 decode × TP=2 | [Recipe](models/qwen3-32B/vllm/04-disagg-routing-kv-aware/README.md) |
-| **Qwen3-32B FP8 KV-Aware + CPU KV Offload** | vLLM | Working | 16 | 4 prefill × TP=2 + 4 decode × TP=2, 32 GiB/engine CPU KV tier | [Recipe](models/qwen3-32B/vllm/05-disagg-routing-kv-aware-offloading/README.md) |
+| **Qwen3-32B FP8 Aggregated** | vLLM | Working | 16 | 8 workers × TP=2 | [Recipe](models/qwen3-32B/vllm/01-agg-routing/) |
+| **Qwen3-32B FP8 Disaggregated (6P2D)** | vLLM | Working | 16 | 6 prefill × TP=2 + 2 decode × TP=2 | [Recipe](models/qwen3-32B/vllm/02-disagg-routing/) |
+| **Qwen3-32B FP8 Disaggregated (4P4D)** | vLLM | Working | 16 | 4 prefill × TP=2 + 4 decode × TP=2 | [Recipe](models/qwen3-32B/vllm/03-disagg-routing-4p4d/) |
+| **Qwen3-32B FP8 KV-Aware Disaggregated** | vLLM | Working | 16 | 4 prefill × TP=2 + 4 decode × TP=2 | [Recipe](models/qwen3-32B/vllm/04-disagg-routing-kv-aware/) |
+| **Qwen3-32B FP8 KV-Aware + CPU KV Offload** | vLLM | Working | 16 | 4 prefill × TP=2 + 4 decode × TP=2, 32 GiB/engine CPU KV tier | [Recipe](models/qwen3-32B/vllm/05-disagg-routing-kv-aware-offloading/) |
 | **Qwen3-32B FP8 Aggregated** | SGLang | Working | 16 | 8 workers × TP=2 (4 per node) | [Recipe](models/qwen3-32B/sglang/agg-routing/README.md) |
 | **Qwen3-32B FP8 Disaggregated** | SGLang | Working | 8 | 2 prefill × TP=2 + 1 decode × TP=4 | [Recipe](models/qwen3-32B/sglang/disagg-routing/README.md) |
 | **Qwen3-32B FP8 KV-Aware Disaggregated** | SGLang | Working | 16 | 6 prefill × TP=2 + 2 decode × TP=2 | [Recipe](models/qwen3-32B/sglang/disagg-routing-kv-aware/README.md) |
