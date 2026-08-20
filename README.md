@@ -64,7 +64,7 @@ We are currently processing and extracting all raw AIPerf benchmark artifacts, D
 We evaluated five Qwen3-32B FP8 configurations with vLLM using the [Mooncake conversation trace](https://github.com/kvcache-ai/Mooncake/blob/main/FAST25-release/traces/conversation_trace.jsonl). Starting from eight aggregated TP=2 workers, we compared 6P2D and 4P4D disaggregation, KV-aware routing, and CPU KV cache offloading.
 
 <p align="center">
-  <img src="assets/qwen3-32b-fp8/qwen3-32b-fp8-throughput-goodput-slo.png" width="1000" />
+  <img src="assets/qwen3-32b-fp8-throughput-goodput-slo.png" width="1000" />
 </p>
 
 As seen in the figure, Exp 4(4P4D KV-aware configuration) delivered the strongest observed goodput and SLO request pass rate.
@@ -74,7 +74,7 @@ We expected Exp 2 (6P2D) to perform better than Exp 3 (4P4D) because the workloa
 Exp 5(Exp4 with KV cache offloading) didn't demonstrate a measurable benefit from CPU KV-cache offloading. While there was substantial GPU-to-CPU offload traffic, no CPU-to-GPU reloads were observed, likely because KV-cache pressure of fixed trace remained low.
 
 <p align="center">
-  <img src="assets/qwen3-32b-fp8/qwen3-32b-fp8-ttft-tail.png" width="1000" />
+  <img src="assets/qwen3-32b-fp8-ttft-tail.png" width="1000" />
 </p>
 
 The aggregated and 6P2D round-robin configurations developed very large TTFT tails compared to other experiments. Exp 2 has high TTFT because Dynamo measures TTFT until the first token is streamed from a **decode worker**.
