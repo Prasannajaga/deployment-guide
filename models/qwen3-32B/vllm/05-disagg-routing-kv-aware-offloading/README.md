@@ -1,0 +1,466 @@
+### Exp 5. 4P+4D with KV-aware routing and CPU KV offload
+
+- Extends Exp 4 with `MultiConnector` and a 32 GiB/engine CPU KV-cache tier.
+
+Below are the steps to reproduce:
+
+## 1. Variables
+
+```bash
+export NAMESPACE=qwen32-bench
+export EXP_DIR=/ephemeral/shared/qwen3-32b/vllm/05-disagg-routing-kv-aware-offloading
+export DEPLOYMENT=qwen3-32b-fp8-vllm-disagg-kv-offload
+export PERF_JOB=qwen3-32b-fp8-vllm-disagg-kv-offload-perf
+mkdir -p "$EXP_DIR"
+```
+
+## 2. Create the deployment manifest
+
+```bash
+tee "$EXP_DIR/deploy.yaml" >/dev/null <<'EOF'
+# EXPERIMENTAL: stock Dynamo 1.3.0 must contain vLLM >=0.24.0 and the
+# MultiConnector disaggregated-offload fix.
+apiVersion: nvidia.com/v1alpha1
+kind: DynamoGraphDeployment
+metadata:
+  name: qwen3-32b-fp8-vllm-disagg-kv-offload
+  labels:
+    benchmark.nvidia.com/experiment: qwen3-32b-fp8-vllm-disagg-kv-offload
+spec:
+  backendFramework: vllm
+  pvcs:
+    - name: model-cache
+      create: false
+    - name: compilation-cache
+      create: false
+  services:
+    Frontend:
+      componentType: frontend
+      replicas: 2
+      envs:
+        - name: HF_HOME
+          value: /opt/models
+      resources:
+        requests:
+          cpu: "8"
+          memory: 8Gi
+        limits:
+          cpu: "16"
+          memory: 16Gi
+      volumeMounts:
+        - name: model-cache
+          mountPoint: /opt/models
+      extraPodSpec:
+        mainContainer:
+          image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.3.0
+          workingDir: /workspace
+          command: [python3, -m, dynamo.frontend]
+          args:
+            - --router-mode
+            - kv
+            - --router-host-cache-hit-weight
+            - "1.0"
+
+    VllmPrefillWorker:
+      componentType: worker
+      subComponentType: prefill
+      replicas: 4
+      envFromSecret: hf-token-secret
+      sharedMemory:
+        size: 40Gi
+      extraPodMetadata:
+        annotations:
+          k8s.v1.cni.cncf.io/networks: qwen32-bench/qwen-roce
+      volumeMounts:
+        - name: model-cache
+          mountPoint: /opt/models
+        - name: compilation-cache
+          mountPoint: /home/dynamo/.cache/vllm
+          useAsCompilationCache: true
+      extraPodSpec:
+        hostNetwork: false
+        dnsPolicy: ClusterFirst
+        mainContainer:
+          image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.3.0
+          workingDir: /workspace
+          command: [/bin/sh, -c]
+          args:
+            - |
+              ulimit -l unlimited
+              exec python3 -m dynamo.vllm \
+                --model "$MODEL_PATH" \
+                --served-model-name "$SERVED_MODEL_NAME" \
+                --tensor-parallel-size 2 \
+                --disaggregation-mode prefill \
+                --kv-transfer-config "$KV_TRANSFER_CONFIG" \
+                --kv-events-config '{"publisher":"zmq","topic":"kv-events","endpoint":"tcp://*:20080","enable_kv_cache_events":true}' \
+                --gpu-memory-utilization 0.90 \
+                --max-model-len 40960 \
+                --enable-prefix-caching \
+                --block-size 128 \
+                --no-enable-log-requests
+          env: &worker-env
+            - name: SERVED_MODEL_NAME
+              value: Qwen/Qwen3-32B-FP8
+            - name: MODEL_PATH
+              value: /opt/models/hub/models--Qwen--Qwen3-32B-FP8/snapshots/aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df
+            - name: HF_HOME
+              value: /opt/models
+            - name: PYTHONHASHSEED
+              value: "0"
+            # 32 GiB pinned CPU tier per TP2 engine (shared across its TP ranks).
+            - name: KV_TRANSFER_CONFIG
+              value: '{"kv_connector":"MultiConnector","kv_role":"kv_both","kv_connector_extra_config":{"connectors":[{"kv_connector":"NixlConnector","kv_role":"kv_both"},{"kv_connector":"OffloadingConnector","kv_role":"kv_both","kv_connector_extra_config":{"cpu_bytes_to_use":34359738368,"block_size":256,"self_describing_kv_events":true}}]}}'
+            - name: VLLM_NIXL_SIDE_CHANNEL_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: VLLM_NIXL_SIDE_CHANNEL_PORT
+              value: "5600"
+            - name: UCX_TLS
+              value: rc_x,rc,cuda_copy,cuda_ipc
+            - name: UCX_NET_DEVICES
+              value: mlx5_8:1
+            - name: UCX_IB_ADDR_TYPE
+              value: eth
+          securityContext: &worker-security
+            runAsUser: 0
+            capabilities:
+              add: [IPC_LOCK, SYS_RESOURCE]
+          ports:
+            - name: system
+              containerPort: 9090
+            - name: nixl-side
+              containerPort: 5600
+      resources: &worker-resources
+        requests:
+          gpu: "2"
+          memory: 48Gi
+        limits:
+          gpu: "2"
+          memory: 96Gi
+          custom:
+            rdma/ib: "2"
+
+    VllmDecodeWorker:
+      componentType: worker
+      subComponentType: decode
+      replicas: 4
+      envFromSecret: hf-token-secret
+      sharedMemory:
+        size: 40Gi
+      extraPodMetadata:
+        annotations:
+          k8s.v1.cni.cncf.io/networks: qwen32-bench/qwen-roce
+      volumeMounts:
+        - name: model-cache
+          mountPoint: /opt/models
+        - name: compilation-cache
+          mountPoint: /home/dynamo/.cache/vllm
+          useAsCompilationCache: true
+      extraPodSpec:
+        hostNetwork: false
+        dnsPolicy: ClusterFirst
+        mainContainer:
+          image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.3.0
+          workingDir: /workspace
+          command: [/bin/sh, -c]
+          args:
+            - |
+              ulimit -l unlimited
+              exec python3 -m dynamo.vllm \
+                --model "$MODEL_PATH" \
+                --served-model-name "$SERVED_MODEL_NAME" \
+                --tensor-parallel-size 2 \
+                --disaggregation-mode decode \
+                --kv-transfer-config "$KV_TRANSFER_CONFIG" \
+                --kv-events-config '{"publisher":"zmq","topic":"kv-events","endpoint":"tcp://*:20080","enable_kv_cache_events":true}' \
+                --gpu-memory-utilization 0.90 \
+                --max-model-len 40960 \
+                --enable-prefix-caching \
+                --block-size 128 \
+                --no-enable-log-requests
+          env: *worker-env
+          securityContext: *worker-security
+          ports:
+            - name: system
+              containerPort: 9090
+            - name: nixl-side
+              containerPort: 5600
+      resources: *worker-resources
+EOF
+```
+
+## 3. Validate and deploy
+
+```bash
+kubectl apply --dry-run=server -n "$NAMESPACE" -f "$EXP_DIR/deploy.yaml"
+kubectl apply -n "$NAMESPACE" -f "$EXP_DIR/deploy.yaml"
+kubectl wait -n "$NAMESPACE" --for=jsonpath='{.status.state}'=successful \
+  "dynamographdeployment/$DEPLOYMENT" --timeout=45m
+```
+
+## 4. Create and run the benchmark
+
+```bash
+tee "$EXP_DIR/perf.yaml" >/dev/null <<'EOF'
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: qwen3-32b-fp8-vllm-disagg-kv-offload-perf
+spec:
+  backoffLimit: 0
+  completions: 1
+  parallelism: 1
+  activeDeadlineSeconds: 10800
+  template:
+    metadata:
+      labels:
+        app: qwen3-32b-fp8-vllm-disagg-kv-offload-perf
+    spec:
+      restartPolicy: Never
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+        - key: nvidia.com/gpu
+          operator: Equal
+          value: "true"
+          effect: NoSchedule
+      containers:
+        - name: perf
+          image: python:3.11-slim
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/bash
+            - -lc
+          args:
+            - |
+              set -Eeuo pipefail
+
+              apt-get update
+              apt-get install -y --no-install-recommends \
+                build-essential ca-certificates curl gzip jq
+              rm -rf /var/lib/apt/lists/*
+              python -m pip install --no-cache-dir "aiperf==$AIPERF_VERSION"
+
+              echo "Waiting for $MODEL_NAME at http://$ENDPOINT/v1/models"
+              ready_deadline=$(( $(date +%s) + MODEL_READY_TIMEOUT_SECONDS ))
+              until curl -fsS --max-time 10 "http://$ENDPOINT/v1/models" |
+                jq -e --arg model "$MODEL_NAME" \
+                  '.data[]? | select(.id == $model)' >/dev/null; do
+                if [ "$(date +%s)" -ge "$ready_deadline" ]; then
+                  echo "Model readiness timed out" >&2
+                  exit 1
+                fi
+                sleep 5
+              done
+
+              mkdir -p "$TRACE_DIR" "$ARTIFACT_ROOT"
+              trace_file="$TRACE_DIR/conversation_trace.jsonl"
+              if [ ! -s "$trace_file" ]; then
+                curl -fL --retry 5 --retry-delay 5 \
+                  "$TRACE_URL" -o "${trace_file}.tmp"
+                test -s "${trace_file}.tmp"
+                mv "${trace_file}.tmp" "$trace_file"
+              fi
+
+              original_trace="$TRACE_DIR/conversation_trace.jsonl"
+              over_context_count=$(jq -s --argjson max "$MAX_CONTEXT_TOKENS" \
+                '[.[] | select((.input_length + .output_length) > $max)] | length' \
+                "$original_trace")
+              if [ "$over_context_count" -gt 0 ]; then
+                if [ "$TRACE_OVERFLOW_POLICY" != filter ]; then
+                  echo "$over_context_count requests exceed the $MAX_CONTEXT_TOKENS-token context" >&2
+                  exit 2
+                fi
+                trace_file="$TRACE_DIR/conversation_trace.maxctx${MAX_CONTEXT_TOKENS}.jsonl"
+                jq -c --argjson max "$MAX_CONTEXT_TOKENS" \
+                  'select((.input_length + .output_length) <= $max)' \
+                  "$original_trace" > "${trace_file}.tmp"
+                test -s "${trace_file}.tmp"
+                mv "${trace_file}.tmp" "$trace_file"
+                echo "Filtered $over_context_count requests above $MAX_CONTEXT_TOKENS tokens"
+              fi
+
+              original_trace_sha256=$(sha256sum "$original_trace" | awk '{print $1}')
+              trace_sha256=$(sha256sum "$trace_file" | awk '{print $1}')
+              original_request_count=$(wc -l < "$original_trace" | tr -d ' ')
+              request_count=$(wc -l < "$trace_file" | tr -d ' ')
+              run_id=$(date -u +%Y-%m-%dT%H-%M-%SZ)
+              run_dir="$ARTIFACT_ROOT/$EXPERIMENT_ID/$run_id"
+              artifact_dir="$run_dir/aiperf"
+              manifest="$run_dir/manifest.json"
+              mkdir -p "$artifact_dir"
+              chmod -R a+rwX "$run_dir"
+
+              start_epoch=$(date -u +%s)
+              start_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+              jq -n \
+                --arg run_id "$run_id" \
+                --arg experiment_id "$EXPERIMENT_ID" \
+                --arg deployment "$DEPLOYMENT_NAME" \
+                --arg model "$MODEL_NAME" \
+                --arg model_revision "$MODEL_REVISION" \
+                --arg aiperf_version "$AIPERF_VERSION" \
+                --arg original_trace_sha256 "$original_trace_sha256" \
+                --arg trace_sha256 "$trace_sha256" \
+                --arg start_utc "$start_utc" \
+                --argjson start_epoch "$start_epoch" \
+                --argjson original_request_count "$original_request_count" \
+                --argjson request_count "$request_count" \
+                --argjson filtered_request_count "$over_context_count" \
+                --argjson max_context_tokens "$MAX_CONTEXT_TOKENS" \
+                --argjson slo_ttft_ms "$SLO_TTFT_MS" \
+                --argjson slo_itl_ms "$SLO_ITL_MS" \
+                '{
+                  run_id: $run_id,
+                  experiment_id: $experiment_id,
+                  deployment: $deployment,
+                  model: $model,
+                  model_revision: $model_revision,
+                  aiperf_version: $aiperf_version,
+                  workload: "mooncake_trace_fixed_schedule",
+                  trace_overflow_policy: "filter",
+                  original_trace_sha256: $original_trace_sha256,
+                  trace_sha256: $trace_sha256,
+                  original_request_count: $original_request_count,
+                  request_count: $request_count,
+                  filtered_request_count: $filtered_request_count,
+                  max_context_tokens: $max_context_tokens,
+                  slo_ms: {ttft: $slo_ttft_ms, itl: $slo_itl_ms},
+                  benchmark_start_utc: $start_utc,
+                  benchmark_start_epoch: $start_epoch,
+                  benchmark_end_utc: null,
+                  benchmark_end_epoch: null,
+                  aiperf_exit_code: null
+                }' > "$manifest"
+
+              aiperf_exit=255
+              cleanup_aiperf_artifacts() {
+                rm -f -- \
+                  "$artifact_dir/inputs.json" \
+                  "$artifact_dir/profile_export_aiperf.csv" \
+                  "$artifact_dir/server_metrics_export.csv" \
+                  "$artifact_dir/logs/aiperf.log"
+                rmdir "$artifact_dir/logs" 2>/dev/null || true
+              }
+
+              compress_profile_export() {
+                if [ -f "$artifact_dir/profile_export.jsonl" ]; then
+                  gzip -6 -f "$artifact_dir/profile_export.jsonl"
+                fi
+              }
+
+              finalize() {
+                shell_exit=$?
+                if [ "$aiperf_exit" -eq 255 ]; then
+                  aiperf_exit=$shell_exit
+                fi
+                jq \
+                  --arg end_utc "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+                  --argjson end_epoch "$(date -u +%s)" \
+                  --argjson exit_code "$aiperf_exit" \
+                  '.benchmark_end_utc = $end_utc |
+                   .benchmark_end_epoch = $end_epoch |
+                   .aiperf_exit_code = $exit_code' \
+                  "$manifest" > "${manifest}.tmp" && mv "${manifest}.tmp" "$manifest"
+                compress_profile_export
+                cleanup_aiperf_artifacts
+                chmod -R a+rwX "$run_dir" 2>/dev/null || true
+                echo "Run artifacts: $run_dir"
+              }
+              trap finalize EXIT
+
+              set +e
+              aiperf profile \
+                --model "$MODEL_NAME" \
+                --tokenizer "$MODEL_NAME" \
+                --tokenizer-revision "$MODEL_REVISION" \
+                --input-file "$trace_file" \
+                --custom-dataset-type mooncake_trace \
+                --fixed-schedule \
+                --url "http://$ENDPOINT" \
+                --streaming \
+                --extra-inputs ignore_eos:true \
+                --use-server-token-count \
+                --no-gpu-telemetry \
+                --artifact-dir "$artifact_dir" \
+                --goodput "time_to_first_token:${SLO_TTFT_MS} inter_token_latency:${SLO_ITL_MS}" \
+                --ui simple \
+                2>&1 | tr '\r' '\n' | tee "$artifact_dir/aiperf.log"
+              aiperf_exit=${PIPESTATUS[0]}
+              set -e
+              exit "$aiperf_exit"
+          env:
+            - name: EXPERIMENT_ID
+              value: exp5-disagg-kv-aware-offload
+            - name: DEPLOYMENT_NAME
+              value: qwen3-32b-fp8-vllm-disagg-kv-offload
+            - name: MODEL_NAME
+              value: Qwen/Qwen3-32B-FP8
+            - name: MODEL_REVISION
+              value: aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df
+            - name: ENDPOINT
+              value: qwen3-32b-fp8-vllm-disagg-kv-offload-frontend:8000
+            - name: AIPERF_VERSION
+              value: "0.10.0"
+            - name: MODEL_READY_TIMEOUT_SECONDS
+              value: "2700"
+            - name: TRACE_URL
+              value: https://raw.githubusercontent.com/kvcache-ai/Mooncake/main/FAST25-release/traces/conversation_trace.jsonl
+            - name: TRACE_DIR
+              value: /perf-cache/traces
+            - name: TRACE_OVERFLOW_POLICY
+              value: filter
+            - name: MAX_CONTEXT_TOKENS
+              value: "40960"
+            - name: ARTIFACT_ROOT
+              value: /perf-cache/artifacts
+            - name: SLO_TTFT_MS
+              value: "2000"
+            - name: SLO_ITL_MS
+              value: "25"
+            - name: HF_HOME
+              value: /opt/models
+            - name: HF_HUB_OFFLINE
+              value: "1"
+            - name: TRANSFORMERS_OFFLINE
+              value: "1"
+            - name: AIPERF_HTTP_CONNECTION_LIMIT
+              value: "512"
+            - name: PYTHONUNBUFFERED
+              value: "1"
+          resources:
+            requests:
+              cpu: "8"
+              memory: 16Gi
+            limits:
+              cpu: "16"
+              memory: 32Gi
+          volumeMounts:
+            - name: model-cache
+              mountPath: /opt/models
+              readOnly: true
+            - name: perf-cache
+              mountPath: /perf-cache
+      volumes:
+        - name: model-cache
+          persistentVolumeClaim:
+            claimName: model-cache
+        - name: perf-cache
+          persistentVolumeClaim:
+            claimName: perf-cache
+EOF
+
+kubectl apply --dry-run=server -n "$NAMESPACE" -f "$EXP_DIR/perf.yaml"
+kubectl apply -n "$NAMESPACE" -f "$EXP_DIR/perf.yaml"
+kubectl logs -n "$NAMESPACE" -f "job/$PERF_JOB"
+```
+
+## 5. Clean up
+
+```bash
+kubectl delete job "$PERF_JOB" -n "$NAMESPACE" --ignore-not-found
+kubectl delete dynamographdeployment "$DEPLOYMENT" -n "$NAMESPACE" --ignore-not-found
+```
