@@ -21,12 +21,18 @@ This repository tracks LLM deployment experiments, setup runbooks, and benchmark
 | Name | Engine | Status | GPUs | Topology | Recipe Link |
 | :--- | :--- | :---: | :---: | :--- | :--- |
 | **Llama-3.1-8B-Instruct** | vLLM | Working | 16 | Cross-node TP=16 | [Recipe](models/llama-8B/setup.md) |
-| **Qwen3-32B FP8 Aggregated** | vLLM / SGLang | Working | 16 | 8 aggregated workers × TP=2 (4 per node) | [vLLM](models/qwen3-32B/vllm/agg-routing/README.md) / [SGLang](models/qwen3-32B/sglang/agg-routing/README.md) |
-| **Qwen3-32B FP8 Disaggregated (vLLM)** | vLLM | Working | 16 | 6 prefill × TP=2 + 2 decode × TP=2 | [Recipe](models/qwen3-32B/vllm/disagg-routing/README.md) |
-| **Qwen3-32B FP8 Disaggregated (SGLang)** | SGLang | Working | 8 | 2 prefill × TP=2 + 1 decode × TP=4 | [Recipe](models/qwen3-32B/sglang/disagg-routing/README.md) |
-| **Qwen3-32B FP8 KV-Aware Disaggregated** | vLLM / SGLang | Working | 16 | 6 prefill × TP=2 + 2 decode × TP=2 (KV-aware) | [vLLM](models/qwen3-32B/vllm/disagg-routing-kv-aware/README.md) / [SGLang](models/qwen3-32B/sglang/disagg-routing-kv-aware/README.md) |
+| **Qwen3-32B FP8 Aggregated** | vLLM | Working | 16 | 8 workers × TP=2 | [Recipe](models/qwen3-32B/vllm/01-agg-routing/) |
+| **Qwen3-32B FP8 Disaggregated (6P2D)** | vLLM | Working | 16 | 6 prefill × TP=2 + 2 decode × TP=2 | [Recipe](models/qwen3-32B/vllm/02-disagg-routing/) |
+| **Qwen3-32B FP8 Disaggregated (4P4D)** | vLLM | Working | 16 | 4 prefill × TP=2 + 4 decode × TP=2 | [Recipe](models/qwen3-32B/vllm/03-disagg-routing-4p4d/) |
+| **Qwen3-32B FP8 KV-Aware Disaggregated** | vLLM | Working | 16 | 4 prefill × TP=2 + 4 decode × TP=2 | [Recipe](models/qwen3-32B/vllm/04-disagg-routing-kv-aware/) |
+| **Qwen3-32B FP8 KV-Aware + CPU KV Offload** | vLLM | Working | 16 | 4 prefill × TP=2 + 4 decode × TP=2, 32 GiB/engine CPU KV tier | [Recipe](models/qwen3-32B/vllm/05-disagg-routing-kv-aware-offloading/) |
+| **Qwen3-32B FP8 Aggregated** | SGLang | Working | 16 | 8 workers × TP=2 (4 per node) | [Recipe](models/qwen3-32B/sglang/agg-routing/README.md) |
+| **Qwen3-32B FP8 Disaggregated** | SGLang | Working | 8 | 2 prefill × TP=2 + 1 decode × TP=4 | [Recipe](models/qwen3-32B/sglang/disagg-routing/README.md) |
+| **Qwen3-32B FP8 KV-Aware Disaggregated** | SGLang | Working | 16 | 6 prefill × TP=2 + 2 decode × TP=2 | [Recipe](models/qwen3-32B/sglang/disagg-routing-kv-aware/README.md) |
 | **Qwen3.6-35B-A3B FP8 Aggregated** | SGLang | Working | 2–16 | 1–8 aggregated workers × TP=2 (KEDA autoscaling) | [Recipe](models/qwen3.6-35B-A3B/sglang/agg-autoscaling/README.md) |
 | **Qwen3.6-35B-A3B FP8 Disaggregated** | SGLang | Working | 16 | 4P+4D, TP=2, DP=2, EP=2 (CPU KV offload) | [Recipe](models/qwen3.6-35B-A3B/sglang/disagg/tp1-ep2-4p4d/README.md) |
+| **Qwen3-235B-A22B FP8 Aggregated** | vLLM | Working | 16 | 4 workers × TP=4 | [Recipe](models/qwen3-235B-fp8/vllm/agg-round-robin/) |
+| **Qwen3-235B-A22B FP8 Disaggregated** | vLLM | Working | 16 | 2 prefill × TP=4 + 2 decode × TP=4 | [Recipe](models/qwen3-235B-fp8/vllm/disagg/) |
 | **Qwen3-235B-A22B FP8** | SGLang | Working | 16 | 4 aggregated workers × TP=4 | [Recipe](models/qwen3-235B-A22B/sglang/agg/README.md) |
 | **GLM-5.2-FP8** | vLLM | Working | 16 | 1 two-node replica, TP=16 | [Recipe](models/glm-5.2-fp8/vllm/agg/README.md) |
 | **DeepSeek-V4-Flash FP8** | SGLang | Experimental | 16 | 2 aggregated workers × TP=8 | [Recipe](models/deepseek-v4-flash-fp8/sglang/agg/README.md) |
@@ -55,7 +61,42 @@ We are currently processing and extracting all raw AIPerf benchmark artifacts, D
 
 # The results
 
-### 1. Baseline KV-Aware vs. KV-Aware + Offloading
+### 1. Aggregated vs. Disaggregated Serving
+
+We evaluated aggregate and PD Disaggregated serving for Qwen3-235B-A22B FP8 with vLLM on 16xH100 GPUs. The aggregate configuration used four TP=4 workers, while the disaggregated configuration used two TP=4 prefill workers and two TP=4 decode workers. Both were tested at concurrency 32 with synthetic 4,000-token inputs and 200-token outputs.
+
+<p align="center">
+  <img src="assets/qwen3-235b-fp8-agg-vs-disagg.png" width="1000" />
+</p>
+
+While disaggregation delivered 11.6% higher raw output-token throughput and a lower ITL tail, but its SLO-qualified request ratio fell from 75.0% to 49.7%. This was contrary to our working hypothesis since we expected separating prefill and decode to reduce interference and improve, or at least preserve, SLO-qualified throughput. 
+
+After analyzing the worker and GPU mertrics, we've identified one GPU rank with higher temperature and reduced performance. Since each worker used TP=4, the slow rank could stall the other ranks (3 GPUs) in its worker, harming the overall performance. It is also why exactly nearly half (49.7%) qualified SLO.
+
+We therefore treat this measurements as functional validation. In order to measure the actual performance difference, we would need to re-run compare under consistent hardware condition.
+
+### 2. Disaggregation vs. KV-Aware Routing vs. CPU KV Offloading
+
+We evaluated five Qwen3-32B FP8 configurations with vLLM using the [Mooncake conversation trace](https://github.com/kvcache-ai/Mooncake/blob/main/FAST25-release/traces/conversation_trace.jsonl). Starting from eight aggregated TP=2 workers, we compared 6P2D and 4P4D disaggregation, KV-aware routing, and CPU KV cache offloading.
+
+<p align="center">
+  <img src="assets/qwen3-32b-fp8-throughput-goodput-slo.png" width="1000" />
+</p>
+
+As seen in the figure, Exp 4(4P4D KV-aware configuration) delivered the strongest observed goodput and SLO request pass rate.
+
+We expected Exp 2 (6P2D) to perform better than Exp 3 (4P4D) because the workload was input-heavy (9.3K average ISL, 339 average OSL). However Exp 3 performed better. GPU utilization showed that despite the input-heavy workload, the system was still **decode-bound** - decode GPUs were saturated, while prefill GPUs were underutilized.
+
+Exp 5(Exp4 with KV cache offloading) didn't demonstrate a measurable benefit from CPU KV-cache offloading. While there was substantial GPU-to-CPU offload traffic, no CPU-to-GPU reloads were observed, likely because KV-cache pressure of fixed trace remained low.
+
+<p align="center">
+  <img src="assets/qwen3-32b-fp8-ttft-tail.png" width="1000" />
+</p>
+
+The aggregated and 6P2D round-robin configurations developed very large TTFT tails compared to other experiments. Exp 2 has high TTFT because Dynamo measures TTFT until the first token is streamed from a **decode worker**.
+
+
+### 3. Baseline KV-Aware vs. KV-Aware + Offloading
 
 We found that offloading really helps with improving overall performance it also handles significantly higher prefill KV transfer throughput (GB/s) than the baseline.
 
@@ -67,7 +108,7 @@ You can see the results below:
 
 ![baseline kvaware & KV-offload Grafana dashboard](assets/baseline-vs-offloading.svg)
 
-### 2. Non-Parallelism (TP=1, 4P+4D) vs. Parallelism (TP=2, 2P+2D) on 8 GPUs
+### 4. Non-Parallelism (TP=1, 4P+4D) vs. Parallelism (TP=2, 2P+2D) on 8 GPUs
 
 We found a really interesting take on Tensor Parallelism (`TP=1` vs. `TP=2`) when analyzing the AIPerf benchmark exports across concurrencies 1 to 128:
 
@@ -81,7 +122,7 @@ You can see the benchmark comparison below:
 
 ![non-parallelism & parallelism ](assets/non-parallelism-vs-parallelism.svg)
 
-### 3. NIXL KV Transfer Profiling & HiCache Offloading
+### 5. NIXL KV Transfer Profiling & HiCache Offloading
 
 We ran a 1,500-second prefill-heavy experiment sweep across concurrencies 1–32 (300s per point, 16 warmup requests per point) on **Qwen3.6-35B-A3B FP8** deployed across 16 H100 GPUs (4P+4D disaggregated, `DP=2`, `EP=2`). Each request used a 32K context window with OSL 256 and **75% prefix reuse** (64 prefix groups) to stress KV locality and host-cache offloading.
 
@@ -94,7 +135,7 @@ We ran a 1,500-second prefill-heavy experiment sweep across concurrencies 1–32
 
 ![NIXL KV transfer profiling](assets/NIXL-profiling.svg)
 
-### 4. Event-Driven Autoscaling using KEDA
+### 6. Event-Driven Autoscaling using KEDA
 
 We tried baseline event-driven autoscaling with KEDA on the **Qwen3.6-35B-A3B FP8** model (aggregated SGLang workers, TP=2), triggering scale-out based on the `dynamo_frontend_active_requests` metric (target threshold of 16 active requests per worker).
 
