@@ -61,7 +61,7 @@ We are currently processing and extracting all raw AIPerf benchmark artifacts, D
 
 # The results
 
-### 1. Aggregated vs. Disaggregated Serving
+<!-- ### 1. Aggregated vs. Disaggregated Serving
 
 We evaluated aggregate and PD Disaggregated serving for Qwen3-235B-A22B FP8 with vLLM on 16xH100 GPUs. The aggregate configuration used four TP=4 workers, while the disaggregated configuration used two TP=4 prefill workers and two TP=4 decode workers. Both were tested at concurrency 32 with synthetic 4,000-token inputs and 200-token outputs.
 
@@ -73,9 +73,9 @@ While disaggregation delivered 11.6% higher raw output-token throughput and a lo
 
 After analyzing the worker and GPU mertrics, we've identified one GPU rank with higher temperature and reduced performance. Since each worker used TP=4, the slow rank could stall the other ranks (3 GPUs) in its worker, harming the overall performance. It is also why exactly nearly half (49.7%) qualified SLO.
 
-We therefore treat this measurements as functional validation. In order to measure the actual performance difference, we would need to re-run compare under consistent hardware condition.
+We therefore treat this measurements as functional validation. In order to measure the actual performance difference, we would need to re-run compare under consistent hardware condition. -->
 
-### 2. Disaggregation vs. KV-Aware Routing vs. CPU KV Offloading
+### 1. Disaggregation vs. KV-Aware Routing vs. CPU KV Offloading
 
 We evaluated five Qwen3-32B FP8 configurations with vLLM using the [Mooncake conversation trace](https://github.com/kvcache-ai/Mooncake/blob/main/FAST25-release/traces/conversation_trace.jsonl). Starting from eight aggregated TP=2 workers, we compared 6P2D and 4P4D disaggregation, KV-aware routing, and CPU KV cache offloading.
 
@@ -96,7 +96,7 @@ Exp 5(Exp4 with KV cache offloading) didn't demonstrate a measurable benefit fro
 The aggregated and 6P2D round-robin configurations developed very large TTFT tails compared to other experiments. Exp 2 has high TTFT because Dynamo measures TTFT until the first token is streamed from a **decode worker**.
 
 
-### 3. Baseline KV-Aware vs. KV-Aware + Offloading
+### 2. Baseline KV-Aware vs. KV-Aware + Offloading
 
 We found that offloading really helps with improving overall performance it also handles significantly higher prefill KV transfer throughput (GB/s) than the baseline.
 
@@ -108,7 +108,7 @@ You can see the results below:
 
 ![baseline kvaware & KV-offload Grafana dashboard](assets/baseline-vs-offloading.svg)
 
-### 4. Non-Parallelism (TP=1, 4P+4D) vs. Parallelism (TP=2, 2P+2D) on 8 GPUs
+### 3. Non-Parallelism (TP=1, 4P+4D) vs. Parallelism (TP=2, 2P+2D) on 8 GPUs
 
 We found a really interesting take on Tensor Parallelism (`TP=1` vs. `TP=2`) when analyzing the AIPerf benchmark exports across concurrencies 1 to 128:
 
@@ -122,7 +122,7 @@ You can see the benchmark comparison below:
 
 ![non-parallelism & parallelism ](assets/non-parallelism-vs-parallelism.svg)
 
-### 5. NIXL KV Transfer Profiling & HiCache Offloading
+### 4. NIXL KV Transfer Profiling & HiCache Offloading
 
 We ran a 1,500-second prefill-heavy experiment sweep across concurrencies 1–32 (300s per point, 16 warmup requests per point) on **Qwen3.6-35B-A3B FP8** deployed across 16 H100 GPUs (4P+4D disaggregated, `DP=2`, `EP=2`). Each request used a 32K context window with OSL 256 and **75% prefix reuse** (64 prefix groups) to stress KV locality and host-cache offloading.
 
@@ -135,7 +135,7 @@ We ran a 1,500-second prefill-heavy experiment sweep across concurrencies 1–32
 
 ![NIXL KV transfer profiling](assets/NIXL-profiling.svg)
 
-### 6. Event-Driven Autoscaling using KEDA
+### 5. Event-Driven Autoscaling using KEDA
 
 We tried baseline event-driven autoscaling with KEDA on the **Qwen3.6-35B-A3B FP8** model (aggregated SGLang workers, TP=2), triggering scale-out based on the `dynamo_frontend_active_requests` metric (target threshold of 16 active requests per worker).
 
