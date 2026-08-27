@@ -1,4 +1,18 @@
-# 16x H100 LLM Inference Cluster
+# Dynamo Deployment Guide
+
+<p align="center">
+  <img src="assets/dynamo-deployment-guide.png" alt="Dynamo Deployment Guide" width="90%" />
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/NVIDIA%20Dynamo-1.3.0-76B900?style=flat-square&logo=nvidia&logoColor=white" alt="NVIDIA Dynamo 1.3.0" />
+  <img src="https://img.shields.io/badge/hardware-H100%2080GB%20SXM5-2D8CFF?style=flat-square&logo=nvidia&logoColor=white" alt="NVIDIA H100 80GB SXM5" />
+  <img src="https://img.shields.io/badge/Kubernetes-v1.35-326CE5?style=flat-square&logo=kubernetes&logoColor=white" alt="Kubernetes v1.35" />
+  <img src="https://img.shields.io/badge/vLLM-0.23.0-4B8BBE?style=flat-square" alt="vLLM 0.23.0" />
+  <img src="https://img.shields.io/badge/SGLang-0.5.14-7B61FF?style=flat-square" alt="SGLang 0.5.14" />
+  <img src="https://img.shields.io/badge/network-RoCE%20v2-00A67E?style=flat-square" alt="RoCE v2 networking" />
+  <img src="https://img.shields.io/badge/AIPerf-0.10.0-F59E0B?style=flat-square" alt="NVIDIA AIPerf 0.10.0" />
+</p>
 
 This repository tracks LLM deployment experiments, setup runbooks, and benchmark results on a 2-node cluster with **16x NVIDIA H100 GPUs** (8x H100 per node).
 
