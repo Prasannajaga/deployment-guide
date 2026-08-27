@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "inference-cluster"
+version = "0.1.0"
+description = "Benchmarking, deployment recipes, and telemetry analysis for LLM inference clusters (SGLang, vLLM, Dynamo, NIXL)"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "aiperf>=0.10.0",
+    "matplotlib>=3.8.0",
+    "pandas>=2.1.0",
+    "numpy>=1.26.0",
+    "pyyaml>=6.0.1",
+    "requests>=2.31.0",
+]
+
+[project.optional-dependencies]
+notebook = [
+    "ipykernel>=6.29.0",
+    "jupyterlab>=4.0.0",
+    "ipywidgets>=8.1.0",
+]
+viz = [
+    "seaborn>=0.13.0",
+    "plotly>=5.20.0",
+]
+dev = [
+    "pytest>=8.0.0",
+    "ruff>=0.4.0",
+]
+all = [
+    "inference-cluster[notebook,viz,dev]",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["models*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"

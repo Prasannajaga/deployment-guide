@@ -93,8 +93,7 @@ spec:
                 --enable-cache-report \
                 --enable-hierarchical-cache \
                 --hicache-ratio 1.2 \
-                --hicache-write-policy write_through \
-                --hicache-mem-layout page_first_direct \
+                --hicache-write-policy write_back \
                 --hicache-io-backend direct \
                 --kv-events-config '{"publisher":"zmq","topic":"kv-events","endpoint":"tcp://*:5557"}' \
                 --enable-metrics

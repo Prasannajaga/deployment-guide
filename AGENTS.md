@@ -31,3 +31,9 @@ Pods.
 - Local repository paths are permitted only for agent-side file inspection,
   editing, validation, and clickable response links. They must not appear in
   commands intended for the user to execute on the cluster.
+
+# Technical documentation & writing style
+
+- Write technical explanations, parameter breakdowns, and architectural concepts in cohesive, natural paragraphs rather than bullet lists.
+- Avoid decomposing every configuration option or concept into fragmented bullet points.
+- Strictly limit bullet points to cases where they are essential (such as high-level checklists, structured multi-item tables, or sequential step lists).
