@@ -1,0 +1,5280 @@
+{
+  "schema_version": "1.0",
+  "aiperf_version": "0.10.0",
+  "benchmark_id": "2c1e60882ed7",
+  "summary": {
+    "endpoints_configured": [
+      "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics"
+    ],
+    "endpoints_successful": [
+      "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics"
+    ],
+    "start_time": "2026-08-13T16:31:09.110532",
+    "end_time": "2026-08-13T16:32:17.856929",
+    "endpoint_info": {
+      "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics": {
+        "total_fetches": 223,
+        "first_fetch_ns": 1786638654195260297,
+        "last_fetch_ns": 1786638737891239377,
+        "avg_fetch_latency_ms": 1.2640612062780268,
+        "unique_updates": 223,
+        "first_update_ns": 1786638654195260297,
+        "last_update_ns": 1786638737891239377,
+        "duration_seconds": 83.69597908,
+        "avg_update_interval_ms": 377.0089147747748,
+        "median_update_interval_ms": 333.437244
+      }
+    }
+  },
+  "metrics": {
+    "dynamo_component_router_input_sequence_tokens": {
+      "type": "histogram",
+      "description": "Input sequence length in tokens observed at the router",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_q36_sgl_pd_tp2_2p2d",
+            "router_id": "6190963965503731",
+            "worker_id": "15fea61ffb28f3"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0": 0,
+            "100": 0,
+            "210": 0,
+            "430": 0,
+            "870": 0,
+            "1800": 0,
+            "3600": 0,
+            "7400": 0,
+            "15000": 0,
+            "31000": 0,
+            "63000": 0,
+            "130000": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_component_router_inter_token_latency_seconds": {
+      "type": "histogram",
+      "description": "Average inter-token latency observed at the router",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_q36_sgl_pd_tp2_2p2d",
+            "router_id": "6190963965503731",
+            "worker_id": "15fea61ffb28f3"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0": 0,
+            "0.0019": 0,
+            "0.0035": 0,
+            "0.0067": 0,
+            "0.013": 0,
+            "0.024": 0,
+            "0.045": 0,
+            "0.084": 0,
+            "0.16": 0,
+            "0.3": 0,
+            "0.56": 0,
+            "1.1": 0,
+            "2": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_component_router_kv_hit_rate": {
+      "type": "histogram",
+      "description": "Predicted KV cache hit rate at routing time (0.0-1.0)",
+      "unit": "ratio",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_q36_sgl_pd_tp2_2p2d",
+            "router_id": "6190963965503731",
+            "worker_id": "15fea61ffb28f3"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0": 0,
+            "0.05": 0,
+            "0.1": 0,
+            "0.15000000000000002": 0,
+            "0.2": 0,
+            "0.25": 0,
+            "0.30000000000000004": 0,
+            "0.35000000000000003": 0,
+            "0.4": 0,
+            "0.45": 0,
+            "0.5": 0,
+            "0.55": 0,
+            "0.6000000000000001": 0,
+            "0.65": 0,
+            "0.7000000000000001": 0,
+            "0.75": 0,
+            "0.8": 0,
+            "0.8500000000000001": 0,
+            "0.9": 0,
+            "0.9500000000000001": 0,
+            "1": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_component_router_kv_transfer_estimated_latency_seconds": {
+      "type": "histogram",
+      "description": "Upper-bound estimation of KV cache transfer latency in disaggregated serving (prefill_complete to first_token)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_q36_sgl_pd_tp2_2p2d",
+            "router_id": "6190963965503731",
+            "worker_id": "15fea61ffb28f3"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0": 0,
+            "0.0019": 0,
+            "0.0037": 0,
+            "0.0072": 0,
+            "0.014": 0,
+            "0.027": 0,
+            "0.052": 0,
+            "0.1": 0,
+            "0.19": 0,
+            "0.37": 0,
+            "0.72": 0,
+            "1.4": 0,
+            "2.7": 0,
+            "5.2": 0,
+            "10": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_component_router_output_sequence_tokens": {
+      "type": "histogram",
+      "description": "Output sequence length in tokens observed at the router",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_q36_sgl_pd_tp2_2p2d",
+            "router_id": "6190963965503731",
+            "worker_id": "15fea61ffb28f3"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0": 0,
+            "100": 0,
+            "210": 0,
+            "430": 0,
+            "880": 0,
+            "1800": 0,
+            "3700": 0,
+            "7600": 0,
+            "16000": 0,
+            "32000": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_component_router_requests": {
+      "type": "counter",
+      "description": "Total number of requests processed by the router",
+      "unit": "requests",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_q36_sgl_pd_tp2_2p2d",
+            "router_id": "6190963965503731",
+            "worker_id": "15fea61ffb28f3"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_component_router_shared_cache_beyond_blocks": {
+      "type": "histogram",
+      "description": "Shared cache blocks beyond device overlap for the selected worker",
+      "unit": "blocks",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_q36_sgl_pd_tp2_2p2d",
+            "router_id": "6190963965503731",
+            "worker_id": "15fea61ffb28f3"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "1": 0,
+            "2": 0,
+            "4": 0,
+            "8": 0,
+            "16": 0,
+            "32": 0,
+            "64": 0,
+            "128": 0,
+            "256": 0,
+            "512": 0,
+            "1024": 0,
+            "2048": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_component_router_shared_cache_hit_rate": {
+      "type": "histogram",
+      "description": "Fraction of request blocks found in the shared KV cache (0.0-1.0)",
+      "unit": "ratio",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_q36_sgl_pd_tp2_2p2d",
+            "router_id": "6190963965503731",
+            "worker_id": "15fea61ffb28f3"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0": 0,
+            "0.05": 0,
+            "0.1": 0,
+            "0.15000000000000002": 0,
+            "0.2": 0,
+            "0.25": 0,
+            "0.30000000000000004": 0,
+            "0.35000000000000003": 0,
+            "0.4": 0,
+            "0.45": 0,
+            "0.5": 0,
+            "0.55": 0,
+            "0.6000000000000001": 0,
+            "0.65": 0,
+            "0.7000000000000001": 0,
+            "0.75": 0,
+            "0.8": 0,
+            "0.8500000000000001": 0,
+            "0.9": 0,
+            "0.9500000000000001": 0,
+            "1": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_component_router_time_to_first_token_seconds": {
+      "type": "histogram",
+      "description": "Time to first token observed at the router",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "dynamo_component": "backend",
+            "dynamo_namespace": "qwen32_bench_q36_sgl_pd_tp2_2p2d",
+            "router_id": "6190963965503731",
+            "worker_id": "15fea61ffb28f3"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0": 0,
+            "0.0022": 0,
+            "0.0047": 0,
+            "0.01": 0,
+            "0.022": 0,
+            "0.047": 0,
+            "0.1": 0,
+            "0.22": 0,
+            "0.47": 0,
+            "1": 0,
+            "2.2": 0,
+            "4.7": 0,
+            "10": 0,
+            "22": 0,
+            "48": 0,
+            "100": 0,
+            "220": 0,
+            "480": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_active_requests": {
+      "type": "gauge",
+      "description": "Number of requests currently being handled by the frontend, from HTTP handler entry to response completion",
+      "unit": "requests",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3.6-35B-A3B-FP8"
+          },
+          "stats": {
+            "avg": 22.58937198067633,
+            "min": 0.0,
+            "max": 25.0,
+            "std": 6.686494364405801,
+            "p1": 0.0,
+            "p5": 2.3000000000000007,
+            "p10": 11.600000000000001,
+            "p25": 25.0,
+            "p50": 25.0,
+            "p75": 25.0,
+            "p90": 25.0,
+            "p95": 25.0,
+            "p99": 25.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_cached_tokens": {
+      "type": "histogram",
+      "description": "Number of cached tokens (prefix cache hits) per request",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3.6-35B-A3B-FP8"
+          },
+          "stats": {
+            "count": 149,
+            "sum": 864256.0,
+            "avg": 5800.375838926175,
+            "count_rate": 2.1649748213598277,
+            "sum_rate": 12557.667645699055,
+            "p1_estimate": 870.0,
+            "p5_estimate": 870.0,
+            "p10_estimate": 870.0,
+            "p25_estimate": 1211.4893236542816,
+            "p50_estimate": 4038.7319751153896,
+            "p75_estimate": 7400.0,
+            "p90_estimate": 15000.0,
+            "p95_estimate": 17131.63030302059,
+            "p99_estimate": 31000.0
+          },
+          "buckets": {
+            "0": 0,
+            "100": 0,
+            "210": 0,
+            "430": 0,
+            "870": 0,
+            "1800": 48,
+            "3600": 48,
+            "7400": 95,
+            "15000": 133,
+            "31000": 146,
+            "63000": 149,
+            "130000": 149,
+            "+Inf": 149
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_detokenize_token_count": {
+      "type": "counter",
+      "description": "Total tokens detokenized",
+      "unit": "count",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "stats": {
+            "total": 55924352.0,
+            "rate": 812582.6441668733
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_detokenize_total_us": {
+      "type": "counter",
+      "description": "Cumulative detokenization time (microseconds)",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "stats": {
+            "total": 91461176.0,
+            "rate": 1328933.8467916762
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_disconnected_clients": {
+      "type": "gauge",
+      "description": "Number of disconnected clients",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_event_loop_delay_seconds": {
+      "type": "histogram",
+      "description": "Event loop delay canary: drift from 10ms sleep (seconds)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "stats": {
+            "count": 6234,
+            "sum": 6.482604231000209,
+            "avg": 0.001039878766602536,
+            "count_rate": 90.5802217205179,
+            "sum_rate": 0.0941924492413164,
+            "p1_estimate": 8.370764077435782e-6,
+            "p5_estimate": 0.00009631432668766507,
+            "p10_estimate": 0.0002062437799504517,
+            "p25_estimate": 0.0005360321397388114,
+            "p50_estimate": 0.001,
+            "p75_estimate": 0.0012097105081730086,
+            "p90_estimate": 0.0023099752919329385,
+            "p95_estimate": 0.002676730219852914,
+            "p99_estimate": 0.0029701341621888957
+          },
+          "buckets": {
+            "0": 0,
+            "0.001": 2835,
+            "0.005": 6234,
+            "0.01": 6234,
+            "0.025": 6234,
+            "0.05": 6234,
+            "0.1": 6234,
+            "0.25": 6234,
+            "0.5": 6234,
+            "1": 6234,
+            "+Inf": 6234
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_event_loop_stall": {
+      "type": "counter",
+      "description": "Number of event loop stalls (delay > 5ms)",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_inflight_requests": {
+      "type": "gauge",
+      "description": "Number of inflight requests",
+      "unit": "requests",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3.6-35B-A3B-FP8"
+          },
+          "stats": {
+            "avg": 22.58937198067633,
+            "min": 0.0,
+            "max": 25.0,
+            "std": 6.686494364405801,
+            "p1": 0.0,
+            "p5": 2.3000000000000007,
+            "p10": 11.600000000000001,
+            "p25": 25.0,
+            "p50": 25.0,
+            "p75": 25.0,
+            "p90": 25.0,
+            "p95": 25.0,
+            "p99": 25.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_input_sequence_tokens": {
+      "type": "histogram",
+      "description": "Input sequence length in tokens",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3.6-35B-A3B-FP8"
+          },
+          "stats": {
+            "count": 328,
+            "sum": 1853337.0,
+            "avg": 5650.417682926829,
+            "count_rate": 4.765850613463245,
+            "sum_rate": 26929.046580500395,
+            "p1_estimate": 969.2841671718976,
+            "p5_estimate": 969.2841671718976,
+            "p10_estimate": 969.2841671718976,
+            "p25_estimate": 969.2841671718976,
+            "p50_estimate": 3842.7575181747698,
+            "p75_estimate": 7674.202897976677,
+            "p90_estimate": 15337.15847336631,
+            "p95_estimate": 15337.15847336631,
+            "p99_estimate": 46559.94701521343
+          },
+          "buckets": {
+            "0": 0,
+            "100": 0,
+            "210": 0,
+            "430": 0,
+            "870": 0,
+            "1800": 122,
+            "3600": 122,
+            "7400": 225,
+            "15000": 290,
+            "31000": 319,
+            "63000": 328,
+            "130000": 328,
+            "+Inf": 328
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_inter_token_latency_seconds": {
+      "type": "histogram",
+      "description": "Inter-token latency in seconds",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3.6-35B-A3B-FP8"
+          },
+          "stats": {
+            "count": 166434,
+            "sum": 1280.5785480010145,
+            "avg": 0.007694212408528392,
+            "count_rate": 2418.291405491286,
+            "sum_rate": 18.606847739568618,
+            "p1_estimate": 0.0038309870104381973,
+            "p5_estimate": 0.005374093776718022,
+            "p10_estimate": 0.007427711900722173,
+            "p25_estimate": 0.007569384930555453,
+            "p50_estimate": 0.0078055066469442545,
+            "p75_estimate": 0.008041628363333055,
+            "p90_estimate": 0.008183301393166335,
+            "p95_estimate": 0.008230525736444096,
+            "p99_estimate": 0.008268305211066303
+          },
+          "buckets": {
+            "0": 0,
+            "0.0019": 0,
+            "0.0035": 10,
+            "0.0067": 14582,
+            "0.013": 165421,
+            "0.024": 166333,
+            "0.045": 166352,
+            "0.084": 166424,
+            "0.16": 166434,
+            "0.3": 166434,
+            "0.56": 166434,
+            "1.1": 166434,
+            "2": 166434,
+            "+Inf": 166434
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_lora_churn_loads_total": {
+      "type": "gauge",
+      "description": "Total LoRA loads (new placements) this tick",
+      "unit": "count",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_lora_churn_unloads_total": {
+      "type": "gauge",
+      "description": "Total LoRA unloads (removed placements) this tick",
+      "unit": "count",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_lora_overflow_count": {
+      "type": "gauge",
+      "description": "MCF solver overflow count (unplaceable replicas)",
+      "unit": "count",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_model_context_length": {
+      "type": "gauge",
+      "description": "Maximum context length in tokens for a worker serving the model",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3.6-35B-A3B-FP8"
+          },
+          "stats": {
+            "avg": 131072.0,
+            "min": 131072.0,
+            "max": 131072.0,
+            "std": 0.0,
+            "p1": 131072.0,
+            "p5": 131072.0,
+            "p10": 131072.0,
+            "p25": 131072.0,
+            "p50": 131072.0,
+            "p75": 131072.0,
+            "p90": 131072.0,
+            "p95": 131072.0,
+            "p99": 131072.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_model_kv_cache_block_size": {
+      "type": "gauge",
+      "description": "KV cache block size in tokens for a worker serving the model",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3.6-35B-A3B-FP8"
+          },
+          "stats": {
+            "avg": 64.0,
+            "min": 64.0,
+            "max": 64.0,
+            "std": 0.0,
+            "p1": 64.0,
+            "p5": 64.0,
+            "p10": 64.0,
+            "p25": 64.0,
+            "p50": 64.0,
+            "p75": 64.0,
+            "p90": 64.0,
+            "p95": 64.0,
+            "p99": 64.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_model_max_num_batched_tokens": {
+      "type": "gauge",
+      "description": "Maximum number of batched tokens for a worker serving the model",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3.6-35B-A3B-FP8"
+          },
+          "stats": {
+            "avg": 16384.0,
+            "min": 16384.0,
+            "max": 16384.0,
+            "std": 0.0,
+            "p1": 16384.0,
+            "p5": 16384.0,
+            "p10": 16384.0,
+            "p25": 16384.0,
+            "p50": 16384.0,
+            "p75": 16384.0,
+            "p90": 16384.0,
+            "p95": 16384.0,
+            "p99": 16384.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_model_migration_limit": {
+      "type": "gauge",
+      "description": "Maximum number of request migrations allowed for the model",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3.6-35B-A3B-FP8"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_model_total_kv_blocks": {
+      "type": "gauge",
+      "description": "Total KV cache blocks available for a worker serving the model",
+      "unit": "blocks",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3.6-35B-A3B-FP8"
+          },
+          "stats": {
+            "avg": 42090.0,
+            "min": 42090.0,
+            "max": 42090.0,
+            "std": 0.0,
+            "p1": 42090.0,
+            "p5": 42090.0,
+            "p10": 42090.0,
+            "p25": 42090.0,
+            "p50": 42090.0,
+            "p75": 42090.0,
+            "p90": 42090.0,
+            "p95": 42090.0,
+            "p99": 42090.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_output_sequence_tokens": {
+      "type": "histogram",
+      "description": "Output sequence length in tokens",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3.6-35B-A3B-FP8"
+          },
+          "stats": {
+            "count": 328,
+            "sum": 167680.0,
+            "avg": 511.219512195122,
+            "count_rate": 4.765850613463245,
+            "sum_rate": 2436.3958258095026,
+            "p1_estimate": 210.0,
+            "p5_estimate": 210.0,
+            "p10_estimate": 210.0,
+            "p25_estimate": 272.41577434167755,
+            "p50_estimate": 430.0,
+            "p75_estimate": 654.5840297387947,
+            "p90_estimate": 966.4847641651962,
+            "p95_estimate": 1197.9001487805804,
+            "p99_estimate": 1383.0324564728887
+          },
+          "buckets": {
+            "0": 0,
+            "100": 0,
+            "210": 0,
+            "430": 131,
+            "880": 263,
+            "1800": 328,
+            "3700": 328,
+            "7600": 328,
+            "16000": 328,
+            "32000": 328,
+            "+Inf": 328
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_output_tokens": {
+      "type": "counter",
+      "description": "Total number of output tokens generated (updates in real-time)",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3.6-35B-A3B-FP8"
+          },
+          "stats": {
+            "total": 166762.0,
+            "rate": 2423.057256104749
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_queued_requests": {
+      "type": "gauge",
+      "description": "Number of requests in HTTP processing queue",
+      "unit": "requests",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3.6-35B-A3B-FP8"
+          },
+          "stats": {
+            "avg": 4.033816425120773,
+            "min": 0.0,
+            "max": 25.0,
+            "std": 3.905909938999306,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 1.0,
+            "p50": 3.0,
+            "p75": 7.0,
+            "p90": 9.0,
+            "p95": 10.0,
+            "p99": 12.939999999999998
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_request_duration_seconds": {
+      "type": "histogram",
+      "description": "Duration of LLM requests",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3.6-35B-A3B-FP8"
+          },
+          "stats": {
+            "count": 328,
+            "sum": 1561.0327597560022,
+            "avg": 4.7592462187683,
+            "count_rate": 4.765850613463245,
+            "sum_rate": 22.68185651133953,
+            "p1_estimate": 2.0,
+            "p5_estimate": 2.0,
+            "p10_estimate": 2.097786565473809,
+            "p25_estimate": 2.853373067384248,
+            "p50_estimate": 4.27620262077563,
+            "p75_estimate": 6.646910648696579,
+            "p90_estimate": 8.0,
+            "p95_estimate": 8.805142099698848,
+            "p99_estimate": 9.749660779957386
+          },
+          "buckets": {
+            "0": 0,
+            "2": 2,
+            "4": 122,
+            "8": 271,
+            "16": 328,
+            "32": 328,
+            "64": 328,
+            "130": 328,
+            "260": 328,
+            "510": 328,
+            "+Inf": 328
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_requests": {
+      "type": "counter",
+      "description": "Total number of LLM requests processed",
+      "unit": "requests",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "endpoint": "chat_completions",
+            "error_type": "",
+            "model": "Qwen/Qwen3.6-35B-A3B-FP8",
+            "request_type": "stream",
+            "status": "success"
+          },
+          "stats": {
+            "total": 328.0,
+            "rate": 4.765850613463245
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "endpoint": "chat_completions",
+            "error_type": "",
+            "model": "Qwen/Qwen3.6-35B-A3B-FP8",
+            "request_type": "unary",
+            "status": "success"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_requests_started": {
+      "type": "counter",
+      "description": "Total number of LLM requests accepted by the frontend handler",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "endpoint": "chat_completions",
+            "model": "Qwen/Qwen3.6-35B-A3B-FP8",
+            "request_type": "stream"
+          },
+          "stats": {
+            "total": 328.0,
+            "rate": 4.765850613463245
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "endpoint": "chat_completions",
+            "model": "Qwen/Qwen3.6-35B-A3B-FP8",
+            "request_type": "unary"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_stage_duration_seconds": {
+      "type": "histogram",
+      "description": "Pipeline stage duration (seconds)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "stage": "preprocess"
+          },
+          "stats": {
+            "count": 328,
+            "sum": 3.0526305439999764,
+            "avg": 0.009306800439024317,
+            "count_rate": 4.765850613463245,
+            "sum_rate": 0.04435482058170404,
+            "p1_estimate": 0.001,
+            "p5_estimate": 0.001175392934104834,
+            "p10_estimate": 0.0014571307661643109,
+            "p25_estimate": 0.0023023442623427413,
+            "p50_estimate": 0.006228232479233729,
+            "p75_estimate": 0.012295600433599937,
+            "p90_estimate": 0.02372463596177173,
+            "p95_estimate": 0.029007501507542693,
+            "p99_estimate": 0.05
+          },
+          "buckets": {
+            "0.0001": 0,
+            "0.0005": 0,
+            "0.001": 0,
+            "0.005": 122,
+            "0.01": 216,
+            "0.05": 323,
+            "0.1": 328,
+            "0.5": 328,
+            "1": 328,
+            "2.5": 328,
+            "5": 328,
+            "+Inf": 328
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "stage": "route"
+          },
+          "stats": {
+            "count": 656,
+            "sum": 0.006368879999999995,
+            "avg": 9.70865853658536e-6,
+            "count_rate": 9.53170122692649,
+            "sum_rate": 0.000092540032484981,
+            "p1_estimate": 3.339944872897237e-6,
+            "p5_estimate": 3.85983986585137e-6,
+            "p10_estimate": 4.509708607044035e-6,
+            "p25_estimate": 6.459314830622031e-6,
+            "p50_estimate": 9.70865853658536e-6,
+            "p75_estimate": 0.000012958002242548686,
+            "p90_estimate": 0.000014907608466126684,
+            "p95_estimate": 0.00001555747720731935,
+            "p99_estimate": 0.000016077372200273483
+          },
+          "buckets": {
+            "0.0001": 656,
+            "0.0005": 656,
+            "0.001": 656,
+            "0.005": 656,
+            "0.01": 656,
+            "0.05": 656,
+            "0.1": 656,
+            "0.5": 656,
+            "1": 656,
+            "2.5": 656,
+            "5": 656,
+            "+Inf": 656
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "stage": "transport_roundtrip"
+          },
+          "stats": {
+            "count": 656,
+            "sum": 277.24716330700045,
+            "avg": 0.42263287089481777,
+            "count_rate": 9.53170122692649,
+            "sum_rate": 4.028410254047599,
+            "p1_estimate": 0.0006725765779746708,
+            "p5_estimate": 0.0007225841689068491,
+            "p10_estimate": 0.0007850936575720719,
+            "p25_estimate": 0.0010920289961956914,
+            "p50_estimate": 0.051082051246677224,
+            "p75_estimate": 0.44219293546943494,
+            "p90_estimate": 1.0238354584086338,
+            "p95_estimate": 2.3165986163033705,
+            "p99_estimate": 3.998145965606458
+          },
+          "buckets": {
+            "0.0001": 0,
+            "0.0005": 0,
+            "0.001": 114,
+            "0.005": 328,
+            "0.01": 328,
+            "0.05": 328,
+            "0.1": 328,
+            "0.5": 510,
+            "1": 586,
+            "2.5": 624,
+            "5": 656,
+            "+Inf": 656
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_stage_requests": {
+      "type": "gauge",
+      "description": "Number of requests currently in the given pipeline stage",
+      "unit": "requests",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "phase": "",
+            "stage": "preprocess"
+          },
+          "stats": {
+            "avg": 0.043478260869565216,
+            "min": 0.0,
+            "max": 1.0,
+            "std": 0.204425499190514,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 1.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_template_seconds": {
+      "type": "histogram",
+      "description": "Template application time in preprocessor (seconds)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "stats": {
+            "count": 328,
+            "sum": 0.03736481099999989,
+            "avg": 0.00011391710670731673,
+            "count_rate": 4.765850613463245,
+            "sum_rate": 0.0005429119128850234,
+            "p1_estimate": 0.00006342226310333864,
+            "p5_estimate": 0.00006706753102952481,
+            "p10_estimate": 0.00007162411593725753,
+            "p25_estimate": 0.0000846826962667038,
+            "p50_estimate": 0.0001,
+            "p75_estimate": 0.00013256449502561227,
+            "p90_estimate": 0.0001870764806200846,
+            "p95_estimate": 0.0002052471424849087,
+            "p99_estimate": 0.00021978367197676805
+          },
+          "buckets": {
+            "0.00001": 0,
+            "0.00005": 0,
+            "0.0001": 155,
+            "0.0005": 328,
+            "0.001": 328,
+            "0.005": 328,
+            "0.01": 328,
+            "0.05": 328,
+            "+Inf": 328
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_time_to_first_token_seconds": {
+      "type": "histogram",
+      "description": "Time to first token in seconds",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "model": "Qwen/Qwen3.6-35B-A3B-FP8"
+          },
+          "stats": {
+            "count": 328,
+            "sum": 280.21314697100024,
+            "avg": 0.8543083749115861,
+            "count_rate": 4.765850613463245,
+            "sum_rate": 4.07150609265917,
+            "p1_estimate": 0.1,
+            "p5_estimate": 0.13153045207507333,
+            "p10_estimate": 0.19076089579311123,
+            "p25_estimate": 0.26215805627368893,
+            "p50_estimate": 0.42139509781509066,
+            "p75_estimate": 0.8846677340982056,
+            "p90_estimate": 2.2794439280637517,
+            "p95_estimate": 3.195941553465853,
+            "p99_estimate": 4.150589420106701
+          },
+          "buckets": {
+            "0": 0,
+            "0.0022": 0,
+            "0.0047": 0,
+            "0.01": 0,
+            "0.022": 0,
+            "0.047": 0,
+            "0.1": 0,
+            "0.22": 36,
+            "0.47": 174,
+            "1": 254,
+            "2.2": 288,
+            "4.7": 328,
+            "10": 328,
+            "22": 328,
+            "48": 328,
+            "100": 328,
+            "220": 328,
+            "480": 328,
+            "+Inf": 328
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_tokenize_seconds": {
+      "type": "histogram",
+      "description": "Tokenization time in preprocessor (seconds)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "stats": {
+            "count": 328,
+            "sum": 3.0123867090000083,
+            "avg": 0.009184105820121977,
+            "count_rate": 4.765850613463245,
+            "sum_rate": 0.04377007635693968,
+            "p1_estimate": 0.001,
+            "p5_estimate": 0.0011168934404338167,
+            "p10_estimate": 0.0013904299898848229,
+            "p25_estimate": 0.0022110396382378408,
+            "p50_estimate": 0.006183685858792804,
+            "p75_estimate": 0.012324255783788459,
+            "p90_estimate": 0.02346107357094049,
+            "p95_estimate": 0.02867986541334536,
+            "p99_estimate": 0.045307909924508706
+          },
+          "buckets": {
+            "0.0001": 0,
+            "0.0005": 0,
+            "0.001": 0,
+            "0.005": 122,
+            "0.01": 216,
+            "0.05": 324,
+            "0.1": 328,
+            "0.5": 328,
+            "1": 328,
+            "+Inf": 328
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_tokenizer_cache_hits": {
+      "type": "counter",
+      "description": "Cumulative L1 tokenizer prefix-cache hits",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_tokenizer_cache_misses": {
+      "type": "counter",
+      "description": "Cumulative L1 tokenizer prefix-cache misses",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_tokenizer_latency_ms": {
+      "type": "histogram",
+      "description": "Tokenizer latency in milliseconds",
+      "unit": "milliseconds",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "operation": "detokenize"
+          },
+          "stats": {
+            "count": 328,
+            "sum": 0.537914209960938,
+            "avg": 0.001639982347441884,
+            "count_rate": 4.765850613463245,
+            "sum_rate": 0.007815910876624796,
+            "p1_estimate": 0.0016399823474418838,
+            "p5_estimate": 0.0016399823474418838,
+            "p10_estimate": 0.0016399823474418838,
+            "p25_estimate": 0.0016399823474418838,
+            "p50_estimate": 0.0016399823474418838,
+            "p75_estimate": 0.0016399823474418838,
+            "p90_estimate": 0.0016399823474418838,
+            "p95_estimate": 0.0016399823474418838,
+            "p99_estimate": 0.0016399823474418838
+          },
+          "buckets": {
+            "0.5": 328,
+            "1": 328,
+            "2": 328,
+            "4": 328,
+            "8": 328,
+            "16": 328,
+            "32": 328,
+            "64": 328,
+            "128": 328,
+            "256": 328,
+            "512": 328,
+            "+Inf": 328
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "operation": "tokenize"
+          },
+          "stats": {
+            "count": 328,
+            "sum": 2952.4349079999993,
+            "avg": 9.001325939024388,
+            "count_rate": 4.765850613463245,
+            "sum_rate": 42.898974748482,
+            "p1_estimate": 1.4129836183286948,
+            "p5_estimate": 1.5594042015080616,
+            "p10_estimate": 1.7424299304822697,
+            "p25_estimate": 2.0749637810565953,
+            "p50_estimate": 6.41323895236331,
+            "p75_estimate": 11.665406455627878,
+            "p90_estimate": 19.929080285911915,
+            "p95_estimate": 27.29093382949453,
+            "p99_estimate": 52.569355810906934
+          },
+          "buckets": {
+            "0.5": 0,
+            "1": 0,
+            "2": 73,
+            "4": 122,
+            "8": 209,
+            "16": 283,
+            "32": 317,
+            "64": 328,
+            "128": 328,
+            "256": 328,
+            "512": 328,
+            "+Inf": 328
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_worker_last_input_sequence_tokens": {
+      "type": "gauge",
+      "description": "Last observed input sequence tokens per worker",
+      "unit": "tokens",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "none",
+            "worker_id": "6781064353127574",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "avg": 5399.246376811594,
+            "min": 1036.0,
+            "max": 32780.0,
+            "std": 6115.721516084981,
+            "p1": 1036.0,
+            "p5": 1036.0,
+            "p10": 1036.0,
+            "p25": 1036.0,
+            "p50": 4108.0,
+            "p75": 8204.0,
+            "p90": 8204.0,
+            "p95": 16396.0,
+            "p99": 32780.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "none",
+            "worker_id": "7899736771556236",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "avg": 4973.951690821256,
+            "min": 1036.0,
+            "max": 32780.0,
+            "std": 5144.2718542351795,
+            "p1": 1036.0,
+            "p5": 1036.0,
+            "p10": 1036.0,
+            "p25": 1036.0,
+            "p50": 4108.0,
+            "p75": 6156.5,
+            "p90": 8206.0,
+            "p95": 16396.0,
+            "p99": 16396.0
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_worker_last_inter_token_latency_seconds": {
+      "type": "gauge",
+      "description": "Last observed inter-token latency per worker (seconds)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "none",
+            "worker_id": "1725859422479486",
+            "worker_type": "decode"
+          },
+          "stats": {
+            "avg": 0.0074399518309178755,
+            "min": 0.003733945,
+            "max": 0.012068291,
+            "std": 0.0011517379249774131,
+            "p1": 0.00421270634,
+            "p5": 0.0048416846,
+            "p10": 0.0060394662,
+            "p25": 0.0070576365,
+            "p50": 0.007666437,
+            "p75": 0.008167625500000001,
+            "p90": 0.008436808,
+            "p95": 0.0087731324,
+            "p99": 0.009576950659999998
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "none",
+            "worker_id": "4289892033455819",
+            "worker_type": "decode"
+          },
+          "stats": {
+            "avg": 0.007472055231884059,
+            "min": 0.00353509,
+            "max": 0.009440226,
+            "std": 0.001329463481772798,
+            "p1": 0.00355801418,
+            "p5": 0.004187461,
+            "p10": 0.004964876,
+            "p25": 0.007195849,
+            "p50": 0.007900879,
+            "p75": 0.0082565995,
+            "p90": 0.0085611542,
+            "p95": 0.008786101499999999,
+            "p99": 0.009054307
+          }
+        }
+      ]
+    },
+    "dynamo_frontend_worker_last_time_to_first_token_seconds": {
+      "type": "gauge",
+      "description": "Last observed time to first token per worker (seconds)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "none",
+            "worker_id": "6781064353127574",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "avg": 1.531562451270531,
+            "min": 0.125410475,
+            "max": 4.418829056,
+            "std": 1.4018820407519748,
+            "p1": 0.12575840198,
+            "p5": 0.148031347,
+            "p10": 0.161786201,
+            "p25": 0.3094476355,
+            "p50": 0.90810046,
+            "p75": 2.7363165805,
+            "p90": 3.4603036666,
+            "p95": 4.418829056,
+            "p99": 4.418829056
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "dp_rank": "none",
+            "worker_id": "7899736771556236",
+            "worker_type": "prefill"
+          },
+          "stats": {
+            "avg": 0.36470824876328506,
+            "min": 0.127349684,
+            "max": 1.133731349,
+            "std": 0.20807546130150195,
+            "p1": 0.1285385234,
+            "p5": 0.132171935,
+            "p10": 0.161186718,
+            "p25": 0.252399562,
+            "p50": 0.282197732,
+            "p75": 0.394423698,
+            "p90": 0.6502683208000001,
+            "p95": 0.8344858372999993,
+            "p99": 1.133731349
+          }
+        }
+      ]
+    },
+    "dynamo_request_plane_inflight_requests": {
+      "type": "gauge",
+      "description": "Currently in-flight requests at AddressedPushRouter",
+      "unit": "requests",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "stats": {
+            "avg": 26.92753623188406,
+            "min": 0.0,
+            "max": 50.0,
+            "std": 8.902904795812011,
+            "p1": 0.0,
+            "p5": 2.3000000000000007,
+            "p10": 14.600000000000001,
+            "p25": 25.0,
+            "p50": 29.0,
+            "p75": 32.0,
+            "p90": 34.0,
+            "p95": 36.0,
+            "p99": 38.94
+          }
+        }
+      ]
+    },
+    "dynamo_request_plane_queue_seconds": {
+      "type": "histogram",
+      "description": "Time from generate() entry to send_request() (seconds)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "stats": {
+            "count": 656,
+            "sum": 0.06863035299999987,
+            "avg": 0.00010461944054878029,
+            "count_rate": 9.53170122692649,
+            "sum_rate": 0.000997201249839172,
+            "p1_estimate": 3.4397461743733872e-6,
+            "p5_estimate": 9.942014655214405e-6,
+            "p10_estimate": 0.00001806985025626568,
+            "p25_estimate": 0.0000424533570594195,
+            "p50_estimate": 0.00007841900737680062,
+            "p75_estimate": 0.00014046211152502007,
+            "p90_estimate": 0.0002427540296080134,
+            "p95_estimate": 0.00028700552925600036,
+            "p99_estimate": 0.0003224067289743901
+          },
+          "buckets": {
+            "0.0001": 423,
+            "0.0005": 652,
+            "0.001": 656,
+            "0.005": 656,
+            "0.01": 656,
+            "0.05": 656,
+            "0.1": 656,
+            "0.5": 656,
+            "1": 656,
+            "+Inf": 656
+          }
+        }
+      ]
+    },
+    "dynamo_request_plane_roundtrip_ttft_seconds": {
+      "type": "histogram",
+      "description": "Time from send_request() to first response item (seconds)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "stats": {
+            "count": 656,
+            "sum": 277.1778275119999,
+            "avg": 0.4225271760853657,
+            "count_rate": 9.53170122692649,
+            "sum_rate": 4.027402802702666,
+            "p1_estimate": 0.0005447987137398066,
+            "p5_estimate": 0.0006637175405692461,
+            "p10_estimate": 0.0008111090417873975,
+            "p25_estimate": 0.001030220036494183,
+            "p50_estimate": 0.05096242719306091,
+            "p75_estimate": 0.4297278984075626,
+            "p90_estimate": 1.0365746868869126,
+            "p95_estimate": 2.3293378447816493,
+            "p99_estimate": 4.023927162053215
+          },
+          "buckets": {
+            "0.001": 131,
+            "0.005": 328,
+            "0.01": 328,
+            "0.025": 328,
+            "0.05": 328,
+            "0.1": 328,
+            "0.25": 393,
+            "0.5": 510,
+            "1": 586,
+            "2.5": 624,
+            "5": 656,
+            "+Inf": 656
+          }
+        }
+      ]
+    },
+    "dynamo_request_plane_send_seconds": {
+      "type": "histogram",
+      "description": "Time for send_request() to complete (seconds)",
+      "unit": "seconds",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "stats": {
+            "count": 656,
+            "sum": 0.2527582649999984,
+            "avg": 0.0003853022332317049,
+            "count_rate": 9.53170122692649,
+            "sum_rate": 0.0036725857692321584,
+            "p1_estimate": 0.0001,
+            "p5_estimate": 0.0001090452385866811,
+            "p10_estimate": 0.0001235681162321273,
+            "p25_estimate": 0.00016713674916846597,
+            "p50_estimate": 0.00023975113739569705,
+            "p75_estimate": 0.00031236552562292815,
+            "p90_estimate": 0.0005357443393659113,
+            "p95_estimate": 0.0008180719255728079,
+            "p99_estimate": 0.0036754896727345947
+          },
+          "buckets": {
+            "0.0001": 2,
+            "0.0005": 581,
+            "0.001": 639,
+            "0.005": 653,
+            "0.01": 655,
+            "0.05": 656,
+            "0.1": 656,
+            "0.5": 656,
+            "1": 656,
+            "+Inf": 656
+          }
+        }
+      ]
+    },
+    "dynamo_router_overhead_block_hashing_ms": {
+      "type": "histogram",
+      "description": "Time spent computing block hashes in milliseconds",
+      "unit": "milliseconds",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "router_id": "6190963965503731"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0.001": 0,
+            "0.002": 0,
+            "0.004": 0,
+            "0.008": 0,
+            "0.016": 0,
+            "0.032": 0,
+            "0.064": 0,
+            "0.128": 0,
+            "0.256": 0,
+            "0.512": 0,
+            "1.024": 0,
+            "2.048": 0,
+            "4.096": 0,
+            "8.192": 0,
+            "16.384": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_router_overhead_indexer_find_matches_ms": {
+      "type": "histogram",
+      "description": "Time spent in indexer find_matches in milliseconds",
+      "unit": "milliseconds",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "router_id": "6190963965503731"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0.01": 0,
+            "0.03": 0,
+            "0.09": 0,
+            "0.27": 0,
+            "0.81": 0,
+            "2.43": 0,
+            "7.290000000000001": 0,
+            "21.870000000000005": 0,
+            "65.61000000000001": 0,
+            "196.83000000000004": 0,
+            "590.4900000000001": 0,
+            "1771.4700000000003": 0,
+            "5314.410000000001": 0,
+            "15943.230000000003": 0,
+            "47829.69000000001": 0,
+            "143489.07000000004": 0,
+            "430467.2100000001": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_router_overhead_scheduling_ms": {
+      "type": "histogram",
+      "description": "Time spent in scheduler worker selection in milliseconds",
+      "unit": "milliseconds",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "router_id": "6190963965503731"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0.01": 0,
+            "0.03": 0,
+            "0.09": 0,
+            "0.27": 0,
+            "0.81": 0,
+            "2.43": 0,
+            "7.290000000000001": 0,
+            "21.870000000000005": 0,
+            "65.61000000000001": 0,
+            "196.83000000000004": 0,
+            "590.4900000000001": 0,
+            "1771.4700000000003": 0,
+            "5314.410000000001": 0,
+            "15943.230000000003": 0,
+            "47829.69000000001": 0,
+            "143489.07000000004": 0,
+            "430467.2100000001": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_router_overhead_seq_hashing_ms": {
+      "type": "histogram",
+      "description": "Time spent computing sequence hashes in milliseconds",
+      "unit": "milliseconds",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "router_id": "6190963965503731"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0.001": 0,
+            "0.002": 0,
+            "0.004": 0,
+            "0.008": 0,
+            "0.016": 0,
+            "0.032": 0,
+            "0.064": 0,
+            "0.128": 0,
+            "0.256": 0,
+            "0.512": 0,
+            "1.024": 0,
+            "2.048": 0,
+            "4.096": 0,
+            "8.192": 0,
+            "16.384": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_router_overhead_shared_cache_query_ms": {
+      "type": "histogram",
+      "description": "Time spent querying the shared KV cache in milliseconds",
+      "unit": "milliseconds",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "router_id": "6190963965503731"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0.01": 0,
+            "0.03": 0,
+            "0.09": 0,
+            "0.27": 0,
+            "0.81": 0,
+            "2.43": 0,
+            "7.290000000000001": 0,
+            "21.870000000000005": 0,
+            "65.61000000000001": 0,
+            "196.83000000000004": 0,
+            "590.4900000000001": 0,
+            "1771.4700000000003": 0,
+            "5314.410000000001": 0,
+            "15943.230000000003": 0,
+            "47829.69000000001": 0,
+            "143489.07000000004": 0,
+            "430467.2100000001": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_router_overhead_total_ms": {
+      "type": "histogram",
+      "description": "Total routing overhead per request in milliseconds",
+      "unit": "milliseconds",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "router_id": "6190963965503731"
+          },
+          "stats": {
+            "count": 0
+          },
+          "buckets": {
+            "0.01": 0,
+            "0.03": 0,
+            "0.09": 0,
+            "0.27": 0,
+            "0.81": 0,
+            "2.43": 0,
+            "7.290000000000001": 0,
+            "21.870000000000005": 0,
+            "65.61000000000001": 0,
+            "196.83000000000004": 0,
+            "590.4900000000001": 0,
+            "1771.4700000000003": 0,
+            "5314.410000000001": 0,
+            "15943.230000000003": 0,
+            "47829.69000000001": 0,
+            "143489.07000000004": 0,
+            "430467.2100000001": 0,
+            "+Inf": 0
+          }
+        }
+      ]
+    },
+    "dynamo_router_shared_cache_errors": {
+      "type": "counter",
+      "description": "Total shared cache query errors",
+      "unit": "errors",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "router_id": "6190963965503731"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_alive_tasks": {
+      "type": "gauge",
+      "description": "Number of alive tasks in the runtime",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "stats": {
+            "avg": 177.61352657004832,
+            "min": 50.0,
+            "max": 270.0,
+            "std": 35.57905747355901,
+            "p1": 70.0,
+            "p5": 79.2,
+            "p10": 138.0,
+            "p25": 170.0,
+            "p50": 182.0,
+            "p75": 198.0,
+            "p90": 207.60000000000002,
+            "p95": 214.0,
+            "p99": 266.7599999999999
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_blocking_idle_threads": {
+      "type": "gauge",
+      "description": "Number of idle blocking threads",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_blocking_queue_depth": {
+      "type": "gauge",
+      "description": "Number of tasks in the blocking thread pool queue",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_blocking_threads": {
+      "type": "gauge",
+      "description": "Number of blocking threads",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_budget_forced_yield": {
+      "type": "counter",
+      "description": "Number of times tasks were forced to yield after exhausting budget",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_global_queue_depth": {
+      "type": "gauge",
+      "description": "Number of tasks in the runtime global queue",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_worker_busy_ratio": {
+      "type": "gauge",
+      "description": "Worker busy ratio (0-1) as integer mill ratio; >950 = saturated",
+      "unit": "ratio",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "0"
+          },
+          "stats": {
+            "avg": 89.22222222222223,
+            "min": 22.0,
+            "max": 1000.0,
+            "std": 195.9807769672037,
+            "p1": 22.12,
+            "p5": 27.0,
+            "p10": 29.0,
+            "p25": 30.0,
+            "p50": 33.0,
+            "p75": 47.5,
+            "p90": 99.60000000000005,
+            "p95": 643.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "1"
+          },
+          "stats": {
+            "avg": 3.0,
+            "min": 3.0,
+            "max": 3.0,
+            "std": 0.0,
+            "p1": 3.0,
+            "p5": 3.0,
+            "p10": 3.0,
+            "p25": 3.0,
+            "p50": 3.0,
+            "p75": 3.0,
+            "p90": 3.0,
+            "p95": 3.0,
+            "p99": 3.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "10"
+          },
+          "stats": {
+            "avg": 118.66183574879227,
+            "min": 3.0,
+            "max": 1000.0,
+            "std": 212.38989527303173,
+            "p1": 22.0,
+            "p5": 27.0,
+            "p10": 29.0,
+            "p25": 32.0,
+            "p50": 40.0,
+            "p75": 44.0,
+            "p90": 639.0,
+            "p95": 639.0,
+            "p99": 978.3399999999992
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "11"
+          },
+          "stats": {
+            "avg": 99.72463768115942,
+            "min": 43.0,
+            "max": 100.0,
+            "std": 3.961773867084421,
+            "p1": 100.0,
+            "p5": 100.0,
+            "p10": 100.0,
+            "p25": 100.0,
+            "p50": 100.0,
+            "p75": 100.0,
+            "p90": 100.0,
+            "p95": 100.0,
+            "p99": 100.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "12"
+          },
+          "stats": {
+            "avg": 210.20772946859904,
+            "min": 47.0,
+            "max": 211.0,
+            "std": 11.398787968453425,
+            "p1": 211.0,
+            "p5": 211.0,
+            "p10": 211.0,
+            "p25": 211.0,
+            "p50": 211.0,
+            "p75": 211.0,
+            "p90": 211.0,
+            "p95": 211.0,
+            "p99": 211.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "13"
+          },
+          "stats": {
+            "avg": 43.98550724637681,
+            "min": 41.0,
+            "max": 44.0,
+            "std": 0.20851441405707472,
+            "p1": 44.0,
+            "p5": 44.0,
+            "p10": 44.0,
+            "p25": 44.0,
+            "p50": 44.0,
+            "p75": 44.0,
+            "p90": 44.0,
+            "p95": 44.0,
+            "p99": 44.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "14"
+          },
+          "stats": {
+            "avg": 280.7004830917874,
+            "min": 13.0,
+            "max": 282.0,
+            "std": 18.696792460451043,
+            "p1": 282.0,
+            "p5": 282.0,
+            "p10": 282.0,
+            "p25": 282.0,
+            "p50": 282.0,
+            "p75": 282.0,
+            "p90": 282.0,
+            "p95": 282.0,
+            "p99": 282.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "15"
+          },
+          "stats": {
+            "avg": 70.21256038647343,
+            "min": 26.0,
+            "max": 1000.0,
+            "std": 143.48097278109287,
+            "p1": 26.06,
+            "p5": 29.0,
+            "p10": 30.6,
+            "p25": 31.0,
+            "p50": 34.0,
+            "p75": 41.0,
+            "p90": 50.0,
+            "p95": 455.0,
+            "p99": 967.2999999999988
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "16"
+          },
+          "stats": {
+            "avg": 199.1497584541063,
+            "min": 25.0,
+            "max": 605.0,
+            "std": 118.45900436843453,
+            "p1": 25.12,
+            "p5": 28.0,
+            "p10": 31.0,
+            "p25": 46.5,
+            "p50": 263.0,
+            "p75": 263.0,
+            "p90": 263.0,
+            "p95": 263.0,
+            "p99": 592.0999999999995
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "17"
+          },
+          "stats": {
+            "avg": 995.328502415459,
+            "min": 33.0,
+            "max": 1000.0,
+            "std": 67.21114613106377,
+            "p1": 1000.0,
+            "p5": 1000.0,
+            "p10": 1000.0,
+            "p25": 1000.0,
+            "p50": 1000.0,
+            "p75": 1000.0,
+            "p90": 1000.0,
+            "p95": 1000.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "18"
+          },
+          "stats": {
+            "avg": 996.5265700483092,
+            "min": 281.0,
+            "max": 1000.0,
+            "std": 49.973954569012264,
+            "p1": 1000.0,
+            "p5": 1000.0,
+            "p10": 1000.0,
+            "p25": 1000.0,
+            "p50": 1000.0,
+            "p75": 1000.0,
+            "p90": 1000.0,
+            "p95": 1000.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "19"
+          },
+          "stats": {
+            "avg": 134.60386473429952,
+            "min": 134.0,
+            "max": 259.0,
+            "std": 8.68810058571145,
+            "p1": 134.0,
+            "p5": 134.0,
+            "p10": 134.0,
+            "p25": 134.0,
+            "p50": 134.0,
+            "p75": 134.0,
+            "p90": 134.0,
+            "p95": 134.0,
+            "p99": 134.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "2"
+          },
+          "stats": {
+            "avg": 3.0,
+            "min": 3.0,
+            "max": 3.0,
+            "std": 0.0,
+            "p1": 3.0,
+            "p5": 3.0,
+            "p10": 3.0,
+            "p25": 3.0,
+            "p50": 3.0,
+            "p75": 3.0,
+            "p90": 3.0,
+            "p95": 3.0,
+            "p99": 3.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "20"
+          },
+          "stats": {
+            "avg": 1000.0,
+            "min": 1000.0,
+            "max": 1000.0,
+            "std": 0.0,
+            "p1": 1000.0,
+            "p5": 1000.0,
+            "p10": 1000.0,
+            "p25": 1000.0,
+            "p50": 1000.0,
+            "p75": 1000.0,
+            "p90": 1000.0,
+            "p95": 1000.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "21"
+          },
+          "stats": {
+            "avg": 120.41545893719807,
+            "min": 21.0,
+            "max": 1000.0,
+            "std": 143.90875396791898,
+            "p1": 21.18,
+            "p5": 31.0,
+            "p10": 34.0,
+            "p25": 39.0,
+            "p50": 49.0,
+            "p75": 182.0,
+            "p90": 182.0,
+            "p95": 212.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "22"
+          },
+          "stats": {
+            "avg": 60.990338164251206,
+            "min": 23.0,
+            "max": 516.0,
+            "std": 93.04691322948642,
+            "p1": 23.12,
+            "p5": 26.0,
+            "p10": 28.0,
+            "p25": 32.0,
+            "p50": 35.0,
+            "p75": 43.0,
+            "p90": 54.0,
+            "p95": 398.0,
+            "p99": 508.91999999999973
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "23"
+          },
+          "stats": {
+            "avg": 487.7294685990338,
+            "min": 487.0,
+            "max": 638.0,
+            "std": 10.495225507539432,
+            "p1": 487.0,
+            "p5": 487.0,
+            "p10": 487.0,
+            "p25": 487.0,
+            "p50": 487.0,
+            "p75": 487.0,
+            "p90": 487.0,
+            "p95": 487.0,
+            "p99": 487.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "24"
+          },
+          "stats": {
+            "avg": 265.19806763285027,
+            "min": 265.0,
+            "max": 306.0,
+            "std": 2.849696992113356,
+            "p1": 265.0,
+            "p5": 265.0,
+            "p10": 265.0,
+            "p25": 265.0,
+            "p50": 265.0,
+            "p75": 265.0,
+            "p90": 265.0,
+            "p95": 265.0,
+            "p99": 265.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "25"
+          },
+          "stats": {
+            "avg": 133.69082125603865,
+            "min": 70.0,
+            "max": 134.0,
+            "std": 4.448307499884263,
+            "p1": 134.0,
+            "p5": 134.0,
+            "p10": 134.0,
+            "p25": 134.0,
+            "p50": 134.0,
+            "p75": 134.0,
+            "p90": 134.0,
+            "p95": 134.0,
+            "p99": 134.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "26"
+          },
+          "stats": {
+            "avg": 80.5024154589372,
+            "min": 22.0,
+            "max": 1000.0,
+            "std": 165.36622711970887,
+            "p1": 22.18,
+            "p5": 26.0,
+            "p10": 28.0,
+            "p25": 31.0,
+            "p50": 33.0,
+            "p75": 44.0,
+            "p90": 161.0,
+            "p95": 161.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "27"
+          },
+          "stats": {
+            "avg": 78.90821256038647,
+            "min": 26.0,
+            "max": 957.0,
+            "std": 188.27125205326004,
+            "p1": 26.18,
+            "p5": 31.0,
+            "p10": 32.0,
+            "p25": 38.0,
+            "p50": 38.0,
+            "p75": 38.0,
+            "p90": 42.0,
+            "p95": 103.0,
+            "p99": 957.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "28"
+          },
+          "stats": {
+            "avg": 387.2463768115942,
+            "min": 12.0,
+            "max": 1000.0,
+            "std": 463.6933642949591,
+            "p1": 21.0,
+            "p5": 26.0,
+            "p10": 28.0,
+            "p25": 30.5,
+            "p50": 43.0,
+            "p75": 1000.0,
+            "p90": 1000.0,
+            "p95": 1000.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "29"
+          },
+          "stats": {
+            "avg": 271.1449275362319,
+            "min": 271.0,
+            "max": 301.0,
+            "std": 2.085144140570747,
+            "p1": 271.0,
+            "p5": 271.0,
+            "p10": 271.0,
+            "p25": 271.0,
+            "p50": 271.0,
+            "p75": 271.0,
+            "p90": 271.0,
+            "p95": 271.0,
+            "p99": 271.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "3"
+          },
+          "stats": {
+            "avg": 3.0,
+            "min": 3.0,
+            "max": 3.0,
+            "std": 0.0,
+            "p1": 3.0,
+            "p5": 3.0,
+            "p10": 3.0,
+            "p25": 3.0,
+            "p50": 3.0,
+            "p75": 3.0,
+            "p90": 3.0,
+            "p95": 3.0,
+            "p99": 3.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "30"
+          },
+          "stats": {
+            "avg": 61.58454106280193,
+            "min": 25.0,
+            "max": 587.0,
+            "std": 71.12965976106764,
+            "p1": 25.0,
+            "p5": 27.0,
+            "p10": 27.0,
+            "p25": 32.0,
+            "p50": 37.0,
+            "p75": 82.0,
+            "p90": 82.0,
+            "p95": 138.0,
+            "p99": 562.5199999999991
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "31"
+          },
+          "stats": {
+            "avg": 10.0,
+            "min": 10.0,
+            "max": 10.0,
+            "std": 0.0,
+            "p1": 10.0,
+            "p5": 10.0,
+            "p10": 10.0,
+            "p25": 10.0,
+            "p50": 10.0,
+            "p75": 10.0,
+            "p90": 10.0,
+            "p95": 10.0,
+            "p99": 10.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "4"
+          },
+          "stats": {
+            "avg": 15.93719806763285,
+            "min": 3.0,
+            "max": 16.0,
+            "std": 0.9035624609139904,
+            "p1": 16.0,
+            "p5": 16.0,
+            "p10": 16.0,
+            "p25": 16.0,
+            "p50": 16.0,
+            "p75": 16.0,
+            "p90": 16.0,
+            "p95": 16.0,
+            "p99": 16.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "5"
+          },
+          "stats": {
+            "avg": 7.975845410628019,
+            "min": 3.0,
+            "max": 8.0,
+            "std": 0.34752402342845795,
+            "p1": 8.0,
+            "p5": 8.0,
+            "p10": 8.0,
+            "p25": 8.0,
+            "p50": 8.0,
+            "p75": 8.0,
+            "p90": 8.0,
+            "p95": 8.0,
+            "p99": 8.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "6"
+          },
+          "stats": {
+            "avg": 8.971014492753623,
+            "min": 3.0,
+            "max": 9.0,
+            "std": 0.41702882811414943,
+            "p1": 9.0,
+            "p5": 9.0,
+            "p10": 9.0,
+            "p25": 9.0,
+            "p50": 9.0,
+            "p75": 9.0,
+            "p90": 9.0,
+            "p95": 9.0,
+            "p99": 9.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "7"
+          },
+          "stats": {
+            "avg": 76.22222222222223,
+            "min": 3.0,
+            "max": 1000.0,
+            "std": 197.97327192573118,
+            "p1": 23.0,
+            "p5": 25.0,
+            "p10": 28.0,
+            "p25": 30.0,
+            "p50": 32.0,
+            "p75": 33.0,
+            "p90": 47.00000000000006,
+            "p95": 131.0,
+            "p99": 1000.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "8"
+          },
+          "stats": {
+            "avg": 244.82608695652175,
+            "min": 3.0,
+            "max": 246.0,
+            "std": 16.88966753862306,
+            "p1": 246.0,
+            "p5": 246.0,
+            "p10": 246.0,
+            "p25": 246.0,
+            "p50": 246.0,
+            "p75": 246.0,
+            "p90": 246.0,
+            "p95": 246.0,
+            "p99": 246.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "9"
+          },
+          "stats": {
+            "avg": 364.2463768115942,
+            "min": 3.0,
+            "max": 366.0,
+            "std": 25.23024410090604,
+            "p1": 366.0,
+            "p5": 366.0,
+            "p10": 366.0,
+            "p25": 366.0,
+            "p50": 366.0,
+            "p75": 366.0,
+            "p90": 366.0,
+            "p95": 366.0,
+            "p99": 366.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_worker_local_queue_depth": {
+      "type": "gauge",
+      "description": "Number of tasks in worker local queue",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "0"
+          },
+          "stats": {
+            "avg": 0.028985507246376812,
+            "min": 0.0,
+            "max": 1.0,
+            "std": 0.16817245766502856,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 1.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "1"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "10"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "11"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "12"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "13"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "14"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "15"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "16"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "17"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "18"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "19"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "2"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "20"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "21"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "22"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "23"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "24"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "25"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "26"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "27"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "28"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "29"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "3"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "30"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "31"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "4"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "5"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "6"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "7"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "8"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "9"
+          },
+          "stats": {
+            "avg": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "p1": 0.0,
+            "p5": 0.0,
+            "p10": 0.0,
+            "p25": 0.0,
+            "p50": 0.0,
+            "p75": 0.0,
+            "p90": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_worker_mean_poll_time_ns": {
+      "type": "gauge",
+      "description": "Worker mean task poll time (nanoseconds)",
+      "unit": "nanoseconds",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "0"
+          },
+          "stats": {
+            "avg": 104343.29951690821,
+            "min": 22351.0,
+            "max": 1505418.0,
+            "std": 269062.41100707283,
+            "p1": 22496.2,
+            "p5": 27715.0,
+            "p10": 29544.0,
+            "p25": 30615.0,
+            "p50": 33478.0,
+            "p75": 48028.5,
+            "p90": 100238.20000000006,
+            "p95": 643049.0,
+            "p99": 1505418.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "1"
+          },
+          "stats": {
+            "avg": 3278.0,
+            "min": 3278.0,
+            "max": 3278.0,
+            "std": 0.0,
+            "p1": 3278.0,
+            "p5": 3278.0,
+            "p10": 3278.0,
+            "p25": 3278.0,
+            "p50": 3278.0,
+            "p75": 3278.0,
+            "p90": 3278.0,
+            "p95": 3278.0,
+            "p99": 3278.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "10"
+          },
+          "stats": {
+            "avg": 163984.8260869565,
+            "min": 3278.0,
+            "max": 4097615.0,
+            "std": 512177.6167015657,
+            "p1": 22551.0,
+            "p5": 27738.0,
+            "p10": 29235.0,
+            "p25": 32203.0,
+            "p50": 40062.0,
+            "p75": 44103.0,
+            "p90": 639786.0,
+            "p95": 639786.0,
+            "p99": 3890145.2599999923
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "11"
+          },
+          "stats": {
+            "avg": 100029.64251207729,
+            "min": 43512.0,
+            "max": 100304.0,
+            "std": 3947.3168677097983,
+            "p1": 100304.0,
+            "p5": 100304.0,
+            "p10": 100304.0,
+            "p25": 100304.0,
+            "p50": 100304.0,
+            "p75": 100304.0,
+            "p90": 100304.0,
+            "p95": 100304.0,
+            "p99": 100304.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "12"
+          },
+          "stats": {
+            "avg": 210760.8647342995,
+            "min": 47993.0,
+            "max": 211551.0,
+            "std": 11368.066844782341,
+            "p1": 211551.0,
+            "p5": 211551.0,
+            "p10": 211551.0,
+            "p25": 211551.0,
+            "p50": 211551.0,
+            "p75": 211551.0,
+            "p90": 211551.0,
+            "p95": 211551.0,
+            "p99": 211551.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "13"
+          },
+          "stats": {
+            "avg": 44943.961352657,
+            "min": 41022.0,
+            "max": 44963.0,
+            "std": 273.9184352663105,
+            "p1": 44963.0,
+            "p5": 44963.0,
+            "p10": 44963.0,
+            "p25": 44963.0,
+            "p50": 44963.0,
+            "p75": 44963.0,
+            "p90": 44963.0,
+            "p95": 44963.0,
+            "p99": 44963.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "14"
+          },
+          "stats": {
+            "avg": 281261.95652173914,
+            "min": 13247.0,
+            "max": 282563.0,
+            "std": 18718.755978731715,
+            "p1": 282563.0,
+            "p5": 282563.0,
+            "p10": 282563.0,
+            "p25": 282563.0,
+            "p50": 282563.0,
+            "p75": 282563.0,
+            "p90": 282563.0,
+            "p95": 282563.0,
+            "p99": 282563.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "15"
+          },
+          "stats": {
+            "avg": 81988.69082125604,
+            "min": 26806.0,
+            "max": 1786252.0,
+            "std": 225220.9917481504,
+            "p1": 26865.58,
+            "p5": 29484.0,
+            "p10": 30948.2,
+            "p25": 31358.0,
+            "p50": 34686.0,
+            "p75": 41059.0,
+            "p90": 50360.0,
+            "p95": 455162.0,
+            "p99": 1706386.599999997
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "16"
+          },
+          "stats": {
+            "avg": 199322.10144927536,
+            "min": 25378.0,
+            "max": 605695.0,
+            "std": 118345.60563428608,
+            "p1": 25496.14,
+            "p5": 28421.0,
+            "p10": 31016.0,
+            "p25": 47131.5,
+            "p50": 263027.0,
+            "p75": 263027.0,
+            "p90": 263027.0,
+            "p95": 263027.0,
+            "p99": 592770.5799999995
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "17"
+          },
+          "stats": {
+            "avg": 1640532.2995169081,
+            "min": 33588.0,
+            "max": 1648333.0,
+            "std": 112232.53584219704,
+            "p1": 1648333.0,
+            "p5": 1648333.0,
+            "p10": 1648333.0,
+            "p25": 1648333.0,
+            "p50": 1648333.0,
+            "p75": 1648333.0,
+            "p90": 1648333.0,
+            "p95": 1648333.0,
+            "p99": 1648333.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "18"
+          },
+          "stats": {
+            "avg": 1354817.6231884058,
+            "min": 281068.0,
+            "max": 1360030.0,
+            "std": 74993.0430732832,
+            "p1": 1360030.0,
+            "p5": 1360030.0,
+            "p10": 1360030.0,
+            "p25": 1360030.0,
+            "p50": 1360030.0,
+            "p75": 1360030.0,
+            "p90": 1360030.0,
+            "p95": 1360030.0,
+            "p99": 1360030.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "19"
+          },
+          "stats": {
+            "avg": 135146.81642512078,
+            "min": 134544.0,
+            "max": 259327.0,
+            "std": 8673.018043094651,
+            "p1": 134544.0,
+            "p5": 134544.0,
+            "p10": 134544.0,
+            "p25": 134544.0,
+            "p50": 134544.0,
+            "p75": 134544.0,
+            "p90": 134544.0,
+            "p95": 134544.0,
+            "p99": 134544.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "2"
+          },
+          "stats": {
+            "avg": 3278.0,
+            "min": 3278.0,
+            "max": 3278.0,
+            "std": 0.0,
+            "p1": 3278.0,
+            "p5": 3278.0,
+            "p10": 3278.0,
+            "p25": 3278.0,
+            "p50": 3278.0,
+            "p75": 3278.0,
+            "p90": 3278.0,
+            "p95": 3278.0,
+            "p99": 3278.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "20"
+          },
+          "stats": {
+            "avg": 2097077.618357488,
+            "min": 1453043.0,
+            "max": 2100204.0,
+            "std": 44980.79890519685,
+            "p1": 2100204.0,
+            "p5": 2100204.0,
+            "p10": 2100204.0,
+            "p25": 2100204.0,
+            "p50": 2100204.0,
+            "p75": 2100204.0,
+            "p90": 2100204.0,
+            "p95": 2100204.0,
+            "p99": 2100204.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "21"
+          },
+          "stats": {
+            "avg": 138505.98550724637,
+            "min": 21425.0,
+            "max": 2191182.0,
+            "std": 268608.9437216797,
+            "p1": 21611.78,
+            "p5": 31303.0,
+            "p10": 34634.0,
+            "p25": 39639.5,
+            "p50": 49872.0,
+            "p75": 182519.0,
+            "p90": 182519.0,
+            "p95": 212041.0,
+            "p99": 2123802.0599999973
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "22"
+          },
+          "stats": {
+            "avg": 61548.19323671498,
+            "min": 23744.0,
+            "max": 516578.0,
+            "std": 93040.39920843736,
+            "p1": 23824.64,
+            "p5": 26882.0,
+            "p10": 28878.2,
+            "p25": 32425.0,
+            "p50": 35067.0,
+            "p75": 43644.0,
+            "p90": 54207.0,
+            "p95": 398584.0,
+            "p99": 509498.35999999975
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "23"
+          },
+          "stats": {
+            "avg": 488111.57004830916,
+            "min": 487381.0,
+            "max": 638609.0,
+            "std": 10511.072603007766,
+            "p1": 487381.0,
+            "p5": 487381.0,
+            "p10": 487381.0,
+            "p25": 487381.0,
+            "p50": 487381.0,
+            "p75": 487381.0,
+            "p90": 487381.0,
+            "p95": 487381.0,
+            "p99": 487381.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "24"
+          },
+          "stats": {
+            "avg": 265672.55555555556,
+            "min": 265474.0,
+            "max": 306575.0,
+            "std": 2856.7169773866094,
+            "p1": 265474.0,
+            "p5": 265474.0,
+            "p10": 265474.0,
+            "p25": 265474.0,
+            "p50": 265474.0,
+            "p75": 265474.0,
+            "p90": 265474.0,
+            "p95": 265474.0,
+            "p99": 265474.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "25"
+          },
+          "stats": {
+            "avg": 134341.39130434784,
+            "min": 70150.0,
+            "max": 134653.0,
+            "std": 4483.2684166411655,
+            "p1": 134653.0,
+            "p5": 134653.0,
+            "p10": 134653.0,
+            "p25": 134653.0,
+            "p50": 134653.0,
+            "p75": 134653.0,
+            "p90": 134653.0,
+            "p95": 134653.0,
+            "p99": 134653.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "26"
+          },
+          "stats": {
+            "avg": 85118.34299516908,
+            "min": 22973.0,
+            "max": 1256154.0,
+            "std": 189082.90028428208,
+            "p1": 23147.36,
+            "p5": 26971.0,
+            "p10": 28528.6,
+            "p25": 31259.0,
+            "p50": 33351.0,
+            "p75": 44372.0,
+            "p90": 161860.0,
+            "p95": 161860.0,
+            "p99": 1242185.6999999995
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "27"
+          },
+          "stats": {
+            "avg": 79630.51690821256,
+            "min": 26402.0,
+            "max": 957787.0,
+            "std": 188284.2906711866,
+            "p1": 26607.32,
+            "p5": 31045.0,
+            "p10": 32648.8,
+            "p25": 38827.0,
+            "p50": 38827.0,
+            "p75": 38827.0,
+            "p90": 42877.0,
+            "p95": 103530.0,
+            "p99": 957787.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "28"
+          },
+          "stats": {
+            "avg": 539355.381642512,
+            "min": 12896.0,
+            "max": 1418952.0,
+            "std": 665110.7870072491,
+            "p1": 21483.0,
+            "p5": 26790.0,
+            "p10": 28380.0,
+            "p25": 31003.5,
+            "p50": 43366.0,
+            "p75": 1418952.0,
+            "p90": 1418952.0,
+            "p95": 1418952.0,
+            "p99": 1418952.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "29"
+          },
+          "stats": {
+            "avg": 272114.8309178744,
+            "min": 271971.0,
+            "max": 301744.0,
+            "std": 2069.366549907096,
+            "p1": 271971.0,
+            "p5": 271971.0,
+            "p10": 271971.0,
+            "p25": 271971.0,
+            "p50": 271971.0,
+            "p75": 271971.0,
+            "p90": 271971.0,
+            "p95": 271971.0,
+            "p99": 271971.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "3"
+          },
+          "stats": {
+            "avg": 3278.0,
+            "min": 3278.0,
+            "max": 3278.0,
+            "std": 0.0,
+            "p1": 3278.0,
+            "p5": 3278.0,
+            "p10": 3278.0,
+            "p25": 3278.0,
+            "p50": 3278.0,
+            "p75": 3278.0,
+            "p90": 3278.0,
+            "p95": 3278.0,
+            "p99": 3278.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "30"
+          },
+          "stats": {
+            "avg": 61959.618357487925,
+            "min": 25024.0,
+            "max": 587431.0,
+            "std": 71082.07126931632,
+            "p1": 25486.0,
+            "p5": 27565.0,
+            "p10": 27565.0,
+            "p25": 32002.0,
+            "p50": 37875.0,
+            "p75": 82052.0,
+            "p90": 82052.0,
+            "p95": 138214.0,
+            "p99": 562967.7399999991
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "31"
+          },
+          "stats": {
+            "avg": 10102.0,
+            "min": 10102.0,
+            "max": 10102.0,
+            "std": 0.0,
+            "p1": 10102.0,
+            "p5": 10102.0,
+            "p10": 10102.0,
+            "p25": 10102.0,
+            "p50": 10102.0,
+            "p75": 10102.0,
+            "p90": 10102.0,
+            "p95": 10102.0,
+            "p99": 10102.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "4"
+          },
+          "stats": {
+            "avg": 16419.2077294686,
+            "min": 3278.0,
+            "max": 16483.0,
+            "std": 917.8109458745573,
+            "p1": 16483.0,
+            "p5": 16483.0,
+            "p10": 16483.0,
+            "p25": 16483.0,
+            "p50": 16483.0,
+            "p75": 16483.0,
+            "p90": 16483.0,
+            "p95": 16483.0,
+            "p99": 16483.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "5"
+          },
+          "stats": {
+            "avg": 8227.971014492754,
+            "min": 3278.0,
+            "max": 8252.0,
+            "std": 345.71689850663006,
+            "p1": 8252.0,
+            "p5": 8252.0,
+            "p10": 8252.0,
+            "p25": 8252.0,
+            "p50": 8252.0,
+            "p75": 8252.0,
+            "p90": 8252.0,
+            "p95": 8252.0,
+            "p99": 8252.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "6"
+          },
+          "stats": {
+            "avg": 9366.444444444445,
+            "min": 3278.0,
+            "max": 9396.0,
+            "std": 425.2303950670609,
+            "p1": 9396.0,
+            "p5": 9396.0,
+            "p10": 9396.0,
+            "p25": 9396.0,
+            "p50": 9396.0,
+            "p75": 9396.0,
+            "p90": 9396.0,
+            "p95": 9396.0,
+            "p99": 9396.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "7"
+          },
+          "stats": {
+            "avg": 143139.39130434784,
+            "min": 3278.0,
+            "max": 2691985.0,
+            "std": 510104.83530908177,
+            "p1": 23569.0,
+            "p5": 25288.0,
+            "p10": 28120.0,
+            "p25": 30872.0,
+            "p50": 32918.0,
+            "p75": 33127.0,
+            "p90": 47232.80000000006,
+            "p95": 131751.0,
+            "p99": 2677065.2799999993
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "8"
+          },
+          "stats": {
+            "avg": 245295.15942028986,
+            "min": 3278.0,
+            "max": 246470.0,
+            "std": 16903.012461122707,
+            "p1": 246470.0,
+            "p5": 246470.0,
+            "p10": 246470.0,
+            "p25": 246470.0,
+            "p50": 246470.0,
+            "p75": 246470.0,
+            "p90": 246470.0,
+            "p95": 246470.0,
+            "p99": 246470.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "9"
+          },
+          "stats": {
+            "avg": 364497.50724637683,
+            "min": 3278.0,
+            "max": 366251.0,
+            "std": 25228.36747117953,
+            "p1": 366251.0,
+            "p5": 366251.0,
+            "p10": 366251.0,
+            "p25": 366251.0,
+            "p50": 366251.0,
+            "p75": 366251.0,
+            "p90": 366251.0,
+            "p95": 366251.0,
+            "p99": 366251.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_worker_overflow_count": {
+      "type": "counter",
+      "description": "Total number of times worker local queue overflowed",
+      "unit": "count",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "0"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "1"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "10"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "11"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "12"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "13"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "14"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "15"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "16"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "17"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "18"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "19"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "2"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "20"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "21"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "22"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "23"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "24"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "25"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "26"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "27"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "28"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "29"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "3"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "30"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "31"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "4"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "5"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "6"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "7"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "8"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "9"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_worker_park_count": {
+      "type": "counter",
+      "description": "Total number of times worker has parked",
+      "unit": "count",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "0"
+          },
+          "stats": {
+            "total": 25449.0,
+            "rate": 369.77479348178696
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "1"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "10"
+          },
+          "stats": {
+            "total": 29570.0,
+            "rate": 429.65305682959803
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "11"
+          },
+          "stats": {
+            "total": 27.0,
+            "rate": 0.3923108736692305
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "12"
+          },
+          "stats": {
+            "total": 24.0,
+            "rate": 0.3487207765948716
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "13"
+          },
+          "stats": {
+            "total": 25.0,
+            "rate": 0.3632508089529912
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "14"
+          },
+          "stats": {
+            "total": 173.0,
+            "rate": 2.5136955979546993
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "15"
+          },
+          "stats": {
+            "total": 17109.0,
+            "rate": 248.59432361506907
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "16"
+          },
+          "stats": {
+            "total": 10014.0,
+            "rate": 145.50374403421017
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "17"
+          },
+          "stats": {
+            "total": 2.0,
+            "rate": 0.029060064716239297
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "18"
+          },
+          "stats": {
+            "total": 4.0,
+            "rate": 0.058120129432478594
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "19"
+          },
+          "stats": {
+            "total": 21.0,
+            "rate": 0.30513067952051265
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "2"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "20"
+          },
+          "stats": {
+            "total": 2.0,
+            "rate": 0.029060064716239297
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "21"
+          },
+          "stats": {
+            "total": 18030.0,
+            "rate": 261.9764834168973
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "22"
+          },
+          "stats": {
+            "total": 18842.0,
+            "rate": 273.7748696916904
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "23"
+          },
+          "stats": {
+            "total": 16.0,
+            "rate": 0.23248051772991438
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "24"
+          },
+          "stats": {
+            "total": 10.0,
+            "rate": 0.1453003235811965
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "25"
+          },
+          "stats": {
+            "total": 31.0,
+            "rate": 0.45043100310170914
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "26"
+          },
+          "stats": {
+            "total": 32131.0,
+            "rate": 466.8644696987424
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "27"
+          },
+          "stats": {
+            "total": 14766.0,
+            "rate": 214.55045779999475
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "28"
+          },
+          "stats": {
+            "total": 22750.0,
+            "rate": 330.55823614722203
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "29"
+          },
+          "stats": {
+            "total": 22.0,
+            "rate": 0.31966071187863226
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "3"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "30"
+          },
+          "stats": {
+            "total": 17697.0,
+            "rate": 257.1379826416434
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "31"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "4"
+          },
+          "stats": {
+            "total": 7.0,
+            "rate": 0.10171022650683754
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "5"
+          },
+          "stats": {
+            "total": 5.0,
+            "rate": 0.07265016179059824
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "6"
+          },
+          "stats": {
+            "total": 2.0,
+            "rate": 0.029060064716239297
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "7"
+          },
+          "stats": {
+            "total": 22127.0,
+            "rate": 321.5060259881135
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "8"
+          },
+          "stats": {
+            "total": 33.0,
+            "rate": 0.4794910678179484
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "9"
+          },
+          "stats": {
+            "total": 17.0,
+            "rate": 0.24701055008803405
+          }
+        }
+      ]
+    },
+    "dynamo_tokio_worker_steal_count": {
+      "type": "counter",
+      "description": "Total number of tasks stolen by worker",
+      "unit": "count",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "0"
+          },
+          "stats": {
+            "total": 2763.0,
+            "rate": 40.14647940548459
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "1"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "10"
+          },
+          "stats": {
+            "total": 3399.0,
+            "rate": 49.387579985248685
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "11"
+          },
+          "stats": {
+            "total": 9.0,
+            "rate": 0.13077029122307685
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "12"
+          },
+          "stats": {
+            "total": 6.0,
+            "rate": 0.0871801941487179
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "13"
+          },
+          "stats": {
+            "total": 5.0,
+            "rate": 0.07265016179059824
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "14"
+          },
+          "stats": {
+            "total": 12.0,
+            "rate": 0.1743603882974358
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "15"
+          },
+          "stats": {
+            "total": 2119.0,
+            "rate": 30.789138566855538
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "16"
+          },
+          "stats": {
+            "total": 1210.0,
+            "rate": 17.581339153324777
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "17"
+          },
+          "stats": {
+            "total": 1.0,
+            "rate": 0.014530032358119649
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "18"
+          },
+          "stats": {
+            "total": 1.0,
+            "rate": 0.014530032358119649
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "19"
+          },
+          "stats": {
+            "total": 3.0,
+            "rate": 0.04359009707435895
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "2"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "20"
+          },
+          "stats": {
+            "total": 1.0,
+            "rate": 0.014530032358119649
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "21"
+          },
+          "stats": {
+            "total": 1993.0,
+            "rate": 28.95835448973246
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "22"
+          },
+          "stats": {
+            "total": 2308.0,
+            "rate": 33.535314682540154
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "23"
+          },
+          "stats": {
+            "total": 1.0,
+            "rate": 0.014530032358119649
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "24"
+          },
+          "stats": {
+            "total": 4.0,
+            "rate": 0.058120129432478594
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "25"
+          },
+          "stats": {
+            "total": 4.0,
+            "rate": 0.058120129432478594
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "26"
+          },
+          "stats": {
+            "total": 3620.0,
+            "rate": 52.598717136393134
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "27"
+          },
+          "stats": {
+            "total": 1731.0,
+            "rate": 25.151486011905114
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "28"
+          },
+          "stats": {
+            "total": 2515.0,
+            "rate": 36.54303138067092
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "29"
+          },
+          "stats": {
+            "total": 3.0,
+            "rate": 0.04359009707435895
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "3"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "30"
+          },
+          "stats": {
+            "total": 2098.0,
+            "rate": 30.484007887335025
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "31"
+          },
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "4"
+          },
+          "stats": {
+            "total": 1.0,
+            "rate": 0.014530032358119649
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "5"
+          },
+          "stats": {
+            "total": 3.0,
+            "rate": 0.04359009707435895
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "6"
+          },
+          "stats": {
+            "total": 3.0,
+            "rate": 0.04359009707435895
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "7"
+          },
+          "stats": {
+            "total": 2508.0,
+            "rate": 36.44132115416408
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "8"
+          },
+          "stats": {
+            "total": 6.0,
+            "rate": 0.0871801941487179
+          }
+        },
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "labels": {
+            "worker": "9"
+          },
+          "stats": {
+            "total": 2.0,
+            "rate": 0.029060064716239297
+          }
+        }
+      ]
+    },
+    "dynamo_transport_tcp_bytes_received": {
+      "type": "counter",
+      "description": "Total bytes received by TCP request client",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        }
+      ]
+    },
+    "dynamo_transport_tcp_bytes_sent": {
+      "type": "counter",
+      "description": "Total bytes sent by TCP request client",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "stats": {
+            "total": 19161857.0,
+            "rate": 278422.4022516615
+          }
+        }
+      ]
+    },
+    "dynamo_transport_tcp_errors": {
+      "type": "counter",
+      "description": "Total TCP request errors (send failure or timeout)",
+      "unit": "errors",
+      "series": [
+        {
+          "endpoint_url": "http://q36-sgl-pd-tp2-2p2d-frontend:8000/metrics",
+          "stats": {
+            "total": 0.0,
+            "rate": 0.0
+          }
+        }
+      ]
+    }
+  },
+  "input_config": {
+    "models": {
+      "items": [
+        {
+          "name": "Qwen/Qwen3.6-35B-A3B-FP8"
+        }
+      ]
+    },
+    "endpoint": {
+      "urls": [
+        "http://q36-sgl-pd-tp2-2p2d-frontend:8000"
+      ],
+      "type": "chat",
+      "timeout": 3600.0,
+      "streaming": true,
+      "extra": {
+        "ignore_eos": true,
+        "temperature": 0.0,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      }
+    },
+    "datasets": [
+      {
+        "name": "main",
+        "type": "synthetic",
+        "entries": 4096,
+        "random_seed": 42,
+        "prompts": {
+          "isl": {
+            "mean": 550.0
+          },
+          "sequence_distribution": [
+            {
+              "isl": {
+                "mean": 1024.0,
+                "stddev": 0.0
+              },
+              "osl": {
+                "mean": 256.0,
+                "stddev": 0.0
+              },
+              "probability": 35.0
+            },
+            {
+              "isl": {
+                "mean": 4096.0,
+                "stddev": 0.0
+              },
+              "osl": {
+                "mean": 512.0,
+                "stddev": 0.0
+              },
+              "probability": 30.0
+            },
+            {
+              "isl": {
+                "mean": 8192.0,
+                "stddev": 0.0
+              },
+              "osl": {
+                "mean": 1024.0,
+                "stddev": 0.0
+              },
+              "probability": 20.0
+            },
+            {
+              "isl": {
+                "mean": 16384.0,
+                "stddev": 0.0
+              },
+              "osl": {
+                "mean": 512.0,
+                "stddev": 0.0
+              },
+              "probability": 10.0
+            },
+            {
+              "isl": {
+                "mean": 32768.0,
+                "stddev": 0.0
+              },
+              "osl": {
+                "mean": 256.0,
+                "stddev": 0.0
+              },
+              "probability": 5.0
+            }
+          ]
+        }
+      }
+    ],
+    "phases": [
+      {
+        "name": "warmup",
+        "type": "concurrency",
+        "exclude_from_results": true,
+        "requests": 16,
+        "concurrency": 64
+      },
+      {
+        "name": "profiling",
+        "type": "concurrency",
+        "duration": 60.0,
+        "concurrency": 64,
+        "grace_period": 600.0
+      }
+    ],
+    "artifacts": {
+      "dir": "/perf-cache/aiperf/qwen36-latency-20260813T162154Z/tp2-2p2d/isolated/quick-mixed-2P+2D/mixed-b6de4b5a8ef3/c64",
+      "records": [
+        "jsonl"
+      ],
+      "auto_plot": false,
+      "plot_required": false
+    },
+    "tokenizer": {
+      "name": "/opt/models/hub/models--Qwen--Qwen3.6-35B-A3B-FP8/snapshots/95a723d08a9490559dae23d0cff1d9466213d989"
+    },
+    "gpu_telemetry": {
+      "enabled": true
+    },
+    "server_metrics": {
+      "enabled": true,
+      "urls": [],
+      "formats": [
+        "json",
+        "csv",
+        "jsonl"
+      ]
+    },
+    "otel": {},
+    "mlflow": {},
+    "runtime": {
+      "ui": "simple"
+    }
+  }
+}
