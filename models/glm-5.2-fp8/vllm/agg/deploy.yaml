@@ -39,7 +39,7 @@ spec:
         size: 128Gi
       extraPodMetadata:
         annotations:
-          k8s.v1.cni.cncf.io/networks: qwen32-bench/qwen-roce
+          k8s.v1.cni.cncf.io/networks: roce
       extraPodSpec:
         hostNetwork: false
         dnsPolicy: ClusterFirst
