@@ -119,8 +119,9 @@ For the setup below, we ran CPU offloading with a HiCache ratio of 1.2 and up to
 We benchmarked this on sequence distribution `1024,256:35;4096,512:30;8192,1024:20;16384,512:10;32768,256:5` with a concurrency sweep of `8 16 32 64 96 128` and offloading GPU pressure to the CPU allows the GPU to focus more on compute intensive work instead of worrying about memory pressure, so it's clear that offloading helps you improve your throughput & overall performance!
 
 You can see the results below:
+![omparison dashboard](blogs/assets/offloading-concurrency-sweep-comparison.png)
 
-![baseline kvaware & KV-offload Grafana dashboard](assets/baseline-vs-offloading.svg)
+![comparison dashboard](blogs/assets/offloading-comparison.png) 
 
 ### 3. Non-Parallelism (TP=1, 4P+4D) vs. Parallelism (TP=2, 2P+2D) on 8 GPUs
 
@@ -134,7 +135,9 @@ So the trade-off is clear: `TP=2` gives lower streaming latency for individual r
 
 You can see the benchmark comparison below:
 
-![non-parallelism & parallelism ](assets/non-parallelism-vs-parallelism.svg)
+![non-parallelism & parallelism ](blogs/assets/parallelism-conccurency-sweep-dashboard.png)
+
+![non-parallelism & parallelism ](blogs/assets/parallelism-comparison-dashboard.png)
 
 ### 4. NIXL KV Transfer Profiling & HiCache Offloading
 

@@ -31,12 +31,12 @@ except ImportError:
 
 # Default Paths relative to the cluster authoring repo
 DEFAULT_BASELINE_JSON = Path(
-    "/data/inference/cluster/models/qwen3.6-35B-A3B/artifacts/tp1-ep2-4p4d/"
+    "/data/inference/cluster/benchmarks/qwen3.6-35B-A3B/tp1-ep2-4p4d/"
     "baseline-kv-aware/isl-64536_osl-256/c128/profile_export_aiperf.json"
 )
 
 DEFAULT_OFFLOAD_JSON = Path(
-    "/data/inference/cluster/models/qwen3.6-35B-A3B/artifacts/tp1-ep2-4p4d/"
+    "/data/inference/cluster/benchmarks/qwen3.6-35B-A3B/tp1-ep2-4p4d/"
     "baseline-kv-aware+offloading/isl-64536_osl-256/c128/profile_export_aiperf.json"
 )
 
@@ -591,7 +591,7 @@ def main():
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=Path("/data/inference/cluster/models/qwen3.6-35B-A3B/artifacts/tp1-ep2-4p4d/plots/c128"),
+        default=Path("/data/inference/cluster/benchmarks/qwen3.6-35B-A3B/tp1-ep2-4p4d/plots/c128"),
         help="Output directory for generated plots",
     )
 
