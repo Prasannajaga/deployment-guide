@@ -6,19 +6,21 @@ In this document, we will use `Qwen/Qwen3-32B-FP8` as an example. When adapting 
 
 | Setting | Value |
 | --- | --- |
-| Namespace | `qwen32-bench` |
+| Namespace | `dynamo-bench` |
 | PVC | `model-cache` |
 | Model | `Qwen/Qwen3-32B-FP8` |
 | Revision | `aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df` |
-| Container cache root | `/opt/models` |
+| Download Job cache root | `/model-store` |
+| Worker cache root | `/opt/models` |
 
 ## 1. Set variables and check prerequisites
 
 Run the commands in this guide from a Kubernetes administrator host. Store all generated manifests under a shared cluster-side experiment directory:
 
 ```bash
-export NAMESPACE=qwen32-bench
+export NAMESPACE=dynamo-bench
 export EXP_DIR=/ephemeral/shared/model-cache/qwen3-32b-fp8
+export MODEL_DOWNLOAD_JOB=qwen3-32b-fp8-download
 
 mkdir -p "$EXP_DIR"
 
@@ -99,19 +101,17 @@ kubectl get secret hf-token-secret -n "$NAMESPACE"
 
 ## 4. Create the one-time download Job
 
-The Job mounts the shared PVC at `/opt/models`, sets `HF_HOME` to the same location, and downloads an immutable model revision. The mount path is configurable, but it must be used consistently throughout the Job and deployment manifests. The Secret reference is optional, so the same Job works for public models without a Secret.
+The Job mounts the shared PVC at `/model-store`, sets `HF_HOME` to the same location, and downloads an immutable model revision. Workers mount the same PVC at `/opt/models`, so both paths expose the same cache contents. The Secret reference is optional, so the same Job works for public models without a Secret.
 
 ```bash
 tee "$EXP_DIR/model-download.yaml" >/dev/null <<'EOF'
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: qwen3-32b-fp8-model-download
+  name: qwen3-32b-fp8-download
+  namespace: dynamo-bench
 spec:
   template:
-    metadata:
-      labels:
-        app: qwen3-32b-fp8-model-download
     spec:
       restartPolicy: Never
       containers:
@@ -131,7 +131,7 @@ spec:
             - name: MODEL_REVISION
               value: aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df
             - name: HF_HOME
-              value: /opt/models
+              value: /model-store
             - name: HF_XET_HIGH_PERFORMANCE
               value: "1"
           envFrom:
@@ -140,7 +140,7 @@ spec:
                 optional: true
           volumeMounts:
             - name: model-cache
-              mountPath: /opt/models
+              mountPath: /model-store
       volumes:
         - name: model-cache
           persistentVolumeClaim:
@@ -154,16 +154,16 @@ Validate the Job against the live cluster API, apply it, and wait for it to comp
 
 ```bash
 kubectl get pvc model-cache -n "$NAMESPACE"
-kubectl delete job qwen3-32b-fp8-model-download \
+kubectl delete job "$MODEL_DOWNLOAD_JOB" \
   -n "$NAMESPACE" --ignore-not-found
 kubectl apply --dry-run=server -n "$NAMESPACE" \
   -f "$EXP_DIR/model-download.yaml"
 kubectl apply -n "$NAMESPACE" -f "$EXP_DIR/model-download.yaml"
 kubectl wait -n "$NAMESPACE" \
-  --for=condition=Complete job/qwen3-32b-fp8-model-download \
+  --for=condition=Complete "job/$MODEL_DOWNLOAD_JOB" \
   --timeout=2h
 kubectl logs -n "$NAMESPACE" \
-  job/qwen3-32b-fp8-model-download --tail=100
+  "job/$MODEL_DOWNLOAD_JOB" --tail=100
 ```
 
 Hugging Face stores the downloaded model in this cache layout:
@@ -172,10 +172,10 @@ Hugging Face stores the downloaded model in this cache layout:
 hub/models--<org>--<model>/snapshots/<commit-hash>/
 ```
 
-For this example, the complete container path is:
+For this example, the complete path in the download Job is:
 
 ```text
-/opt/models/hub/models--Qwen--Qwen3-32B-FP8/snapshots/aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df
+/model-store/hub/models--Qwen--Qwen3-32B-FP8/snapshots/aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df
 ```
 
 Mount the PVC in a temporary Pod and verify the model directory actually exists:
@@ -263,15 +263,15 @@ kubectl describe pvc model-cache -n "$NAMESPACE"
 2. Download Job state and events
 
 ```bash
-kubectl get job qwen3-32b-fp8-model-download -n "$NAMESPACE"
-kubectl describe job qwen3-32b-fp8-model-download -n "$NAMESPACE"
+kubectl get job "$MODEL_DOWNLOAD_JOB" -n "$NAMESPACE"
+kubectl describe job "$MODEL_DOWNLOAD_JOB" -n "$NAMESPACE"
 ```
 
 3. Downloader logs
 
 ```bash
 kubectl logs -n "$NAMESPACE" \
-  job/qwen3-32b-fp8-model-download --tail=200
+  "job/$MODEL_DOWNLOAD_JOB" --tail=200
 ```
 
 4. DGD and generated Pod state
@@ -286,4 +286,4 @@ kubectl get events -n "$NAMESPACE" \
 
 ## References
 
-- [NVIDIA Dynamo Docs Model Caching](https://docs.nvidia.com/dynamo/v1.2.1/kubernetes-deployment/model-loading/model-caching)
+- [NVIDIA Dynamo Model Caching](https://docs.nvidia.com/dynamo/kubernetes/model-deployment/model-loading/model-caching)
