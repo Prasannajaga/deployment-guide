@@ -501,7 +501,7 @@ Evaluating this scale is crucial because 3.10M tokens intentionally exceeds the 
 ### Concurrency 128 Performance Breakdown Analysis
 
 <p align="center">
-  <img src="../../../artifacts/tp1-ep2-4p4d/assets/benchmark-analysis.png" alt="Qwen3.6-35B-A3B FP8 Concurrency 128 Performance Breakdown" width="100%" />
+  <img src="assets/benchmark-analysis.png" alt="Qwen3.6-35B-A3B FP8 Concurrency 128 Performance Breakdown" width="100%" />
   <br />
   <sub><b>Figure 2:</b> Empirical performance breakdown at Concurrency 128 comparing Baseline VRAM-only serving against HiCache CPU KV Offloading across throughput, TTFT tail latency, token generation speed, and end-to-end turnaround time.</sub>
 </p>
@@ -560,7 +560,7 @@ When deploying Prefill/Decode disaggregation with hierarchical offloading in pro
 The dashboard below captures the internal network and memory telemetry during our 4P4D benchmark run:
 
 <p align="center">
-  <img src="../../../artifacts/tp1-ep2-4p4d/assets/NIXL-metrics-offloading.png" alt="NIXL Transfer and HiCache Utilization Runtime Metrics" width="100%" />
+  <img src="assets/NIXL-metrics-offloading.png" alt="NIXL Transfer and HiCache Utilization Runtime Metrics" width="100%" />
   <br />
   <sub><b>Figure 3:</b> Real-time Grafana telemetry showing NIXL RDMA transfer performance (transmitted bytes, latency, throughput) alongside CPU HiCache token utilization across the 4 prefill worker pods.</sub>
 </p>

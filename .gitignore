@@ -79,9 +79,8 @@ logs/
 tmp/
 
 # Benchmark & AIPerf Generated Artifacts
-chat.html
-benchmarks*/
-benchmark*/
+chat.html 
+# benchmark*/
 models/qwen3-235B-A22B
 # Ignore large input payload files (e.g. inside artifacts/) while pushing all other artifact contents
 **/input.json
