@@ -9,7 +9,7 @@ See [Network Setup](network-setup.md) for the runbook. For the definition of an 
 Let's look at our two-node bare-metal cluster:
 
 ```text
-inst-1onle-devrel-rdma-pool                  inst-g9dwj-devrel-rdma-pool
+gpu05                                       gpu06
 ┌──────────────────────────────┐             ┌──────────────────────────────┐
 │ Ubuntu Linux                 │             │ Ubuntu Linux                 │
 │ 8 × H100 GPUs                │             │ 8 × H100 GPUs                │
@@ -17,7 +17,7 @@ inst-1onle-devrel-rdma-pool                  inst-g9dwj-devrel-rdma-pool
 └──────────────────────────────┘             └──────────────────────────────┘
 ```
 
-In this example, `inst-1onle-devrel-rdma-pool` runs the Prefill workers and `inst-g9dwj-devrel-rdma-pool` runs the Decode workers. The Prefill workers create the KV cache and transfer it to the Decode workers.
+In this example, `gpu05` runs the Prefill workers and `gpu06` runs the Decode workers. The Prefill workers create the KV cache and transfer it to the Decode workers.
 
 The conventional network path sends data through the operating system's socket stack, which adds CPU work and data-path overhead. However this is not ideal for sending KV cache in disaggregated serving because the KV cache grows [very large](https://developer.nvidia.com/blog/how-to-reduce-kv-cache-bottlenecks-with-nvidia-dynamo/#why_is_kv_cache_a_bottleneck_for_llm_inference) with the context length and must be transferred frequently, at each prefill-to-decode handoff. [RDMA (Remote Direct Memory Access)](GLOSSARY.md#rdma-and-gpudirect-rdma) provides a faster, more efficient path for these transfers.
 
@@ -92,7 +92,7 @@ Multus  ←── meta CNI plugin (orchestrator) that can call multiple CNI Plug
 So now each worker Pod has two interfaces. It keeps `eth0` for normal Kubernetes communication, and MacVLAN adds `net1` for the RoCE path:
 
 ```text
-inst-1onle-devrel-rdma-pool                  inst-g9dwj-devrel-rdma-pool
+gpu05                                       gpu06
 ┌──────────────────────────┐                ┌──────────────────────────┐
 │ eth0: comm / control     │ ─── Calico ──▶ │ eth0: comm / control     │
 │ net1: transfer KV cache  │ ══ RoCE/RDMA ═▶│ net1: transfer KV cache  │

@@ -22,7 +22,7 @@ This repository tracks LLM deployment experiments, setup runbooks, and benchmark
 
 | Component | Specification | Details |
 | :--- | :--- | :--- |
-| **Compute Nodes** | `inst-1onle-devrel-rdma-pool`, `inst-g9dwj-devrel-rdma-pool` | 2 × 8-way H100 80GB SXM5 Nodes (16 GPUs total) |
+| **Compute Nodes** | `gpu05`, `gpu06` | 2 × 8-way H100 80GB SXM5 Nodes (16 GPUs total) |
 | **Orchestration** | Kubernetes & Dynamo 1.3.0 | `DynamoGraphDeployment` CRD, PodCliqueSets |
 | **Serving Engines** | vLLM `0.23.0` & SGLang `0.5.14` | Docker image: `nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.3.0` / `sglang-runtime:1.3.0` |
 | **Networking & RDMA** | RoCE v2 over Ethernet | Network Operator, RDMA Shared Device Plugin, Multus/MacVLAN, NV-IPAM pool `roce-pool`, `mlx5_8` HCA port 1, UCX/NIXL inter-pod transfer |
