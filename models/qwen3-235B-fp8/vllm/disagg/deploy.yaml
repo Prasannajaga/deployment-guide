@@ -38,7 +38,7 @@ spec:
         size: 80Gi
       extraPodMetadata:
         annotations:
-          k8s.v1.cni.cncf.io/networks: qwen32-bench/qwen-roce
+          k8s.v1.cni.cncf.io/networks: roce
       volumeMounts:
         - name: model-cache
           mountPoint: /opt/models
@@ -113,8 +113,6 @@ spec:
               value: "19090"
             - name: UCX_TLS
               value: rc_x,rc,cuda_copy,cuda_ipc
-            - name: UCX_NET_DEVICES
-              value: mlx5_8:1
             - name: UCX_IB_ADDR_TYPE
               value: eth
           securityContext:
@@ -140,7 +138,7 @@ spec:
         size: 80Gi
       extraPodMetadata:
         annotations:
-          k8s.v1.cni.cncf.io/networks: qwen32-bench/qwen-roce
+          k8s.v1.cni.cncf.io/networks: roce
       volumeMounts:
         - name: model-cache
           mountPoint: /opt/models
@@ -215,8 +213,6 @@ spec:
               value: "19090"
             - name: UCX_TLS
               value: rc_x,rc,cuda_copy,cuda_ipc
-            - name: UCX_NET_DEVICES
-              value: mlx5_8:1
             - name: UCX_IB_ADDR_TYPE
               value: eth
           securityContext:

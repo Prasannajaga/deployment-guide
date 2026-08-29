@@ -3,7 +3,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: model-download
+  name: qwen3-235b-a22b-fp8-download
 spec:
   backoffLimit: 3
   completions: 1
