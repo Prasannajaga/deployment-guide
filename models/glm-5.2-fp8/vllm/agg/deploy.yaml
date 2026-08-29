@@ -84,8 +84,6 @@ spec:
               value: eth0
             - name: NCCL_IB_DISABLE
               value: "0"
-            - name: NCCL_IB_HCA
-              value: mlx5_8:1
             - name: NCCL_DEBUG
               value: INFO
             - name: VLLM_DEEP_GEMM_WARMUP

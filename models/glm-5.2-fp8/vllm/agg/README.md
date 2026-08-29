@@ -280,8 +280,6 @@ spec:
               value: eth0
             - name: NCCL_IB_DISABLE
               value: "0"
-            - name: NCCL_IB_HCA
-              value: mlx5_8:1
             - name: NCCL_DEBUG
               value: INFO
             - name: VLLM_DEEP_GEMM_WARMUP
@@ -309,8 +307,10 @@ spec:
 EOF
 ```
 
-The RoCE HCA is pinned to `mlx5_8:1`. No GID index is hardcoded because the
-correct GID is determined by the Pod's secondary network attachment.
+The RDMA Shared Device Plugin limits the available RDMA device set to the
+`rdma7` rail, so NCCL can discover the selected HCA without a per-manifest pin.
+No GID index is hardcoded because the correct GID is determined by the Pod's
+secondary network attachment.
 
 ## 6. Validate and deploy
 
