@@ -89,7 +89,51 @@ After analyzing the worker and GPU mertrics, we've identified one GPU rank with 
 
 We therefore treat this measurements as functional validation. In order to measure the actual performance difference, we would need to re-run compare under consistent hardware condition. -->
 
-### 1. Disaggregation vs. KV-Aware Routing vs. CPU KV Offloading
+### 1. Baseline KV-Aware vs. KV-Aware + Offloading (P/D disaggregation)
+
+We found that offloading really helps with improving overall performance it also handles significantly higher prefill KV transfer throughput (GB/s) than the baseline.
+
+For the setup below, we ran CPU offloading with a HiCache ratio of 1.2 and up to 3.10 million tokens across 4 replicas (with each replica holding up to 3.10 million tokens). We tried with the `write_back` policy, which is much more efficient at handling CPU offloading than naive `write_through`.
+
+We benchmarked this on sequence distribution `1024,256:35;4096,512:30;8192,1024:20;16384,512:10;32768,256:5` with a concurrency sweep of `8 16 32 64 96 128` and offloading GPU pressure to the CPU allows the GPU to focus more on compute intensive work instead of worrying about memory pressure, so it's clear that offloading helps you improve your throughput & overall performance!
+
+You can see the results below:
+![omparison dashboard](blogs/assets/offloading-concurrency-sweep-comparison.png)
+
+![comparison dashboard](blogs/assets/offloading-comparison.png) 
+
+### 2. Non-Parallelism (TP=1, 4P+4D) vs. Parallelism (TP=2, 2P+2D) on 8 GPUs
+
+We found a really interesting take on Tensor Parallelism (`TP=1` vs. `TP=2`) when analyzing the AIPerf benchmark exports across concurrencies 1 to 128:
+
+* **Low Concurrency (`c1`–`c8`) TP=2 wins on ITL**: at low loads, TP=2 performs better because splitting matrix operations across 2 GPUs speeds up per-token decode generation. At `c1`, TP=2 hits an ITL of **3.52ms** and **247.8 tok/s** throughput compared to TP=1 at **4.11ms** and **214.6 tok/s**.
+* **The Tipping Point (`c16`)**: right around concurrency 16, TP=1 starts winning on prefill latency (TTFT of **228.7ms** vs **317.1ms** for TP=2), even though TP=2 still holds a tiny edge in total output throughput (**2,709.5 tok/s** vs **2,573.5 tok/s**).
+* **High Concurrency (`c32`–`c128`) — TP=1 completely dominates**: under heavy load, TP=1 (4P+4D) scales way better because having 4 independent prefill workers avoids queuing delays and gets rid of inter-GPU All-Reduce communication overhead. By concurrency 128, TP=1 delivers **5x faster TTFT** (**604.5ms** vs **3,024.6ms**) and **31% higher overall throughput** (**9,435.7 tok/s** vs **7,201.8 tok/s**)!
+
+So the trade-off is clear: `TP=2` gives lower streaming latency for individual requests under light load, but `TP=1 (4P+4D)` is far superior for high-concurrency throughput & prefill responsiveness! If your model fits on a single GPU and has enough room for KV cache, consider deploying it with `TP=1` to unlock significantly higher overall throughput!
+
+You can see the benchmark comparison below:
+
+![non-parallelism & parallelism ](blogs/assets/parallelism-conccurency-sweep-dashboard.png)
+
+![non-parallelism & parallelism ](blogs/assets/parallelism-comparison-dashboard.png)
+ 
+
+### 3. NIXL KV Transfer Profiling & HiCache Offloading
+
+We ran a 1,500-second prefill-heavy experiment sweep across concurrencies 1–32 (300s per point, 16 warmup requests per point) on **Qwen3.6-35B-A3B FP8** deployed across 16 H100 GPUs (4P+4D disaggregated, `DP=2`, `EP=2`). Each request used a 32K context window with OSL 256 and **75% prefix reuse** (64 prefix groups) to stress KV locality and host-cache offloading.
+
+* **KV Locality Routing**: Dynamo dynamically routed full requests to prefill workers based on prompt prefix affinity, running `DP=2` & `EP=2` across 2 GPU ranks per worker.
+* **NIXL RDMA Transfer Latency & Throughput**: Each prefill worker transferred **~1 TB cumulative KV & recurrent state** to decoders at **~1.5 GB/s** upload bandwidth, keeping cross-node P-to-D transfer latencies **under 60 ms** with zero RDMA errors across 16 GPUs.
+* **CPU HiCache Sizing (`--hicache-ratio 1.2`)**: SGLang provisioned CPU host KV capacity per rank at `1.2 × GPU capacity` (~120K CPU tokens per rank for a 100K GPU pool).
+* **Cache Saturation & CPU Load**: CPU usage peaked at **99%** as the `write_through` policy continuously streamed GPU KV pages into host RAM, pushing host cache utilization to **95%** (`hicache_host_used_tokens` / `total_tokens`).
+
+> **HiCache Policy Takeaway**: Be cautious when using `--hicache-write-policy write_through`. Unless you explicitly need to stream every generated KV page into host memory, it causes heavy CPU churn and unnecessary host-page evictions. For most production workloads, safer and far more performant choices are `write_back` (delays host writes until GPU cache eviction) or `write_selective`.
+
+![NIXL KV transfer profiling](assets/NIXL-profiling.svg)
+
+
+### 4. Disaggregation vs. KV-Aware Routing vs. CPU KV Offloading
 
 We evaluated five Qwen3-32B FP8 configurations with vLLM using the [Mooncake conversation trace](https://github.com/kvcache-ai/Mooncake/blob/main/FAST25-release/traces/conversation_trace.jsonl). Starting from eight aggregated TP=2 workers, we compared 6P2D and 4P4D disaggregation, KV-aware routing, and CPU KV cache offloading.
 
@@ -110,47 +154,6 @@ Exp 5(Exp4 with KV cache offloading) didn't demonstrate a measurable benefit fro
 The aggregated and 6P2D round-robin configurations developed very large TTFT tails compared to other experiments. Exp 2 has high TTFT because Dynamo measures TTFT until the first token is streamed from a **decode worker**.
 
 
-### 2. Baseline KV-Aware vs. KV-Aware + Offloading
-
-We found that offloading really helps with improving overall performance it also handles significantly higher prefill KV transfer throughput (GB/s) than the baseline.
-
-For the setup below, we ran CPU offloading with a HiCache ratio of 1.2 and up to 3.10 million tokens across 4 replicas (with each replica holding up to 3.10 million tokens). We tried with the `write_back` policy, which is much more efficient at handling CPU offloading than naive `write_through`.
-
-We benchmarked this on sequence distribution `1024,256:35;4096,512:30;8192,1024:20;16384,512:10;32768,256:5` with a concurrency sweep of `8 16 32 64 96 128` and offloading GPU pressure to the CPU allows the GPU to focus more on compute intensive work instead of worrying about memory pressure, so it's clear that offloading helps you improve your throughput & overall performance!
-
-You can see the results below:
-![omparison dashboard](blogs/assets/offloading-concurrency-sweep-comparison.png)
-
-![comparison dashboard](blogs/assets/offloading-comparison.png) 
-
-### 3. Non-Parallelism (TP=1, 4P+4D) vs. Parallelism (TP=2, 2P+2D) on 8 GPUs
-
-We found a really interesting take on Tensor Parallelism (`TP=1` vs. `TP=2`) when analyzing the AIPerf benchmark exports across concurrencies 1 to 128:
-
-* **Low Concurrency (`c1`–`c8`) TP=2 wins on ITL**: at low loads, TP=2 performs better because splitting matrix operations across 2 GPUs speeds up per-token decode generation. At `c1`, TP=2 hits an ITL of **3.52ms** and **247.8 tok/s** throughput compared to TP=1 at **4.11ms** and **214.6 tok/s**.
-* **The Tipping Point (`c16`)**: right around concurrency 16, TP=1 starts winning on prefill latency (TTFT of **228.7ms** vs **317.1ms** for TP=2), even though TP=2 still holds a tiny edge in total output throughput (**2,709.5 tok/s** vs **2,573.5 tok/s**).
-* **High Concurrency (`c32`–`c128`) — TP=1 completely dominates**: under heavy load, TP=1 (4P+4D) scales way better because having 4 independent prefill workers avoids queuing delays and gets rid of inter-GPU All-Reduce communication overhead. By concurrency 128, TP=1 delivers **5x faster TTFT** (**604.5ms** vs **3,024.6ms**) and **31% higher overall throughput** (**9,435.7 tok/s** vs **7,201.8 tok/s**)!
-
-So the trade-off is clear: `TP=2` gives lower streaming latency for individual requests under light load, but `TP=1 (4P+4D)` is far superior for high-concurrency throughput & prefill responsiveness! If your model fits on a single GPU and has enough room for KV cache, consider deploying it with `TP=1` to unlock significantly higher overall throughput!
-
-You can see the benchmark comparison below:
-
-![non-parallelism & parallelism ](blogs/assets/parallelism-conccurency-sweep-dashboard.png)
-
-![non-parallelism & parallelism ](blogs/assets/parallelism-comparison-dashboard.png)
-
-### 4. NIXL KV Transfer Profiling & HiCache Offloading
-
-We ran a 1,500-second prefill-heavy experiment sweep across concurrencies 1–32 (300s per point, 16 warmup requests per point) on **Qwen3.6-35B-A3B FP8** deployed across 16 H100 GPUs (4P+4D disaggregated, `DP=2`, `EP=2`). Each request used a 32K context window with OSL 256 and **75% prefix reuse** (64 prefix groups) to stress KV locality and host-cache offloading.
-
-* **KV Locality Routing**: Dynamo dynamically routed full requests to prefill workers based on prompt prefix affinity, running `DP=2` & `EP=2` across 2 GPU ranks per worker.
-* **NIXL RDMA Transfer Latency & Throughput**: Each prefill worker transferred **~1 TB cumulative KV & recurrent state** to decoders at **~1.5 GB/s** upload bandwidth, keeping cross-node P-to-D transfer latencies **under 60 ms** with zero RDMA errors across 16 GPUs.
-* **CPU HiCache Sizing (`--hicache-ratio 1.2`)**: SGLang provisioned CPU host KV capacity per rank at `1.2 × GPU capacity` (~120K CPU tokens per rank for a 100K GPU pool).
-* **Cache Saturation & CPU Load**: CPU usage peaked at **99%** as the `write_through` policy continuously streamed GPU KV pages into host RAM, pushing host cache utilization to **95%** (`hicache_host_used_tokens` / `total_tokens`).
-
-> **HiCache Policy Takeaway**: Be cautious when using `--hicache-write-policy write_through`. Unless you explicitly need to stream every generated KV page into host memory, it causes heavy CPU churn and unnecessary host-page evictions. For most production workloads, safer and far more performant choices are `write_back` (delays host writes until GPU cache eviction) or `write_selective`.
-
-![NIXL KV transfer profiling](assets/NIXL-profiling.svg)
 
 ### 5. Event-Driven Autoscaling using KEDA
 
