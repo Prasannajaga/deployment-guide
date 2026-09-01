@@ -11,7 +11,7 @@ The verified configuration enables CPU KV offload only on the prefill worker. De
 Run these commands from a Kubernetes administrator host:
 
 ```bash
-export NAMESPACE=qwen32-bench
+export NAMESPACE=dynamo-bench
 export EXP_DIR=/ephemeral/shared/qwen3.6-35b-a3b/sglang/disagg/tp1-ep2-4p4d
 export PREFLIGHT_DEPLOYMENT=q36-sgl-pd-tp1ep2-4p4d-pf
 export PREFLIGHT_GRAPH_LABEL="nvidia.com/dynamo-graph-deployment-name=${PREFLIGHT_DEPLOYMENT}"
@@ -45,7 +45,7 @@ Confirm that shared storage, RoCE network attachment, GPU nodes, and the preflig
 
 ```bash
 kubectl get pvc model-cache perf-cache -n "$NAMESPACE"
-kubectl get network-attachment-definition qwen-roce -n "$NAMESPACE"
+kubectl get network-attachment-definition roce -n "$NAMESPACE"
 kubectl get nodes -L qwen.nvidia.com/role \
   -o custom-columns='NODE:.metadata.name,ROLE:.metadata.labels.qwen\.nvidia\.com/role,GPU:.status.allocatable.nvidia\.com/gpu,RDMA:.status.allocatable.rdma/ib'
 kubectl get dynamographdeployments.nvidia.com -A
@@ -55,7 +55,7 @@ kubectl apply --dry-run=server -n "$NAMESPACE" \
 ```
 
 > [!IMPORTANT]
-> Both PVCs must be `Bound`, `qwen-roce` must exist, and 2 available GPUs + 2 `rdma/ib` resources must be allocatable per role node.
+> Both PVCs must be `Bound`, `roce` must exist, and 2 available GPUs + 2 `rdma/ib` resources must be allocatable per role node.
 
 ---
 
@@ -386,7 +386,7 @@ metadata:
 spec:
   namespaceSelector:
     matchNames:
-      - qwen32-bench
+      - dynamo-bench
   selector:
     matchExpressions:
       - key: nvidia.com/dynamo-graph-deployment-name
@@ -436,7 +436,7 @@ kubectl port-forward -n "$GRAFANA_NAMESPACE" \
    ```promql
    sum by (pod) (
      agent_tx_bytes_total{
-       namespace="qwen32-bench",
+       namespace="dynamo-bench",
        pod=~"q36-sgl-pd-tp1ep2-4p4d-pf.*"
      }
    )
@@ -446,7 +446,7 @@ kubectl port-forward -n "$GRAFANA_NAMESPACE" \
    ```promql
    sum by (pod) (
      rate(agent_tx_bytes_total{
-       namespace="qwen32-bench",
+       namespace="dynamo-bench",
        pod=~"q36-sgl-pd-tp1ep2-4p4d-pf.*"
      }[1m])
    )
@@ -456,7 +456,7 @@ kubectl port-forward -n "$GRAFANA_NAMESPACE" \
    ```promql
    sum by (pod) (
      rate(agent_tx_requests_num_total{
-       namespace="qwen32-bench",
+       namespace="dynamo-bench",
        pod=~"q36-sgl-pd-tp1ep2-4p4d-pf.*"
      }[1m])
    )
@@ -466,14 +466,14 @@ kubectl port-forward -n "$GRAFANA_NAMESPACE" \
    ```promql
    sum by (pod) (
      rate(agent_xfer_time_total{
-       namespace="qwen32-bench",
+       namespace="dynamo-bench",
        pod=~"q36-sgl-pd-tp1ep2-4p4d-pf.*"
      }[5m])
    )
    /
    sum by (pod) (
      rate(agent_tx_requests_num_total{
-       namespace="qwen32-bench",
+       namespace="dynamo-bench",
        pod=~"q36-sgl-pd-tp1ep2-4p4d-pf.*"
      }[5m])
    )
@@ -483,7 +483,7 @@ kubectl port-forward -n "$GRAFANA_NAMESPACE" \
    ```promql
    sum by (pod) (
      agent_errors_total{
-       namespace="qwen32-bench",
+       namespace="dynamo-bench",
        pod=~"q36-sgl-pd-tp1ep2-4p4d-pf.*"
      }
    )
@@ -493,7 +493,7 @@ kubectl port-forward -n "$GRAFANA_NAMESPACE" \
    ```promql
    sum by (pod) (
      sglang:hicache_host_total_tokens{
-       namespace="qwen32-bench",
+       namespace="dynamo-bench",
        pod=~"q36-sgl-pd-tp1ep2-4p4d-pf.*sglangprefillworker.*"
      }
    )
@@ -503,14 +503,14 @@ kubectl port-forward -n "$GRAFANA_NAMESPACE" \
    ```promql
    sum by (pod) (
      sglang:hicache_host_total_tokens{
-       namespace="qwen32-bench",
+       namespace="dynamo-bench",
        pod=~"q36-sgl-pd-tp1ep2-4p4d-pf.*sglangprefillworker.*"
      }
    )
    -
    sum by (pod) (
      sglang:hicache_host_used_tokens{
-       namespace="qwen32-bench",
+       namespace="dynamo-bench",
        pod=~"q36-sgl-pd-tp1ep2-4p4d-pf.*sglangprefillworker.*"
      }
    )
@@ -521,7 +521,7 @@ kubectl port-forward -n "$GRAFANA_NAMESPACE" \
    100 *
    sum by (pod) (
      sglang:hicache_host_used_tokens{
-       namespace="qwen32-bench",
+       namespace="dynamo-bench",
        pod=~"q36-sgl-pd-tp1ep2-4p4d-pf.*sglangprefillworker.*"
      }
    )
@@ -529,7 +529,7 @@ kubectl port-forward -n "$GRAFANA_NAMESPACE" \
    clamp_min(
      sum by (pod) (
        sglang:hicache_host_total_tokens{
-         namespace="qwen32-bench",
+         namespace="dynamo-bench",
          pod=~"q36-sgl-pd-tp1ep2-4p4d-pf.*sglangprefillworker.*"
        }
      ),

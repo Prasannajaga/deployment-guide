@@ -11,7 +11,7 @@ Benchmarks are executed via standard `perf.yaml` Job manifests, dynamically conf
 Run these commands from a Kubernetes administrator host. Set shared variables for your deployment target:
 
 ```bash
-export NAMESPACE=qwen32-bench
+export NAMESPACE=dynamo-bench
 export SHARED_ROOT="/ephemeral/shared"
 export EXP_DIR="${SHARED_ROOT}/dynamo-benchmarks"
 export DEPLOYMENT=glm52-fp8-vllm-agg-tp16
@@ -116,36 +116,36 @@ spec:
                     exit 2
                   fi
                   python - "$SEQUENCE_DISTRIBUTION" <<'PY'
-import sys
+              import sys
 
-raw = sys.argv[1]
-if not raw:
-    raise SystemExit("SEQUENCE_DISTRIBUTION must not be empty")
+              raw = sys.argv[1]
+              if not raw:
+                  raise SystemExit("SEQUENCE_DISTRIBUTION must not be empty")
 
-total = 0
-for entry in raw.split(";"):
-    try:
-        pair, weight_text = entry.split(":", 1)
-        isl_text, osl_text = pair.split(",", 1)
-        isl = int(isl_text)
-        osl = int(osl_text)
-        weight = int(weight_text)
-    except ValueError as exc:
-        raise SystemExit(
-            f"Invalid sequence-distribution entry: {entry!r}"
-        ) from exc
-    if isl < 1 or osl < 1 or weight < 1:
-        raise SystemExit(
-            f"ISL, OSL, and weight must be positive: {entry!r}"
-        )
-    total += weight
+              total = 0
+              for entry in raw.split(";"):
+                  try:
+                      pair, weight_text = entry.split(":", 1)
+                      isl_text, osl_text = pair.split(",", 1)
+                      isl = int(isl_text)
+                      osl = int(osl_text)
+                      weight = int(weight_text)
+                  except ValueError as exc:
+                      raise SystemExit(
+                          f"Invalid sequence-distribution entry: {entry!r}"
+                      ) from exc
+                  if isl < 1 or osl < 1 or weight < 1:
+                      raise SystemExit(
+                          f"ISL, OSL, and weight must be positive: {entry!r}"
+                      )
+                  total += weight
 
-if total != 100:
-    raise SystemExit(
-        f"Sequence-distribution weights must total 100, got {total}"
-    )
-print(f"Validated mixed sequence distribution: {raw}")
-PY
+              if total != 100:
+                  raise SystemExit(
+                      f"Sequence-distribution weights must total 100, got {total}"
+                  )
+              print(f"Validated mixed sequence distribution: {raw}")
+              PY
                   aiperf profile --help |
                     grep -F -- '--sequence-distribution' >/dev/null || {
                       echo "Installed AIPerf lacks --sequence-distribution" >&2
@@ -296,7 +296,7 @@ PY
             - name: TOKENIZER
               value: /opt/models/hub/models--zai-org--GLM-5.2-FP8/snapshots/ba978f7d347eaf65d22f1a86833408afdb953541
             - name: ENDPOINT
-              value: glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000
+              value: glm52-fp8-vllm-agg-tp16-frontend.dynamo-bench.svc.cluster.local:8000
             - name: ISL
               value: "8000"
             - name: OSL

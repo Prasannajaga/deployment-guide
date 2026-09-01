@@ -25,7 +25,7 @@ This repository tracks LLM deployment experiments, setup runbooks, and benchmark
 | **Compute Nodes** | `gpu05`, `gpu06` | 2 × 8-way H100 80GB SXM5 Nodes (16 GPUs total) |
 | **Orchestration** | Kubernetes & Dynamo 1.3.0 | `DynamoGraphDeployment` CRD, PodCliqueSets |
 | **Serving Engines** | vLLM `0.23.0` & SGLang `0.5.14` | Docker image: `nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.3.0` / `sglang-runtime:1.3.0` |
-| **Networking & RDMA** | RoCE v2 over Ethernet | Network Operator, RDMA Shared Device Plugin, Multus/MacVLAN, NV-IPAM pool `qwen-roce-pool`, `mlx5_8:1` HCA, UCX/NIXL inter-pod transfer |
+| **Networking & RDMA** | RoCE v2 over Ethernet | Network Operator, RDMA Shared Device Plugin, Multus/MacVLAN, NV-IPAM pool `roce-pool`, `mlx5_8` HCA port 1, UCX/NIXL inter-pod transfer |
 | **Benchmarking** | NVIDIA AIPerf `0.10.0` | Kubernetes Job template (`perf.yaml`), `/perf-cache` PVC storage |
 
 ---
@@ -35,19 +35,18 @@ This repository tracks LLM deployment experiments, setup runbooks, and benchmark
 | Name | Engine | Status | GPUs | Topology | Recipe Link |
 | :--- | :--- | :---: | :---: | :--- | :--- |
 | **Llama-3.1-8B-Instruct** | vLLM | Working | 16 | Cross-node TP=16 | [Recipe](models/llama-8B/setup.md) |
-| **Qwen3-32B FP8 Aggregated** | vLLM | Working | 16 | 8 workers × TP=2 | [Recipe](models/qwen3-32B/vllm/01-agg-routing/) |
-| **Qwen3-32B FP8 Disaggregated (6P2D)** | vLLM | Working | 16 | 6 prefill × TP=2 + 2 decode × TP=2 | [Recipe](models/qwen3-32B/vllm/02-disagg-routing/) |
-| **Qwen3-32B FP8 Disaggregated (4P4D)** | vLLM | Working | 16 | 4 prefill × TP=2 + 4 decode × TP=2 | [Recipe](models/qwen3-32B/vllm/03-disagg-routing-4p4d/) |
-| **Qwen3-32B FP8 KV-Aware Disaggregated** | vLLM | Working | 16 | 4 prefill × TP=2 + 4 decode × TP=2 | [Recipe](models/qwen3-32B/vllm/04-disagg-routing-kv-aware/) |
-| **Qwen3-32B FP8 KV-Aware + CPU KV Offload** | vLLM | Working | 16 | 4 prefill × TP=2 + 4 decode × TP=2, 32 GiB/engine CPU KV tier | [Recipe](models/qwen3-32B/vllm/05-disagg-routing-kv-aware-offloading/) |
-| **Qwen3-32B FP8 Aggregated** | SGLang | Working | 16 | 8 workers × TP=2 (4 per node) | [Recipe](models/qwen3-32B/sglang/agg-routing/README.md) |
-| **Qwen3-32B FP8 Disaggregated** | SGLang | Working | 8 | 2 prefill × TP=2 + 1 decode × TP=4 | [Recipe](models/qwen3-32B/sglang/disagg-routing/README.md) |
-| **Qwen3-32B FP8 KV-Aware Disaggregated** | SGLang | Working | 16 | 6 prefill × TP=2 + 2 decode × TP=2 | [Recipe](models/qwen3-32B/sglang/disagg-routing-kv-aware/README.md) |
+| **Qwen3-32B FP8 Aggregated** | vLLM | Working | 16 | 8 workers × TP=2 | [Recipe](models/qwen3-32b-fp8/vllm/01-agg-routing/) |
+| **Qwen3-32B FP8 Disaggregated (6P2D)** | vLLM | Working | 16 | 6 prefill × TP=2 + 2 decode × TP=2 | [Recipe](models/qwen3-32b-fp8/vllm/02-disagg-routing/) |
+| **Qwen3-32B FP8 Disaggregated (4P4D)** | vLLM | Working | 16 | 4 prefill × TP=2 + 4 decode × TP=2 | [Recipe](models/qwen3-32b-fp8/vllm/03-disagg-routing-4p4d/) |
+| **Qwen3-32B FP8 KV-Aware Disaggregated** | vLLM | Working | 16 | 4 prefill × TP=2 + 4 decode × TP=2 | [Recipe](models/qwen3-32b-fp8/vllm/04-disagg-routing-kv-aware/) |
+| **Qwen3-32B FP8 KV-Aware + CPU KV Offload** | vLLM | Working | 16 | 4 prefill × TP=2 + 4 decode × TP=2, 32 GiB/engine CPU KV tier | [Recipe](models/qwen3-32b-fp8/vllm/05-disagg-routing-kv-aware-offloading/) |
+| **Qwen3-32B FP8 Aggregated** | SGLang | Working | 16 | 8 workers × TP=2 (4 per node) | [Recipe](models/qwen3-32b-fp8/sglang/agg-routing/README.md) |
+| **Qwen3-32B FP8 Disaggregated** | SGLang | Working | 8 | 2 prefill × TP=2 + 1 decode × TP=4 | [Recipe](models/qwen3-32b-fp8/sglang/disagg-routing/README.md) |
+| **Qwen3-32B FP8 KV-Aware Disaggregated** | SGLang | Working | 16 | 6 prefill × TP=2 + 2 decode × TP=2 | [Recipe](models/qwen3-32b-fp8/sglang/disagg-routing-kv-aware/README.md) |
 | **Qwen3.6-35B-A3B FP8 Aggregated** | SGLang | Working | 2–16 | 1–8 aggregated workers × TP=2 (KEDA autoscaling) | [Recipe](models/qwen3.6-35B-A3B/sglang/agg-autoscaling/README.md) |
 | **Qwen3.6-35B-A3B FP8 Disaggregated** | SGLang | Working | 16 | 4P+4D, TP=2, DP=2, EP=2 (CPU KV offload) | [Recipe](models/qwen3.6-35B-A3B/sglang/disagg/tp1-ep2-4p4d/README.md) |
 | **Qwen3-235B-A22B FP8 Aggregated** | vLLM | Working | 16 | 4 workers × TP=4 | [Recipe](models/qwen3-235B-fp8/vllm/agg-round-robin/) |
 | **Qwen3-235B-A22B FP8 Disaggregated** | vLLM | Working | 16 | 2 prefill × TP=4 + 2 decode × TP=4 | [Recipe](models/qwen3-235B-fp8/vllm/disagg/) |
-| **Qwen3-235B-A22B FP8** | SGLang | Working | 16 | 4 aggregated workers × TP=4 | [Recipe](models/qwen3-235B-A22B/sglang/agg/README.md) |
 | **GLM-5.2-FP8** | vLLM | Working | 16 | 1 two-node replica, TP=16 | [Recipe](models/glm-5.2-fp8/vllm/agg/README.md) |
 | **DeepSeek-V4-Flash FP8** | SGLang | Experimental | 16 | 2 aggregated workers × TP=8 | [Recipe](models/deepseek-v4-flash-fp8/sglang/agg/README.md) |
 
@@ -55,9 +54,9 @@ This repository tracks LLM deployment experiments, setup runbooks, and benchmark
 
 ## What broke & How we fixed it
 
-When we first deployed disaggregation, two separate issues blocked the workers. The RDMA Shared Device Plugin initially could not advertise `rdma/ib` until the host RDMA subsystem used shared network-namespace mode. After that was fixed, ordinary Calico Pods could see the verbs devices but still lacked a usable RoCE interface and Pod-specific GID, so UCX failed and NIXL could not transfer KV cache across prefill and decode workers. We fixed the Pod data path with a dedicated NV-IPAM pool (`qwen-roce-pool`) and pod-native RoCE interfaces using Multus and MacVLAN while keeping `hostNetwork: false`.
+When we first deployed disaggregation, two separate issues blocked the workers. The RDMA Shared Device Plugin initially could not make `rdma/ib` available until the host RDMA subsystem used shared network-namespace mode. After that was fixed, ordinary Calico Pods could see the verbs devices but still lacked a usable RoCE interface and Pod-specific GID, so UCX failed and NIXL could not transfer KV cache across prefill and decode workers. We fixed the Pod data path with a dedicated NV-IPAM pool (`roce-pool`) and pod-native RoCE interfaces using Multus and MacVLAN while keeping `hostNetwork: false`.
 
-This was one of the hardest problem & big efforts we pulled off during the entire benchmark series. Once we cracked this, everything went smooth you can check out the full step-by-step breakdown in [`pod-native-roce.md`](pod-native-roce.md) and [`progress.md`](progress.md).
+This was one of the hardest problem & big efforts we pulled off during the entire benchmark series. Once we cracked this, everything went smooth you can check out the full step-by-step breakdown in [`network-architecture.md`](network-architecture.md), [`network-setup.md`](network-setup.md), and [`progress.md`](progress.md).
 
 We only had one week of access to this 16x H100 cluster, so I'm incredibly glad we got this connection set up by Day 2. Resolving this early gave us the full runway to experiment with disaggregated KV offloading, KEDA autoscaling, cross-node parallelism, and a ton more.
 
@@ -169,8 +168,9 @@ While we ran out of time to test separate autoscaling for disaggregated Prefill/
 
 ```text
 ├── README.md             # Master repository overview (this file)
+├── network-architecture.md # Why: network layers, decisions, rejected alternatives
 ├── cluster.md            # Base environment & K8s deployment runbook
-├── pod-native-roce.md     # Multus/MacVLAN & NV-IPAM RoCE networking guide
+├── network-setup.md       # How: Multus/MacVLAN & NV-IPAM RoCE runbook
 ├── NIXL-grafana.md       # NIXL Prometheus telemetry & Grafana dashboard guide
 ├── benchmark.md          # Kubernetes-native AIPerf benchmark runbook
 ├── progress.md           # Experiment tracking logs & active status
@@ -180,8 +180,8 @@ While we ran out of time to test separate autoscaling for disaggregated Prefill/
     ├── deepseek-v4-flash-fp8/
     ├── glm-5.2-fp8/
     ├── llama-8B/
-    ├── qwen3-32B/
-    ├── qwen3-235B-A22B/
+    ├── qwen3-32b-fp8/
+    ├── qwen3-235B-fp8/
     ├── qwen3.6-35B-A3B/
     └── qwen3.8-27B/
 ```

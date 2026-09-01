@@ -23,7 +23,7 @@ Run all cluster commands from a Kubernetes administrator shell. Keep generated
 manifests and test artifacts in the shared ephemeral recipe directory:
 
 ```bash
-export NAMESPACE=qwen32-bench
+export NAMESPACE=dynamo-bench
 export RECIPE_ROOT=/ephemeral/shared/qwen3.6-35b-a3b
 export EXP_DIR="${RECIPE_ROOT}/sglang/agg-autoscaling"
 export DEPLOYMENT=qwen36-35b-a3b-fp8-sglang-agg-tp2
@@ -561,7 +561,7 @@ Worker Pod discovery must return the running worker Pod:
 ```promql
 count by (pod) (
   kube_pod_info{
-    namespace="qwen32-bench",
+    namespace="dynamo-bench",
     pod=~"qwen36-35b-a3b-fp8-sglang-agg-tp2-[0-9]+-sglangworker-.*"
   }
 )
@@ -572,7 +572,7 @@ ScaledObject has created its HPA:
 
 ```promql
 kube_horizontalpodautoscaler_status_current_replicas{
-  namespace="qwen32-bench"
+  namespace="dynamo-bench"
 }
 ```
 
@@ -615,7 +615,7 @@ Query A — Ready workers:
 ```promql
 sum(
   kube_pod_status_ready{
-    namespace="qwen32-bench",
+    namespace="dynamo-bench",
     pod=~"qwen36-35b-a3b-fp8-sglang-agg-tp2-[0-9]+-sglangworker-.*",
     condition="true"
   }
@@ -631,7 +631,7 @@ Query B — Current HPA replicas:
 ```promql
 max(
   kube_horizontalpodautoscaler_status_current_replicas{
-    namespace="qwen32-bench",
+    namespace="dynamo-bench",
     horizontalpodautoscaler="keda-hpa-qwen36-35b-a3b-sglang-worker"
   }
 )
@@ -646,7 +646,7 @@ Query C — Desired HPA replicas:
 ```promql
 max(
   kube_horizontalpodautoscaler_status_desired_replicas{
-    namespace="qwen32-bench",
+    namespace="dynamo-bench",
     horizontalpodautoscaler="keda-hpa-qwen36-35b-a3b-sglang-worker"
   }
 )
@@ -669,7 +669,7 @@ Query A — Frontend active requests:
 ```promql
 sum(
   dynamo_frontend_active_requests{
-    namespace="qwen32-bench",
+    namespace="dynamo-bench",
     pod=~"qwen36-35b-a3b-fp8-sglang-agg-tp2.*frontend.*"
   }
 )
@@ -695,7 +695,7 @@ Query A — Number of workers in each Pod phase:
 ```promql
 sum by (phase) (
   kube_pod_status_phase{
-    namespace="qwen32-bench",
+    namespace="dynamo-bench",
     pod=~"qwen36-35b-a3b-fp8-sglang-agg-tp2-[0-9]+-sglangworker-.*",
     phase=~"Pending|Running|Failed"
   } == 1
@@ -718,12 +718,12 @@ Query A — Average GPU utilization across worker GPUs:
 ```promql
 avg(
   DCGM_FI_DEV_GPU_UTIL{
-    exported_namespace="qwen32-bench",
+    exported_namespace="dynamo-bench",
     exported_pod=~"qwen36-35b-a3b-fp8-sglang-agg-tp2-[0-9]+-sglangworker-.*"
   }
   or
   DCGM_FI_DEV_GPU_UTIL{
-    namespace="qwen32-bench",
+    namespace="dynamo-bench",
     pod=~"qwen36-35b-a3b-fp8-sglang-agg-tp2-[0-9]+-sglangworker-.*"
   }
 )
@@ -778,7 +778,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: qwen36-autoscaling-load
-  namespace: qwen32-bench
+  namespace: dynamo-bench
 spec:
   replicas: 8
   selector:

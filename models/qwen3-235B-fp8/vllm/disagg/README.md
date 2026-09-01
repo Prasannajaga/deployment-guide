@@ -1,11 +1,11 @@
 # Qwen3-235B-A22B-FP8 disaggregated recipe
 
-This recipe runs two TP4 prefill workers and two TP4 decode workers on 16 H100 GPUs. We've reused the the existing RoCE network configured in qwen32-bench, which is used for KV Cache Transfer.
+This recipe runs two TP4 prefill workers and two TP4 decode workers on 16 H100 GPUs. We've reused the the existing RoCE network configured in dynamo-bench, which is used for KV Cache Transfer.
 
 ## 1. Variables and preflight
 
 ```bash
-export NAMESPACE=qwen235-bench
+export NAMESPACE=dynamo-bench
 export EXP_DIR=/ephemeral/shared/qwen3-235b-a22b-fp8/vllm/disagg
 export DEPLOYMENT=qwen3-235b-a22b-fp8-vllm-disagg
 export PERF_JOB=qwen3-235b-a22b-fp8-vllm-disagg-bench
@@ -14,7 +14,7 @@ mkdir -p "$EXP_DIR"
 
 kubectl get pvc model-cache perf-cache -n "$NAMESPACE"
 kubectl get secret hf-token-secret nvcrimagepullsecret -n "$NAMESPACE"
-kubectl get network-attachment-definition qwen-roce -n qwen32-bench
+kubectl get network-attachment-definition roce -n "$NAMESPACE"
 kubectl get nodes -o custom-columns='NODE:.metadata.name,GPU:.status.allocatable.nvidia\.com/gpu,RDMA:.status.allocatable.rdma/ib'
 ```
 
@@ -66,7 +66,7 @@ spec:
         size: 80Gi
       extraPodMetadata:
         annotations:
-          k8s.v1.cni.cncf.io/networks: qwen32-bench/qwen-roce
+          k8s.v1.cni.cncf.io/networks: roce
       volumeMounts:
         - name: model-cache
           mountPoint: /opt/models
@@ -141,8 +141,6 @@ spec:
               value: "19090"
             - name: UCX_TLS
               value: rc_x,rc,cuda_copy,cuda_ipc
-            - name: UCX_NET_DEVICES
-              value: mlx5_8:1
             - name: UCX_IB_ADDR_TYPE
               value: eth
           securityContext:
@@ -168,7 +166,7 @@ spec:
         size: 80Gi
       extraPodMetadata:
         annotations:
-          k8s.v1.cni.cncf.io/networks: qwen32-bench/qwen-roce
+          k8s.v1.cni.cncf.io/networks: roce
       volumeMounts:
         - name: model-cache
           mountPoint: /opt/models
@@ -243,8 +241,6 @@ spec:
               value: "19090"
             - name: UCX_TLS
               value: rc_x,rc,cuda_copy,cuda_ipc
-            - name: UCX_NET_DEVICES
-              value: mlx5_8:1
             - name: UCX_IB_ADDR_TYPE
               value: eth
           securityContext:
@@ -278,7 +274,8 @@ Verify the actual RoCE attachment on a prefill worker:
 export PREFILL_POD=$(kubectl get pods -n "$NAMESPACE" -l "$GRAPH_LABEL" -o name | rg 'vllmprefillworker' | head -1 | sed 's#pod/##')
 kubectl get pod -n "$NAMESPACE" "$PREFILL_POD" -o json | jq '{node:.spec.nodeName,networks:.metadata.annotations["k8s.v1.cni.cncf.io/networks"],networkStatus:.metadata.annotations["k8s.v1.cni.cncf.io/network-status"]}'
 kubectl exec -n "$NAMESPACE" "$PREFILL_POD" -- sh -lc 'test -d /dev/infiniband && ls /dev/infiniband'
-kubectl exec -n "$NAMESPACE" "$PREFILL_POD" -- printenv UCX_TLS UCX_NET_DEVICES UCX_IB_ADDR_TYPE
+kubectl exec -n "$NAMESPACE" "$PREFILL_POD" -- printenv UCX_TLS UCX_IB_ADDR_TYPE
+kubectl exec -n "$NAMESPACE" "$PREFILL_POD" -- ibv_devices
 ```
 
 ## 4. Create and run the benchmark
