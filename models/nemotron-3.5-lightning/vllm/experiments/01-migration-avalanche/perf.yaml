@@ -1,0 +1,202 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: nemotron35-vllm-e1-perf
+spec:
+  backoffLimit: 0
+  activeDeadlineSeconds: 1800
+  template:
+    metadata:
+      labels:
+        app: nemotron35-vllm-e1-perf
+        research.nvidia.com/experiment: migration-avalanche
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: perf
+          image: python:3.12-slim
+          imagePullPolicy: IfNotPresent
+          command: [/bin/bash, -lc]
+          args:
+            - |
+              set -Eeuo pipefail
+
+              apt-get update
+              apt-get install -y --no-install-recommends ca-certificates curl jq
+              rm -rf /var/lib/apt/lists/*
+              python -m pip install --no-cache-dir "aiperf==$AIPERF_VERSION"
+
+              ready_deadline=$(( $(date +%s) + MODEL_READY_TIMEOUT_SECONDS ))
+              until curl -fsS --max-time 10 "http://$ENDPOINT/v1/models" |
+                jq -e --arg model "$MODEL_NAME" \
+                  '.data[]? | select(.id == $model)' >/dev/null; do
+                if [ "$(date +%s)" -ge "$ready_deadline" ]; then
+                  echo "Model readiness timed out" >&2
+                  exit 1
+                fi
+                sleep 5
+              done
+
+              run_id=$(date -u +%Y-%m-%dT%H-%M-%SZ)
+              run_dir="$ARTIFACT_ROOT/$WORKLOAD_ID/c${CONCURRENCY}/$FAULT_CASE/$run_id"
+              artifact_dir="$run_dir/aiperf"
+              trace_file="$run_dir/trace.jsonl"
+              mkdir -p "$artifact_dir"
+
+              python3 - "$trace_file" <<'PY'
+              import json
+              import math
+              import os
+              import sys
+
+              path = sys.argv[1]
+              block_size = int(os.environ["TRACE_BLOCK_SIZE"])
+              input_tokens = int(os.environ["INPUT_TOKENS"])
+              output_tokens = int(os.environ["OUTPUT_TOKENS"])
+              reuse = int(os.environ["PREFIX_REUSE_PERCENT"])
+              request_count = int(os.environ["REQUEST_COUNT"])
+              block_count = math.ceil(input_tokens / block_size)
+              shared_count = math.floor(block_count * reuse / 100)
+              shared = list(range(shared_count))
+
+              with open(path, "w", encoding="utf-8") as handle:
+                  for request_id in range(request_count):
+                      unique_count = block_count - shared_count
+                      unique_base = 1_000_000 + request_id * max(unique_count, 1)
+                      hashes = shared + list(range(unique_base, unique_base + unique_count))
+                      row = {
+                          "session_id": f"e1-{request_id:08d}",
+                          "timestamp": request_id,
+                          "input_length": input_tokens,
+                          "output_length": output_tokens,
+                          "hash_ids": hashes,
+                      }
+                      handle.write(json.dumps(row, separators=(",", ":")) + "\n")
+              PY
+
+              sha256sum "$trace_file" | awk '{print $1}' > "$run_dir/trace.sha256"
+              jq -n \
+                --arg run_id "$run_id" \
+                --arg workload "$WORKLOAD_ID" \
+                --arg fault_case "$FAULT_CASE" \
+                --arg model "$MODEL_NAME" \
+                --arg model_revision "$MODEL_REVISION" \
+                --arg aiperf_version "$AIPERF_VERSION" \
+                --argjson input_tokens "$INPUT_TOKENS" \
+                --argjson output_tokens "$OUTPUT_TOKENS" \
+                --argjson prefix_reuse_percent "$PREFIX_REUSE_PERCENT" \
+                --argjson concurrency "$CONCURRENCY" \
+                --argjson warmup_seconds "$WARMUP_SECONDS" \
+                --argjson measured_seconds "$MEASURED_SECONDS" \
+                --argjson fault_at_seconds "$FAULT_AT_SECONDS" \
+                '{
+                  run_id: $run_id,
+                  experiment: "01-migration-avalanche",
+                  workload: $workload,
+                  fault_case: $fault_case,
+                  model: $model,
+                  model_revision: $model_revision,
+                  aiperf_version: $aiperf_version,
+                  input_tokens: $input_tokens,
+                  output_tokens: $output_tokens,
+                  prefix_reuse_percent: $prefix_reuse_percent,
+                  concurrency: $concurrency,
+                  warmup_seconds: $warmup_seconds,
+                  measured_seconds: $measured_seconds,
+                  fault_at_measured_seconds: $fault_at_seconds
+                }' > "$run_dir/manifest.json"
+
+              echo "Run directory: $run_dir"
+              echo "Inject $FAULT_CASE at measured T+$FAULT_AT_SECONDS seconds."
+              aiperf profile \
+                --model "$MODEL_NAME" \
+                --tokenizer "$TOKENIZER_PATH" \
+                --input-file "$trace_file" \
+                --custom-dataset-type mooncake_trace \
+                --no-fixed-schedule \
+                --url "http://$ENDPOINT" \
+                --endpoint-type chat \
+                --streaming \
+                --use-server-token-count \
+                --extra-inputs ignore_eos:true \
+                --extra-inputs temperature:0.0 \
+                --extra-inputs min_tokens:"$OUTPUT_TOKENS" \
+                --concurrency "$CONCURRENCY" \
+                --request-count "$REQUEST_COUNT" \
+                --warmup-duration "$WARMUP_SECONDS" \
+                --benchmark-duration "$MEASURED_SECONDS" \
+                --random-seed 100 \
+                --workers-max 512 \
+                --record-processors 32 \
+                --artifact-dir "$artifact_dir" \
+                --server-metrics-formats json jsonl csv \
+                --no-gpu-telemetry \
+                --ui simple \
+                2>&1 | tr '\r' '\n' | tee "$run_dir/aiperf.log"
+          env:
+            - name: MODEL_NAME
+              value: nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4
+            - name: MODEL_REVISION
+              value: cc84af2fe71647d87f4486c064f320e1e7535243
+            - name: TOKENIZER_PATH
+              value: /opt/models/hub/models--nvidia--NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4/snapshots/cc84af2fe71647d87f4486c064f320e1e7535243
+            - name: ENDPOINT
+              value: nemotron35-vllm-e1-migration-frontend:8000
+            - name: AIPERF_VERSION
+              value: "0.12.0"
+            - name: MODEL_READY_TIMEOUT_SECONDS
+              value: "3600"
+            - name: WORKLOAD_ID
+              value: B
+            - name: INPUT_TOKENS
+              value: "16384"
+            - name: OUTPUT_TOKENS
+              value: "2048"
+            - name: PREFIX_REUSE_PERCENT
+              value: "80"
+            - name: TRACE_BLOCK_SIZE
+              value: "512"
+            - name: CONCURRENCY
+              value: "128"
+            - name: REQUEST_COUNT
+              value: "32768"
+            - name: WARMUP_SECONDS
+              value: "120"
+            - name: MEASURED_SECONDS
+              value: "300"
+            - name: FAULT_AT_SECONDS
+              value: "120"
+            - name: FAULT_CASE
+              value: F1
+            - name: ARTIFACT_ROOT
+              value: /perf-cache/nemotron-3.5-lightning/01-migration-avalanche
+            - name: HF_HOME
+              value: /opt/models
+            - name: HF_HUB_OFFLINE
+              value: "1"
+            - name: TRANSFORMERS_OFFLINE
+              value: "1"
+            - name: AIPERF_HTTP_CONNECTION_LIMIT
+              value: "1024"
+            - name: PYTHONUNBUFFERED
+              value: "1"
+          resources:
+            requests:
+              cpu: "16"
+              memory: 32Gi
+            limits:
+              cpu: "32"
+              memory: 64Gi
+          volumeMounts:
+            - name: model-cache
+              mountPath: /opt/models
+              readOnly: true
+            - name: perf-cache
+              mountPath: /perf-cache
+      volumes:
+        - name: model-cache
+          persistentVolumeClaim:
+            claimName: model-cache
+        - name: perf-cache
+          persistentVolumeClaim:
+            claimName: perf-cache

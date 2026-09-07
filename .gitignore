@@ -77,6 +77,7 @@ logs/
 *.tmp
 *.temp
 tmp/
+benchmarks/nemotron-*
 
 # Benchmark & AIPerf Generated Artifacts
 chat.html 
