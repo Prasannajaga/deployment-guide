@@ -73,19 +73,7 @@ At C=128, baseline cache hit rate collapses to **54.4%** as the 3.10M working se
 ## 4. NIXL & HiCache Telemetry Analysis
 
 ![NIXL Transfer and CPU HiCache Dashboard](../../../../../blogs/assets/NIXL-metrics-offloading.png)
-
-### Frontend & Network Telemetry Summary
-
-| Concurrency (C) | Router KV-Hit Rate | Estimated State Transfer (Mean) | Estimated State Transfer (P95) | Frontend Ingress Queue (Avg / Max) |
-| :--- | :--- | :--- | :--- | :--- |
-| **C = 8** | 70.7% | 1.84 s | 4.76 s | 0.52 / 1 |
-| **C = 16** | 81.4% | 1.51 s | 6.06 s | 0.91 / 2 |
-| **C = 32** | 75.3% | 3.06 s | 14.73 s | 3.72 / 6 |
-| **C = 64** | 70.4% | 5.09 s | 21.73 s | 11.62 / 17 |
-| **C = 96** | 71.1% | 9.43 s | 31.46 s | 10.01 / 13 |
-| **C = 128** | 72.2% | 14.20 s | 23.16 s | 11.18 / 14 |
-
-### Telemetry Takeaways:
+ 
 - **Zero-Copy RDMA Transfer (NIXL):** Average transfer time settles into a tight **15 ms to 20 ms** window per request. Over **2.50 TiB** of KV and linear recurrent state tensors were transferred across the test suite at burst rates of **10 to 12 req/s** with zero dropped packets or transport errors.
 - **100% Host Memory Utilization (HiCache):** Token residency in host RAM ramps smoothly during warmup, plateauing at **~3.1 Million tokens** across the 4 prefill pods. The gauge meters show **99.7% to 100.0% CPU HiCache utilization** with remaining token capacity dropping to just **832 to 7.87K tokens**, confirming that host DDR5 RAM is fully utilized as an active secondary cache tier.
 

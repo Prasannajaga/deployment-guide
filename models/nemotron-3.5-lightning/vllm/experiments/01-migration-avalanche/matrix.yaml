@@ -1,0 +1,68 @@
+experiment:
+  id: 01-migration-avalanche
+  question: >-
+    At what decode-worker load does request migration change from graceful
+    recovery into cascading system-wide overload?
+  topology:
+    prefill_workers: 4
+    decode_workers: 8
+    gpus_per_worker: 1
+    scale_out_target_decode_workers: 12
+  controls:
+    runtime_image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.4.1
+    model: nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4
+    model_revision: cc84af2fe71647d87f4486c064f320e1e7535243
+    tensor_parallel_size: 1
+    kv_block_size_tokens: 64
+    max_model_len: 65536
+    migration_limit: 3
+    migration_max_seq_len: 65536
+    random_seed: 100
+    ignore_eos: true
+  workloads:
+    A:
+      input_tokens: 8192
+      output_tokens: 2048
+      shared_prefix_percent: 0
+    B:
+      input_tokens: 16384
+      output_tokens: 2048
+      shared_prefix_percent: 80
+    C:
+      input_tokens: 32768
+      output_tokens: 4096
+      shared_prefix_percent: 90
+  screening_concurrency: [64, 128, 256, 512]
+  final_load_percent_of_saturation: [60, 80, 90]
+  fault_cases:
+    F0: {decode_workers_killed: 0, description: control}
+    F1: {decode_workers_killed: 1, selection: hottest}
+    F2: {decode_workers_killed: 2, selection: hottest}
+    F3: {decode_pool_percent_killed: 25, selection: hottest}
+    F4: {decode_workers_killed: 1, repeat_during_recovery: true}
+  fault_dimensions:
+    kv_occupancy_percent: [30, 60, 85]
+    output_completion_percent: [10, 50, 90]
+  timing:
+    warmup_seconds: 120
+    measured_seconds: 300
+    fault_at_measured_seconds: 120
+    recovery_stable_window_seconds: 30
+  repetition:
+    screening: 3
+    cliff_region: 10
+  primary_metrics:
+    recovery_amplification_factor: >-
+      extra prefill tokens computed during recovery divided by context tokens
+      belonging to failed requests
+    collateral_damage: >-
+      surviving-worker requests violating the SLO divided by all
+      surviving-worker requests
+    recovery_time: >-
+      time until p99 ITL remains within 10 percent of baseline for 30 seconds
+  required_prometheus_metrics:
+    - dynamo_frontend_model_migration_total
+    - dynamo_frontend_model_migration_duration_seconds
+    - dynamo_frontend_model_migration_max_seq_len_exceeded_total
+    - dynamo_frontend_worker_active_decode_blocks
+    - request_prefill_kv_computed_tokens
