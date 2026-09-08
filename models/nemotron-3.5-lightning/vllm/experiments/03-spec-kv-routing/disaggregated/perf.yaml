@@ -1,0 +1,273 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: nemotron35-vllm-e3-perf
+spec:
+  backoffLimit: 0
+  activeDeadlineSeconds: 14400
+  template:
+    metadata:
+      labels:
+        app: nemotron35-vllm-e3-perf
+        research.nvidia.com/experiment: spec-kv-routing
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: perf
+          image: python:3.12-slim
+          imagePullPolicy: IfNotPresent
+          command: [/bin/bash, -lc]
+          args:
+            - |
+              set -Eeuo pipefail
+
+              case "$EXPERIMENT_CELL" in
+                A) routing=round_robin; speculation=off ;;
+                B) routing=round_robin; speculation=mtp ;;
+                C) routing=kv; speculation=off ;;
+                D) routing=kv; speculation=mtp ;;
+                *) echo "EXPERIMENT_CELL must be A, B, C, or D" >&2; exit 2 ;;
+              esac
+
+              apt-get update
+              apt-get install -y --no-install-recommends ca-certificates curl jq
+              rm -rf /var/lib/apt/lists/*
+              python -m pip install --no-cache-dir "aiperf==$AIPERF_VERSION"
+              aiperf profile --help > /tmp/aiperf-profile-help.txt
+              for required_option in \
+                --warmup-duration \
+                --benchmark-grace-period \
+                --request-timeout-seconds; do
+                grep -Fq -- "$required_option" /tmp/aiperf-profile-help.txt || {
+                  echo "AIPerf $AIPERF_VERSION lacks $required_option" >&2
+                  exit 2
+                }
+              done
+
+              ready_deadline=$(( $(date +%s) + MODEL_READY_TIMEOUT_SECONDS ))
+              until curl -fsS --max-time 10 "http://$ENDPOINT/v1/models" |
+                jq -e --arg model "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4" \
+                  '.data[]? | select(.id == $model)' >/dev/null; do
+                if [ "$(date +%s)" -ge "$ready_deadline" ]; then
+                  echo "Model readiness timed out" >&2
+                  exit 1
+                fi
+                sleep 5
+              done
+
+              run_point() {
+              details="isl-${INPUT_TOKENS}_osl-${OUTPUT_TOKENS}_c-${CONCURRENCY}_reuse-${PREFIX_REUSE_PERCENT}_preset-${PRESET}"
+              run_id="cell-$EXPERIMENT_CELL-$details"
+              run_dir="$ARTIFACT_ROOT/cell-$EXPERIMENT_CELL/$details"
+              results_dir="$run_dir/results"
+              artifact_dir="$results_dir/aiperf"
+              trace_file="$results_dir/trace.jsonl"
+              if [ -e "$results_dir" ]; then
+                echo "Result path already exists: $results_dir" >&2
+                echo "Remove that result explicitly before rerunning this point" >&2
+                exit 3
+              fi
+              mkdir -p "$artifact_dir"
+
+              python3 - "$trace_file" <<'PY'
+              import json
+              import math
+              import os
+              import sys
+
+              path = sys.argv[1]
+              block_size = int(os.environ["TRACE_BLOCK_SIZE"])
+              input_tokens = int(os.environ["INPUT_TOKENS"])
+              output_tokens = int(os.environ["OUTPUT_TOKENS"])
+              reuse = int(os.environ["PREFIX_REUSE_PERCENT"])
+              request_count = int(os.environ["REQUEST_COUNT"])
+              block_count = math.ceil(input_tokens / block_size)
+              shared_count = math.floor(block_count * reuse / 100)
+              shared = list(range(shared_count))
+
+              with open(path, "w", encoding="utf-8") as handle:
+                  for request_id in range(request_count):
+                      unique_count = block_count - shared_count
+                      unique_base = 1_000_000 + request_id * max(unique_count, 1)
+                      hashes = shared + list(range(unique_base, unique_base + unique_count))
+                      row = {
+                          "session_id": f"e3-{request_id:08d}",
+                          "timestamp": request_id,
+                          "input_length": input_tokens,
+                          "output_length": output_tokens,
+                          "hash_ids": hashes,
+                      }
+                      handle.write(json.dumps(row, separators=(",", ":")) + "\n")
+              PY
+
+              trace_sha256=$(sha256sum "$trace_file" | awk '{print $1}')
+              benchmark_started_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+              benchmark_started_epoch=$(date -u +%s)
+              jq -n \
+                --arg run_id "$run_id" \
+                --arg topology "$TOPOLOGY" \
+                --arg preset "$PRESET" \
+                --arg load_stage "$LOAD_STAGE" \
+                --arg cell "$EXPERIMENT_CELL" \
+                --arg routing "$routing" \
+                --arg speculation "$speculation" \
+                --arg model "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4" \
+                --arg model_revision "$MODEL_REVISION" \
+                --arg aiperf_version "$AIPERF_VERSION" \
+                --arg trace_sha256 "$trace_sha256" \
+                --arg benchmark_started_utc "$benchmark_started_utc" \
+                --argjson benchmark_started_epoch "$benchmark_started_epoch" \
+                --argjson input_tokens "$INPUT_TOKENS" \
+                --argjson output_tokens "$OUTPUT_TOKENS" \
+                --argjson prefix_reuse_percent "$PREFIX_REUSE_PERCENT" \
+                --argjson concurrency "$CONCURRENCY" \
+                '{
+                  run_id: $run_id,
+                  experiment: "03-spec-kv-routing",
+                  topology: $topology,
+                  preset: $preset,
+                  load_stage: $load_stage,
+                  cell: $cell,
+                  routing: $routing,
+                  speculation: $speculation,
+                  model: $model,
+                  model_revision: $model_revision,
+                  aiperf_version: $aiperf_version,
+                  trace_sha256: $trace_sha256,
+                  benchmark_started_utc: $benchmark_started_utc,
+                  benchmark_started_epoch: $benchmark_started_epoch,
+                  input_tokens: $input_tokens,
+                  output_tokens: $output_tokens,
+                  prefix_reuse_percent: $prefix_reuse_percent,
+                  concurrency: $concurrency
+                }' > "$results_dir/manifest.json"
+
+              set +e
+              aiperf profile \
+                --model nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4 \
+                --tokenizer-revision "$MODEL_REVISION" \
+                --input-file "$trace_file" \
+                --custom-dataset-type mooncake_trace \
+                --no-fixed-schedule \
+                --url "http://$ENDPOINT" \
+                --endpoint-type chat \
+                --streaming \
+                --use-server-token-count \
+                --extra-inputs ignore_eos:true \
+                --extra-inputs temperature:0.0 \
+                --extra-inputs min_tokens:"$OUTPUT_TOKENS" \
+                --concurrency "$CONCURRENCY" \
+                --request-count "$REQUEST_COUNT" \
+                --request-timeout-seconds "$REQUEST_TIMEOUT_SECONDS" \
+                --warmup-duration "$WARMUP_SECONDS" \
+                --benchmark-duration "$MEASURED_SECONDS" \
+                --benchmark-grace-period "$GRACE_SECONDS" \
+                --random-seed 100 \
+                --workers-max "$WORKERS_MAX" \
+                --record-processors "$RECORD_PROCESSORS" \
+                --artifact-dir "$artifact_dir" \
+                --server-metrics-formats json jsonl csv \
+                --no-gpu-telemetry \
+                --ui simple \
+                2>&1 | tr '\r' '\n' | tee "$results_dir/aiperf.log"
+              aiperf_rc=${PIPESTATUS[0]}
+              set -e
+
+              benchmark_finished_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+              benchmark_finished_epoch=$(date -u +%s)
+              jq \
+                --arg benchmark_finished_utc "$benchmark_finished_utc" \
+                --argjson benchmark_finished_epoch "$benchmark_finished_epoch" \
+                --argjson aiperf_exit_code "$aiperf_rc" \
+                '. + {
+                  benchmark_finished_utc: $benchmark_finished_utc,
+                  benchmark_finished_epoch: $benchmark_finished_epoch,
+                  aiperf_exit_code: $aiperf_exit_code
+                }' "$results_dir/manifest.json" > "$results_dir/manifest.json.tmp"
+              mv "$results_dir/manifest.json.tmp" "$results_dir/manifest.json"
+
+              echo "Run artifacts: $results_dir"
+              return "$aiperf_rc"
+              }
+
+              for concurrency in $CONCURRENCIES; do
+                case "$concurrency" in
+                  ''|*[!0-9]*|0) echo "Invalid concurrency: $concurrency" >&2; exit 2 ;;
+                esac
+                export CONCURRENCY="$concurrency"
+                echo "Starting preset=$PRESET cell=$EXPERIMENT_CELL concurrency=$CONCURRENCY"
+                run_point
+              done
+          env:
+            - name: TOPOLOGY
+              value: disaggregated
+            - name: EXPERIMENT_CELL
+              value: A
+            - name: PRESET
+              value: balanced
+            - name: LOAD_STAGE
+              value: saturation
+            - name: MODEL_REVISION
+              value: cc84af2fe71647d87f4486c064f320e1e7535243
+            - name: ENDPOINT
+              value: nemotron35-vllm-e3-frontend:8000
+            - name: AIPERF_VERSION
+              value: "0.12.0"
+            - name: MODEL_READY_TIMEOUT_SECONDS
+              value: "3600"
+            - name: INPUT_TOKENS
+              value: "8192"
+            - name: OUTPUT_TOKENS
+              value: "2048"
+            - name: PREFIX_REUSE_PERCENT
+              value: "90"
+            - name: TRACE_BLOCK_SIZE
+              value: "512"
+            - name: CONCURRENCIES
+              value: "64 128 256 512 768 1024"
+            - name: REQUEST_COUNT
+              value: "262144"
+            - name: WARMUP_SECONDS
+              value: "120"
+            - name: MEASURED_SECONDS
+              value: "300"
+            - name: GRACE_SECONDS
+              value: "120"
+            - name: REQUEST_TIMEOUT_SECONDS
+              value: "900"
+            - name: WORKERS_MAX
+              value: "48"
+            - name: RECORD_PROCESSORS
+              value: "32"
+            - name: ARTIFACT_ROOT
+              value: /perf-cache/specrouting/disaggregated/tp1-1p3d
+            - name: HF_HOME
+              value: /opt/models
+            - name: HF_HUB_OFFLINE
+              value: "1"
+            - name: TRANSFORMERS_OFFLINE
+              value: "1"
+            - name: AIPERF_HTTP_CONNECTION_LIMIT
+              value: "16384"
+            - name: PYTHONUNBUFFERED
+              value: "1"
+          resources:
+            requests:
+              cpu: "32"
+              memory: 64Gi
+            limits:
+              cpu: "64"
+              memory: 128Gi
+          volumeMounts:
+            - name: model-cache
+              mountPath: /opt/models
+              readOnly: true
+            - name: perf-cache
+              mountPath: /perf-cache
+      volumes:
+        - name: model-cache
+          persistentVolumeClaim:
+            claimName: model-cache
+        - name: perf-cache
+          persistentVolumeClaim:
+            claimName: perf-cache

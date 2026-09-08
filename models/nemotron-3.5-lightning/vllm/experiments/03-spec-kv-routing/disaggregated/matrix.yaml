@@ -1,0 +1,85 @@
+experiment:
+  id: 03-spec-kv-routing
+  question: >-
+    Does MTP speculative decoding change KV-cache behavior enough to alter the
+    value or correctness of KV-aware routing?
+  topology:
+    prefill_workers: 1
+    decode_workers: 3
+    total_gpus: 4
+    kv_connector: NixlConnector
+    mamba_conv_state_layout: SD
+    cni_network: qwen-roce
+    rdma_resources_per_worker: 1
+    ucx_net_devices: mlx5_8:1
+    ucx_tls: rc_x,rc,cuda_copy,cuda_ipc
+    prefill_routing_replica_selection: false
+    layout: tp1-1p3d
+    alternatives:
+      tp1-2p2d: {prefill_workers: 2, decode_workers: 2, prefill_routing_replica_selection: true}
+    gpus_per_worker: 1
+    tensor_parallel_size: 1
+  controls:
+    runtime_image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.4.1
+    model: nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4
+    model_revision: cc84af2fe71647d87f4486c064f320e1e7535243
+    kv_block_size_tokens: 64
+    mtp_speculative_tokens: 7
+    max_model_len: 65536
+    random_seed: 100
+    ignore_eos: true
+  cells:
+    A: {routing: round_robin, speculation: off}
+    B: {routing: round_robin, speculation: mtp}
+    C: {routing: kv, speculation: off}
+    D: {routing: kv, speculation: mtp}
+  presets:
+    balanced:
+      {input_tokens: 8192, output_tokens: 2048, prefix_reuse_percent: 90, concurrency: 512}
+    decode-stress:
+      {input_tokens: 1024, output_tokens: 8192, prefix_reuse_percent: 50, concurrency: 512}
+    prefill-kv:
+      {input_tokens: 32768, output_tokens: 128, prefix_reuse_percent: 90, concurrency: 512}
+  prefix_reuse_percent: [0, 50, 90]
+  input_tokens: [1024, 8192, 32768]
+  output_tokens: [128, 1024, 2048, 4096, 8192]
+  concurrency_sweeps:
+    balanced:
+      main: [64, 128, 256, 512, 768, 1024]
+      breaker: [1536, 2048]
+    decode-stress:
+      main: [64, 128, 256, 512, 768, 1024]
+      breaker: [1536, 2048]
+    prefill-kv:
+      main: [64, 128, 256, 512, 768, 1024]
+      breaker: [1536, 2048]
+  final_load_percent_of_saturation: [50, 75, 90, 100, 110]
+  timing:
+    warmup_seconds: 120
+    measured_seconds: 300
+  primary_metric:
+    formula: (T_D - T_C - T_B + T_A) / T_A
+    name: normalized_spec_routing_interaction
+  secondary_metrics:
+    - speculative_acceptance_rate
+    - kv_events_per_output_token
+    - router_predicted_kv_hit_rate
+    - actual_cached_tokens
+    - computed_prefill_tokens
+    - router_cpu_time
+    - p99_ttft
+    - p99_itl
+  required_prometheus_metrics:
+    - vllm:spec_decode_num_drafts_total
+    - vllm:spec_decode_num_draft_tokens_total
+    - vllm:spec_decode_num_accepted_tokens_total
+    - dynamo_component_router_kv_hit_rate
+    - dynamo_component_kv_cache_events_applied
+    - vllm:num_requests_running
+    - vllm:num_requests_waiting
+    - vllm:kv_cache_usage_perc
+    - DCGM_FI_DEV_GPU_UTIL
+    - DCGM_FI_DEV_FB_USED
+    - DCGM_FI_DEV_POWER_USAGE
+    - DCGM_FI_PROF_PIPE_TENSOR_ACTIVE
+    - DCGM_FI_PROF_DRAM_ACTIVE

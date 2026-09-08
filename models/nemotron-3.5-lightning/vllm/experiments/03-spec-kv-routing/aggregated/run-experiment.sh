@@ -6,7 +6,7 @@ umask 027
 NAMESPACE="${NAMESPACE:-qwen32-bench}"
 RECIPE_ROOT="${RECIPE_ROOT:-/ephemeral/shared/nemotron-3.5-lightning}"
 MODEL_CACHE_DIR="${MODEL_CACHE_DIR:-$RECIPE_ROOT/model-cache}"
-EXP_DIR="${EXP_DIR:-$RECIPE_ROOT/vllm/experiments/03-spec-kv-routing}"
+EXP_DIR="${EXP_DIR:-$RECIPE_ROOT/vllm/experiments/03-spec-kv-routing/aggregated}"
 DOWNLOAD_JOB="${DOWNLOAD_JOB:-nemotron35-model-download}"
 DEPLOYMENT="${DEPLOYMENT:-nemotron35-vllm-e3}"
 PERF_JOB="${PERF_JOB:-nemotron35-vllm-e3-perf}"
