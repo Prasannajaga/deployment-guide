@@ -1,47 +1,45 @@
-# Comparing Round-Robin Routing vs KV Aware Routing on Nemotron-3-Nano
+# Comparing Round-Robin Routing vs KV-Aware Routing on Nemotron-3-Nano
 
-When you serve an LLM across multiple workers, we need to decide which worker each request should go to. Almost any routing decision is fine when the load is light. However, when concurrent requests pile up faster or the KV prefix sharing increases, inefficient routing can pile up the requests, resulting in non-optimal performance.
+When you serve an LLM across multiple workers, you need to decide which worker each request should go to. Almost any routing decision is fine when the load is light. However, as concurrent requests pile up or KV prefix sharing increases, inefficient routing can leave requests queued, resulting in suboptimal performance.
 
-In this post, we walk through how Dynamo's Frontend routes, how its KV-aware cost function scores workers, and then compare the two routers on agent workload head to head on performance.
+In this post, we walk through how Dynamo's Frontend routes, how its KV-aware cost function scores workers, and then compare the two routers head-to-head on an agentic workload.
 
 ## Frontend
 
-**Frontend** is one of the first things worth understanding about Dynamo. According to the [Dynamo documentation](https://docs.nvidia.com/dynamo/dev/knowledge-base/modular-components/frontend/overview), Dynamo Frontend is the API gateway for serving LLM inference requests. It provides OpenAI-compatible HTTP endpoints handling request preprocessing, routing, and response formatting. Among many responsibilities of Frontend, we will especially focus on _routing_ in this post.
+**Frontend** is one of the first things worth understanding about Dynamo. According to the [Dynamo documentation](https://docs.nvidia.com/dynamo/dev/knowledge-base/modular-components/frontend/overview), Dynamo Frontend is the API gateway for serving LLM inference requests. It provides OpenAI-compatible HTTP endpoints that handle request preprocessing, routing, and response formatting. Among Frontend's many responsibilities, we will especially focus on _routing_ in this post.
 
-A large, multi-tenant deployment rarely runs in a single worker. Instead it usually runs several replicas, where a _replica_ matches one DP worker. This is because when dealing with multiple users, having one replica saturates the worker, and may fail to fulfill the SLOs, degrading the user experience. (Dynamo) Frontend is responsible for taking all the requests and routing them to DP workers. When there are multiple workers, routing behavior can significantly influence the overall performance (throughput, goodput, and latency).
+A large, multi-tenant deployment rarely runs on a single worker. Instead, it usually runs several replicas, where a _replica_ matches one DP worker. This is because with multiple users, a single replica quickly saturates and may fail to meet SLOs, degrading the user experience. The Dynamo Frontend is responsible for taking in all requests and routing them to DP workers. When there are multiple workers, routing behavior can significantly influence overall performance (throughput, goodput, and latency).
 
-Then what makes routing help achieve better performance? Let's talk about two prerequisites here.
+So what makes routing help achieve better performance? Let's talk about two prerequisites here.
 
-<p align="center">
-  <img src="assets/load-balancing.png" alt="Load balancer distributing client requests across four servers" width="600" />
-</p>
-from https://www.geeksforgeeks.org/system-design/what-is-load-balancer-system-design/
+**Load balancing** is a classical term in multicore and distributed systems that refers to how evenly requests are spread across workers. For example, if one worker is saturated and requests are waiting while other workers sit idle (underutilized), that's poor load balancing. It becomes especially important as the concurrency of the workload increases, since any given worker has a higher chance of becoming saturated.
 
-**Load balancing** is a classical term in multicore/distributed systems which refers to how evenly requests are spread across workers. For example, if there is a worker being saturated and requests are waiting while other workers are left idle (underutilized), this is poor load balancing. It becomes especially important when the concurrency of the workload increases, since the worker has a higher chance of becoming saturated.
-
-**KV awareness** refers to whether routing accounts for the KV cache a worker already holds, so a request that can reuse a cached prefix is sent to where that prefix lives instead of being recomputed elsewhere. [Prefix caching](https://docs.vllm.ai/en/latest/design/prefix_caching/) refers to a method of hashing prefixes of the prefill prompt at the granularity of a KV block. When the block value isn't changed or evicted and there is a recurring prompt that matches the hash, we can load the blocks instead of recalculating them, reducing the prefill computation. For detailed explanation, consider reading [vLLM documentation](https://docs.vllm.ai/en/latest/design/prefix_caching/) or [this section](https://github.com/junuxyz/mlsys-notes/blob/main/notes/vllm/inside-nano-vllm.md#schedule) in [Inside nano-vllm](https://github.com/junuxyz/mlsys-notes/blob/main/notes/vllm/inside-nano-vllm.md).
+**KV awareness** refers to whether routing accounts for the KV cache a worker already holds, so a request that can reuse a cached prefix is sent to where that prefix lives instead of being recomputed elsewhere. [Prefix caching](https://docs.vllm.ai/en/latest/design/prefix_caching/) refers to a method of hashing prefixes of the prefill prompt at the granularity of a KV block. When a block's contents haven't changed or been evicted and a later prompt matches that hash, we can load the cached blocks instead of recomputing them, reducing prefill computation. For a detailed explanation, consider reading the [vLLM documentation](https://docs.vllm.ai/en/latest/design/prefix_caching/) or [this section](https://github.com/junuxyz/mlsys-notes/blob/main/notes/vllm/inside-nano-vllm.md#schedule) of [Inside nano-vllm](https://github.com/junuxyz/mlsys-notes/blob/main/notes/vllm/inside-nano-vllm.md).
 
 ## Routing
 
-Now let's look at the two routing methods we will compare, which are Round Robin routing and KV aware routing.
+Now let's look at the two routing methods we'll compare: round-robin routing and KV-aware routing.
 
-<p align="center">
-  <img src="assets/round-robin-routing.png" alt="Round-robin router assigning requests to workers in sequence" width="720" />
-</p>
+<table>
+  <tr>
+    <th width="50%" align="center">Round-robin routing</th>
+    <th width="50%" align="center">KV-aware routing</th>
+  </tr>
+  <tr>
+    <td width="50%" align="center"><img src="assets/round-robin-routing.png" alt="Round-robin router assigning requests to workers in sequence" width="322" height="200" /></td>
+    <td width="50%" align="center"><img src="assets/kv-aware-routing.png" alt="KV-aware routing balancing cached-prefix reuse against worker load" width="352" height="200" /></td>
+  </tr>
+</table>
 
 **Round-robin (RR) routing** is a routing method which cycles through workers in order: with n workers, request 1 goes to worker 1, request 2 to worker 2, and request n+1 wraps back to worker 1. It is trivial to implement and never asks whether some worker already holds a usable prefix for the request. In this post, we will use the term RR routing interchangeably for convenience.
 
-<p align="center">
-  <img src="assets/kv-aware-routing.png" alt="KV-aware routing balancing cached-prefix reuse against worker load" width="720" />
-</p>
-
 **KV-aware routing** weighs both things we've mentioned earlier at once, reusable KV state and current load.
 
-For example, say there are two workers, A and B. Both are idle, and A already holds an overlapping prefix cache for the incoming request. Sending it to A sounds obvious since we can reduce prefill calculation. However, think of another scenario where A still has the prefix but is slammed with work while B is nearly idle. In this case, sending to B may be more reasonable. Thus, the router has to weigh those two options against each other depending on the status of workers.
+For example, say there are two workers, A and B. Both are idle, and A already holds an overlapping prefix cache for the incoming request. Sending it to A sounds obvious since we can reduce prefill computation. However, consider another scenario where A still has the prefix but is slammed with work while B is nearly idle. In this case, sending to B may be more reasonable. The router has to weigh those two options against each other depending on each worker's state.
 
 ## How Dynamo's KV Caching Router Works
 
-In practice, Dynamo frontend estimates how much of the incoming prompt still needs computing once cached prefixes are accounted for, folds in its model of each worker's active load, scores the candidates, and routes on that score.
+In practice, the Dynamo Frontend estimates how much of the incoming prompt still needs computing once cached prefixes are accounted for, folds in its model of each worker's active load, scores the candidates, and routes on that score.
 
 <p align="center">
   <img src="assets/dynamo-kv-aware-routing-cost-model.png" alt="Dynamo KV indexer and slot tracker feeding the routing cost function" width="720" />
@@ -50,22 +48,23 @@ In practice, Dynamo frontend estimates how much of the incoming prompt still nee
 At a high level the cost function is:
 
 $$C = \alpha P + D + \beta N$$
+
 where
 - $P$ is prefill cost, with the KV cache reuse effect already baked in.
 - $D$ is the total KV block load of the worker's active requests, counting the incoming one.
 - $N$ is the number of requests already active on that worker.
-- $\alpha, \beta$ weight $P$ and $N$. $\beta$ defaults to 0; the $N$ term is optional and stands in for batch size.
+- $\alpha, \beta$ weight $P$ and $N$. $\beta$ defaults to 0, and the $N$ term is optional and stands in for batch size.
 
-Each worker's (or engine's) KV events keep the router informed on the prefix cache information, whether blocks are created or evicted. <sup><a href="#reference-5">[5]</a></sup> Router deterministically selects based on the cost function. It picks the eligible worker with the lowest estimated cost. While prefix reuse pulls $P$ from the cost function down, which matters significantly, there are other factors in the equation. If a worker's other terms are large enough, a less loaded worker can still win.
+Each worker's (or engine's) [KV events](https://github.com/ai-dynamo/dynamo/blob/main/docs/fern/pages/developer-guide/advanced-customizations/writing-custom-backends/publish-kv-events.md) keep the router informed of the prefix-cache state, whether blocks are created or evicted. The router then deterministically picks the eligible worker with the lowest estimated cost based on the cost function. While prefix reuse pulls $P$ down significantly, there are other factors in the equation, and if a worker's other terms are large enough, a less-loaded worker can still win.
 
 > [!NOTE]
-> This might be too obvious to note but be aware of making enough prefix pools when testing on synthetic workload.
+> This may be obvious, but make sure to use enough distinct prefixes when testing with a synthetic workload.
 > 
-> In an earlier synthetic experiment comparing all different kinds of routers (Round-robin, KV aware, Power-of-Two, Least loaded etc. Full list can be found [here](https://docs.nvidia.com/dynamo/v1.4.2/knowledge-base/modular-components/router/router-guide#deployment-modes)) we accidentally gave every request the same shared prefix.
+> In an earlier synthetic experiment comparing several kinds of routers (round-robin, KV-aware, power-of-two, least-loaded, etc., with the full list found [here](https://docs.nvidia.com/dynamo/v1.4.2/knowledge-base/modular-components/router/router-guide#deployment-modes)), we accidentally gave every request the same shared prefix.
 >
-> Once that prefix was cached on every worker, KV-aware routing had little opportunity to improve cache reuse over anything else since sending it to any worker didn't matter.
+> Once that prefix was cached on every worker, KV-aware routing had little opportunity to improve cache reuse over anything else, since sending it to any worker didn't matter.
 > 
-> To evaluate prefix-aware routing, use a diverse pool (e.g. 20) of prefixes with repeated requests for each, so cache placement can differ across workers. We didn't have to consider this in this experiment since we use custom workload. 
+> To evaluate prefix-aware routing, use a diverse pool (e.g., 20) of prefixes with repeated requests for each, so cache placement can differ across workers. We didn't have to consider this in this experiment, since our workload uses real conversational traces rather than a single repeated prefix.
 
 ## Workload: AgentX MVP
 
@@ -79,7 +78,7 @@ In this experiment, we used the [InferenceX AgentX MVP Benchmark](https://docs.n
 
 A coding agent receives a response, works for a few seconds, then comes back with a new prompt that shares most of its prefix with the previous one. This substantially increases the probability of prefix reuse compared to single-turn chat sessions, and thus routing that considers KV reuse will likely have a clear advantage.
 
-It's also worth noting AgentX is more than just an agent trace. It uses agent trace(Weka trace) but also chooses _how_ to replay it. While user can choose the server, model, and concurrency, there are some configurations that have **hard-locks**. Just by adding one configuration (`--scenario inferencex-agentx-mvp`), AIPerf automatically sets hard locks as follows:
+It's also worth noting AgentX is more than just an agent trace. It uses the same agent trace (the Weka trace) but also decides _how_ to replay it. While the user can choose the server, model, and concurrency, some configurations are **hard-locked**. Just by adding one configuration (`--scenario inferencex-agentx-mvp`), AIPerf automatically sets these hard locks:
 
 | Command | Description |
 |---|---|
@@ -90,7 +89,7 @@ It's also worth noting AgentX is more than just an agent trace. It uses agent tr
 | `--benchmark-duration 900` | Profile for 15 minutes, the minimum allowed duration. |
 | `--public-dataset semianalysis_cc_traces_weka_062126` | Select a date-pinned dataset for consistent comparisons. |
 
-In our benchmark, we configured as:
+In our benchmark, we configured it as follows:
 
 ```yaml
               aiperf profile \
@@ -114,11 +113,11 @@ In our benchmark, we configured as:
 
 ### Concurrency and Effective Concurrency
 
-It's important to understand concurrency in the context of this specific benchmark since our experiment compares the different concurrency of the routing methods.
+It's important to understand what concurrency means in this specific benchmark, since our experiment compares the routing methods across different concurrency levels.
 
 In AgentX MVP, concurrency is used differently than how we would normally use [it](https://en.wikipedia.org/wiki/Concurrency_(computer_science)). Concurrency here is measured in _trajectories_: exactly `--concurrency` (e.g. 32) session trees are live at any moment.
 
-One session tree contains the root conversation plus every subagent worker stream it spawns. A new tree cannot start until a running one finishes and a tree finishes only after its root conversation and all of its subagent streams complete. As a result, the number of in-flight requests may actually rise above the concurrency setting during subagent fan-out (branch) or fall below it between turns while the agent or user is thinking.
+One session tree contains the root conversation plus every subagent worker stream it spawns. A new tree cannot start until a running one finishes, and a tree finishes only after its root conversation and all of its subagent streams complete. As a result, the number of in-flight requests may actually rise above the concurrency setting during subagent fan-out (branching) or fall below it between turns while the agent or user is thinking.
 
 [AIPerf](https://github.com/ai-dynamo/aiperf)’s [Effective Concurrency](https://docs.nvidia.com/aiperf/reference/effective-vs-active-metrics), reported as `effective_concurrency.avg` in the exports, is the time-weighted average number of [in-flight requests](https://llm-d.ai/docs/operations/async-processor#1-throughput-model) over the full run window. It captures both the additional requests from subagent fan-out and the reduced activity between turns, showing how much request concurrency the configured session trees actually produce.
 
@@ -155,7 +154,7 @@ As explained above, concurrency here refers to **active session trees**, includi
 
 As AgentX MVP benchmark [suggests](https://github.com/ai-dynamo/aiperf/blob/e10d53b1d30b5845f56cbea63d0560f10ff5aa4e/docs/tutorials/agentx-mvp.md#profiling-phase-faithful-replay-recycle-global-idle-guard), we used a fixed-time benchmark instead of fixed requests. Each run used a 900-second profiling window, following the [AgentX trajectory warmup](https://docs.nvidia.com/aiperf/dev/tutorials/datasets-inputs/inference-x-agent-x-mvp-benchmark#warmup-phase-trajectories-and-k_i).
 
-We ran all three RR conditions first, followed by all three KV-aware conditions, with one measurement per condition. To prevent earlier runs from warming the same replayed prefixes and contaminating the results, all six runs used `--cache-bust first_turn_prefix` to isolate the prefix cache for each replay. This config inserts a marker keyed by a distinct benchmark ID into the first user turn. Marker stays consistent within a session tree, preserving the prefix reuse we want to measure, while changing across runs and recycled plays.
+We ran all three RR conditions first, followed by all three KV-aware conditions, with one measurement per condition. To prevent earlier runs from warming the same replayed prefixes and contaminating the results, all six runs used `--cache-bust first_turn_prefix` to isolate the prefix cache for each replay. This config inserts a marker keyed by a distinct benchmark ID into the first user turn. The marker stays consistent within a session tree, preserving the prefix reuse we want to measure, while changing across runs and recycled plays.
 
 ### Prediction
 
@@ -174,7 +173,7 @@ Across all three concurrency levels, KV-aware routing achieved higher prompt-cac
 The results for each concurrency level are detailed below.
 
 <p align="center">
-  <img src="assets/kv-aware-vs-rr-c32.svg" alt="Round-robin vs KV aware routing (C32)" width="720" />
+  <img src="assets/kv-aware-vs-rr-c32.svg" alt="Round-robin vs KV-aware routing (C32)" width="720" />
 </p>
 
 At C32, both policies completed 795 requests at 0.855 req/s, with nearly identical output lengths and output throughput.
@@ -182,7 +181,7 @@ At C32, both policies completed 795 requests at 0.855 req/s, with nearly identic
 Prompt-cache reads rose from 54.39% to 86.33%, while mean TTFT fell from 530.87 to 216.02 ms (≈ 59.3% reduction). Median and P95 TTFT also decreased by more than half. Mean ITL changed only slightly, from 3.58 to 3.50 ms.
 
 <p align="center">
-  <img src="assets/kv-aware-vs-rr-c64.svg" alt="Round-robin vs KV aware routing (C64)" width="720" />
+  <img src="assets/kv-aware-vs-rr-c64.svg" alt="Round-robin vs KV-aware routing (C64)" width="720" />
 </p>
 
 C64 showed a 1.3% increase in request throughput, while prompt-cache reads rose from 52.73% to 81.51%.
@@ -190,7 +189,7 @@ C64 showed a 1.3% increase in request throughput, while prompt-cache reads rose 
 Mean TTFT was more than halved, falling from 579.06 to 277.67 ms (≈ 52.1% reduction), and P95 TTFT improved by ≈ 46.7%. These improvements also translated into lower end-to-end latency, with mean request latency dropping from 3.890 to 3.208 seconds (≈ 17.5% reduction).
 
 <p align="center">
-  <img src="assets/kv-aware-vs-rr-c128.svg" alt="Round-robin vs KV aware routing (C128)" width="720" />
+  <img src="assets/kv-aware-vs-rr-c128.svg" alt="Round-robin vs KV-aware routing (C128)" width="720" />
 </p>
 
 At C128, mean TTFT decreased by ≈ 42.2%, while mean ITL improved by ≈ 14.2%. Mean end-to-end request latency fell from 5.188 to 4.142 seconds (≈ 20.2% reduction).
@@ -206,30 +205,30 @@ Now let's take a closer look at the results and revisit our earlier [predictions
 The comparison below shows how the gains from KV-aware routing changed as concurrency increased.
 
 <p align="center">
-  <img src="assets/rr-vs-kv-concurrency.svg" alt="How the KV aware advantage shifts with concurrency" width="720" />
+  <img src="assets/rr-vs-kv-concurrency.svg" alt="How the KV-aware advantage shifts with concurrency" width="720" />
 </p>
 
 Three things stood out: throughput improved much less than latency, ITL benefited more at higher concurrency, and cache reuse declined even with KV-aware routing. Let's go through each.
 
 ### 1. Why Didn't Throughput Improve that much?
 
-#### Yes, KV aware routing can affect throughput
+#### Yes, KV-aware routing can affect throughput
 
-First of all, yes it did affect throughput. KV-aware routing primarily reduces prefill work through prefix-cache reuse, which is consistent with the large TTFT reductions and the much smaller ITL change observed at C32. 
+KV-aware routing primarily reduces prefill work through prefix-cache reuse, which is consistent with the large TTFT reductions and the much smaller ITL change observed at C32.
 
-However its effect is not limited to latency - skipping redundant prompt computation frees resources, while better load distribution can reduce the time requests spend queued behind a busy worker.
+However, its effect isn't limited to latency: skipping redundant prompt computation frees up resources, while better load distribution reduces the time requests spend queued behind a busy worker.
 
 <p align="center">
   <img src="assets/kv-aware-vs-rr-throughput-by-concurrency.svg" alt="Throughput advantage by concurrency" width="480" />
 </p>
 
-As a result, we do see some growth of throughput as we double the concurrency. Since it kept growing (the gap widening) for the three concurrency points, this shows we haven't met the concurrency ceiling **yet** and we need more sessions to saturate all the workers.
+As a result, we do see throughput grow as concurrency doubles. Since the gap kept widening across all three concurrency points, this suggests we haven't hit the concurrency ceiling **yet**. More sessions would be needed to saturate all the workers.
 
 #### Configured concurrency was much higher than effective concurrency
 
 As discussed above, **concurrency** in AgentX MVP refers to the number of live session trees, including those waiting between turns. **Effective concurrency** is the time-weighted average number of in-flight requests over the benchmark window.
 
-We previously thought configured concurrency (especially with C128) would saturate the GPUs. However, effective concurrency turned out to be much lower than what we've configured. If we look at measured effective concurrency:
+We had expected the configured concurrency, especially at C128, to saturate the GPUs. However, effective concurrency turned out to be much lower than what we configured. If we look at the measured effective concurrency:
 
 <p align="center">
   <img src="assets/configured-vs-effective-concurrency.svg" alt="Effective concurrency stays far below the setting" width="440" />
@@ -251,7 +250,7 @@ This was not obvious at first, but it became clearer once we went back and looke
 1. time spent processing a request in the model, and
 2. time spent calling tools or thinking before sending the next request.
 
-It turns out [AIPerf's request latency](https://docs.nvidia.com/aiperf/reference/ai-perf-metrics-reference#request-latency) measures only the time from sending an inference request until receiving its complete response ($T_{\mathrm{model}}$). It excludes the agent, tool, and think time between consecutive requests ($T_{\mathrm{outside}}$). So the latency gain looks bigger since it captures only the model side of the turn.
+It turns out [AIPerf's request latency](https://docs.nvidia.com/aiperf/reference/ai-perf-metrics-reference#request-latency) measures only the time from sending an inference request until receiving its complete response ($T_{\mathrm{model}}$). It excludes the agent, tool, and think time between consecutive requests ($T_{\mathrm{outside}}$). So the reported latency gain looks larger than the true end-to-end improvement, since it only captures the model side of the turn.
 
 Throughput, on the other hand, is measured over the full profiling window. Although agent time is not counted as request processing time, it still delays subsequent requests and consumes wall-clock time. An illustrative model is:
 
@@ -263,17 +262,15 @@ This follows the same principle as [Amdahl’s Law](https://en.wikipedia.org/wik
   <img src="assets/agent-turn-time-composition.svg" alt="Model time is a small slice of each agent turn" width="600" />
 </p>
 
-If we look into the request-level records, at C128, long pauses raised the mean to approximately 18 seconds (77% in RR, 81% in KV aware).
+If we look at the request-level records, at C128 the long pauses raised the mean to approximately 18 seconds (77% in RR, 81% in KV-aware). These gaps were excluded from request latency, but still consumed the profiling window used to calculate throughput.
 
-These gaps were excluded from request latency, but still consumed the profiling window used to calculate throughput. 
-
-While KV aware routing could shorten model processing, it could not reduce waiting time, leading to diluted throughput gain.
+While KV-aware routing shortened model processing, it couldn't reduce the waiting time, which diluted the throughput gain.
 
 ### 2. ITL Also Benefits
 
 KV-aware routing primarily improves TTFT, but in an aggregated deployment it also changes the environment in which decode runs.
 
-In [aggregated setup](https://www.nvidia.com/en-us/glossary/disaggregated-serving/), prefill and decode share the same workers and GPU execution steps. This means a long prefill is not only responsible for one request’s TTFT - it also creates interference for every request already generating tokens on that worker. Thus, decode requests must make progress while compute-heavy prompt tokens are being processed around them.
+In an [aggregated setup](https://www.nvidia.com/en-us/glossary/disaggregated-serving/), prefill and decode share the same workers and GPU execution steps. This means a long prefill isn't only responsible for one request's TTFT. It also creates interference for every request already generating tokens on that worker, so decode requests must make progress while compute-heavy prompt tokens are being processed around them.
 
 This is the problem that [Sarathi-Serve](https://github.com/junuxyz/mlsys-notes/blob/main/notes/sarathi-serve.md#tldr) addresses with [chunked prefill](https://github.com/junuxyz/mlsys-notes/blob/main/notes/sarathi-serve.md#chunked-prefill). Chunking limits how much prefill work can enter a scheduling step, reducing the _generation stalls_ experienced by ongoing decodes.
 
@@ -313,9 +310,9 @@ This also explains why round-robin declined only slightly. Round-robin does not 
 
 In this post, we have compared KV-aware routing and Round-robin routing using the AgentX MVP benchmark.
 
-Across all three pairs, we see a repeated pattern of KV-aware routing reporting more prompt-cache reuse, lower mean first-token and request latency, and the TTFT percentiles point to a tail-latency improvement while seeing a limited increase in throughput as concurrency was enlarged.
+Across all three pairs, we see a consistent pattern: KV-aware routing delivers more prompt-cache reuse and lower mean first-token and request latency, and the TTFT percentiles point to a tail-latency improvement, while only providing a limited increase in throughput as concurrency grows.
 
-For future work, we can consider measuring the (concurrency-wise) saturation point of the workload and comparing it to see an even greater throughput difference.
+For future work, we could measure the concurrency-wise saturation point of the workload, where we'd expect to see an even larger throughput difference.
 
 ## Acknowledgement
 
@@ -347,24 +344,13 @@ All six measurements include `profile_export_aiperf.json` files and can be found
 
 | Configuration | Profiling result directory |
 |---|---|
-| RR C32 | `rr/c32/` |
-| RR C64 | `rr/c64/` |
-| RR C128 | `rr/c128/` |
-| KV C32 | `kv/c32/` |
-| KV C64 | `kv/c64/` |
-| KV C128 | `kv/c128/` |
+| RR C32 | [rr/c32/](https://github.com/junuxyz/deployment-guide/tree/ac8e979e88da180daaef8929bf51019842cdac2f/benchmarks/nemotron-3-nano-30b-a3b-fp8/rr/c32/) |
+| RR C64 | [rr/c64/](https://github.com/junuxyz/deployment-guide/tree/ac8e979e88da180daaef8929bf51019842cdac2f/benchmarks/nemotron-3-nano-30b-a3b-fp8/rr/c64/) |
+| RR C128 | [rr/c128/](https://github.com/junuxyz/deployment-guide/tree/ac8e979e88da180daaef8929bf51019842cdac2f/benchmarks/nemotron-3-nano-30b-a3b-fp8/rr/c128/) |
+| KV C32 | [kv/c32/](https://github.com/junuxyz/deployment-guide/tree/ac8e979e88da180daaef8929bf51019842cdac2f/benchmarks/nemotron-3-nano-30b-a3b-fp8/kv/c32/) |
+| KV C64 | [kv/c64/](https://github.com/junuxyz/deployment-guide/tree/ac8e979e88da180daaef8929bf51019842cdac2f/benchmarks/nemotron-3-nano-30b-a3b-fp8/kv/c64/) |
+| KV C128 | [kv/c128/](https://github.com/junuxyz/deployment-guide/tree/ac8e979e88da180daaef8929bf51019842cdac2f/benchmarks/nemotron-3-nano-30b-a3b-fp8/kv/c128/) |
 
-
-Fields used
-- `request_count.avg`
-- `request_throughput.avg`
-- `output_token_throughput.avg`
-- `time_to_first_token`
-- `inter_token_latency`
-- `request_latency`
-- `overall_usage_prompt_cache_read_pct.avg`
-- `effective_concurrency.avg`
-- the input/output sequence-length summaries
 
 ### Configured vs Effective Concurrency
 
@@ -377,34 +363,17 @@ Fields used
 
 ## References
 
-<a id="reference-1"></a>1. [NVIDIA Dynamo: Routing Concepts](https://docs.nvidia.com/dynamo/dev/knowledge-base/modular-components/router/routing-concepts)
-
-<a id="reference-2"></a>2. [NVIDIA AIPerf: InferenceX AgentX MVP Benchmark](https://docs.nvidia.com/aiperf/dev/tutorials/datasets-inputs/inference-x-agent-x-mvp-benchmark); [commit-pinned benchmark specification](https://github.com/ai-dynamo/aiperf/blob/e10d53b1d30b5845f56cbea63d0560f10ff5aa4e/docs/tutorials/agentx-mvp.md)
-
-<a id="reference-3"></a>3. [NVIDIA Dynamo: Frontend Overview](https://docs.nvidia.com/dynamo/dev/knowledge-base/modular-components/frontend/overview)
-
-<a id="reference-4"></a>4. [vLLM: Automatic Prefix Caching](https://docs.vllm.ai/en/latest/design/prefix_caching/); [Inside nano-vLLM: Schedule](https://github.com/junuxyz/mlsys-notes/blob/main/notes/vllm/inside-nano-vllm.md#schedule)
-
-<a id="reference-5"></a>5. [NVIDIA Dynamo: Publish KV Events from a Custom Backend](https://github.com/ai-dynamo/dynamo/blob/main/docs/fern/pages/developer-guide/advanced-customizations/writing-custom-backends/publish-kv-events.md)
-
-<a id="reference-6"></a>6. [NVIDIA Dynamo: Router Guide (v1.4.2)](https://docs.nvidia.com/dynamo/v1.4.2/knowledge-base/modular-components/router/router-guide#deployment-modes)
-
-<a id="reference-7"></a>7. [NVIDIA AIPerf: Replay Weka Agentic Coding Traces](https://docs.nvidia.com/aiperf/dev/tutorials/datasets-inputs/replay-weka-agentic-coding-traces)
-
-<a id="reference-8"></a>8. [NVIDIA AIPerf: Effective vs. Active Metrics](https://docs.nvidia.com/aiperf/reference/effective-vs-active-metrics)
-
-<a id="reference-9"></a>9. [NVIDIA AIPerf: Metrics Reference](https://docs.nvidia.com/aiperf/reference/ai-perf-metrics-reference#request-latency)
-
-<a id="reference-10"></a>10. [NVIDIA Nemotron 3 Nano 30B-A3B FP8: Model Card](https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8)
-
-<a id="reference-11"></a>11. [Amdahl's Law](https://en.wikipedia.org/wiki/Amdahl%27s_law)
-
-<a id="reference-12"></a>12. [NVIDIA: Disaggregated Serving](https://www.nvidia.com/en-us/glossary/disaggregated-serving/)
-
-<a id="reference-13"></a>13. [Agrawal et al.: Taming Throughput-Latency Tradeoff in LLM Inference with Sarathi-Serve](https://www.usenix.org/conference/osdi24/presentation/agrawal); [Sarathi-Serve notes](https://github.com/junuxyz/mlsys-notes/blob/main/notes/sarathi-serve.md#chunked-prefill)
-
-<a id="reference-14"></a>14. [NVIDIA Dynamo: Metric Labels](https://docs.dynamo.nvidia.com/dynamo/reference/observability/metric-labels)
-
-<a id="reference-15"></a>15. [vLLM v0.26.0: Block Pool Implementation](https://github.com/vllm-project/vllm/blob/v0.26.0/vllm/v1/core/block_pool.py)
-
-<a id="reference-16"></a>16. [Raw Benchmark Results](../benchmarks/nemotron-3-nano-30b-a3b-fp8/)
+- **NVIDIA Dynamo Routing:** [Routing Concepts](https://docs.nvidia.com/dynamo/dev/knowledge-base/modular-components/router/routing-concepts)
+- **AgentX MVP Benchmark:** [InferenceX AgentX MVP Benchmark](https://docs.nvidia.com/aiperf/dev/tutorials/datasets-inputs/inference-x-agent-x-mvp-benchmark) and the [commit-pinned benchmark specification](https://github.com/ai-dynamo/aiperf/blob/e10d53b1d30b5845f56cbea63d0560f10ff5aa4e/docs/tutorials/agentx-mvp.md)
+- **Dynamo Frontend:** [Frontend Overview](https://docs.nvidia.com/dynamo/dev/knowledge-base/modular-components/frontend/overview)
+- **Prefix Caching:** [vLLM Automatic Prefix Caching](https://docs.vllm.ai/en/latest/design/prefix_caching/) and [Inside nano-vLLM: Schedule](https://github.com/junuxyz/mlsys-notes/blob/main/notes/vllm/inside-nano-vllm.md#schedule)
+- **KV Events:** [Publish KV Events from a Custom Backend](https://github.com/ai-dynamo/dynamo/blob/main/docs/fern/pages/developer-guide/advanced-customizations/writing-custom-backends/publish-kv-events.md)
+- **Dynamo Router Configuration:** [Router Guide (v1.4.2)](https://docs.nvidia.com/dynamo/v1.4.2/knowledge-base/modular-components/router/router-guide#deployment-modes)
+- **Agentic Coding Workload:** [Replay Weka Agentic Coding Traces](https://docs.nvidia.com/aiperf/dev/tutorials/datasets-inputs/replay-weka-agentic-coding-traces)
+- **Concurrency Metrics:** [Effective vs. Active Metrics](https://docs.nvidia.com/aiperf/reference/effective-vs-active-metrics)
+- **Request Latency:** [AIPerf Metrics Reference](https://docs.nvidia.com/aiperf/reference/ai-perf-metrics-reference#request-latency)
+- **Nemotron 3 Nano Model:** [NVIDIA Nemotron 3 Nano 30B-A3B FP8 Model Card](https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8)
+- **Sarathi-Serve:** [Taming Throughput-Latency Tradeoff in LLM Inference with Sarathi-Serve](https://www.usenix.org/conference/osdi24/presentation/agrawal) and the [Sarathi-Serve notes](https://github.com/junuxyz/mlsys-notes/blob/main/notes/sarathi-serve.md#chunked-prefill)
+- **Dynamo Observability:** [Metric Labels](https://docs.dynamo.nvidia.com/dynamo/reference/observability/metric-labels)
+- **vLLM KV Cache Management:** [Block Pool Implementation (v0.26.0)](https://github.com/vllm-project/vllm/blob/v0.26.0/vllm/v1/core/block_pool.py)
+- **Benchmark Results:** [Raw Benchmark Results](../benchmarks/nemotron-3-nano-30b-a3b-fp8/)
