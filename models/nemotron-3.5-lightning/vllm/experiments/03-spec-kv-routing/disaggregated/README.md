@@ -19,20 +19,20 @@ transfer behavior at fixed TP and GPU count. With only one prefill worker,
 1P3D cannot demonstrate cache-aware selection among prefill replicas; use
 2P2D for that comparison. Measure MTP with A versus B and C versus D.
 
-Both roles explicitly use `VLLM_SSM_CONV_STATE_LAYOUT=SD`. The aggregated
-recipe does not force DS, whereas the previous disaggregated template did.
-With DS, the observed runtime crashed in `get_conv_copy_spec` when MTP accepted
-multiple tokens during align-mode state migration. SD avoids that specific
-DS-only assertion while retaining prefix caching, KV events, and seven-token
-MTP. This is a workaround for matching TP=1 on both roles, not a validated
-fix for every NIXL/MTP interaction. Upstream documents that DS is needed for
-[heterogeneous TP, not homogeneous TP](https://github.com/vllm-project/vllm-project.github.io/blob/main/_posts/2026-04-21-hybrid-ssm-disagg.md),
-and tracks the DS migration fix in [PR #49291](https://github.com/vllm-project/vllm/pull/49291).
+Both roles must use `VLLM_SSM_CONV_STATE_LAYOUT=DS` in the observed runtime.
+Its NIXL worker rejects SD at startup with `3-read Mamba conv transfer requires
+DS conv state layout`, even with matching TP=1. The earlier SD workaround was
+invalid for this build. Aggregated serving does not initialize this NIXL
+transfer path, so its successful MTP run does not establish compatibility here.
 
-Recreate the whole graph when changing layouts so every prefill and decode
-worker agrees on the state representation. Validate repeated-prompt output
-and transfer success, then repeat the failing D load. Rerun C with SD as well
-for the final matched C/D comparison; label previous DS runs separately.
+The reported vLLM 0.26.0 run completed C but crashed in D during Mamba
+align-state copying. This recipe now requires vLLM 0.27.1, which follows
+[v0.27.0 with fix #49291](https://github.com/vllm-project/vllm/releases/tag/v0.27.0).
+Keep DS and seven-token MTP. The derived image below retains Dynamo 1.4.1
+and NIXL 1.3.2; this combination is an experimental integration, not a
+published or cluster-validated NVIDIA runtime. Build dependency checks and the
+startup/transfer gates must pass before benchmarking. Rerun C and D on the
+same built image; preserve the old 0.26.0 results separately.
 
 Both roles receive the same seven-token MTP configuration in B and D to keep
 hybrid cache layouts aligned; measure speculative acceptance on the decode
@@ -74,7 +74,8 @@ export ARTIFACT_ROOT="/perf-cache/specrouting/disaggregated/$PD_LAYOUT"
 export DEPLOYMENT=nemotron35-vllm-e3
 export PERF_JOB=nemotron35-vllm-e3-perf
 export GRAPH_LABEL="nvidia.com/dynamo-graph-deployment-name=$DEPLOYMENT"
-export RUNTIME_IMAGE=nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.4.1
+# Set this to your writable registry/repository with a new, unique tag.
+export RUNTIME_IMAGE="${RUNTIME_IMAGE:?Set RUNTIME_IMAGE to your custom vLLM 0.27.1 image reference}"
 export CAPABILITY_POD=nemotron35-vllm-capability
 mkdir -p "$MODEL_CACHE_DIR" "$EXP_DIR"
 
@@ -85,19 +86,53 @@ kubectl get nodes \
   -o custom-columns='NODE:.metadata.name,GPU:.status.allocatable.nvidia\.com/gpu,RDMA:.status.allocatable.rdma/ib'
 ```
 
+### Build the required runtime image
+
+Run the following on a Docker build host with registry access after setting
+`EXP_DIR` and `RUNTIME_IMAGE` above. The base NVIDIA runtime ships vLLM 0.26.0;
+changing only the version assertion or the NVIDIA image tag does not install
+the fix. Do not install `ai-dynamo[vllm]==1.4.1` again in this image, because
+that extra pins vLLM back to 0.26.0. Keep the existing Dynamo installation and
+let pip resolve the new vLLM dependencies. A dependency conflict is a failed
+build, not a reason to bypass dependency checks.
+
+```bash
+mkdir -p "$EXP_DIR/runtime-build"
+tee "$EXP_DIR/runtime-build/Dockerfile" >/dev/null <<'RUNTIME_EOF'
+# Experimental Dynamo 1.4.1 + vLLM 0.27.1 integration for the DS/MTP fix.
+# Build and validate before deployment; not a published NVIDIA image.
+FROM nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.4.1
+USER root
+RUN python3 -m pip install --no-cache-dir --upgrade \
+      "vllm[flashinfer,runai,otel]==0.27.1" "nixl[cu13]==1.3.2" \
+    && python3 -m pip check \
+    && python3 -c 'import importlib.metadata as m; assert m.version("vllm") == "0.27.1"; assert m.version("ai-dynamo") == "1.4.1"; import dynamo.vllm, nixl'
+RUNTIME_EOF
+docker build --pull -t "$RUNTIME_IMAGE" "$EXP_DIR/runtime-build"
+docker run --rm --entrypoint python3 "$RUNTIME_IMAGE" \
+  -m dynamo.vllm --help > "$EXP_DIR/runtime-build/dynamo-vllm-help.txt"
+docker push "$RUNTIME_IMAGE"
+docker image inspect "$RUNTIME_IMAGE" \
+  > "$EXP_DIR/runtime-build/image-inspect.json"
+```
+
+The cluster must be able to pull this image. Use an immutable tag or registry
+digest for both C and D. Import and CLI checks do not prove GPU correctness;
+complete the capability check below and the existing streaming/transfer checks.
+
 The graph needs four free H100s and four free `rdma/ib` allocations in total,
 with one of each available for every worker Pod. The node
 listing shows allocatable capacity, so also account for existing Pod requests.
 Require `qwen-roce` in this namespace and `mlx5_8` port 1 on every eligible
 worker node. The attachment name and HCA are cluster-specific values taken
 from the Qwen recipe; both must match the actual fabric. Verify that the
-runtime contains vLLM 0.26.0 before scheduling it.
+runtime contains vLLM 0.27.1 before scheduling it.
 
 ```bash
 kubectl delete pod "$CAPABILITY_POD" -n "$NAMESPACE" --ignore-not-found
 kubectl run "$CAPABILITY_POD" -n "$NAMESPACE" \
   --image="$RUNTIME_IMAGE" --restart=Never --command -- \
-  python3 -c 'import importlib.metadata as m; version=m.version("vllm"); print("vLLM", version); assert version == "0.26.0", version'
+  python3 -c 'import importlib.metadata as m; version=m.version("vllm"); print("vLLM", version); assert version == "0.27.1", version'
 kubectl wait -n "$NAMESPACE" --for=jsonpath='{.status.phase}'=Succeeded \
   "pod/$CAPABILITY_POD" --timeout=300s
 kubectl logs -n "$NAMESPACE" "$CAPABILITY_POD"
@@ -271,6 +306,7 @@ kubectl describe job "$DOWNLOAD_JOB" -n "$NAMESPACE"
 
 ```bash
 tee "$EXP_DIR/deploy.template.yaml" >/dev/null <<'DEPLOY_EOF'
+# Replace __RUNTIME_IMAGE__ with the built vLLM 0.27.1 image before applying.
 # Set experiment-cell to A, B, C, or D before applying. See README.md.
 apiVersion: v1
 kind: ConfigMap
@@ -306,7 +342,7 @@ spec:
         spec:
           containers:
             - name: main
-              image: &runtime_image nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.4.1
+              image: &runtime_image __RUNTIME_IMAGE__
               imagePullPolicy: IfNotPresent
               command: [/bin/sh, -c]
               args:
@@ -511,7 +547,7 @@ spec:
                   valueFrom:
                     fieldRef: {fieldPath: status.podIP}
                 - {name: VLLM_NIXL_SIDE_CHANNEL_PORT, value: '5600'}
-                - {name: VLLM_SSM_CONV_STATE_LAYOUT, value: SD}
+                - {name: VLLM_SSM_CONV_STATE_LAYOUT, value: DS}
                 - name: UCX_TLS
                   value: 'rc_x,rc,cuda_copy,cuda_ipc'
                 - name: UCX_NET_DEVICES
@@ -696,7 +732,7 @@ spec:
                   valueFrom:
                     fieldRef: {fieldPath: status.podIP}
                 - {name: VLLM_NIXL_SIDE_CHANNEL_PORT, value: '5600'}
-                - {name: VLLM_SSM_CONV_STATE_LAYOUT, value: SD}
+                - {name: VLLM_SSM_CONV_STATE_LAYOUT, value: DS}
                 - name: UCX_TLS
                   value: 'rc_x,rc,cuda_copy,cuda_ipc'
                 - name: UCX_NET_DEVICES
@@ -755,6 +791,14 @@ spec:
                 - name: dshm
                   mountPath: /dev/shm
 DEPLOY_EOF
+python3 - "$EXP_DIR/deploy.template.yaml" "$RUNTIME_IMAGE" <<'IMAGE_EOF'
+from pathlib import Path
+import sys
+path = Path(sys.argv[1])
+image = sys.argv[2]
+assert image and not any(c.isspace() for c in image) and "__" not in image
+path.write_text(path.read_text().replace("__RUNTIME_IMAGE__", image))
+IMAGE_EOF
 ```
 
 ### Optional 2P2D layout
@@ -765,6 +809,7 @@ separate result directory. Rerun the 1P3D heredoc above to switch back.
 
 ```bash
 tee "$EXP_DIR/deploy.template.yaml" >/dev/null <<'DEPLOY_2P2D_EOF'
+# Replace __RUNTIME_IMAGE__ with the built vLLM 0.27.1 image before applying.
 # Set experiment-cell to A, B, C, or D before applying. See README.md.
 apiVersion: v1
 kind: ConfigMap
@@ -800,7 +845,7 @@ spec:
         spec:
           containers:
             - name: main
-              image: &runtime_image nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.4.1
+              image: &runtime_image __RUNTIME_IMAGE__
               imagePullPolicy: IfNotPresent
               command: [/bin/sh, -c]
               args:
@@ -1005,7 +1050,7 @@ spec:
                   valueFrom:
                     fieldRef: {fieldPath: status.podIP}
                 - {name: VLLM_NIXL_SIDE_CHANNEL_PORT, value: '5600'}
-                - {name: VLLM_SSM_CONV_STATE_LAYOUT, value: SD}
+                - {name: VLLM_SSM_CONV_STATE_LAYOUT, value: DS}
                 - name: UCX_TLS
                   value: 'rc_x,rc,cuda_copy,cuda_ipc'
                 - name: UCX_NET_DEVICES
@@ -1190,7 +1235,7 @@ spec:
                   valueFrom:
                     fieldRef: {fieldPath: status.podIP}
                 - {name: VLLM_NIXL_SIDE_CHANNEL_PORT, value: '5600'}
-                - {name: VLLM_SSM_CONV_STATE_LAYOUT, value: SD}
+                - {name: VLLM_SSM_CONV_STATE_LAYOUT, value: DS}
                 - name: UCX_TLS
                   value: 'rc_x,rc,cuda_copy,cuda_ipc'
                 - name: UCX_NET_DEVICES
@@ -1249,6 +1294,14 @@ spec:
                 - name: dshm
                   mountPath: /dev/shm
 DEPLOY_2P2D_EOF
+python3 - "$EXP_DIR/deploy.template.yaml" "$RUNTIME_IMAGE" <<'IMAGE_EOF'
+from pathlib import Path
+import sys
+path = Path(sys.argv[1])
+image = sys.argv[2]
+assert image and not any(c.isspace() for c in image) and "__" not in image
+path.write_text(path.read_text().replace("__RUNTIME_IMAGE__", image))
+IMAGE_EOF
 export PREFILL_WORKERS=2 DECODE_WORKERS=2
 export PD_LAYOUT=tp1-2p2d
 export ARTIFACT_ROOT="/perf-cache/specrouting/disaggregated/$PD_LAYOUT"

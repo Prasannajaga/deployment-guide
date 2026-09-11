@@ -1,3 +1,4 @@
+# Replace __RUNTIME_IMAGE__ with the built vLLM 0.27.1 image before applying.
 # Set experiment-cell to A, B, C, or D before applying. See README.md.
 apiVersion: v1
 kind: ConfigMap
@@ -33,7 +34,7 @@ spec:
         spec:
           containers:
             - name: main
-              image: &runtime_image nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.4.1
+              image: &runtime_image __RUNTIME_IMAGE__
               imagePullPolicy: IfNotPresent
               command: [/bin/sh, -c]
               args:
@@ -238,7 +239,7 @@ spec:
                   valueFrom:
                     fieldRef: {fieldPath: status.podIP}
                 - {name: VLLM_NIXL_SIDE_CHANNEL_PORT, value: '5600'}
-                - {name: VLLM_SSM_CONV_STATE_LAYOUT, value: SD}
+                - {name: VLLM_SSM_CONV_STATE_LAYOUT, value: DS}
                 - name: UCX_TLS
                   value: 'rc_x,rc,cuda_copy,cuda_ipc'
                 - name: UCX_NET_DEVICES
@@ -423,7 +424,7 @@ spec:
                   valueFrom:
                     fieldRef: {fieldPath: status.podIP}
                 - {name: VLLM_NIXL_SIDE_CHANNEL_PORT, value: '5600'}
-                - {name: VLLM_SSM_CONV_STATE_LAYOUT, value: SD}
+                - {name: VLLM_SSM_CONV_STATE_LAYOUT, value: DS}
                 - name: UCX_TLS
                   value: 'rc_x,rc,cuda_copy,cuda_ipc'
                 - name: UCX_NET_DEVICES

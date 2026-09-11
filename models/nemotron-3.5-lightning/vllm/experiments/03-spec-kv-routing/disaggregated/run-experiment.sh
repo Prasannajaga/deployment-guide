@@ -371,6 +371,10 @@ for file in "$DOWNLOAD_MANIFEST" "$DEPLOY_TEMPLATE" "$PERF_TEMPLATE"; do
     exit 2
   }
 done
+if grep -q '__RUNTIME_IMAGE__' "$DEPLOY_TEMPLATE"; then
+  log ERROR "render __RUNTIME_IMAGE__ with the built vLLM 0.27.1 image before running"
+  exit 2
+fi
 for cell in $CELL_ORDER; do
   case "$cell" in
     A|B|C|D) ;;

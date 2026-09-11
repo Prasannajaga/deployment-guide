@@ -8,7 +8,7 @@ experiment:
     decode_workers: 3
     total_gpus: 4
     kv_connector: NixlConnector
-    mamba_conv_state_layout: SD
+    mamba_conv_state_layout: DS
     cni_network: qwen-roce
     rdma_resources_per_worker: 1
     ucx_net_devices: mlx5_8:1
@@ -20,7 +20,10 @@ experiment:
     gpus_per_worker: 1
     tensor_parallel_size: 1
   controls:
-    runtime_image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.4.1
+    runtime_image: __RUNTIME_IMAGE__
+    runtime_base_image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.4.1
+    vllm_version: 0.27.1
+    runtime_validation: pending_cluster_test
     model: nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4
     model_revision: cc84af2fe71647d87f4486c064f320e1e7535243
     kv_block_size_tokens: 64
