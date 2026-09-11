@@ -132,7 +132,7 @@ We ran a 1,500-second prefill-heavy experiment sweep across concurrencies 1–32
 
 ![NIXL KV transfer profiling](assets/NIXL-profiling.svg)
 
-
+<!-- 
 ### 4. Disaggregation vs. KV-Aware Routing vs. CPU KV Offloading
 
 We evaluated five Qwen3-32B FP8 configurations with vLLM using the [Mooncake conversation trace](https://github.com/kvcache-ai/Mooncake/blob/main/FAST25-release/traces/conversation_trace.jsonl). Starting from eight aggregated TP=2 workers, we compared 6P2D and 4P4D disaggregation, KV-aware routing, and CPU KV cache offloading.
@@ -152,10 +152,10 @@ Exp 5(Exp4 with KV cache offloading) didn't demonstrate a measurable benefit fro
 </p>
 
 The aggregated and 6P2D round-robin configurations developed very large TTFT tails compared to other experiments. Exp 2 has high TTFT because Dynamo measures TTFT until the first token is streamed from a **decode worker**.
+ -->
 
 
-
-### 5. Event-Driven Autoscaling using KEDA
+### 4. Event-Driven Autoscaling using KEDA
 
 We tried baseline event-driven autoscaling with KEDA on the **Qwen3.6-35B-A3B FP8** model (aggregated SGLang workers, TP=2), triggering scale-out based on the `dynamo_frontend_active_requests` metric (target threshold of 16 active requests per worker).
 
