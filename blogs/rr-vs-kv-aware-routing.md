@@ -20,16 +20,10 @@ So what makes routing help achieve better performance? Let's talk about two prer
 
 Now let's look at the two routing methods we'll compare: round-robin routing and KV-aware routing.
 
-<table>
-  <tr>
-    <th width="50%" align="center">Round-robin routing</th>
-    <th width="50%" align="center">KV-aware routing</th>
-  </tr>
-  <tr>
-    <td width="50%" align="center"><img src="assets/round-robin-routing.png" alt="Round-robin router assigning requests to workers in sequence" width="322" height="200" /></td>
-    <td width="50%" align="center"><img src="assets/kv-aware-routing.png" alt="KV-aware routing balancing cached-prefix reuse against worker load" width="352" height="200" /></td>
-  </tr>
-</table>
+<p align="center">
+  <img src="assets/round-robin-routing.png" alt="Round-robin router assigning requests to workers in sequence" width="47.5%" />
+  <img src="assets/kv-aware-routing.png" alt="KV-aware routing balancing cached-prefix reuse against worker load" width="51.5%" />
+</p>
 
 **Round-robin (RR) routing** is a routing method which cycles through workers in order: with n workers, request 1 goes to worker 1, request 2 to worker 2, and request n+1 wraps back to worker 1. It is trivial to implement and never asks whether some worker already holds a usable prefix for the request. In this post, we will use the term RR routing interchangeably for convenience.
 
