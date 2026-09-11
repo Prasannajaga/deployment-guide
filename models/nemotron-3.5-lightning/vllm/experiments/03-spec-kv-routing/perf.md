@@ -1,6 +1,6 @@
 # High-load MTP scaling benchmark
 
-This runbook drives the four-worker aggregated deployment from useful load
+This runbook drives the selected aggregated or disaggregated deployment from useful load
 through saturation and then beyond its configured scheduling capacity. It is
 intentionally capable of causing request timeouts, failed Jobs, frontend
 disconnects, worker restarts, and engine OOM termination. Run it only in the
@@ -8,11 +8,17 @@ dedicated experiment namespace, verify that no production traffic uses the
 frontend Service, and configure the capture in [`metrics.md`](./metrics.md)
 before starting.
 
-The deployment allows 512 sequences per worker and has four workers, so 2048 is
+The aggregated deployment allows 512 sequences per worker and has four workers, so 2048 is
 the aggregate configured `max-num-seqs` ceiling. It is not a promise that 2048
 long sequences fit simultaneously in KV cache. Concurrency above 2048 is
 deliberate queue and failure pressure. vLLM may remain healthy by queueing work;
 that is a valid overload result and is preferable to an artificial OOM.
+
+The disaggregated recipe uses TP=1 with one prefill and three decode workers
+by default: its decode scheduling limit is 1536 sequences. The optional 2P2D
+layout has a 1024-sequence decode limit. Keep identical workload and timing
+when comparing configurations; use smaller loads only for separate diagnostics.
+1P3D has no choice among prefill replicas; 2P2D enables that comparison.
 
 | Stage | Concurrency | Purpose |
 | :--- | :--- | :--- |
@@ -30,11 +36,19 @@ directly with D as an MTP-only effect because routing changes too.
 ## 1. Variables and benchmark template
 
 Use the same administration-host variables and deployed `CELL` described in
-the main README. These paths are cluster-host paths, not repository paths.
+the selected [aggregated](./aggregated/README.md) or
+[disaggregated](./disaggregated/README.md) README. Set `TOPOLOGY` there first. These paths are cluster-host paths, not repository paths.
 
 ```bash
 export NAMESPACE=qwen32-bench
-export EXP_DIR=/ephemeral/shared/nemotron-3.5-lightning/vllm/experiments/03-spec-kv-routing
+export TOPOLOGY="${TOPOLOGY:-aggregated}"
+case "$TOPOLOGY" in aggregated|disaggregated) ;; *) echo 'Invalid TOPOLOGY' >&2; exit 2 ;; esac
+export EXP_DIR="/ephemeral/shared/nemotron-3.5-lightning/vllm/experiments/03-spec-kv-routing/$TOPOLOGY"
+export ARTIFACT_ROOT="/perf-cache/specrouting/$TOPOLOGY"
+if [ "$TOPOLOGY" = disaggregated ]; then
+  export PD_LAYOUT="${PD_LAYOUT:-tp1-1p3d}"
+  export ARTIFACT_ROOT="$ARTIFACT_ROOT/$PD_LAYOUT"
+fi
 export DEPLOYMENT=nemotron35-vllm-e3
 export PERF_JOB=nemotron35-vllm-e3-perf
 export GRAPH_LABEL="nvidia.com/dynamo-graph-deployment-name=$DEPLOYMENT"
@@ -155,6 +169,7 @@ spec:
               benchmark_started_epoch=$(date -u +%s)
               jq -n \
                 --arg run_id "$run_id" \
+                --arg topology "$TOPOLOGY" \
                 --arg preset "$PRESET" \
                 --arg load_stage "$LOAD_STAGE" \
                 --arg cell "$EXPERIMENT_CELL" \
@@ -173,6 +188,7 @@ spec:
                 '{
                   run_id: $run_id,
                   experiment: "03-spec-kv-routing",
+                  topology: $topology,
                   preset: $preset,
                   load_stage: $load_stage,
                   cell: $cell,
@@ -247,6 +263,8 @@ spec:
                 run_point
               done
           env:
+            - name: TOPOLOGY
+              value: aggregated
             - name: EXPERIMENT_CELL
               value: A
             - name: PRESET
@@ -286,7 +304,7 @@ spec:
             - name: RECORD_PROCESSORS
               value: "32"
             - name: ARTIFACT_ROOT
-              value: /perf-cache/specrouting
+              value: /perf-cache/specrouting/aggregated
             - name: HF_HOME
               value: /opt/models
             - name: HF_HUB_OFFLINE
@@ -318,6 +336,16 @@ spec:
           persistentVolumeClaim:
             claimName: perf-cache
 PERF_EOF
+
+# Render topology-specific settings after the literal shared template.
+export CONCURRENCIES='256 512 1024 1536 2048 3072 4096 6144 8192'
+if [ "$TOPOLOGY" = disaggregated ]; then
+  export CONCURRENCIES='64 128 256 512 768 1024'
+fi
+kubectl set env --local -f "$EXP_DIR/perf.yaml" -o yaml \
+  TOPOLOGY="$TOPOLOGY" ARTIFACT_ROOT="$ARTIFACT_ROOT" \
+  CONCURRENCIES="$CONCURRENCIES" > "$EXP_DIR/perf.rendered.yaml"
+mv "$EXP_DIR/perf.rendered.yaml" "$EXP_DIR/perf.yaml"
 ```
 
 The Job deliberately disables AIPerf GPU telemetry because DCGM and Prometheus
@@ -329,7 +357,7 @@ returns a nonzero exit code.
 Artifacts use one deterministic path and no timestamp directory:
 
 ```text
-/perf-cache/specrouting/cell-A/isl-8192_osl-2048_c-2048_reuse-90_preset-balanced/results
+/perf-cache/specrouting/<topology>/cell-A/isl-8192_osl-2048_c-2048_reuse-90_preset-balanced/results
 ```
 
 `results` contains `manifest.json`, `trace.jsonl`, `aiperf.log`, and the AIPerf
@@ -352,9 +380,9 @@ kubectl set env --local -f "$EXP_DIR/perf.yaml" -o yaml \
   EXPERIMENT_CELL="$CELL" \
   PRESET=balanced LOAD_STAGE=sweep \
   INPUT_TOKENS=8192 OUTPUT_TOKENS=2048 PREFIX_REUSE_PERCENT=90 \
-  CONCURRENCIES='256 512 1024 1536 2048 3072 4096 6144 8192' \
+  CONCURRENCIES="$CONCURRENCIES" \
   WARMUP_SECONDS=120 MEASURED_SECONDS=300 \
-  REQUEST_TIMEOUT_SECONDS=900 ARTIFACT_ROOT=/perf-cache/specrouting |
+  REQUEST_TIMEOUT_SECONDS=900 ARTIFACT_ROOT="$ARTIFACT_ROOT" |
   kubectl apply -n "$NAMESPACE" -f -
 kubectl logs -n "$NAMESPACE" -f "job/$PERF_JOB"
 kubectl wait -n "$NAMESPACE" --for=condition=Complete \
@@ -372,9 +400,9 @@ kubectl set env --local -f "$EXP_DIR/perf.yaml" -o yaml \
   EXPERIMENT_CELL="$CELL" \
   PRESET=decode-stress LOAD_STAGE=sweep \
   INPUT_TOKENS=1024 OUTPUT_TOKENS=8192 PREFIX_REUSE_PERCENT=50 \
-  CONCURRENCIES='256 512 1024 1536 2048 3072 4096 6144 8192' \
+  CONCURRENCIES="$CONCURRENCIES" \
   WARMUP_SECONDS=120 MEASURED_SECONDS=300 \
-  REQUEST_TIMEOUT_SECONDS=1800 ARTIFACT_ROOT=/perf-cache/specrouting |
+  REQUEST_TIMEOUT_SECONDS=1800 ARTIFACT_ROOT="$ARTIFACT_ROOT" |
   kubectl apply -n "$NAMESPACE" -f -
 kubectl logs -n "$NAMESPACE" -f "job/$PERF_JOB"
 kubectl wait -n "$NAMESPACE" --for=condition=Complete \
@@ -392,7 +420,7 @@ kubectl set env --local -f "$EXP_DIR/perf.yaml" -o yaml \
   INPUT_TOKENS=32768 OUTPUT_TOKENS=128 PREFIX_REUSE_PERCENT=90 \
   CONCURRENCIES='64 128 256 512 768 1024 1536 2048' \
   WARMUP_SECONDS=120 MEASURED_SECONDS=300 \
-  REQUEST_TIMEOUT_SECONDS=900 ARTIFACT_ROOT=/perf-cache/specrouting |
+  REQUEST_TIMEOUT_SECONDS=900 ARTIFACT_ROOT="$ARTIFACT_ROOT" |
   kubectl apply -n "$NAMESPACE" -f -
 kubectl logs -n "$NAMESPACE" -f "job/$PERF_JOB"
 kubectl wait -n "$NAMESPACE" --for=condition=Complete \
