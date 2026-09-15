@@ -105,6 +105,7 @@ spec:
               benchmark_started_epoch=$(date -u +%s)
               jq -n \
                 --arg run_id "$run_id" \
+                --arg topology "$TOPOLOGY" \
                 --arg preset "$PRESET" \
                 --arg load_stage "$LOAD_STAGE" \
                 --arg cell "$EXPERIMENT_CELL" \
@@ -123,6 +124,7 @@ spec:
                 '{
                   run_id: $run_id,
                   experiment: "03-spec-kv-routing",
+                  topology: $topology,
                   preset: $preset,
                   load_stage: $load_stage,
                   cell: $cell,
@@ -197,6 +199,8 @@ spec:
                 run_point
               done
           env:
+            - name: TOPOLOGY
+              value: aggregated
             - name: EXPERIMENT_CELL
               value: A
             - name: PRESET
@@ -236,7 +240,7 @@ spec:
             - name: RECORD_PROCESSORS
               value: "32"
             - name: ARTIFACT_ROOT
-              value: /perf-cache/specrouting
+              value: /perf-cache/specrouting/aggregated
             - name: HF_HOME
               value: /opt/models
             - name: HF_HUB_OFFLINE
