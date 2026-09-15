@@ -1,0 +1,89 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: nemotron3-nano-agentx-rr-c128
+spec:
+  backoffLimit: 0
+  activeDeadlineSeconds: 7200
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: perf
+          image: python:3.12-slim
+          command: [/bin/bash, -c]
+          args:
+            - |
+              set -Eeuo pipefail
+              apt-get update
+              apt-get install -y --no-install-recommends ca-certificates curl git jq
+              pip install --no-cache-dir \
+                "aiperf @ git+https://github.com/ai-dynamo/aiperf.git@e10d53b1d30b5845f56cbea63d0560f10ff5aa4e"
+
+              for attempt in $(seq 1 80); do
+                curl -fsS --max-time 10 "http://${ENDPOINT}/v1/models" |
+                  jq -e --arg model "${TARGET_MODEL}" \
+                    '.data[]? | select(.id == $model)' >/dev/null && break
+                test "${attempt}" -lt 80 || exit 1
+                sleep 45
+              done
+
+              run_dir="${ARTIFACT_ROOT}/$(date -u +%Y%m%dT%H%M%SZ)"
+              mkdir -p "${run_dir}"
+
+              export AIPERF_HTTP_X_DYNAMO_SESSION_ID_FROM_CORRELATION_ID=1
+              export AIPERF_DATASET_CONFIGURATION_TIMEOUT=1800
+              export AIPERF_SERVICE_PROFILE_CONFIGURE_TIMEOUT=1800
+
+              aiperf profile \
+                --scenario inferencex-agentx-mvp \
+                --url "http://${ENDPOINT}" \
+                --model "${TARGET_MODEL}" \
+                --tokenizer "${MODEL_PATH}" \
+                --max-context-length 131072 \
+                --endpoint-type chat \
+                --public-dataset semianalysis_cc_traces_weka_062126 \
+                --concurrency 128 \
+                --use-server-token-count \
+                --streaming \
+                --extra-inputs ignore_eos:true \
+                --cache-bust first_turn_prefix \
+                --system-idle-gap-cap-seconds 10 \
+                --benchmark-duration 900 \
+                --random-seed 20260707 \
+                --artifact-dir "${run_dir}"
+          env:
+            - name: ENDPOINT
+              value: nemotron3-nano-agg-agentx-rr-frontend:8000
+            - name: TARGET_MODEL
+              value: nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8
+            - name: MODEL_PATH
+              value: /model-cache/hub/models--nvidia--NVIDIA-Nemotron-3-Nano-30B-A3B-FP8/snapshots/9bee19446c0dfd01f356e10979d225b2a6621944
+            - name: ARTIFACT_ROOT
+              value: /ephemeral/shared/nemotron3-nano-30b-a3b/agentx-routing-sweep/rr/c128/benchmarks
+            - name: HF_HOME
+              value: /ephemeral/shared/nemotron3-nano-30b-a3b/aiperf-hf-cache
+            - name: AIPERF_CACHE_DIR
+              value: /ephemeral/shared/nemotron3-nano-30b-a3b/aiperf-cache
+          resources:
+            requests:
+              cpu: "16"
+              memory: 32Gi
+            limits:
+              cpu: "32"
+              memory: 64Gi
+          volumeMounts:
+            - name: model-cache
+              mountPath: /model-cache
+              readOnly: true
+            - name: perf-cache
+              mountPath: /ephemeral/shared
+      volumes:
+        - name: model-cache
+          persistentVolumeClaim:
+            claimName: model-cache
+        - name: perf-cache
+          persistentVolumeClaim:
+            claimName: perf-cache
