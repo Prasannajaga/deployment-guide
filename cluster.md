@@ -221,9 +221,7 @@ Wait for the actual provider node names, not `gpu05` and `gpu06`:
 **Admin:**
 
 ```bash
-kubectl wait --for=condition=Ready \
-  node/inst-1onle-devrel-rdma-pool \
-  node/inst-g9dwj-devrel-rdma-pool \
+kubectl wait --for=condition=Ready nodes --all \
   --timeout=10m
 
 kubectl get nodes -o wide
@@ -241,7 +239,7 @@ DaemonSets and model workloads. Remove the default control-plane taint:
 **Admin:**
 
 ```bash
-kubectl taint node inst-1onle-devrel-rdma-pool \
+kubectl taint nodes -l node-role.kubernetes.io/control-plane \
   node-role.kubernetes.io/control-plane:NoSchedule- || true
 ```
 
@@ -392,9 +390,12 @@ The base cluster is ready when:
 - Dynamo, Grove, and KAI Scheduler Pods are healthy;
 - the DynamoGraphDeployment CRD is available.
 
-Continue with the separate RoCE/RDMA guide before deploying a disaggregated
-model. A normal reboot does not require rebuilding the cluster: wait for both
-nodes to return to `Ready`, then repeat this final check.
+Continue with [Network Setup](network-setup.md) before deploying a disaggregated
+model. It creates the `rdma/ib` resource, keeps the NV-IPAM `roce-pool` in
+`nvidia-network-operator`, and generates the `roce` attachment in
+`dynamo-bench`.
+
+Then use [Deployment Setup](setup.md) to verify the shared namespace, PVC, and recipe prerequisites.
 
 ## References
 

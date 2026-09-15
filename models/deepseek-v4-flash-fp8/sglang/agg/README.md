@@ -11,18 +11,19 @@ parallelism, disaggregated serving, KV-aware routing, KV offloading, or NIXL.
 This is an experimental H100 capacity probe. The checkpoint is approximately
 294 GB, so four replicas place approximately 1.176 TB of weights into the
 cluster's 1.28 TB of aggregate VRAM. The official SGLang Hopper TP=4 recipe is
-validated on H200, not H100. Read the [capacity warning](../../README.md) before
-deploying, and run no other GPU workload at the same time.
+validated on H200, not H100. Treat this as a capacity warning, and run no other
+GPU workload at the same time.
 
 ## Variables
 
 Set these variables in the shell used to create and operate the deployment:
 
 ```bash
-export NAMESPACE=qwen32-bench
+export NAMESPACE=dynamo-bench
 export RECIPE_ROOT=/ephemeral/shared/deepseek-v4-flash-fp8
 export EXP_DIR="${RECIPE_ROOT}/sglang/agg"
 export MODEL_CACHE_DIR="${RECIPE_ROOT}/model-cache"
+export MODEL_DOWNLOAD_JOB=deepseek-v4-flash-fp8-download
 export DEPLOYMENT=deepseek-v4-flash-fp8-sglang-agg-tp4
 export GRAPH_LABEL="nvidia.com/dynamo-graph-deployment-name=${DEPLOYMENT}"
 export FRONTEND_SERVICE="${DEPLOYMENT}-frontend"
@@ -74,16 +75,16 @@ does not request RDMA resources.
 ## Create and populate the model cache
 
 If the pinned snapshot is not already present, create the download Job. The
-quoted `EOF` keeps the container-side `$MODEL_NAME` and `$MODEL_REVISION`
-variables intact.
+escaped `$MODEL_NAME` and `$MODEL_REVISION` references remain intact for the
+container shell.
 
 ```bash
 mkdir -p "$MODEL_CACHE_DIR"
-tee "$MODEL_CACHE_DIR/model-download.yaml" >/dev/null <<'EOF'
+tee "$MODEL_CACHE_DIR/model-download.yaml" >/dev/null <<EOF
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: deepseek-v4-flash-fp8-download
+  name: ${MODEL_DOWNLOAD_JOB}
 spec:
   backoffLimit: 3
   template:
@@ -102,7 +103,7 @@ spec:
             - |
               set -eu
               pip install --no-cache-dir huggingface_hub==1.16.4
-              hf download "$MODEL_NAME" --revision "$MODEL_REVISION"
+              hf download "\$MODEL_NAME" --revision "\$MODEL_REVISION"
           env:
             - name: MODEL_NAME
               value: sgl-project/DeepSeek-V4-Flash-FP8
@@ -137,13 +138,15 @@ Validate the Job against the cluster API, apply it, and wait for the exact
 revision to finish downloading:
 
 ```bash
+kubectl delete job "$MODEL_DOWNLOAD_JOB" -n "$NAMESPACE" \
+  --ignore-not-found
 kubectl apply --dry-run=server -n "$NAMESPACE" \
   -f "$MODEL_CACHE_DIR/model-download.yaml"
 kubectl apply -n "$NAMESPACE" -f "$MODEL_CACHE_DIR/model-download.yaml"
 kubectl wait -n "$NAMESPACE" \
-  --for=condition=Complete job/deepseek-v4-flash-fp8-download \
+  --for=condition=Complete "job/$MODEL_DOWNLOAD_JOB" \
   --timeout=7200s
-kubectl logs -n "$NAMESPACE" job/deepseek-v4-flash-fp8-download --tail=100
+kubectl logs -n "$NAMESPACE" "job/$MODEL_DOWNLOAD_JOB" --tail=100
 ```
 
 Confirm that the exact pinned snapshot is present and inspect remaining cache
@@ -411,6 +414,6 @@ the namespace, or either local YAML file. Delete the completed download Job
 only when its Pod is no longer needed for cache inspection:
 
 ```bash
-kubectl delete job deepseek-v4-flash-fp8-download \
+kubectl delete job "$MODEL_DOWNLOAD_JOB" \
   -n "$NAMESPACE" --ignore-not-found
 ```

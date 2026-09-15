@@ -1396,6 +1396,23 @@ until upper-tier eviction. The completed prefill-heavy notes describe a
 but the generated runbook manifest must be reconciled before the next A/B run.
 Neither file was changed during the capacity-analysis conversation.
 
+### `dynamo-bench` consolidation
+
+Changed the network configuration as follows:
+
+Cluster uses one workload namespace, `dynamo-bench`, alongside the
+infrastructure namespace `dynamo-system`. Every model family deploys into
+`dynamo-bench`, where Network Operator generates `roce` NAD so Pods
+can reference it by the name `roce`.
+
+The RDMA Shared Device Plugin uses `{"ifNames": ["rdma7"]}` to limit
+`rdma/ib` to parent rail, so worker manifests do not need a manual
+HCA pin.
+
+All model families also share one large `model-cache` claim in
+`dynamo-bench`, sized for the largest retained model.
+
+
 ### Next actions from these conversations
 
 1. Decide whether “10 million” means fleet-wide raw capacity or capacity on

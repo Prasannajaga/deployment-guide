@@ -3,17 +3,18 @@
 Run this once from a Kubernetes admin host when the shared cache does not already contain the pinned model snapshot.
 
 ```bash
-export NAMESPACE=qwen235-bench
+export NAMESPACE=dynamo-bench
 export EXP_DIR=/ephemeral/shared/qwen3-235b-a22b-fp8/model-cache
+export MODEL_DOWNLOAD_JOB=qwen3-235b-a22b-fp8-download
 mkdir -p "$EXP_DIR"
 
-tee "$EXP_DIR/model-download.yaml" >/dev/null <<'EOF'
+tee "$EXP_DIR/model-download.yaml" >/dev/null <<EOF
 # SPDX-FileCopyrightText: Copyright (c) 2025-2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: model-download
+  name: ${MODEL_DOWNLOAD_JOB}
 spec:
   backoffLimit: 3
   completions: 1
@@ -34,7 +35,7 @@ spec:
             - |
               set -eu
               pip install --no-cache-dir huggingface_hub==1.16.4
-              hf download "$MODEL_NAME" --revision "$MODEL_REVISION"
+              hf download "\$MODEL_NAME" --revision "\$MODEL_REVISION"
           env:
             - name: MODEL_NAME
               value: Qwen/Qwen3-235B-A22B-FP8
@@ -66,9 +67,9 @@ EOF
 
 kubectl get pvc model-cache -n "$NAMESPACE"
 kubectl get secret hf-token-secret -n "$NAMESPACE"
-kubectl delete job model-download -n "$NAMESPACE" --ignore-not-found
+kubectl delete job "$MODEL_DOWNLOAD_JOB" -n "$NAMESPACE" --ignore-not-found
 kubectl apply --dry-run=server -n "$NAMESPACE" -f "$EXP_DIR/model-download.yaml"
 kubectl apply -n "$NAMESPACE" -f "$EXP_DIR/model-download.yaml"
-kubectl wait -n "$NAMESPACE" --for=condition=Complete job/model-download --timeout=2h
-kubectl logs -n "$NAMESPACE" job/model-download --tail=100
+kubectl wait -n "$NAMESPACE" --for=condition=Complete "job/$MODEL_DOWNLOAD_JOB" --timeout=2h
+kubectl logs -n "$NAMESPACE" "job/$MODEL_DOWNLOAD_JOB" --tail=100
 ```

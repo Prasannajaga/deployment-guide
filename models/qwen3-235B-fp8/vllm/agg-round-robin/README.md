@@ -5,7 +5,7 @@ This recipe runs four aggregate TP4 vLLM workers on 16 H100 GPUs with round-robi
 ## 1. Variables and preflight
 
 ```bash
-export NAMESPACE=qwen235-bench
+export NAMESPACE=dynamo-bench
 export EXP_DIR=/ephemeral/shared/qwen3-235b-a22b-fp8/vllm/agg-round-robin
 export DEPLOYMENT=qwen3-235b-a22b-fp8-vllm-agg
 export PERF_JOB=qwen3-235b-a22b-fp8-vllm-agg-bench

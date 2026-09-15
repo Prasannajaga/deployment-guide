@@ -47,7 +47,7 @@ spec:
         size: 80Gi
       extraPodMetadata:
         annotations:
-          k8s.v1.cni.cncf.io/networks: qwen-roce
+          k8s.v1.cni.cncf.io/networks: roce
       extraPodSpec:
         hostNetwork: false
         dnsPolicy: ClusterFirst
@@ -110,8 +110,6 @@ spec:
               value: UCX
             - name: UCX_TLS
               value: rc_x,rc,cuda_copy,cuda_ipc
-            - name: UCX_NET_DEVICES
-              value: mlx5_8:1
             - name: UCX_IB_ADDR_TYPE
               value: eth
             - name: UCX_RNDV_SCHEME
@@ -168,7 +166,7 @@ spec:
         size: 80Gi
       extraPodMetadata:
         annotations:
-          k8s.v1.cni.cncf.io/networks: qwen-roce
+          k8s.v1.cni.cncf.io/networks: roce
       extraPodSpec:
         hostNetwork: false
         dnsPolicy: ClusterFirst

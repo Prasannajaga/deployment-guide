@@ -11,7 +11,7 @@ mandatory acceptance gates.
 ## Variables
 
 ```bash
-export NAMESPACE=qwen32-bench
+export NAMESPACE=dynamo-bench
 export EXP_DIR=/ephemeral/shared/qwen3.6-35b-a3b/sglang/disagg/tp2-2p2d
 export DEPLOYMENT=q36-sgl-pd-tp2-2p2d
 export PERF_JOB_NAME=qwen36-sglang-tp2-2p2d-perf
@@ -27,7 +27,7 @@ Complete the shared namespace, PVC, model-cache, and RoCE recovery in the
 
 ```bash
 kubectl get pvc model-cache perf-cache -n "$NAMESPACE"
-kubectl get network-attachment-definition qwen-roce -n "$NAMESPACE"
+kubectl get network-attachment-definition roce -n "$NAMESPACE"
 kubectl get nodes -L qwen.nvidia.com/role \
   -o custom-columns='NODE:.metadata.name,ROLE:.metadata.labels.qwen\.nvidia\.com/role,GPU:.status.allocatable.nvidia\.com/gpu,RDMA:.status.allocatable.rdma/ib'
 kubectl get dynamographdeployments.nvidia.com -A
@@ -35,7 +35,7 @@ kubectl get pods -A \
   -o custom-columns='NAMESPACE:.metadata.namespace,POD:.metadata.name,NODE:.spec.nodeName,PHASE:.status.phase,GPU:.spec.containers[*].resources.requests.nvidia\.com/gpu'
 ```
 
-Require both PVCs to be `Bound`, `qwen-roce` to exist, four free GPUs and
+Require both PVCs to be `Bound`, `roce` to exist, four free GPUs and
 four free `rdma/ib` resources on each role node, and no competing GPU
 deployment.
 
@@ -113,7 +113,7 @@ spec:
         size: 80Gi
       extraPodMetadata:
         annotations:
-          k8s.v1.cni.cncf.io/networks: qwen-roce
+          k8s.v1.cni.cncf.io/networks: roce
       extraPodSpec:
         hostNetwork: false
         dnsPolicy: ClusterFirst
@@ -156,8 +156,6 @@ spec:
               value: UCX
             - name: UCX_TLS
               value: rc_x,rc,cuda_copy,cuda_ipc
-            - name: UCX_NET_DEVICES
-              value: mlx5_8:1
             - name: UCX_IB_ADDR_TYPE
               value: eth
             - name: UCX_RNDV_SCHEME
@@ -206,7 +204,7 @@ spec:
         size: 80Gi
       extraPodMetadata:
         annotations:
-          k8s.v1.cni.cncf.io/networks: qwen-roce
+          k8s.v1.cni.cncf.io/networks: roce
       extraPodSpec:
         hostNetwork: false
         dnsPolicy: ClusterFirst
@@ -362,7 +360,7 @@ spec:
         size: 80Gi
       extraPodMetadata:
         annotations:
-          k8s.v1.cni.cncf.io/networks: qwen-roce
+          k8s.v1.cni.cncf.io/networks: roce
       extraPodSpec:
         hostNetwork: false
         dnsPolicy: ClusterFirst
@@ -405,8 +403,6 @@ spec:
               value: UCX
             - name: UCX_TLS
               value: rc_x,rc,cuda_copy,cuda_ipc
-            - name: UCX_NET_DEVICES
-              value: mlx5_8:1
             - name: UCX_IB_ADDR_TYPE
               value: eth
             - name: UCX_RNDV_SCHEME
@@ -455,7 +451,7 @@ spec:
         size: 80Gi
       extraPodMetadata:
         annotations:
-          k8s.v1.cni.cncf.io/networks: qwen-roce
+          k8s.v1.cni.cncf.io/networks: roce
       extraPodSpec:
         hostNetwork: false
         dnsPolicy: ClusterFirst

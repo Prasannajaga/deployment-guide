@@ -6,7 +6,7 @@ and NIXL/UCX transfer acceptance gates in [README.md](README.md).
 Set the cluster-host variables used by every command in this runbook:
 
 ```bash
-export NAMESPACE=qwen32-bench
+export NAMESPACE=dynamo-bench
 export EXP_DIR=/ephemeral/shared/qwen3.6-35b-a3b/sglang/disagg/tp1-ep2-4p4d
 export DEPLOYMENT=q36-sgl-pd-tp1ep2-4p4d
 export PERF_JOB_NAME=qwen36-sglang-tp1ep2-4p4d-perf

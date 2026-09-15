@@ -24,10 +24,11 @@ allowing this recipe to scale to its eight-worker maximum.
 Set these variables in the shell used to create and operate the deployment:
 
 ```bash
-export NAMESPACE=qwen32-bench
+export NAMESPACE=dynamo-bench
 export RECIPE_ROOT=/ephemeral/shared/qwen3.6-35b-a3b
 export EXP_DIR="${RECIPE_ROOT}/sglang/agg-autoscaling"
 export MODEL_CACHE_DIR="${RECIPE_ROOT}/model-cache"
+export MODEL_DOWNLOAD_JOB=qwen36-35b-a3b-fp8-download
 export DEPLOYMENT=qwen36-35b-a3b-fp8-sglang-agg-tp2
 export GRAPH_LABEL="nvidia.com/dynamo-graph-deployment-name=${DEPLOYMENT}"
 export FRONTEND_SERVICE="${DEPLOYMENT}-frontend"
@@ -74,7 +75,7 @@ Continue only when:
 - no other experiment competes for the GPU capacity KEDA is allowed to use.
 
 This aggregated topology does not request RDMA resources and does not require
-the `qwen-roce` NetworkAttachmentDefinition. Complete this README first, then
+the `roce` NetworkAttachmentDefinition. Complete this README first, then
 continue with [autoscaling.md](autoscaling.md) to install and configure KEDA.
 
 ## Create model-download.yaml
@@ -143,13 +144,15 @@ Validate the Job against the cluster API, apply it, and wait for the exact
 revision to finish downloading:
 
 ```bash
+kubectl delete job "$MODEL_DOWNLOAD_JOB" -n "$NAMESPACE" \
+  --ignore-not-found
 kubectl apply --dry-run=server -n "$NAMESPACE" \
   -f "$MODEL_CACHE_DIR/model-download.yaml"
 kubectl apply -n "$NAMESPACE" -f "$MODEL_CACHE_DIR/model-download.yaml"
 kubectl wait -n "$NAMESPACE" \
-  --for=condition=Complete job/qwen36-35b-a3b-fp8-download \
+  --for=condition=Complete "job/$MODEL_DOWNLOAD_JOB" \
   --timeout=3600s
-kubectl logs -n "$NAMESPACE" job/qwen36-35b-a3b-fp8-download --tail=100
+kubectl logs -n "$NAMESPACE" "job/$MODEL_DOWNLOAD_JOB" --tail=100
 ```
 
 ## Create deploy.yaml

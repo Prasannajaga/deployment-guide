@@ -44,7 +44,7 @@ Dynamo's operator creates these ports from the environment above. Confirm the
 live Pod specification instead of assuming they exist:
 
 ```bash
-export NAMESPACE=qwen32-bench
+export NAMESPACE=dynamo-bench
 export DEPLOYMENT=REPLACE_WITH_DGD_NAME
 export GRAPH_LABEL="nvidia.com/dynamo-graph-deployment-name=${DEPLOYMENT}"
 export MONITOR_NAMESPACE=monitoring

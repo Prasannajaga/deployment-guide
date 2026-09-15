@@ -267,7 +267,7 @@ spec:
             - name: TOKENIZER
               value: /opt/models/hub/models--zai-org--GLM-5.2-FP8/snapshots/ba978f7d347eaf65d22f1a86833408afdb953541
             - name: ENDPOINT
-              value: glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000
+              value: glm52-fp8-vllm-agg-tp16-frontend.dynamo-bench.svc.cluster.local:8000
             - name: ISL
               value: "8000"
             - name: OSL

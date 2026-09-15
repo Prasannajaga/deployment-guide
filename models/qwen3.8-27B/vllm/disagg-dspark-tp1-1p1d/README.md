@@ -18,7 +18,7 @@ Total:          2 GPUs, one P/D replica pair
 Frontend entry: python3 -m dynamo.frontend
 Worker entry:   python3 -m dynamo.vllm
 Routing:        round-robin (one P/D pair; no KV-event plane required)
-KV transfer:    NIXL over the existing qwen-roce RDMA network
+KV transfer:    NIXL over the existing roce RDMA network
 Speculation:    vLLM DSpark, 5 speculative tokens initially
 ```
 
@@ -78,7 +78,7 @@ not apply a checked-in repository copy; they create the runtime artifacts under
 ## 1. Set variables
 
 ```bash
-export NAMESPACE=qwen32-bench
+export NAMESPACE=dynamo-bench
 export RECIPE_ROOT=/ephemeral/shared/qwen3.8-27b
 export MODEL_CACHE_DIR="$RECIPE_ROOT/model-cache"
 export EXP_DIR="$RECIPE_ROOT/vllm/disagg-dspark-tp1-1p1d"
@@ -89,22 +89,20 @@ export DOWNLOAD_JOB=qwen38-27b-dspark-download
 export CAPABILITY_POD=qwen38-vllm-dspark-capability
 export MODEL=Qwen/Qwen3.8-27B
 export DRAFT_MODEL=RadixArk/Qwen3.8-27B-DSpark
-export MODEL_REVISION=main
+export MODEL_REVISION=1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0
 export DRAFT_MODEL_REVISION=main
 export VLLM_IMAGE=nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.4.0
 export LOCAL_PORT=8000
 ```
 
-The generated download manifest contains the literal revision `main` because
-the supplied model pages do not provide a commit pin in this recipe request.
-After confirming the repositories, replace the two `value: main` lines in the
-quoted Job block with immutable commit SHAs before applying it. Do not run two
-different revisions under the same shared cache path.
+The target repository is pinned to the commit SHA above, while the draft
+repository intentionally follows `main`. Keep the exported values and the
+quoted Job block identical.
 
 ## 2. Check cluster prerequisites
 
 This recipe assumes the existing shared `model-cache` PVC, the
-`qwen32-bench/qwen-roce` secondary network, and one available `rdma/ib` device
+`roce` secondary network, and one available `rdma/ib` device
 on each of two GPU-capable nodes. Only two GPUs are requested, but the P and D
 workers should be placed on different nodes when the goal is to measure NIXL
 network transfer rather than same-node transport.
@@ -112,7 +110,7 @@ network transfer rather than same-node transport.
 ```bash
 kubectl get crd dynamographdeployments.nvidia.com
 kubectl get pvc -n "$NAMESPACE" model-cache
-kubectl get network-attachment-definition qwen-roce -n "$NAMESPACE"
+kubectl get network-attachment-definition roce -n "$NAMESPACE"
 kubectl get nodes \
   -o custom-columns='NODE:.metadata.name,GPU:.status.allocatable.nvidia\.com/gpu,RDMA:.status.allocatable.rdma/ib'
 kubectl get pods -n "$NAMESPACE" -l "$GRAPH_LABEL"
@@ -226,7 +224,7 @@ spec:
             - name: DRAFT_MODEL_NAME
               value: RadixArk/Qwen3.8-27B-DSpark
             - name: MODEL_REVISION
-              value: main
+              value: 1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0
             - name: DRAFT_MODEL_REVISION
               value: main
             - name: HF_HOME
@@ -343,7 +341,7 @@ spec:
         size: 32Gi
       extraPodMetadata:
         annotations:
-          k8s.v1.cni.cncf.io/networks: qwen32-bench/qwen-roce
+          k8s.v1.cni.cncf.io/networks: roce
       extraPodSpec:
         hostNetwork: false
         dnsPolicy: ClusterFirst
@@ -377,8 +375,6 @@ spec:
                   fieldPath: status.podIP
             - name: UCX_TLS
               value: rc_x,rc,cuda_copy,cuda_ipc
-            - name: UCX_NET_DEVICES
-              value: mlx5_8:1
             - name: UCX_IB_ADDR_TYPE
               value: eth
             - name: UCX_RNDV_SCHEME
@@ -455,7 +451,7 @@ spec:
         size: 32Gi
       extraPodMetadata:
         annotations:
-          k8s.v1.cni.cncf.io/networks: qwen32-bench/qwen-roce
+          k8s.v1.cni.cncf.io/networks: roce
       extraPodSpec:
         hostNetwork: false
         dnsPolicy: ClusterFirst
@@ -489,8 +485,6 @@ spec:
                   fieldPath: status.podIP
             - name: UCX_TLS
               value: rc_x,rc,cuda_copy,cuda_ipc
-            - name: UCX_NET_DEVICES
-              value: mlx5_8:1
             - name: UCX_IB_ADDR_TYPE
               value: eth
             - name: UCX_RNDV_SCHEME
@@ -742,9 +736,10 @@ kubectl logs -n "$NAMESPACE" -l "$GRAPH_LABEL" \
   --all-containers --prefix | grep -E 'NIXL|UCX|RDMA|mlx5|NixlConnector'
 ```
 
-Verify that `mlx5_8:1` is the HCA exposed to the Pod's `qwen-roce` attachment.
-If the node uses a different HCA, change `UCX_NET_DEVICES` in both workers and
-rerun the deployment. Keep the same UCX settings across P and D.
+Verify that `mlx5_8:1` is the HCA exposed through the narrowed `rdma/ib`
+resource. If another HCA is allocated, correct the RDMA Shared Device Plugin's
+cluster-level `ifNames` selector and rerun the deployment; do not add divergent
+worker-level device pins.
 
 ### Request hangs or produces incorrect output
 

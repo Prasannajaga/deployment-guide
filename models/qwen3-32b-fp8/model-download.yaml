@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: qwen3-32b-fp8-download
+  namespace: dynamo-bench
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: model-download
+          image: python:3.10-slim
+          command:
+            - /bin/sh
+            - -c
+          args:
+            - |
+              set -eu
+              pip install --no-cache-dir huggingface_hub==1.16.4
+              hf download "$MODEL_NAME" --revision "$MODEL_REVISION"
+          env:
+            - name: MODEL_NAME
+              value: Qwen/Qwen3-32B-FP8
+            - name: MODEL_REVISION
+              value: aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df
+            - name: HF_HOME
+              value: /model-store
+            - name: HF_XET_HIGH_PERFORMANCE
+              value: "1"
+          envFrom:
+            - secretRef:
+                name: hf-token-secret
+                optional: true
+          volumeMounts:
+            - name: model-cache
+              mountPath: /model-store
+      volumes:
+        - name: model-cache
+          persistentVolumeClaim:
+            claimName: model-cache
