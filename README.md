@@ -1,7 +1,7 @@
 # Dynamo Deployment Guide
 
 <p align="center">
-  <img src="assets/dynamo-deployment-guide.png" alt="Dynamo Deployment Guide" width="90%" />
+  <img src="assets/dynamo-deployment-guide.png" alt="Dynamo Deployment Guide" width="100%" />
 </p>
 
 <p align="center">
@@ -34,19 +34,21 @@ This repository tracks LLM deployment experiments, setup runbooks, and benchmark
 
 | Name | Engine | Status | GPUs | Topology | Recipe Link |
 | :--- | :--- | :---: | :---: | :--- | :--- |
+| **Nemotron-3-Nano-30B-A3B FP8 Round-Robin Aggregated** | vLLM | Working | 8 | 8 workers × TP=1 | [Recipe](models/nemotron-3-nano-30b-a3b-fp8/vllm/agg-agentx-rr/) |
+| **Nemotron-3-Nano-30B-A3B FP8 KV-Aware Aggregated** | vLLM | Working | 8 | 8 workers × TP=1 | [Recipe](models/nemotron-3-nano-30b-a3b-fp8/vllm/agg-agentx-kv/) |
 | **Llama-3.1-8B-Instruct** | vLLM | Working | 16 | Cross-node TP=16 | [Recipe](models/llama-8B/setup.md) |
-| **Qwen3-32B FP8 Aggregated** | vLLM | Working | 16 | 8 workers × TP=2 | [Recipe](models/qwen3-32B/vllm/01-agg-routing/) |
-| **Qwen3-32B FP8 Disaggregated (6P2D)** | vLLM | Working | 16 | 6 prefill × TP=2 + 2 decode × TP=2 | [Recipe](models/qwen3-32B/vllm/02-disagg-routing/) |
-| **Qwen3-32B FP8 Disaggregated (4P4D)** | vLLM | Working | 16 | 4 prefill × TP=2 + 4 decode × TP=2 | [Recipe](models/qwen3-32B/vllm/03-disagg-routing-4p4d/) |
-| **Qwen3-32B FP8 KV-Aware Disaggregated** | vLLM | Working | 16 | 4 prefill × TP=2 + 4 decode × TP=2 | [Recipe](models/qwen3-32B/vllm/04-disagg-routing-kv-aware/) |
-| **Qwen3-32B FP8 KV-Aware + CPU KV Offload** | vLLM | Working | 16 | 4 prefill × TP=2 + 4 decode × TP=2, 32 GiB/engine CPU KV tier | [Recipe](models/qwen3-32B/vllm/05-disagg-routing-kv-aware-offloading/) |
-| **Qwen3-32B FP8 Aggregated** | SGLang | Working | 16 | 8 workers × TP=2 (4 per node) | [Recipe](models/qwen3-32B/sglang/agg-routing/README.md) |
-| **Qwen3-32B FP8 Disaggregated** | SGLang | Working | 8 | 2 prefill × TP=2 + 1 decode × TP=4 | [Recipe](models/qwen3-32B/sglang/disagg-routing/README.md) |
-| **Qwen3-32B FP8 KV-Aware Disaggregated** | SGLang | Working | 16 | 6 prefill × TP=2 + 2 decode × TP=2 | [Recipe](models/qwen3-32B/sglang/disagg-routing-kv-aware/README.md) |
+| **Qwen3-32B-FP8 Aggregated** | vLLM | Working | 16 | 8 workers × TP=2 | [Recipe](models/qwen3-32B-fp8/vllm/01-agg-routing/) |
+| **Qwen3-32B-FP8 Disaggregated (6P2D)** | vLLM | Working | 16 | 6 prefill × TP=2 + 2 decode × TP=2 | [Recipe](models/qwen3-32B-fp8/vllm/02-disagg-routing/) |
+| **Qwen3-32B-FP8 Disaggregated (4P4D)** | vLLM | Working | 16 | 4 prefill × TP=2 + 4 decode × TP=2 | [Recipe](models/qwen3-32B-fp8/vllm/03-disagg-routing-4p4d/) |
+| **Qwen3-32B-FP8 KV-Aware Disaggregated** | vLLM | Working | 16 | 4 prefill × TP=2 + 4 decode × TP=2 | [Recipe](models/qwen3-32B-fp8/vllm/04-disagg-routing-kv-aware/) |
+| **Qwen3-32B-FP8 KV-Aware + CPU KV Offload** | vLLM | Working | 16 | 4 prefill × TP=2 + 4 decode × TP=2, 32 GiB/engine CPU KV tier | [Recipe](models/qwen3-32B-fp8/vllm/05-disagg-routing-kv-aware-offloading/) |
+| **Qwen3-32B-FP8 Aggregated** | SGLang | Working | 16 | 8 workers × TP=2 (4 per node) | [Recipe](models/qwen3-32B-fp8/sglang/agg-routing/README.md) |
+| **Qwen3-32B-FP8 Disaggregated** | SGLang | Working | 8 | 2 prefill × TP=2 + 1 decode × TP=4 | [Recipe](models/qwen3-32B-fp8/sglang/disagg-routing/README.md) |
+| **Qwen3-32B-FP8 KV-Aware Disaggregated** | SGLang | Working | 16 | 6 prefill × TP=2 + 2 decode × TP=2 | [Recipe](models/qwen3-32B-fp8/sglang/disagg-routing-kv-aware/README.md) |
 | **Qwen3.6-35B-A3B FP8 Aggregated** | SGLang | Working | 2–16 | 1–8 aggregated workers × TP=2 (KEDA autoscaling) | [Recipe](models/qwen3.6-35B-A3B/sglang/agg-autoscaling/README.md) |
 | **Qwen3.6-35B-A3B FP8 Disaggregated** | SGLang | Working | 16 | 4P+4D, TP=2, DP=2, EP=2 (CPU KV offload) | [Recipe](models/qwen3.6-35B-A3B/sglang/disagg/tp1-ep2-4p4d/README.md) |
-| **Qwen3-235B-A22B FP8 Aggregated** | vLLM | Working | 16 | 4 workers × TP=4 | [Recipe](models/qwen3-235B-fp8/vllm/agg-round-robin/) |
-| **Qwen3-235B-A22B FP8 Disaggregated** | vLLM | Working | 16 | 2 prefill × TP=4 + 2 decode × TP=4 | [Recipe](models/qwen3-235B-fp8/vllm/disagg/) |
+| **Qwen3-235B-A22B FP8 Aggregated** | vLLM | Working | 16 | 4 workers × TP=4 | [Recipe](models/qwen3-235B-A22B-fp8/vllm/agg-round-robin/) |
+| **Qwen3-235B-A22B FP8 Disaggregated** | vLLM | Working | 16 | 2 prefill × TP=4 + 2 decode × TP=4 | [Recipe](models/qwen3-235B-A22B-fp8/vllm/disagg/) |
 | **Qwen3-235B-A22B FP8** | SGLang | Working | 16 | 4 aggregated workers × TP=4 | [Recipe](models/qwen3-235B-A22B/sglang/agg/README.md) |
 | **GLM-5.2-FP8** | vLLM | Working | 16 | 1 two-node replica, TP=16 | [Recipe](models/glm-5.2-fp8/vllm/agg/README.md) |
 | **DeepSeek-V4-Flash FP8** | SGLang | Experimental | 16 | 2 aggregated workers × TP=8 | [Recipe](models/deepseek-v4-flash-fp8/sglang/agg/README.md) |
@@ -66,6 +68,7 @@ We only had one week of access to this 16x H100 cluster, so I'm incredibly glad 
 > **Blog Series Incoming**: Detailed technical write-ups and benchmark deep-dives for these experiments are coming soon!
 
 - ⏳ **Aggregated vs. Disaggregated Scaling**: Decoupled Prefill & Decode (P/D) vs. aggregated serving across vLLM and SGLang.
+- ✅ **Round-robin vs. KV-aware routing on a realistic agent benchmark (AgentX)**: Compared cache reuse, latency, and throughput on replayed multi-turn coding sessions at different concurrency levels. [Read the deep-dive blog](blogs/rr-vs-kv-aware-routing.md).
 - ✅ **KV-Aware Routing & CPU Offloading**: Evaluated prompt prefix caching vs. CPU KV offloading under high concurrency [read the Deep-Dive Blog](https://x.com/jaga_prasanna/status/2093217133841064233?s=20).
 - ⏳ **Parallelism Bottlenecks**: Analyzed cross-node network stalls when scaling TP [read the Deep-Dive Blog](https://x.com/jaga_prasanna/status/2094419634489549223?s=20)
 - ⏳ **Event-Driven Autoscaling (KEDA)**: Dynamic pod scaling (1–8 workers) based on queue depth and GPU load metrics.
@@ -74,6 +77,18 @@ We only had one week of access to this 16x H100 cluster, so I'm incredibly glad 
 We are currently processing and extracting all raw AIPerf benchmark artifacts, DCGM GPU utilization metrics, and Grafana performance dashboards. We'll be updating this section with full visual plots and benchmark graphs shortly!
 
 # The results
+
+### 1. Round-robin vs. KV-Aware Routing on InferenceX AgentX Benchmark
+
+We compared round-robin and KV-aware routing on [**Nemotron-3-Nano-30B-A3B FP8**](https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8), served by eight TP=1 vLLM workers on **8 H100 GPUs**(TP1DP8). We used [AgentX benchmark](https://docs.nvidia.com/aiperf/dev/tutorials/datasets-inputs/inference-x-agent-x-mvp-benchmark) for our workload and benchmark, which replays real multi-turn coding sessions (Claude Code traces), including the pauses between requests, so we could see how routing behaves on a realistic agent workload.
+
+<p align="center">
+  <img src="blogs/assets/rr-vs-kv-concurrency.svg" alt="Relative latency and throughput gains from KV-aware routing over round-robin at concurrency 32, 64, and 128" width="720" />
+</p>
+
+KV-aware routing improved cache reuse and reduced mean TTFT, ITL, and request latency at every tested concurrency. At C128, mean TTFT fell by **42.2%**, mean ITL by **14.2%**, and mean request latency by **20.2%**, while request throughput increased by **2.5%**.
+
+Read the [deep-dive blog](blogs/rr-vs-kv-aware-routing.md) for the routing cost model, workload details, and the insights we gained from the results.
 
 <!-- ### 1. Aggregated vs. Disaggregated Serving
 
@@ -89,7 +104,7 @@ After analyzing the worker and GPU mertrics, we've identified one GPU rank with 
 
 We therefore treat this measurements as functional validation. In order to measure the actual performance difference, we would need to re-run compare under consistent hardware condition. -->
 
-### 1. Baseline KV-Aware vs. KV-Aware + Offloading (P/D disaggregation)
+### 2. Baseline KV-Aware vs. KV-Aware + Offloading (P/D disaggregation)
 
 We found that offloading really helps with improving overall performance it also handles significantly higher prefill KV transfer throughput (GB/s) than the baseline.
 
@@ -102,7 +117,7 @@ You can see the results below:
 
 ![comparison dashboard](blogs/assets/offloading-comparison.png) 
 
-### 2. Non-Parallelism (TP=1, 4P+4D) vs. Parallelism (TP=2, 2P+2D) on 8 GPUs
+### 3. Non-Parallelism (TP=1, 4P+4D) vs. Parallelism (TP=2, 2P+2D) on 8 GPUs
 
 We found a really interesting take on Tensor Parallelism (`TP=1` vs. `TP=2`) when analyzing the AIPerf benchmark exports across concurrencies 1 to 128:
 
@@ -119,7 +134,7 @@ You can see the benchmark comparison below:
 ![non-parallelism & parallelism ](blogs/assets/parallelism-comparison-dashboard.png)
  
 
-### 3. NIXL KV Transfer Profiling & HiCache Offloading
+### 4. NIXL KV Transfer Profiling & HiCache Offloading
 
 We ran a 1,500-second prefill-heavy experiment sweep across concurrencies 1–32 (300s per point, 16 warmup requests per point) on **Qwen3.6-35B-A3B FP8** deployed across 16 H100 GPUs (4P+4D disaggregated, `DP=2`, `EP=2`). Each request used a 32K context window with OSL 256 and **75% prefix reuse** (64 prefix groups) to stress KV locality and host-cache offloading.
 
@@ -132,8 +147,7 @@ We ran a 1,500-second prefill-heavy experiment sweep across concurrencies 1–32
 
 ![NIXL KV transfer profiling](assets/NIXL-profiling.svg)
 
-<!-- 
-### 4. Disaggregation vs. KV-Aware Routing vs. CPU KV Offloading
+### 5. Disaggregation vs. KV-Aware Routing vs. CPU KV Offloading
 
 We evaluated five Qwen3-32B FP8 configurations with vLLM using the [Mooncake conversation trace](https://github.com/kvcache-ai/Mooncake/blob/main/FAST25-release/traces/conversation_trace.jsonl). Starting from eight aggregated TP=2 workers, we compared 6P2D and 4P4D disaggregation, KV-aware routing, and CPU KV cache offloading.
 
@@ -152,10 +166,9 @@ Exp 5(Exp4 with KV cache offloading) didn't demonstrate a measurable benefit fro
 </p>
 
 The aggregated and 6P2D round-robin configurations developed very large TTFT tails compared to other experiments. Exp 2 has high TTFT because Dynamo measures TTFT until the first token is streamed from a **decode worker**.
- -->
 
 
-### 4. Event-Driven Autoscaling using KEDA
+### 6. Event-Driven Autoscaling using KEDA
 
 We tried baseline event-driven autoscaling with KEDA on the **Qwen3.6-35B-A3B FP8** model (aggregated SGLang workers, TP=2), triggering scale-out based on the `dynamo_frontend_active_requests` metric (target threshold of 16 active requests per worker).
 
@@ -168,20 +181,26 @@ While we ran out of time to test separate autoscaling for disaggregated Prefill/
 ## Repository Structure
 
 ```text
-├── README.md             # Master repository overview (this file)
-├── cluster.md            # Base environment & K8s deployment runbook
-├── pod-native-roce.md     # Multus/MacVLAN & NV-IPAM RoCE networking guide
-├── NIXL-grafana.md       # NIXL Prometheus telemetry & Grafana dashboard guide
-├── benchmark.md          # Kubernetes-native AIPerf benchmark runbook
-├── progress.md           # Experiment tracking logs & active status
-├── setup.md              # Master environment & operations guide
-├── assets/               # Performance plots, diagrams, and Grafana exports
-└── models/               # Individual model recipes, manifests, and runbooks
+├── README.md               # Master repository overview (this file)
+├── cluster.md              # Base environment & K8s deployment runbook
+├── pod-native-roce.md      # Multus/MacVLAN & NV-IPAM RoCE networking guide
+├── NIXL-grafana.md         # NIXL Prometheus telemetry & Grafana dashboards
+├── benchmark.md            # Kubernetes-native AIPerf benchmark runbook
+├── model-caching.md        # Model caching guide
+├── nvls-recovery.md        # NVLS recovery runbook
+├── progress.md             # Experiment tracking logs & active status
+├── setup.md                # Master environment & operations guide
+├── blogs/                  # Technical write-ups and supporting visuals
+├── assets/                 # Performance plots, diagrams, and Grafana exports
+├── benchmarks/             # Benchmark runs and exported metrics
+└── models/                 # Model recipes, manifests, and runbooks
     ├── deepseek-v4-flash-fp8/
     ├── glm-5.2-fp8/
     ├── llama-8B/
-    ├── qwen3-32B/
-    ├── qwen3-235B-A22B/
+    ├── nemotron-3-nano-30b-a3b-fp8/
+    ├── nemotron-3.5-lightning/
+    ├── qwen3-235B-A22B-fp8/
+    ├── qwen3-32B-fp8/
     ├── qwen3.6-35B-A3B/
     └── qwen3.8-27B/
 ```

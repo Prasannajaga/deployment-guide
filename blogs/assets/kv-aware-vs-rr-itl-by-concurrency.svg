@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 355 324" width="355" height="324" font-family="system-ui,-apple-system,'Segoe UI',Roboto,sans-serif" role="img" aria-label="Mean ITL percent change of KV aware vs round-robin by concurrency">
+<style>@media (prefers-color-scheme:dark){.pg{fill:#0d0d0d}.ink{fill:#fff}.ink2{fill:#c3c2b7}.mut{fill:#898781}.grd{stroke:#2c2c2a}.zero{stroke:#6b6b66}}</style>
+<rect class="pg" x="0" y="0" width="355" height="324" fill="#ffffff"/>
+<text class="ink" x="18" y="28" font-size="16" font-weight="650" fill="#0b0b0b">Mean ITL advantage by concurrency</text>
+<line class="grd" x1="48.0" y1="282.0" x2="324.0" y2="282.0" stroke="#e1e0d9" stroke-width="1"/>
+<text class="mut" x="40.0" y="285.5" text-anchor="end" font-size="9.5" fill="#898781">-20%</text>
+<line class="grd" x1="48.0" y1="227.0" x2="324.0" y2="227.0" stroke="#e1e0d9" stroke-width="1"/>
+<text class="mut" x="40.0" y="230.5" text-anchor="end" font-size="9.5" fill="#898781">-10%</text>
+<line class="zero" x1="48.0" y1="172.0" x2="324.0" y2="172.0" stroke="#5a5a56" stroke-width="1.25"/>
+<text class="mut" x="40.0" y="175.5" text-anchor="end" font-size="9.5" fill="#898781">+0%</text>
+<line class="grd" x1="48.0" y1="117.0" x2="324.0" y2="117.0" stroke="#e1e0d9" stroke-width="1"/>
+<text class="mut" x="40.0" y="120.5" text-anchor="end" font-size="9.5" fill="#898781">+10%</text>
+<line class="grd" x1="48.0" y1="62.0" x2="324.0" y2="62.0" stroke="#e1e0d9" stroke-width="1"/>
+<text class="mut" x="40.0" y="65.5" text-anchor="end" font-size="9.5" fill="#898781">+20%</text>
+<text class="ink2" x="48.0" y="298.0" text-anchor="middle" font-size="10.5" fill="#52514e">C32</text>
+<text class="ink2" x="186.0" y="298.0" text-anchor="middle" font-size="10.5" fill="#52514e">C64</text>
+<text class="ink2" x="324.0" y="298.0" text-anchor="middle" font-size="10.5" fill="#52514e">C128</text>
+<polyline points="48.0,184.3 186.0,207.7 324.0,250.0" fill="none" stroke="#eb6834" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="48.0" cy="184.3" r="3" fill="#ffffff" stroke="#eb6834" stroke-width="1.75"/>
+<text x="57.0" y="187.8" text-anchor="start" font-size="10" font-weight="600" fill="#eb6834">-2.2%</text>
+<circle cx="186.0" cy="207.7" r="3" fill="#ffffff" stroke="#eb6834" stroke-width="1.75"/>
+<text x="186.0" y="197.7" text-anchor="middle" font-size="10" font-weight="600" fill="#eb6834">-6.5%</text>
+<circle cx="324.0" cy="250.0" r="3" fill="#ffffff" stroke="#eb6834" stroke-width="1.75"/>
+<text x="324.0" y="240.0" text-anchor="middle" font-size="10" font-weight="600" fill="#eb6834">-14.2%</text>
+</svg>

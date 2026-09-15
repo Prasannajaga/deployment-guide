@@ -677,7 +677,7 @@ window, and a per-worker/per-GPU utilization summary are saved under
 `/ephemeral/shared/dynamo/aiperf-results/dcgm-last-8h/`.
 
 The complete executable procedure is documented in
-[`fetch-metrics.md`](models/qwen3-32B/experiments/vllm/disagg-routing/fetch-metrics.md).
+[`fetch-metrics.md`](models/qwen3-32B-fp8/experiments/vllm/disagg-routing/fetch-metrics.md).
 
 NIXL transfer telemetry was not enabled for this completed run. NIXL latency
 collection is deferred to the next benchmark round, when the NIXL exporter
@@ -685,7 +685,7 @@ will be enabled before traffic starts and scraped for the entire run.
 
 ## Progress in the last 24 hours — August 13–14, 2026
 
-The last day expanded the cluster work from the earlier Qwen3-32B deployment
+The last day expanded the cluster work from the earlier Qwen3-32B-FP8 deployment
 into three new MoE model families and several controlled serving topologies.
 The most important completed result is that Qwen3.6-35B-A3B-FP8 was deployed
 successfully with SGLang in two different disaggregated layouts and both

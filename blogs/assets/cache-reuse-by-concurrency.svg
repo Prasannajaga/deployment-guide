@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 434 328" width="434" height="328" font-family="system-ui,-apple-system,'Segoe UI',Roboto,sans-serif" role="img" aria-label="Prompt-cache read percentage, round-robin vs KV aware, by concurrency">
+<style>@media (prefers-color-scheme:dark){.pg{fill:#0d0d0d}.ink{fill:#fff}.ink2{fill:#c3c2b7}.mut{fill:#898781}.grd{stroke:#2c2c2a}.axs{stroke:#383835}}</style>
+<rect class="pg" x="0" y="0" width="434" height="328" fill="#ffffff"/>
+<text class="ink" x="18" y="28" font-size="16" font-weight="650" fill="#0b0b0b">Cache reuse as concurrency increases</text>
+<line class="grd" x1="48.0" y1="286.0" x2="310.0" y2="286.0" stroke="#e1e0d9" stroke-width="1"/>
+<text class="mut" x="40.0" y="289.5" text-anchor="end" font-size="9.5" fill="#898781">0%</text>
+<line class="grd" x1="48.0" y1="228.5" x2="310.0" y2="228.5" stroke="#e1e0d9" stroke-width="1"/>
+<text class="mut" x="40.0" y="232.0" text-anchor="end" font-size="9.5" fill="#898781">25%</text>
+<line class="grd" x1="48.0" y1="171.0" x2="310.0" y2="171.0" stroke="#e1e0d9" stroke-width="1"/>
+<text class="mut" x="40.0" y="174.5" text-anchor="end" font-size="9.5" fill="#898781">50%</text>
+<line class="grd" x1="48.0" y1="113.5" x2="310.0" y2="113.5" stroke="#e1e0d9" stroke-width="1"/>
+<text class="mut" x="40.0" y="117.0" text-anchor="end" font-size="9.5" fill="#898781">75%</text>
+<line class="grd" x1="48.0" y1="56.0" x2="310.0" y2="56.0" stroke="#e1e0d9" stroke-width="1"/>
+<text class="mut" x="40.0" y="59.5" text-anchor="end" font-size="9.5" fill="#898781">100%</text>
+<line class="axs" x1="48.0" y1="286.0" x2="310.0" y2="286.0" stroke="#52514e" stroke-width="1"/>
+<text class="ink2" x="48.0" y="302.0" text-anchor="middle" font-size="10.5" fill="#52514e">C32</text>
+<text class="ink2" x="179.0" y="302.0" text-anchor="middle" font-size="10.5" fill="#52514e">C64</text>
+<text class="ink2" x="310.0" y="302.0" text-anchor="middle" font-size="10.5" fill="#52514e">C128</text>
+<polyline points="48.0,160.9 179.0,164.7 310.0,167.8" fill="none" stroke="#eb6834" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6 4"/>
+<circle cx="48.0" cy="160.9" r="3.2" fill="#ffffff" stroke="#eb6834" stroke-width="1.75"/>
+<circle cx="179.0" cy="164.7" r="3.2" fill="#ffffff" stroke="#eb6834" stroke-width="1.75"/>
+<circle cx="310.0" cy="167.8" r="3.2" fill="#ffffff" stroke="#eb6834" stroke-width="1.75"/>
+<polyline points="48.0,87.4 179.0,98.5 310.0,113.3" fill="none" stroke="#2a78d6" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="48.0" cy="87.4" r="3.2" fill="#ffffff" stroke="#2a78d6" stroke-width="1.75"/>
+<circle cx="179.0" cy="98.5" r="3.2" fill="#ffffff" stroke="#2a78d6" stroke-width="1.75"/>
+<circle cx="310.0" cy="113.3" r="3.2" fill="#ffffff" stroke="#2a78d6" stroke-width="1.75"/>
+<text x="318.0" y="116.3" font-size="10.5" font-weight="600" fill="#2a78d6">KV aware <tspan fill="#898781">75.1%</tspan></text>
+<text x="318.0" y="170.8" font-size="10.5" font-weight="600" fill="#eb6834">Round-robin <tspan fill="#898781">51.4%</tspan></text>
+</svg>
