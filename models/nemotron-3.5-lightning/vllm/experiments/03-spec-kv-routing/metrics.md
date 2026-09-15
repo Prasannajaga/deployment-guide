@@ -24,7 +24,14 @@ namespaces distinct.
 ```bash
 export NAMESPACE=qwen32-bench
 export MONITORING_NAMESPACE=monitoring
-export EXP_DIR=/ephemeral/shared/nemotron-3.5-lightning/vllm/experiments/03-spec-kv-routing
+export TOPOLOGY="${TOPOLOGY:-aggregated}"
+case "$TOPOLOGY" in aggregated|disaggregated) ;; *) echo 'Invalid TOPOLOGY' >&2; exit 2 ;; esac
+export EXP_DIR="/ephemeral/shared/nemotron-3.5-lightning/vllm/experiments/03-spec-kv-routing/$TOPOLOGY"
+export ARTIFACT_ROOT="/perf-cache/specrouting/$TOPOLOGY"
+if [ "$TOPOLOGY" = disaggregated ]; then
+  export PD_LAYOUT="${PD_LAYOUT:-tp1-1p3d}"
+  export ARTIFACT_ROOT="$ARTIFACT_ROOT/$PD_LAYOUT"
+fi
 export DEPLOYMENT=nemotron35-vllm-e3
 export GRAPH_LABEL="nvidia.com/dynamo-graph-deployment-name=$DEPLOYMENT"
 export PROMETHEUS_URL=http://127.0.0.1:9090
@@ -149,7 +156,7 @@ curl -fsS "http://127.0.0.1:8000/v1/chat/completions" \
 
 Dynamo's Kubernetes installation can create application monitors by default.
 First query Prometheus for this deployment. If the query returns two frontend
-and four worker targets with value `1`, use the generated monitors and skip the
+and the expected worker targets (four aggregated or four disaggregated) with value `1`, use the generated monitors and skip the
 fallback manifest. Adding a second monitor would double-scrape the same counters
 and can make unscoped `sum()` queries look twice as large.
 
@@ -257,13 +264,13 @@ kubectl get podmonitor -n "$MONITORING_NAMESPACE" \
   -o custom-columns='NAME:.metadata.name,LABELS:.metadata.labels'
 ```
 
-Re-run the `up` query and require six unique healthy pods. Allow approximately
+Re-run the `up` query and require six unique healthy pods for either topology. Allow approximately
 two scrape intervals after applying the monitors. Also verify that the
 DCGM target and samples are present. DCGM Exporter emits `namespace`, `pod`, and
 `container`, but a Prometheus scrape configuration that does not honor exporter
 labels can rename them to `exported_namespace`, `exported_pod`, and
-`exported_container`. Either form is valid when it identifies all four worker
-pods; unattributed node-wide GPUs are not sufficient for this experiment.
+`exported_container`. Either form is valid when it identifies all worker
+pods (four aggregated or four disaggregated); unattributed node-wide GPUs are not sufficient for this experiment.
 
 ```bash
 curl -fsSG "$PROMETHEUS_URL/api/v1/query" \
@@ -286,6 +293,13 @@ curl -fsSG "$PROMETHEUS_URL/api/v1/query" \
   'query=count by (exported_pod,exported_container,UUID) (DCGM_FI_DEV_GPU_UTIL{exported_namespace="qwen32-bench",exported_pod=~"nemotron35-vllm-e3-.*"})' \
   | jq '.data.result'
 ```
+
+For disaggregated runs, keep prefill and decode series separate using the Pod
+names (`vllmprefillworker` and `vllmdecodeworker`) and the Pod label
+`research.nvidia.com/worker-role`. There are four TP=1 worker Pods and four GPU UUIDs. Evaluate MTP acceptance on decode,
+and require successful NIXL transfers plus valid repeated-prompt output before
+interpreting cache-hit metrics. With 1P3D there is no prefill replica choice; use 2P2D to
+evaluate cache-aware selection among prefill workers.
 
 ## 4. Required MTP and engine measurements
 
@@ -465,7 +479,7 @@ The benchmark no longer creates timestamp directories. For example, the
 balanced B result at concurrency 2048 is stored at:
 
 ```text
-/perf-cache/specrouting/cell-B/isl-8192_osl-2048_c-2048_reuse-90_preset-balanced/results/manifest.json
+/perf-cache/specrouting/<topology>/cell-B/isl-8192_osl-2048_c-2048_reuse-90_preset-balanced/results/manifest.json
 ```
 
 ```bash
@@ -534,7 +548,7 @@ Export the frontend/router queries from section 5 and the latency histogram
 buckets as separate JSON files using the same helper. Keep buckets, `_sum`, and
 `_count`, not only a precomputed p99, so quantiles can be recomputed later.
 
-Before accepting the capture, require four distinct worker pods for vLLM and
+Before accepting the capture, require four aggregated or four disaggregated worker pods for vLLM and
 DCGM, two frontend series for frontend metrics, no unexpected target gaps, and
 no duplicate jobs scraping the same endpoint. Preserve the rendered Job, AIPerf
 manifest, AIPerf export, Prometheus JSON, pod-state JSON, and SHA-256 files as

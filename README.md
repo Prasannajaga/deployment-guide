@@ -70,7 +70,7 @@ We only had one week of access to this 16x H100 cluster, so I'm incredibly glad 
 - ⏳ **Aggregated vs. Disaggregated Scaling**: Decoupled Prefill & Decode (P/D) vs. aggregated serving across vLLM and SGLang.
 - ✅ **Round-robin vs. KV-aware routing on a realistic agent benchmark (AgentX)**: Compared cache reuse, latency, and throughput on replayed multi-turn coding sessions at different concurrency levels. [Read the deep-dive blog](blogs/rr-vs-kv-aware-routing.md).
 - ✅ **KV-Aware Routing & CPU Offloading**: Evaluated prompt prefix caching vs. CPU KV offloading under high concurrency [read the Deep-Dive Blog](https://x.com/jaga_prasanna/status/2093217133841064233?s=20).
-- ⏳ **Parallelism Bottlenecks (TP / DP / EP)**: Analyzed cross-node network stalls (TP=16 across nodes) vs. EP/DP scalability.
+- ⏳ **Parallelism Bottlenecks**: Analyzed cross-node network stalls when scaling TP [read the Deep-Dive Blog](https://x.com/jaga_prasanna/status/2094419634489549223?s=20)
 - ⏳ **Event-Driven Autoscaling (KEDA)**: Dynamic pod scaling (1–8 workers) based on queue depth and GPU load metrics.
 - ⏳ **NIXL RDMA Latency Profiling**: Measured KV transfer latency growth over RoCE v2 as context length scales. See the reusable [NIXL Prometheus and Grafana runbook](NIXL-grafana.md).
 
@@ -147,7 +147,6 @@ We ran a 1,500-second prefill-heavy experiment sweep across concurrencies 1–32
 
 ![NIXL KV transfer profiling](assets/NIXL-profiling.svg)
 
-
 ### 5. Disaggregation vs. KV-Aware Routing vs. CPU KV Offloading
 
 We evaluated five Qwen3-32B FP8 configurations with vLLM using the [Mooncake conversation trace](https://github.com/kvcache-ai/Mooncake/blob/main/FAST25-release/traces/conversation_trace.jsonl). Starting from eight aggregated TP=2 workers, we compared 6P2D and 4P4D disaggregation, KV-aware routing, and CPU KV cache offloading.
@@ -167,7 +166,6 @@ Exp 5(Exp4 with KV cache offloading) didn't demonstrate a measurable benefit fro
 </p>
 
 The aggregated and 6P2D round-robin configurations developed very large TTFT tails compared to other experiments. Exp 2 has high TTFT because Dynamo measures TTFT until the first token is streamed from a **decode worker**.
-
 
 
 ### 6. Event-Driven Autoscaling using KEDA
