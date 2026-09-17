@@ -1,0 +1,157 @@
+apiVersion: nvidia.com/v1alpha1
+kind: DynamoGraphDeployment
+metadata:
+  name: qwen3-32b-fp8-vllm-disagg
+  labels:
+    benchmark.nvidia.com/experiment: qwen3-32b-fp8-vllm-disagg
+spec:
+  backendFramework: vllm
+  pvcs:
+    - name: model-cache
+      create: false
+    - name: compilation-cache
+      create: false
+  services:
+    Frontend:
+      componentType: frontend
+      replicas: 2
+      envs:
+        - name: HF_HOME
+          value: /opt/models
+      resources:
+        requests:
+          cpu: "8"
+          memory: 8Gi
+        limits:
+          cpu: "16"
+          memory: 16Gi
+      volumeMounts:
+        - name: model-cache
+          mountPoint: /opt/models
+      extraPodSpec:
+        mainContainer:
+          image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.3.0
+          workingDir: /workspace
+          command: [python3, -m, dynamo.frontend]
+          args: [--router-mode, round-robin]
+
+    VllmPrefillWorker:
+      componentType: worker
+      subComponentType: prefill
+      replicas: 6
+      envFromSecret: hf-token-secret
+      sharedMemory:
+        size: 40Gi
+      extraPodMetadata:
+        annotations:
+          k8s.v1.cni.cncf.io/networks: qwen32-bench/qwen-roce
+      volumeMounts:
+        - name: model-cache
+          mountPoint: /opt/models
+        - name: compilation-cache
+          mountPoint: /home/dynamo/.cache/vllm
+          useAsCompilationCache: true
+      extraPodSpec:
+        hostNetwork: false
+        dnsPolicy: ClusterFirst
+        mainContainer:
+          image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.3.0
+          workingDir: /workspace
+          command: [/bin/sh, -c]
+          args:
+            - |
+              ulimit -l unlimited
+              exec python3 -m dynamo.vllm \
+                --model "$MODEL_PATH" \
+                --served-model-name "$SERVED_MODEL_NAME" \
+                --tensor-parallel-size 2 \
+                --disaggregation-mode prefill \
+                --kv-transfer-config '{"kv_connector":"NixlConnector","kv_role":"kv_both"}' \
+                --kv-events-config '{"publisher":"zmq","topic":"kv-events","endpoint":"tcp://*:20080","enable_kv_cache_events":true}' \
+                --gpu-memory-utilization 0.90 \
+                --max-model-len 40960 \
+                --block-size 128 \
+                --no-enable-log-requests
+          env: &worker-env
+            - name: SERVED_MODEL_NAME
+              value: Qwen/Qwen3-32B-FP8
+            - name: MODEL_PATH
+              value: /opt/models/hub/models--Qwen--Qwen3-32B-FP8/snapshots/aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df
+            - name: HF_HOME
+              value: /opt/models
+            - name: PYTHONHASHSEED
+              value: "0"
+            - name: VLLM_NIXL_SIDE_CHANNEL_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: VLLM_NIXL_SIDE_CHANNEL_PORT
+              value: "5600"
+            - name: UCX_TLS
+              value: rc_x,rc,cuda_copy,cuda_ipc
+            - name: UCX_NET_DEVICES
+              value: mlx5_8:1
+            - name: UCX_IB_ADDR_TYPE
+              value: eth
+          securityContext: &worker-security
+            runAsUser: 0
+            capabilities:
+              add: [IPC_LOCK, SYS_RESOURCE]
+          ports:
+            - name: system
+              containerPort: 9090
+            - name: nixl-side
+              containerPort: 5600
+      resources: &worker-resources
+        requests:
+          gpu: "2"
+        limits:
+          gpu: "2"
+          custom:
+            rdma/ib: "2"
+
+    VllmDecodeWorker:
+      componentType: worker
+      subComponentType: decode
+      replicas: 2
+      envFromSecret: hf-token-secret
+      sharedMemory:
+        size: 40Gi
+      extraPodMetadata:
+        annotations:
+          k8s.v1.cni.cncf.io/networks: qwen32-bench/qwen-roce
+      volumeMounts:
+        - name: model-cache
+          mountPoint: /opt/models
+        - name: compilation-cache
+          mountPoint: /home/dynamo/.cache/vllm
+          useAsCompilationCache: true
+      extraPodSpec:
+        hostNetwork: false
+        dnsPolicy: ClusterFirst
+        mainContainer:
+          image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.3.0
+          workingDir: /workspace
+          command: [/bin/sh, -c]
+          args:
+            - |
+              ulimit -l unlimited
+              exec python3 -m dynamo.vllm \
+                --model "$MODEL_PATH" \
+                --served-model-name "$SERVED_MODEL_NAME" \
+                --tensor-parallel-size 2 \
+                --disaggregation-mode decode \
+                --kv-transfer-config '{"kv_connector":"NixlConnector","kv_role":"kv_both"}' \
+                --gpu-memory-utilization 0.90 \
+                --max-model-len 40960 \
+                --no-enable-prefix-caching \
+                --block-size 128 \
+                --no-enable-log-requests
+          env: *worker-env
+          securityContext: *worker-security
+          ports:
+            - name: system
+              containerPort: 9090
+            - name: nixl-side
+              containerPort: 5600
+      resources: *worker-resources

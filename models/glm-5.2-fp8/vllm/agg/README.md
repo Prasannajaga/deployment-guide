@@ -41,11 +41,10 @@ glm-5.2-fp8/
 Run these commands from a Kubernetes administrator host:
 
 ```bash
-export NAMESPACE=dynamo-bench
+export NAMESPACE=qwen32-bench
 export RECIPE_ROOT=/ephemeral/shared/glm-5.2-fp8
 export MODEL_CACHE_DIR="${RECIPE_ROOT}/model-cache"
 export EXP_DIR="${RECIPE_ROOT}/vllm/agg"
-export MODEL_DOWNLOAD_JOB=glm52-fp8-download
 export DEPLOYMENT=glm52-fp8-vllm-agg-tp16
 export OLD_DEPLOYMENT=glm52-fp8-sglang-agg-tp16
 export GRAPH_LABEL="nvidia.com/dynamo-graph-deployment-name=${DEPLOYMENT}"
@@ -80,7 +79,7 @@ kubectl get pods -n "$NAMESPACE" \
 ## 3. Preflight
 
 The deployment requires Dynamo multinode orchestration, the shared
-`model-cache` PVC, two nodes with eight available GPUs each, the `roce`
+`model-cache` PVC, two nodes with eight available GPUs each, the `qwen-roce`
 network attachment, and eight `rdma/ib` resources per node. Dynamo 1.3.0 also
 requires an NVIDIA driver compatible with CUDA 13.
 
@@ -91,7 +90,7 @@ kubectl get crd \
   network-attachment-definitions.k8s.cni.cncf.io
 
 kubectl get pvc model-cache -n "$NAMESPACE"
-kubectl get network-attachment-definition roce -n "$NAMESPACE"
+kubectl get network-attachment-definition qwen-roce -n "$NAMESPACE"
 kubectl get nodes \
   -o custom-columns='NODE:.metadata.name,GPU:.status.allocatable.nvidia\.com/gpu,RDMA:.status.allocatable.rdma/ib'
 kubectl get pods -A \
@@ -101,23 +100,23 @@ kubectl get pods -A \
 
 ## 4. Reuse or populate the model cache
 
-If the `$MODEL_DOWNLOAD_JOB` Job already completed, keep the existing PVC contents
+If `job/glm52-fp8-download` already completed, keep the existing PVC contents
 and skip directly to the deployment manifest.
 
 ```bash
-kubectl get job "$MODEL_DOWNLOAD_JOB" -n "$NAMESPACE"
-kubectl logs -n "$NAMESPACE" "job/$MODEL_DOWNLOAD_JOB" --tail=50
+kubectl get job glm52-fp8-download -n "$NAMESPACE"
+kubectl logs -n "$NAMESPACE" job/glm52-fp8-download --tail=50
 ```
 
 Otherwise, create the pinned download Job:
 
 ```bash
 mkdir -p "$MODEL_CACHE_DIR"
-tee "$MODEL_CACHE_DIR/model-download.yaml" >/dev/null <<EOF
+tee "$MODEL_CACHE_DIR/model-download.yaml" >/dev/null <<'EOF'
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: ${MODEL_DOWNLOAD_JOB}
+  name: glm52-fp8-download
 spec:
   backoffLimit: 2
   activeDeadlineSeconds: 43200
@@ -137,13 +136,13 @@ spec:
             - |
               set -eu
               pip install --no-cache-dir huggingface_hub==1.16.4
-              hf download "\$MODEL_NAME" --revision "\$MODEL_REVISION"
+              hf download "$MODEL_NAME" --revision "$MODEL_REVISION"
 
-              SNAPSHOT_DIR="\$HF_HOME/hub/models--zai-org--GLM-5.2-FP8/snapshots/\$MODEL_REVISION"
-              test -s "\$SNAPSHOT_DIR/config.json"
-              test -s "\$SNAPSHOT_DIR/model.safetensors.index.json"
-              test -s "\$SNAPSHOT_DIR/model-00141-of-00141.safetensors"
-              du -sh "\$SNAPSHOT_DIR"
+              SNAPSHOT_DIR="$HF_HOME/hub/models--zai-org--GLM-5.2-FP8/snapshots/$MODEL_REVISION"
+              test -s "$SNAPSHOT_DIR/config.json"
+              test -s "$SNAPSHOT_DIR/model.safetensors.index.json"
+              test -s "$SNAPSHOT_DIR/model-00141-of-00141.safetensors"
+              du -sh "$SNAPSHOT_DIR"
           env:
             - name: MODEL_NAME
               value: zai-org/GLM-5.2-FP8
@@ -175,14 +174,13 @@ spec:
             claimName: model-cache
 EOF
 
-kubectl delete job "$MODEL_DOWNLOAD_JOB" -n "$NAMESPACE" --ignore-not-found
 kubectl apply --dry-run=server -n "$NAMESPACE" \
   -f "$MODEL_CACHE_DIR/model-download.yaml"
 kubectl apply -n "$NAMESPACE" -f "$MODEL_CACHE_DIR/model-download.yaml"
 kubectl wait -n "$NAMESPACE" \
-  --for=condition=Complete "job/$MODEL_DOWNLOAD_JOB" \
+  --for=condition=Complete job/glm52-fp8-download \
   --timeout=43200s
-kubectl logs -n "$NAMESPACE" "job/$MODEL_DOWNLOAD_JOB" --tail=100
+kubectl logs -n "$NAMESPACE" job/glm52-fp8-download --tail=100
 ```
 
 ## 5. Create the vLLM deployment manifest
@@ -235,7 +233,7 @@ spec:
         size: 128Gi
       extraPodMetadata:
         annotations:
-          k8s.v1.cni.cncf.io/networks: roce
+          k8s.v1.cni.cncf.io/networks: qwen32-bench/qwen-roce
       extraPodSpec:
         hostNetwork: false
         dnsPolicy: ClusterFirst
@@ -280,6 +278,8 @@ spec:
               value: eth0
             - name: NCCL_IB_DISABLE
               value: "0"
+            - name: NCCL_IB_HCA
+              value: mlx5_8:1
             - name: NCCL_DEBUG
               value: INFO
             - name: VLLM_DEEP_GEMM_WARMUP
@@ -307,10 +307,8 @@ spec:
 EOF
 ```
 
-The RDMA Shared Device Plugin limits the available RDMA device set to the
-`rdma7` rail, so NCCL can discover the selected HCA without a per-manifest pin.
-No GID index is hardcoded because the correct GID is determined by the Pod's
-secondary network attachment.
+The RoCE HCA is pinned to `mlx5_8:1`. No GID index is hardcoded because the
+correct GID is determined by the Pod's secondary network attachment.
 
 ## 6. Validate and deploy
 
@@ -404,7 +402,7 @@ kubectl wait -n "$NAMESPACE" \
 Remove the completed download Job after inspecting its logs:
 
 ```bash
-kubectl delete job "$MODEL_DOWNLOAD_JOB" \
+kubectl delete job glm52-fp8-download \
   -n "$NAMESPACE" --ignore-not-found
 ```
 
@@ -696,7 +694,7 @@ spec:
             - name: TOKENIZER
               value: /opt/models/hub/models--zai-org--GLM-5.2-FP8/snapshots/ba978f7d347eaf65d22f1a86833408afdb953541
             - name: ENDPOINT
-              value: glm52-fp8-vllm-agg-tp16-frontend.dynamo-bench.svc.cluster.local:8000
+              value: glm52-fp8-vllm-agg-tp16-frontend.qwen32-bench.svc.cluster.local:8000
             - name: ISL
               value: "8000"
             - name: OSL

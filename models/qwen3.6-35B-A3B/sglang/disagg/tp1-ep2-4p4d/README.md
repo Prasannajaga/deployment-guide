@@ -21,7 +21,7 @@ This recipe deploys a disaggregated SGLang serving topology (4 Prefill + 4 Decod
 ## Variables
 
 ```bash
-export NAMESPACE=dynamo-bench
+export NAMESPACE=qwen32-bench
 export EXP_DIR=/ephemeral/shared/qwen3.6-35b-a3b/sglang/disagg/tp1-ep2-4p4d
 export DEPLOYMENT=q36-sgl-pd-tp1ep2-4p4d
 export PERF_JOB_NAME=qwen36-sglang-tp1ep2-4p4d-perf
@@ -123,7 +123,7 @@ spec:
         size: 80Gi
       extraPodMetadata:
         annotations:
-          k8s.v1.cni.cncf.io/networks: roce
+          k8s.v1.cni.cncf.io/networks: qwen-roce
       extraPodSpec:
         hostNetwork: false
         dnsPolicy: ClusterFirst
@@ -182,6 +182,8 @@ spec:
               value: UCX
             - name: UCX_TLS
               value: rc_x,rc,cuda_copy,cuda_ipc
+            - name: UCX_NET_DEVICES
+              value: mlx5_8:1
             - name: UCX_IB_ADDR_TYPE
               value: eth
             - name: UCX_RNDV_SCHEME
@@ -238,7 +240,7 @@ spec:
         size: 80Gi
       extraPodMetadata:
         annotations:
-          k8s.v1.cni.cncf.io/networks: roce
+          k8s.v1.cni.cncf.io/networks: qwen-roce
       extraPodSpec:
         hostNetwork: false
         dnsPolicy: ClusterFirst
@@ -349,7 +351,7 @@ spec:
         size: 80Gi
       extraPodMetadata:
         annotations:
-          k8s.v1.cni.cncf.io/networks: roce
+          k8s.v1.cni.cncf.io/networks: qwen-roce
       extraPodSpec:
         hostNetwork: false
         dnsPolicy: ClusterFirst
@@ -413,6 +415,8 @@ spec:
               value: UCX
             - name: UCX_TLS
               value: rc_x,rc,cuda_copy,cuda_ipc
+            - name: UCX_NET_DEVICES
+              value: mlx5_8:1
             - name: UCX_IB_ADDR_TYPE
               value: eth
             - name: UCX_RNDV_SCHEME
@@ -469,7 +473,7 @@ spec:
         size: 80Gi
       extraPodMetadata:
         annotations:
-          k8s.v1.cni.cncf.io/networks: roce
+          k8s.v1.cni.cncf.io/networks: qwen-roce
       extraPodSpec:
         hostNetwork: false
         dnsPolicy: ClusterFirst
@@ -620,3 +624,4 @@ kubectl delete pod -n "$NAMESPACE" \
   sglang-runtime-preflight qwen-smoke qwen-sglang-preflight-request \
   --ignore-not-found
 ```
+
