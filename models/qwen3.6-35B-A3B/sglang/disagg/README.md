@@ -25,11 +25,10 @@ logs and a real cross-node transfer before benchmarking.
 ## Shared recovery and prerequisites
 
 ```bash
-export NAMESPACE=dynamo-bench
+export NAMESPACE=qwen32-bench
 export RECIPE_ROOT=/ephemeral/shared/qwen3.6-35b-a3b
 export MODEL_CACHE_DIR="$RECIPE_ROOT/model-cache"
-export MODEL_DOWNLOAD_JOB=qwen36-35b-a3b-fp8-download
-export ROCE_NETWORK=roce
+export ROCE_NETWORK=qwen-roce
 
 kubectl create namespace "$NAMESPACE" --dry-run=client -o yaml |
   kubectl apply -f -
@@ -119,12 +118,12 @@ kubectl get nodes -L qwen.nvidia.com/role \
 If the pinned snapshot is not already cached, run the existing download Job:
 
 ```bash
-kubectl delete job -n "$NAMESPACE" "$MODEL_DOWNLOAD_JOB" \
+kubectl delete job -n "$NAMESPACE" qwen36-35b-a3b-fp8-download \
   --ignore-not-found
 kubectl apply -n "$NAMESPACE" -f "$MODEL_CACHE_DIR/model-download.yaml"
-kubectl logs -n "$NAMESPACE" -f "job/$MODEL_DOWNLOAD_JOB"
+kubectl logs -n "$NAMESPACE" -f job/qwen36-35b-a3b-fp8-download
 kubectl wait -n "$NAMESPACE" --for=condition=Complete \
-  "job/$MODEL_DOWNLOAD_JOB" --timeout=3600s
+  job/qwen36-35b-a3b-fp8-download --timeout=3600s
 ```
 
 Then choose exactly one recipe above. Never run recipes concurrently. The EP2

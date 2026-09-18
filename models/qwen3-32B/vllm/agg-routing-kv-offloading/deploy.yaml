@@ -1,0 +1,87 @@
+apiVersion: nvidia.com/v1alpha1
+kind: DynamoGraphDeployment
+metadata:
+  name: qwen3-32b-fp8-vllm-agg-kv-offload
+spec:
+  backendFramework: vllm
+  pvcs:
+    - name: model-cache
+      create: false
+  services:
+    Frontend:
+      componentType: frontend
+      replicas: 1
+      extraPodSpec:
+        mainContainer:
+          image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.3.0
+          workingDir: /workspace/examples/backends/vllm
+          command:
+            - python3
+            - -m
+            - dynamo.frontend
+          args:
+            - --router-mode
+            - kv
+            - --router-host-cache-hit-weight
+            - "0.75"
+    VllmWorker:
+      componentType: worker
+      replicas: 8
+      envFromSecret: hf-token-secret
+      volumeMounts:
+        - name: model-cache
+          mountPoint: /opt/models
+      sharedMemory:
+        size: 40Gi
+      extraPodSpec:
+        affinity:
+          podAntiAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchLabels:
+                    nvidia.com/dynamo-graph-deployment-name: qwen3-32b-fp8-vllm-agg-kv-offload
+                    nvidia.com/dynamo-component-type: worker
+                topologyKey: kubernetes.io/hostname
+        mainContainer:
+          image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.3.0
+          workingDir: /workspace/examples/backends/vllm
+          command:
+            - /bin/sh
+            - -c
+          args:
+            - |
+              python3 -m dynamo.vllm \
+                --model "$MODEL_PATH" \
+                --served-model-name "$SERVED_MODEL_NAME" \
+                --tensor-parallel-size 2 \
+                --data-parallel-size 1 \
+                --gpu-memory-utilization 0.90 \
+                --max-model-len 40960 \
+                --enable-prefix-caching \
+                --block-size 16 \
+                --kv-transfer-config '{"kv_connector":"OffloadingConnector","kv_role":"kv_both","kv_connector_extra_config":{"cpu_bytes_to_use":34359738368,"block_size":256,"self_describing_kv_events":true}}' \
+                --kv-events-config '{"publisher":"zmq","topic":"kv-events","endpoint":"tcp://*:20080","enable_kv_cache_events":true}'
+          env:
+            - name: SERVED_MODEL_NAME
+              value: Qwen/Qwen3-32B-FP8
+            - name: MODEL_PATH
+              value: /opt/models/hub/models--Qwen--Qwen3-32B-FP8/snapshots/aa55da1ecc13d006e8b8e4f54579b1ea8c3db2df
+            - name: HF_HOME
+              value: /opt/models
+            - name: PYTHONHASHSEED
+              value: "0"
+          securityContext:
+            runAsUser: 0
+            capabilities:
+              add:
+                - IPC_LOCK
+                - SYS_RESOURCE
+      resources:
+        limits:
+          gpu: "2"
+          cpu: "16"
+          memory: 96Gi
+        requests:
+          gpu: "2"
+          cpu: "8"
+          memory: 64Gi
