@@ -16,7 +16,7 @@
 
 This repository tracks LLM deployment experiments, setup runbooks, and benchmark results on a 2-node cluster with **16x NVIDIA H100 GPUs** (8x H100 per node).
 
-> **PS**: I was running an LLM inference series on X that ended up gaining a lot of traction. After posting to ask if anyone could volunteer cluster access, the team at Lambda reached out and gave us access to a 16x H100 cluster for a week which was crazy! We did a ton of speedrunning here. starting with a plain Ubuntu server, we set up all the K8s adapters and environment prerequisites from scratch for our experimentation, I have attached the X post at end of the blog
+> **PS**: I was running an LLM inference series on X that ended up gaining a lot of traction. After posting to ask if anyone could volunteer cluster access, the team at Lambda reached out and gave us access to a 16x H100 cluster for a week which was crazy! We did a ton of speedrunning here. starting with a plain Ubuntu server, we set up all the K8s adapters and environment prerequisites from scratch for our experimentation, I have attached the X post at end of the readme
 
 ## Cluster Overview & Environment Specifications
 
@@ -67,10 +67,10 @@ We only had one week of access to this 16x H100 cluster, so I'm incredibly glad 
 
 > **Blog Series Incoming**: Detailed technical write-ups and benchmark deep-dives for these experiments are coming soon!
 
-- ⏳ **Aggregated vs. Disaggregated Scaling**: Decoupled Prefill & Decode (P/D) vs. aggregated serving across vLLM and SGLang.
+<!-- - ⏳ **Aggregated vs. Disaggregated Scaling**: Decoupled Prefill & Decode (P/D) vs. aggregated serving across vLLM and SGLang. -->
 - ✅ **Round-robin vs. KV-aware routing on a realistic agent benchmark (AgentX)**: Compared cache reuse, latency, and throughput on replayed multi-turn coding sessions at different concurrency levels. [Read the deep-dive blog](blogs/rr-vs-kv-aware-routing.md).
 - ✅ **KV-Aware Routing & CPU Offloading**: Evaluated prompt prefix caching vs. CPU KV offloading under high concurrency [read the Deep-Dive Blog](https://x.com/jaga_prasanna/status/2093217133841064233?s=20).
-- ⏳ **Parallelism Bottlenecks**: Analyzed cross-node network stalls when scaling TP [read the Deep-Dive Blog](https://x.com/jaga_prasanna/status/2094419634489549223?s=20)
+- ✅ **Parallelism Bottlenecks**: Analyzed cross-node network stalls when scaling TP [read the Deep-Dive Blog](https://x.com/jaga_prasanna/status/2094419634489549223?s=20)
 - ⏳ **Event-Driven Autoscaling (KEDA)**: Dynamic pod scaling (1–8 workers) based on queue depth and GPU load metrics.
 - ⏳ **NIXL RDMA Latency Profiling**: Measured KV transfer latency growth over RoCE v2 as context length scales. See the reusable [NIXL Prometheus and Grafana runbook](NIXL-grafana.md).
 
