@@ -16,7 +16,7 @@
 
 This repository tracks LLM deployment experiments, setup runbooks, and benchmark results on a 2-node cluster with **16x NVIDIA H100 GPUs** (8x H100 per node).
 
-> **PS**: I was running an LLM inference series on X that ended up gaining a lot of traction. After posting to ask if anyone could volunteer cluster access, the team at Lambda reached out and gave us access to a 16x H100 cluster for a week which was crazy! We did a ton of speedrunning here. starting with a plain Ubuntu server, we set up all the K8s adapters and environment prerequisites from scratch for our experimentation
+> **PS**: I was running an LLM inference series on X that ended up gaining a lot of traction. After posting to ask if anyone could volunteer cluster access, the team at Lambda reached out and gave us access to a 16x H100 cluster for a week which was crazy! We did a ton of speedrunning here. starting with a plain Ubuntu server, we set up all the K8s adapters and environment prerequisites from scratch for our experimentation, I have attached the X post at end of the blog
 
 ## Cluster Overview & Environment Specifications
 
@@ -204,3 +204,7 @@ While we ran out of time to test separate autoscaling for disaggregated Prefill/
     ├── qwen3.6-35B-A3B/
     └── qwen3.8-27B/
 ```
+
+## Post reference on X
+
+[![Tweet preview](assets/post.png)](https://x.com/jaga_prasanna/status/2086162686208069702)
